@@ -1,3 +1,10 @@
 down-the-rabbit-hole
-the-pool-of-tears
-a-caucus-race-and-a-long-tale
+introduction
+load-in-required-packages
+creating-resource-files.
+convert-count-matrices-from-gene-id-to-gene-symbol
+removing-sources-of-unwanted-noise-from-the-single-cell-dataset
+empty-droplets
+removing-ambient-rna-contamination
+standard-gene-qc-to-remove-low-quality-cells
+add-isoform-counts-to-seurat-object

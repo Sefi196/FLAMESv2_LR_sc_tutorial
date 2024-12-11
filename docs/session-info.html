@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Session info | Adding Isoform level information to your object</title>
+  <meta name="description" content="Chapter 3 Session info | Adding Isoform level information to your object" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Session info | Adding Isoform level information to your object" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Session info | Adding Isoform level information to your object" />
+  
+  
+  
+
+<meta name="author" content="Sefi" />
+
+
+<meta name="date" content="2024-12-10" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FLAMES_tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Down the rabbit-hole</a></li>
+<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>3</b> Session info</a></li>
+<li class="chapter" data-level="4" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>4</b> Removing sources of unwanted noise from the single cell dataset</a>
+<ul>
+<li class="chapter" data-level="4.0.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>4.0.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="4.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>4.1</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="4.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>4.2</b> Standard gene QC to remove low quality cells</a></li>
+<li class="chapter" data-level="4.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#add-isoform-counts-to-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add isoform counts to Seurat object</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform level information to your object</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="session-info" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Session info<a href="session-info.html#session-info" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<pre><code>## R version 4.4.0 (2024-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Red Hat Enterprise Linux 9.4 (Plow)
+## 
+## Matrix products: default
+## BLAS/LAPACK: FlexiBLAS OPENBLAS;  LAPACK version 3.10.1
+## 
+## locale:
+##  [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C               LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+##  [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8    LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: Australia/Melbourne
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] grid      stats4    stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] lubridate_1.9.3             forcats_1.0.0               dplyr_1.1.4                 purrr_1.0.2                
+##  [5] readr_2.1.5                 tidyr_1.3.1                 tibble_3.2.1                ggplot2_3.5.1              
+##  [9] tidyverse_2.0.0             patchwork_1.3.0             cowplot_1.1.3               stringr_1.5.1              
+## [13] DoubletFinder_2.0.4         celda_1.20.0                Matrix_1.7-1                BiocParallel_1.40.0        
+## [17] data.table_1.16.2           gridExtra_2.3               DropletUtils_1.26.0         SingleCellExperiment_1.28.0
+## [21] SummarizedExperiment_1.36.0 Biobase_2.66.0              MatrixGenerics_1.18.0       matrixStats_1.4.1          
+## [25] Seurat_5.1.0                SeuratObject_5.0.2          sp_2.1-4                    rtracklayer_1.64.0         
+## [29] GenomicRanges_1.58.0        GenomeInfoDb_1.42.0         IRanges_2.40.0              S4Vectors_0.44.0           
+## [33] BiocGenerics_0.52.0        
+## 
+## loaded via a namespace (and not attached):
+##   [1] RcppAnnoy_0.0.22          splines_4.4.0             later_1.3.2               BiocIO_1.16.0            
+##   [5] bitops_1.0-9              R.oo_1.27.0               polyclip_1.10-7           XML_3.99-0.17            
+##   [9] fastDummies_1.7.4         lifecycle_1.0.4           doParallel_1.0.17         edgeR_4.4.0              
+##  [13] globals_0.16.3            lattice_0.22-6            MASS_7.3-61               magrittr_2.0.3           
+##  [17] limma_3.62.1              plotly_4.10.4             sass_0.4.9                rmarkdown_2.29           
+##  [21] jquerylib_0.1.4           yaml_2.3.10               httpuv_1.6.15             sctransform_0.4.1        
+##  [25] spam_2.10-0               spatstat.sparse_3.1-0     reticulate_1.39.0         pbapply_1.7-2            
+##  [29] RColorBrewer_1.1-3        abind_1.4-8               zlibbioc_1.52.0           Rtsne_0.17               
+##  [33] R.utils_2.12.3            RCurl_1.98-1.16           WriteXLS_6.7.0            GenomeInfoDbData_1.2.13  
+##  [37] ggrepel_0.9.6             irlba_2.3.5.1             listenv_0.9.1             spatstat.utils_3.1-1     
+##  [41] goftest_1.2-3             RSpectra_0.16-2           dqrng_0.4.1               spatstat.random_3.3-1    
+##  [45] fitdistrplus_1.2-1        parallelly_1.38.0         DelayedMatrixStats_1.28.0 leiden_0.4.3.1           
+##  [49] codetools_0.2-20          DelayedArray_0.32.0       scuttle_1.16.0            tidyselect_1.2.1         
+##  [53] UCSC.utils_1.2.0          farver_2.1.2              spatstat.explore_3.3-1    GenomicAlignments_1.40.0 
+##  [57] jsonlite_1.8.9            progressr_0.15.0          iterators_1.0.14          ggridges_0.5.6           
+##  [61] survival_3.7-0            foreach_1.5.2             tools_4.4.0               ica_1.0-3                
+##  [65] Rcpp_1.0.13-1             glue_1.8.0                SparseArray_1.6.0         xfun_0.49                
+##  [69] HDF5Array_1.34.0          withr_3.0.2               combinat_0.0-8            fastmap_1.2.0            
+##  [73] MCMCprecision_0.4.0       rhdf5filters_1.18.0       fansi_1.0.6               digest_0.6.37            
+##  [77] timechange_0.3.0          R6_2.5.1                  mime_0.12                 colorspace_2.1-1         
+##  [81] scattermore_1.2           tensor_1.5                spatstat.data_3.1-2       R.methodsS3_1.8.2        
+##  [85] utf8_1.2.4                generics_0.1.3            httr_1.4.7                htmlwidgets_1.6.4        
+##  [89] S4Arrays_1.6.0            uwot_0.2.2                pkgconfig_2.0.3           gtable_0.3.6             
+##  [93] lmtest_0.9-40             XVector_0.46.0            htmltools_0.5.8.1         dotCall64_1.2            
+##  [97] bookdown_0.41             scales_1.3.0              png_0.1-8                 spatstat.univar_3.0-0    
+## [101] enrichR_3.2               knitr_1.48                rstudioapi_0.15.0         tzdb_0.4.0               
+## [105] reshape2_1.4.4            rjson_0.2.23              nlme_3.1-166              curl_6.0.0               
+## [109] cachem_1.1.0              zoo_1.8-12                rhdf5_2.50.0              KernSmooth_2.23-24       
+## [113] parallel_4.4.0            miniUI_0.1.1.1            restfulr_0.0.15           pillar_1.9.0             
+## [117] vctrs_0.6.5               RANN_2.6.2                promises_1.3.0            beachmat_2.22.0          
+## [121] xtable_1.8-4              cluster_2.1.6             evaluate_1.0.1            locfit_1.5-9.10          
+## [125] cli_3.6.3                 compiler_4.4.0            Rsamtools_2.20.0          rlang_1.1.4              
+## [129] crayon_1.5.3              future.apply_1.11.3       plyr_1.8.9                stringi_1.8.4            
+## [133] viridisLite_0.4.2         deldir_2.0-4              munsell_0.5.1             Biostrings_2.72.1        
+## [137] lazyeval_0.2.2            spatstat.geom_3.3-2       RcppHNSW_0.6.0            hms_1.1.3                
+## [141] RcppEigen_0.3.4.0.2       sparseMatrixStats_1.18.0  future_1.34.0             Rhdf5lib_1.28.0          
+## [145] statmod_1.5.0             shiny_1.9.1               ROCR_1.0-11               igraph_2.1.1             
+## [149] bslib_0.8.0</code></pre>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/01-Introduction.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/01-Introduction.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
