@@ -1,5 +1,5 @@
-down-the-rabbit-hole
 introduction
+setup
 load-in-required-packages
 creating-resource-files.
 convert-count-matrices-from-gene-id-to-gene-symbol

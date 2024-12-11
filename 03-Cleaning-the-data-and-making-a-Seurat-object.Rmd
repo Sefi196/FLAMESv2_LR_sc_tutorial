@@ -460,4 +460,4 @@ filt_seurat_object <- subset(filt_seurat_object, subset = DF.classifications == 
   write.table(stats_sumary, file = paste0("./output_files/QC/", sample_id, "_stats.csv")) 
 ```
 
-Now that we have filtered the object to ensure we retain high quality data we are going to add in the isoform level information. so lets see if we have a live update
+Now that we have filtered the object to ensure we retain high quality data we are going to add in the isoform level information.

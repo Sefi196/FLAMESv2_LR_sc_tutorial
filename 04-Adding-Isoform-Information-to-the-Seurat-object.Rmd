@@ -1,11 +1,11 @@
 ---
-title: "Adding Isoform level information to your object"
-author: "Sefi"
+title: "Adding Isoform data to your object"
+author: "Sefi Prawer"
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
-## Add isoform counts to Seurat object
+# Add isoform counts to Seurat object
 
 Now that we have 309 high-quality cells for our downstream analysis, let's incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We'll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.
 

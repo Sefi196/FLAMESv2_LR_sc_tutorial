@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Setup | Adding Isoform data to your object</title>
+  <meta name="description" content="Chapter 2 Setup | Adding Isoform data to your object" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Setup | Adding Isoform data to your object" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Setup | Adding Isoform data to your object" />
+  
+  
+  
+
+<meta name="author" content="Sefi Prawer" />
+
+
+<meta name="date" content="2024-12-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FLAMES_tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
+<ul>
+<li class="chapter" data-level="3.0.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.0.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.1</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.2</b> Standard gene QC to remove low quality cells</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your object</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="setup" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Setup<a href="setup.html#setup" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="load-in-required-packages" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> load in required packages<a href="setup.html#load-in-required-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="creating-resource-files." class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Creating resource files.<a href="setup.html#creating-resource-files." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To start, we’ll create a few essential files that will be used throughout the analysis.
+The first step is to generate a CSV file containing three key columns: ENSTID, ENSGID, and geneSymbol.
+This file will be used as a dictionary to rename entries in both the isoform and gene count matrices, replacing ENSGID with the corresponding gene symbol.
+By adopting this naming convention for ENSTID, we can easily identify the gene origin of each isoform, streamlining the interpretation and analysis of gene and isoform-level data.</p>
+<p>First lets define a helper function for this step:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="setup.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to make csv naming resource </span></span>
+<span id="cb1-2"><a href="setup.html#cb1-2" aria-hidden="true" tabindex="-1"></a>make_isoform_gene_symbol_dict <span class="ot">&lt;-</span> <span class="cf">function</span>(FLAMES_gtf, </span>
+<span id="cb1-3"><a href="setup.html#cb1-3" aria-hidden="true" tabindex="-1"></a>                                          reference_gtf, </span>
+<span id="cb1-4"><a href="setup.html#cb1-4" aria-hidden="true" tabindex="-1"></a>                                          output_file) {</span>
+<span id="cb1-5"><a href="setup.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import the first GTF file (transcripts GTF)</span></span>
+<span id="cb1-6"><a href="setup.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  gtf1 <span class="ot">&lt;-</span> <span class="fu">import</span>(FLAMES_gtf)</span>
+<span id="cb1-7"><a href="setup.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  gtf1_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(gtf1)</span>
+<span id="cb1-8"><a href="setup.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-9"><a href="setup.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select relevant columns from the first GTF</span></span>
+<span id="cb1-10"><a href="setup.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  selected_columns1 <span class="ot">&lt;-</span> gtf1_df[, <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>)]</span>
+<span id="cb1-11"><a href="setup.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  unique_selected_cols <span class="ot">&lt;-</span> <span class="fu">unique</span>(selected_columns1)</span>
+<span id="cb1-12"><a href="setup.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="setup.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import the second GTF file (reference GTF with gene symbols)</span></span>
+<span id="cb1-14"><a href="setup.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  gtf2 <span class="ot">&lt;-</span> <span class="fu">import</span>(reference_gtf)</span>
+<span id="cb1-15"><a href="setup.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  gtf2_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(gtf2)</span>
+<span id="cb1-16"><a href="setup.html#cb1-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-17"><a href="setup.html#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select relevant columns from the second GTF</span></span>
+<span id="cb1-18"><a href="setup.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  selected_columns2 <span class="ot">&lt;-</span> gtf2_df[, <span class="fu">c</span>(<span class="st">&quot;gene_name&quot;</span>, <span class="st">&quot;gene_id&quot;</span>)]</span>
+<span id="cb1-19"><a href="setup.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  unique_gene_symbol <span class="ot">&lt;-</span> <span class="fu">unique</span>(selected_columns2)</span>
+<span id="cb1-20"><a href="setup.html#cb1-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-21"><a href="setup.html#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Merge the two data frames on &#39;gene_id&#39;</span></span>
+<span id="cb1-22"><a href="setup.html#cb1-22" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(unique_selected_cols, </span>
+<span id="cb1-23"><a href="setup.html#cb1-23" aria-hidden="true" tabindex="-1"></a>                         unique_gene_symbol, </span>
+<span id="cb1-24"><a href="setup.html#cb1-24" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by =</span> <span class="st">&quot;gene_id&quot;</span>, </span>
+<span id="cb1-25"><a href="setup.html#cb1-25" aria-hidden="true" tabindex="-1"></a>                         <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-26"><a href="setup.html#cb1-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-27"><a href="setup.html#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If &#39;gene_name&#39; is missing, replace it with &#39;gene_id&#39;</span></span>
+<span id="cb1-28"><a href="setup.html#cb1-28" aria-hidden="true" tabindex="-1"></a>  combined_data<span class="sc">$</span>gene_symbol <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(combined_data<span class="sc">$</span>gene_name), </span>
+<span id="cb1-29"><a href="setup.html#cb1-29" aria-hidden="true" tabindex="-1"></a>                                      combined_data<span class="sc">$</span>gene_id, </span>
+<span id="cb1-30"><a href="setup.html#cb1-30" aria-hidden="true" tabindex="-1"></a>                                      combined_data<span class="sc">$</span>gene_name)</span>
+<span id="cb1-31"><a href="setup.html#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="setup.html#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select relevant columns</span></span>
+<span id="cb1-33"><a href="setup.html#cb1-33" aria-hidden="true" tabindex="-1"></a>  final_combined_data <span class="ot">&lt;-</span> combined_data[, <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>, <span class="st">&quot;gene_symbol&quot;</span>)]</span>
+<span id="cb1-34"><a href="setup.html#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-35"><a href="setup.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write to a CSV file</span></span>
+<span id="cb1-36"><a href="setup.html#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">write.csv</span>(final_combined_data, <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&quot;output_files/ref_files&quot;</span>, output_file), <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-37"><a href="setup.html#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="setup.html#cb1-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-39"><a href="setup.html#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_combined_data)</span>
+<span id="cb1-40"><a href="setup.html#cb1-40" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Run this chunk to create the dictionary containing ENSTID, ENSGID, and geneSymbol information:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="setup.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The FLAMES ref can be found in your selected output folder after running the Flames pipeline. </span></span>
+<span id="cb2-2"><a href="setup.html#cb2-2" aria-hidden="true" tabindex="-1"></a>FLAMES_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/FLAMES_out/isoform_annotated.gtf&quot;</span> <span class="co">#ensure file is unzipped</span></span>
+<span id="cb2-3"><a href="setup.html#cb2-3" aria-hidden="true" tabindex="-1"></a>reference_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/gencode.v47.annotation.gtf&quot;</span> <span class="co"># ensure file is unzipped</span></span>
+<span id="cb2-4"><a href="setup.html#cb2-4" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="st">&quot;isoform_gene_dict.csv&quot;</span></span>
+<span id="cb2-5"><a href="setup.html#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="setup.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the helper function defined in code block above to create a dictionary containing corresponding gene information for each isoform</span></span>
+<span id="cb2-7"><a href="setup.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This may take a few minutes </span></span>
+<span id="cb2-8"><a href="setup.html#cb2-8" aria-hidden="true" tabindex="-1"></a>isoform_gene_dict <span class="ot">&lt;-</span> <span class="fu">make_isoform_gene_symbol_dict</span>(FLAMES_gtf_file,</span>
+<span id="cb2-9"><a href="setup.html#cb2-9" aria-hidden="true" tabindex="-1"></a>                                                   reference_gtf_file,</span>
+<span id="cb2-10"><a href="setup.html#cb2-10" aria-hidden="true" tabindex="-1"></a>                                                   output_file)</span></code></pre></div>
+</div>
+<div id="convert-count-matrices-from-gene-id-to-gene-symbol" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Convert count matrices from Gene ID to gene Symbol<a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With the reference dictionary in place, we can now rename both our count matrix and background count matrix by converting ENSGIDs to geneSymbols.
+This conversion not only simplifies the interpretation of gene expression in single cells but is also necessary for some downstream tools that require gene symbols instead of ENSGIDs, such as automated cell annotation tools.</p>
+<p>Like before, lets define a generic helper function first to do this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="setup.html#cb3-1" aria-hidden="true" tabindex="-1"></a>convert_ENSGID_to_geneSymbol <span class="ot">&lt;-</span> <span class="cf">function</span>(gene_count_matrix_path, </span>
+<span id="cb3-2"><a href="setup.html#cb3-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">id_symbol_df =</span> isoform_gene_dict, </span>
+<span id="cb3-3"><a href="setup.html#cb3-3" aria-hidden="true" tabindex="-1"></a>                                         output_file,</span>
+<span id="cb3-4"><a href="setup.html#cb3-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">return_df =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb3-5"><a href="setup.html#cb3-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-6"><a href="setup.html#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load the reference dictionary we made earlier - select gene-level cols</span></span>
+<span id="cb3-7"><a href="setup.html#cb3-7" aria-hidden="true" tabindex="-1"></a>  id_symbol_df <span class="ot">&lt;-</span> id_symbol_df <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="setup.html#cb3-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_symbol)</span>
+<span id="cb3-9"><a href="setup.html#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="setup.html#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load the data object with ENSGID row names</span></span>
+<span id="cb3-11"><a href="setup.html#cb3-11" aria-hidden="true" tabindex="-1"></a>  gene_count_matrix <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(gene_count_matrix_path, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-12"><a href="setup.html#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(gene_count_matrix)[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="st">&quot;gene_id&quot;</span></span>
+<span id="cb3-13"><a href="setup.html#cb3-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-14"><a href="setup.html#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Replace ENSGIDs with gene symbols in original flames gene-level count matrix</span></span>
+<span id="cb3-15"><a href="setup.html#cb3-15" aria-hidden="true" tabindex="-1"></a>  formatted_gene_count_matrix <span class="ot">&lt;-</span> gene_count_matrix <span class="sc">%&gt;%</span></span>
+<span id="cb3-16"><a href="setup.html#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">merge</span>(id_symbol_df, <span class="at">by.x =</span> <span class="st">&#39;gene_id&#39;</span>, <span class="at">by.y =</span> <span class="st">&#39;gene_id&#39;</span>) <span class="sc">%&gt;%</span>   <span class="co"># Add gene symbol information</span></span>
+<span id="cb3-17"><a href="setup.html#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>(gene_symbol, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>   <span class="co"># Remove duplicates based on gene symbol</span></span>
+<span id="cb3-18"><a href="setup.html#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>gene_id) <span class="sc">%&gt;%</span>   <span class="co"># Remove the ENSGID column</span></span>
+<span id="cb3-19"><a href="setup.html#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_to_rownames</span>(<span class="at">var =</span> <span class="st">&quot;gene_symbol&quot;</span>)   <span class="co"># use the gene symbols we added as rownames</span></span>
+<span id="cb3-20"><a href="setup.html#cb3-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-21"><a href="setup.html#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write out the processed data frame</span></span>
+<span id="cb3-22"><a href="setup.html#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(formatted_gene_count_matrix, </span>
+<span id="cb3-23"><a href="setup.html#cb3-23" aria-hidden="true" tabindex="-1"></a>            output_file, </span>
+<span id="cb3-24"><a href="setup.html#cb3-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-25"><a href="setup.html#cb3-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-26"><a href="setup.html#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return the processed count matrix for further use if needed</span></span>
+<span id="cb3-27"><a href="setup.html#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(return_df){</span>
+<span id="cb3-28"><a href="setup.html#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(formatted_gene_count_matrix)</span>
+<span id="cb3-29"><a href="setup.html#cb3-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-30"><a href="setup.html#cb3-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Run the chunk below to format gene-level count matrices for background and FLAMES data using the helper function from above:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="setup.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Gene_id to gene symbol for gene counts</span></span>
+<span id="cb4-2"><a href="setup.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
+<span id="cb4-3"><a href="setup.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_count_matrix_path =</span> <span class="st">&quot;./data/FLAMES_out/gene_count.csv&quot;</span>,</span>
+<span id="cb4-4"><a href="setup.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_file =</span> <span class="st">&quot;./output_files/counts/geneSymbol_gene_count.csv&quot;</span></span>
+<span id="cb4-5"><a href="setup.html#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="setup.html#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="setup.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Gene_id to gene symbol for background counts</span></span>
+<span id="cb4-8"><a href="setup.html#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
+<span id="cb4-9"><a href="setup.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_count_matrix_path =</span> <span class="st">&quot;./data/background/gene_count.csv&quot;</span>,</span>
+<span id="cb4-10"><a href="setup.html#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_file =</span> <span class="st">&quot;./output_files/counts/background_geneSymbol_gene_count.csv&quot;</span></span>
+<span id="cb4-11"><a href="setup.html#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>Now we have the files we need to begin cleaning our data and removing unwanted noise.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/02-setup.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/02-setup.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

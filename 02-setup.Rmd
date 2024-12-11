@@ -1,31 +1,19 @@
-# Introduction
+---
+title: "setup"
+author: "Sefi"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
 
-Welcome to the FLAMES single sample tutorial!
-
-In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES, to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.
-
-This tutorial assumes that have;
-
-1.  Run the sc_long_pipeline (to process a single sample) and have set your config file with these parameters set to TRUE
-
-"bambu_isoform_identification": [true] "oarfish_quantification": [true] And
-
-2.  That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
-
-If you wish to run through the tutorial using the data provided in the 'data' folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command `wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz`
-
-Much of the workflow will remain the same if you decide to use other tools for quantification or isoform discovery, which FLAMES does support, but these are the tools that in our hands perform the best and what we would recommend using at this stage.
-
-This single sample tutorial will use data generated in the Clark lab. This is small dataset of approximately 400 cells. The cells are at Day55 of a excitatory neural differentiation protocol. More information on the dataset and sequencing methodology can be found here ....
-
-If you find this tutorial useful please cite our work...
-
-If you have questions or suggestions please email '[sefi.prawer\@unimelb.edu.au](mailto:sefi.prawer@unimelb.edu.au){.email}' or leave a comment on this github page.
+# Setup
 
 ## load in required packages
 
 ```{r load_libs, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
-#install packages if required. Note packages require installation via bioconductor. see installation instruction for each package to ensure installation is unsuccessful. 
+#install packages if required. Note some packages require installation via bioconductor. See installation instruction for each package to ensure installation is successful. 
 library(rtracklayer)
 library(Seurat)
 library(DropletUtils)
@@ -41,7 +29,6 @@ library(grid)
 library(patchwork)
 library(tidyverse)
 
-
 # Set working directory and create folders for output files
 setwd(".")  # Set this to correct location
 dir.create("./output_files/ref_files", recursive = TRUE, showWarnings = FALSE)
@@ -56,7 +43,10 @@ dir.create("./output_files/DE", recursive = TRUE, showWarnings = FALSE)
 
 ## Creating resource files.
 
-To start, we'll create a few essential files that will be used throughout the analysis. The first step is to generate a CSV file containing three key columns: ENSTID, ENSGID, and geneSymbol. This file will be used as a dictionary to rename entries in both the isoform and gene count matrices, replacing ENSGID with the corresponding gene symbol. By adopting this naming convention for ENSTID, we can easily identify the gene origin of each isoform, streamlining the interpretation and analysis of gene and isoform-level data.
+To start, we'll create a few essential files that will be used throughout the analysis.
+The first step is to generate a CSV file containing three key columns: ENSTID, ENSGID, and geneSymbol.
+This file will be used as a dictionary to rename entries in both the isoform and gene count matrices, replacing ENSGID with the corresponding gene symbol.
+By adopting this naming convention for ENSTID, we can easily identify the gene origin of each isoform, streamlining the interpretation and analysis of gene and isoform-level data.
 
 First lets define a helper function for this step:
 
@@ -123,7 +113,8 @@ isoform_gene_dict <- make_isoform_gene_symbol_dict(FLAMES_gtf_file,
 
 ## Convert count matrices from Gene ID to gene Symbol
 
-With the reference dictionary in place, we can now rename both our count matrix and background count matrix by converting ENSGIDs to geneSymbols. This conversion not only simplifies the interpretation of gene expression in single cells but is also necessary for some downstream tools that require gene symbols instead of ENSGIDs, such as automated cell annotation tools.
+With the reference dictionary in place, we can now rename both our count matrix and background count matrix by converting ENSGIDs to geneSymbols.
+This conversion not only simplifies the interpretation of gene expression in single cells but is also necessary for some downstream tools that require gene symbols instead of ENSGIDs, such as automated cell annotation tools.
 
 Like before, lets define a generic helper function first to do this:
 

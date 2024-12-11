@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Adding Isoform data to your object</title>
-  <meta name="description" content="Page not found | Adding Isoform data to your object" />
+  <title>Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your object</title>
+  <meta name="description" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your object" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Adding Isoform data to your object" />
+  <meta property="og:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your object" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Adding Isoform data to your object" />
+  <meta name="twitter:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your object" />
   
   
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
+<link rel="prev" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -173,18 +173,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="page-not-found" class="section level1">
-<h1>Page not found</h1>
-<p>The page you requested cannot be found (perhaps it was moved or renamed).</p>
-<p>You may want to try searching to find the page's new location, or use
-the table of contents to find the page you are looking for.</p>
+<div id="add-isoform-counts-to-seurat-object" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Add isoform counts to Seurat object<a href="add-isoform-counts-to-seurat-object.html#add-isoform-counts-to-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Now that we have 309 high-quality cells for our downstream analysis, let’s incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We’ll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.</p>
+<pre><code>## Processed sample: oarfish 
+## Output saved to: ./output_files/counts//gene_symbol_oarfish_counts.csv</code></pre>
+<p><img src="bookdownproj_files/figure-html/process_oarfish_file-1.png" width="672" /></p>
+<p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
+<p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
+<pre><code>## An object of class Seurat 
+## 93557 features across 309 samples within 3 assays 
+## Active assay: RNA (14906 features, 2000 variable features)
+##  3 layers present: counts, data, scale.data
+##  2 other assays present: joined, iso
+##  4 dimensional reductions calculated: pca, umap, pca_iso, umap_iso</code></pre>
+<p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
+<p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
+<p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
+<pre><code>## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
+<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
+<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
+<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: No layers found matching search pattern provided
+## Warning: No layers found matching search pattern provided</code></pre>
+<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
+## found in &#39;iso&#39; assay instead</code></pre>
+<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
+<p>We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
+<p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
+
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
+<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -216,7 +277,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/%s",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -224,7 +285,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/%s",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
 "text": null
 },
 "download": null,

@@ -4,34 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform level information to your object</title>
-  <meta name="description" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform level information to your object" />
+  <title>Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your object</title>
+  <meta name="description" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your object" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform level information to your object" />
+  <meta property="og:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your object" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform level information to your object" />
+  <meta name="twitter:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your object" />
   
   
   
 
-<meta name="author" content="Sefi" />
+<meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2024-12-10" />
+<meta name="date" content="2024-12-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction.html"/>
-
+<link rel="prev" href="setup.html"/>
+<link rel="next" href="add-isoform-counts-to-seurat-object.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,20 +140,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">FLAMES_tutorial</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Down the rabbit-hole</a></li>
-<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="introduction.html"><a href="introduction.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
-<li class="chapter" data-level="2.2" data-path="introduction.html"><a href="introduction.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
-<li class="chapter" data-level="2.3" data-path="introduction.html"><a href="introduction.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
 <ul>
 <li class="chapter" data-level="3.0.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.0.1</b> Empty droplets</a></li>
 <li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.1</b> Removing ambient RNA contamination</a></li>
 <li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.2</b> Standard gene QC to remove low quality cells</a></li>
-<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#add-isoform-counts-to-seurat-object"><i class="fa fa-check"></i><b>3.3</b> Add isoform counts to Seurat object</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform level information to your object</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your object</a>
           </h1>
         </div>
 
@@ -317,22 +317,22 @@ if users wish to skip this step take the ‘seurat_obj_rm_empty’ object and pr
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>## Starting DecontX</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Tue Dec 10 19:43:52 2024 .. Analyzing all cells</code></pre>
-<pre><code>## Tue Dec 10 19:43:52 2024 .... Converting to sparse matrix</code></pre>
-<pre><code>## Tue Dec 10 19:43:53 2024 .... Generating UMAP</code></pre>
-<pre><code>## Tue Dec 10 19:43:58 2024 .... Estimating contamination</code></pre>
-<pre><code>## Tue Dec 10 19:43:58 2024 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
-<pre><code>## Tue Dec 10 19:43:58 2024 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
-<pre><code>## Tue Dec 10 19:43:58 2024 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
-<pre><code>## Tue Dec 10 19:43:59 2024 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
-<pre><code>## Tue Dec 10 19:43:59 2024 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
-<pre><code>## Tue Dec 10 19:43:59 2024 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
-<pre><code>## Tue Dec 10 19:43:59 2024 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
-<pre><code>## Tue Dec 10 19:44:00 2024 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
-<pre><code>## Tue Dec 10 19:44:00 2024 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
-<pre><code>## Tue Dec 10 19:44:00 2024 .. Calculating final decontaminated matrix</code></pre>
+<pre><code>## Wed Dec 11 17:06:57 2024 .. Analyzing all cells</code></pre>
+<pre><code>## Wed Dec 11 17:06:57 2024 .... Converting to sparse matrix</code></pre>
+<pre><code>## Wed Dec 11 17:06:57 2024 .... Generating UMAP</code></pre>
+<pre><code>## Wed Dec 11 17:07:02 2024 .... Estimating contamination</code></pre>
+<pre><code>## Wed Dec 11 17:07:03 2024 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
+<pre><code>## Wed Dec 11 17:07:03 2024 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
+<pre><code>## Wed Dec 11 17:07:03 2024 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
+<pre><code>## Wed Dec 11 17:07:04 2024 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
+<pre><code>## Wed Dec 11 17:07:04 2024 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
+<pre><code>## Wed Dec 11 17:07:04 2024 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
+<pre><code>## Wed Dec 11 17:07:04 2024 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
+<pre><code>## Wed Dec 11 17:07:05 2024 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
+<pre><code>## Wed Dec 11 17:07:05 2024 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
+<pre><code>## Wed Dec 11 17:07:05 2024 .. Calculating final decontaminated matrix</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Completed DecontX. Total time: 7.631166 secs</code></pre>
+<pre><code>## Completed DecontX. Total time: 7.943764 secs</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## 0.001336 0.040294 0.065590 0.095857 0.113042 0.810218</code></pre>
@@ -383,20 +383,20 @@ if users wish to skip this step take the ‘seurat_obj_rm_empty’ object and pr
 ## Maximum modularity in 10 random starts: 0.8177
 ## Number of communities: 8
 ## Elapsed time: 0 seconds</code></pre>
-<pre><code>## 19:44:01 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>## 19:44:01 Read 339 rows and found 20 numeric columns</code></pre>
-<pre><code>## 19:44:01 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>## 19:44:01 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 17:07:06 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 17:07:06 Read 339 rows and found 20 numeric columns</code></pre>
+<pre><code>## 17:07:06 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 17:07:06 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>## **************************************************|
-## 19:44:01 Writing NN index file to temp file /tmp/RtmpHn6FSX/file1b55b1b67d9e
-## 19:44:01 Searching Annoy index using 1 thread, search_k = 3000
-## 19:44:01 Annoy recall = 100%
-## 19:44:02 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-## 19:44:04 Initializing from normalized Laplacian + noise (using RSpectra)
-## 19:44:04 Commencing optimization for 500 epochs, with 11376 positive edges
-## 19:44:05 Optimization finished</code></pre>
+## 17:07:06 Writing NN index file to temp file /tmp/Rtmp8EdkU0/file14d802962f794
+## 17:07:06 Searching Annoy index using 1 thread, search_k = 3000
+## 17:07:07 Annoy recall = 100%
+## 17:07:08 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 17:07:09 Initializing from normalized Laplacian + noise (using RSpectra)
+## 17:07:09 Commencing optimization for 500 epochs, with 11376 positive edges
+## 17:07:11 Optimization finished</code></pre>
 <pre><code>## Making plots</code></pre>
 <p><img src="bookdownproj_files/figure-html/decontX-1.png" width="672" /></p>
 <pre><code>## Saving seurat obj
@@ -428,13 +428,15 @@ First we will determine what our filtering criteria should be using some basic Q
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-1" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
 <span id="cb48-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results;
+## utilizing &quot;counts&quot; layer instead.</code></pre>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb50-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-2.png" width="672" /></p>
 <p>Based on these QC plots we will filter the data with the following values listed in the bellow code chunk.
 QC paramaters might vary based on your own data so please make sure you filter your data accordingly.
 Here we will also remove doublets - droplets that contain two or more cells - using the package ‘<a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder">doubletfinder</a>’.</p>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results;
+## utilizing &quot;counts&quot; layer instead.</code></pre>
 <p><img src="bookdownproj_files/figure-html/plot-1.png" width="672" /></p>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
@@ -679,60 +681,7 @@ Here we will also remove doublets - droplets that contain two or more cells - us
 ## [1] &quot;Computing pANN...&quot;
 ## [1] &quot;Classifying doublets..&quot;</code></pre>
 <p><img src="bookdownproj_files/figure-html/plot-3.png" width="672" /><img src="bookdownproj_files/figure-html/plot-4.png" width="672" /><img src="bookdownproj_files/figure-html/plot-5.png" width="672" /><img src="bookdownproj_files/figure-html/plot-6.png" width="672" /></p>
-<p>Now that we have filtered the object to ensure we retain high quality data we are going to add in the isoform level information. so lets see if we have a live update</p>
-
-</div>
-<div id="add-isoform-counts-to-seurat-object" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Add isoform counts to Seurat object<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#add-isoform-counts-to-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Now that we have 309 high-quality cells for our downstream analysis, let’s incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We’ll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.</p>
-<pre><code>## Processed sample: oarfish 
-## Output saved to: ./output_files/counts//gene_symbol_oarfish_counts.csv</code></pre>
-<p><img src="bookdownproj_files/figure-html/process_oarfish_file-1.png" width="672" /></p>
-<p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
-<p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
-<pre><code>## An object of class Seurat 
-## 93557 features across 309 samples within 3 assays 
-## Active assay: RNA (14906 features, 2000 variable features)
-##  3 layers present: counts, data, scale.data
-##  2 other assays present: joined, iso
-##  4 dimensional reductions calculated: pca, umap, pca_iso, umap_iso</code></pre>
-<p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
-<p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
-<p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations, found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
-<p>We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
-<p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
+<p>Now that we have filtered the object to ensure we retain high quality data we are going to add in the isoform level information.</p>
 
 </div>
 </div>
@@ -741,8 +690,8 @@ Here we will also remove doublets - droplets that contain two or more cells - us
           </div>
         </div>
       </div>
-<a href="introduction.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="setup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="add-isoform-counts-to-seurat-object.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -773,7 +722,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/02-Cleaning-the-data-and-making-a-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/03-Cleaning-the-data-and-making-a-Seurat-object.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -781,7 +730,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/02-Cleaning-the-data-and-making-a-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/03-Cleaning-the-data-and-making-a-Seurat-object.Rmd",
 "text": null
 },
 "download": null,
