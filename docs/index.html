@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Adding Isoform data to your object</title>
-  <meta name="description" content="Adding Isoform data to your object" />
+  <title>Adding Isoform data to your objects</title>
+  <meta name="description" content="Adding Isoform data to your objects" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Adding Isoform data to your object" />
+  <meta property="og:title" content="Adding Isoform data to your objects" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Adding Isoform data to your object" />
+  <meta name="twitter:title" content="Adding Isoform data to your objects" />
   
   
   
@@ -154,6 +154,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.2</b> Standard gene QC to remove low quality cells</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a></li>
+<li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> Finding differentially expressed genes and isoforms</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html"><i class="fa fa-check"></i><b>6</b> Citations and Session info</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#citations"><i class="fa fa-check"></i><b>6.1</b> Citations</a></li>
+<li class="chapter" data-level="6.2" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#session-info"><i class="fa fa-check"></i><b>6.2</b> Session info</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -165,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your object</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your objects</a>
           </h1>
         </div>
 
@@ -174,17 +184,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">Adding Isoform data to your object</h1>
+<h1 class="title">Adding Isoform data to your objects</h1>
 <p class="author"><em>Sefi Prawer</em></p>
 <p class="date"><em>2024-12-11</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<hr />
 <p>Welcome to the FLAMES single sample tutorial!</p>
 <p>In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES, to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.</p>
 <p>This tutorial assumes that have;</p>
 <p>Run the sc_long_pipeline (to process a single sample) and have set your config file with these parameters set to TRUE</p>
-<p>“bambu_isoform_identification”: [true] “oarfish_quantification”: [true] And</p>
+<p>“bambu_isoform_identification”: [true]</p>
+<p>“oarfish_quantification”: [true] And</p>
 <p>That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: … [placeholder]</p>
 <p>If you wish to run through the tutorial using the data provided in the ‘data’ folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command wget <a href="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz" class="uri">https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz</a></p>
 <p>Much of the workflow will remain the same if you decide to use other tools for quantification or isoform discovery, which FLAMES does support, but these are the tools that in our hands perform the best and what we would recommend using at this stage.</p>

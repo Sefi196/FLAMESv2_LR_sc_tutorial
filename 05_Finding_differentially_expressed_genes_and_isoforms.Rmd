@@ -1,0 +1,30 @@
+# Finding differentially expressed genes and isoforms {style="gray"}
+
+---
+
+## Differentially expressed genes by cluster identity
+
+first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology
+
+```{r perform_marker_gene_analysis, echo=TRUE, message=FALSE, warning=FALSE}
+#Find markers for all clusters using the "RNA" and "iso" assay
+
+all_markers_gene <- FindAllMarkers(seu_obj, assay = "RNA", do.print = TRUE,
+                                       logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% filter(p_val_adj < 0.05)
+
+all_markers_iso <- FindAllMarkers(seu_obj, assay = "iso", do.print = TRUE,
+                                      logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% filter(p_val_adj < 0.05)
+
+#save the list of DE genes 
+write.csv(all_markers_gene, "./output_files/DE/all_markers_one_gene.csv")
+write.csv(all_markers_iso, "./output_files/DE/all_markers_one_iso.csv")
+
+```
+
+## Identifying cell types 
+
+plotting trajectories
+
+Finding isofrms of interest
+
+plotting with ditoplot

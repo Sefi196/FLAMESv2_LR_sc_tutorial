@@ -1,0 +1,10 @@
+# Citations and Session info
+
+## Citations
+
+## Session info
+
+```{r setup, include=TRUE, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+sessionInfo()
+```

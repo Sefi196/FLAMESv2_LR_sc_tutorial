@@ -1,17 +1,15 @@
 ---
-title: "Cleaning the data"
-author: "Sefi"
+title: "Removing sources of unwanted noise from the single cell dataset"
+author: "Sefi Prawer"
 date: "`r Sys.Date()`"
 output: html_document
-editor_options: 
-  markdown: 
-    wrap: sentence
 ---
 
 # Removing sources of unwanted noise from the single cell dataset
 
-Now we will do some initial prepossessing of single cell data to ensure we have some high quality data.
-This will involve 3 main steps
+---
+
+Now we will do some initial prepossessing of single cell data to ensure we have some high quality data. This will involve 3 main steps
 
 1.  Removing empty droplets - droplets that do not contain true cells.
 
@@ -21,10 +19,7 @@ This will involve 3 main steps
 
 ### Empty droplets
 
-This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis.
-In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software.
-However, FLAMES does not perform this step automatically, so it must be done manually.
-The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.
+This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.
 
 ```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE, echo=FALSE}
 
@@ -180,11 +175,7 @@ perform_empty_drops_analysis(
 
 ## Removing ambient RNA contamination
 
-Now we will remove ambient RNA contamination using decontX (or SoupX).
-This step is optional, and it's up to the user to decide whether it's necessary.
-In this case, the barcode rank plot ([found here...]{.underline}) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset.
-However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern.
-if users wish to skip this step take the 'seurat_obj_rm_empty' object and proceed to standard gene QC step.
+Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it's up to the user to decide whether it's necessary. In this case, the barcode rank plot ([found here...]{.underline}) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the 'seurat_obj_rm_empty' object and proceed to standard gene QC step.
 
 ```{r decontX}
 # Function to run decontX on a single Seurat object
@@ -240,7 +231,7 @@ run_decontX <- function(seurat_obj_path, background_counts_path, sample_id) {
     object = seurat_obj, 
     features = "decontX_contamination", 
     reduction = "umap"
-  ) + labs(title = "UMAP Colored by decontX_contamination")
+  ) + labs(title = "UMAP Colored by decontX contamination value")
   
   DefaultAssay(seurat_obj) <- "decontaminated"
   
@@ -267,7 +258,7 @@ run_decontX <- function(seurat_obj_path, background_counts_path, sample_id) {
   ) + labs(title = "UMAP with Corrected Clusters")
   
   # Combine plots
-  combined_umap <- cowplot::plot_grid(clusters_umap_orig, contamination_umap, clusters_umap, ncol = 3)
+  combined_umap <- cowplot::plot_grid(clusters_umap_orig, contamination_umap, clusters_umap, ncol = 2)
   cat("Making plots\n")
   # Save the combined plot as a PDF
   #pdf(file = paste0(sample_id, "_decontx_plots.pdf"), width = 18, height = 6)
@@ -299,8 +290,7 @@ deconx_results <- run_decontX("./output_files/empty_drops/removed_empty_Day55.rd
 
 ## Standard gene QC to remove low quality cells
 
-Now that we have removed empty drops and ambient RNA we will perform standard QC as described in the Seurat tutorial ([found here](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)).
-First we will determine what our filtering criteria should be using some basic QC plots.
+Now that we have removed empty drops and ambient RNA we will perform standard QC as described in the Seurat tutorial ([found here](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)). First we will determine what our filtering criteria should be using some basic QC plots.
 
 ```{r gene QC, echo=TRUE, paged.print=TRUE}
 # standard QC filtering and also remove doublets 
@@ -326,9 +316,7 @@ p1 +  plot_annotation(title = "QC plots (gene level) BEFORE Filtering")
 
 ```
 
-Based on these QC plots we will filter the data with the following values listed in the bellow code chunk.
-QC paramaters might vary based on your own data so please make sure you filter your data accordingly.
-Here we will also remove doublets - droplets that contain two or more cells - using the package '[doubletfinder](https://github.com/chris-mcginnis-ucsf/DoubletFinder)'.
+Based on these QC plots we will filter the data with the following values listed in the bellow code chunk. QC paramaters might vary based on your own data so please make sure you filter your data accordingly. Here we will also remove doublets - droplets that contain two or more cells - using the package '[doubletfinder](https://github.com/chris-mcginnis-ucsf/DoubletFinder)'.
 
 ```{r plot, echo=FALSE, message=FALSE, paged.print=TRUE}
 # Filter cells based on feature and count thresholds

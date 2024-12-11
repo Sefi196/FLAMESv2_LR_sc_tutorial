@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects</title>
-  <meta name="description" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <title>Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects</title>
+  <meta name="description" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <meta property="og:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <meta name="twitter:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
-<link rel="next" href="finding-differentially-expressed-genes-and-isoforms.html"/>
+<link rel="prev" href="add-isoform-counts-to-seurat-object.html"/>
+<link rel="next" href="citations-and-session-info.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -183,81 +183,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="add-isoform-counts-to-seurat-object" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Add isoform counts to Seurat object<a href="add-isoform-counts-to-seurat-object.html#add-isoform-counts-to-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="finding-differentially-expressed-genes-and-isoforms" class="section level1 hasAnchor" number="5" style="gray">
+<h1><span class="header-section-number">Chapter 5</span> Finding differentially expressed genes and isoforms<a href="finding-differentially-expressed-genes-and-isoforms.html#finding-differentially-expressed-genes-and-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
-<p>Now that we have 309 high-quality cells for our downstream analysis, let’s incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We’ll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.</p>
-<pre><code>## Processed sample: oarfish 
-## Output saved to: ./output_files/counts//gene_symbol_oarfish_counts.csv</code></pre>
-<p><img src="bookdownproj_files/figure-html/process_oarfish_file-1.png" width="672" /></p>
-<p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
-<p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
-<pre><code>## An object of class Seurat 
-## 93557 features across 309 samples within 3 assays 
-## Active assay: RNA (14906 features, 2000 variable features)
-##  3 layers present: counts, data, scale.data
-##  2 other assays present: joined, iso
-##  4 dimensional reductions calculated: pca, umap, pca_iso, umap_iso</code></pre>
-<p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
-<p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
-<p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
-<p>We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
-<p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
+<div id="differentially-expressed-genes-by-cluster-identity" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Differentially expressed genes by cluster identity<a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find markers for all clusters using the &quot;RNA&quot; and &quot;iso&quot; assay</span></span>
+<span id="cb100-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-3" aria-hidden="true" tabindex="-1"></a>all_markers_gene <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb100-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb100-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-6" aria-hidden="true" tabindex="-1"></a>all_markers_iso <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb100-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-7" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb100-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-9" aria-hidden="true" tabindex="-1"></a><span class="co">#save the list of DE genes </span></span>
+<span id="cb100-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_gene, <span class="st">&quot;./output_files/DE/all_markers_one_gene.csv&quot;</span>)</span>
+<span id="cb100-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_iso, <span class="st">&quot;./output_files/DE/all_markers_one_iso.csv&quot;</span>)</span></code></pre></div>
+</div>
+<div id="identifying-cell-types" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Identifying cell types<a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>plotting trajectories</p>
+<p>Finding isofrms of interest</p>
+<p>plotting with ditoplot</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="add-isoform-counts-to-seurat-object.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="citations-and-session-info.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -288,7 +246,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/05_Finding_differentially_expressed_genes_and_isoforms.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -296,7 +254,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/05_Finding_differentially_expressed_genes_and_isoforms.Rmd",
 "text": null
 },
 "download": null,

@@ -10,9 +10,11 @@ editor_options:
 
 # Setup
 
+---
+
 ## load in required packages
 
-```{r load_libs, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r load_libs, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
 #install packages if required. Note some packages require installation via bioconductor. See installation instruction for each package to ensure installation is successful. 
 library(rtracklayer)
 library(Seurat)

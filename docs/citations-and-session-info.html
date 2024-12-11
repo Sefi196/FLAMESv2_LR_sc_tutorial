@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects</title>
-  <meta name="description" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <title>Chapter 6 Citations and Session info | Adding Isoform data to your objects</title>
+  <meta name="description" content="Chapter 6 Citations and Session info | Adding Isoform data to your objects" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <meta property="og:title" content="Chapter 6 Citations and Session info | Adding Isoform data to your objects" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Add isoform counts to Seurat object | Adding Isoform data to your objects" />
+  <meta name="twitter:title" content="Chapter 6 Citations and Session info | Adding Isoform data to your objects" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
-<link rel="next" href="finding-differentially-expressed-genes-and-isoforms.html"/>
+<link rel="prev" href="finding-differentially-expressed-genes-and-isoforms.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -183,81 +183,119 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="add-isoform-counts-to-seurat-object" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Add isoform counts to Seurat object<a href="add-isoform-counts-to-seurat-object.html#add-isoform-counts-to-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<hr />
-<p>Now that we have 309 high-quality cells for our downstream analysis, let’s incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We’ll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.</p>
-<pre><code>## Processed sample: oarfish 
-## Output saved to: ./output_files/counts//gene_symbol_oarfish_counts.csv</code></pre>
-<p><img src="bookdownproj_files/figure-html/process_oarfish_file-1.png" width="672" /></p>
-<p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
-<p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
-<pre><code>## An object of class Seurat 
-## 93557 features across 309 samples within 3 assays 
-## Active assay: RNA (14906 features, 2000 variable features)
-##  3 layers present: counts, data, scale.data
-##  2 other assays present: joined, iso
-##  4 dimensional reductions calculated: pca, umap, pca_iso, umap_iso</code></pre>
-<p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
-<p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
-<p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found
-## in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations,
-## found in &#39;iso&#39; assay instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
-<p>We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
-<p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
+<div id="citations-and-session-info" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Citations and Session info<a href="citations-and-session-info.html#citations-and-session-info" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="citations" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Citations<a href="citations-and-session-info.html#citations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="session-info" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Session info<a href="citations-and-session-info.html#session-info" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<pre><code>## R version 4.4.0 (2024-04-24)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Red Hat Enterprise Linux 9.4 (Plow)
+## 
+## Matrix products: default
+## BLAS/LAPACK: FlexiBLAS OPENBLAS;  LAPACK version 3.10.1
+## 
+## locale:
+##  [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C               LC_TIME=en_AU.UTF-8       
+##  [4] LC_COLLATE=en_AU.UTF-8     LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+##  [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                  LC_ADDRESS=C              
+## [10] LC_TELEPHONE=C             LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: Australia/Melbourne
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+##  [1] parallel  grid      stats4    stats     graphics  grDevices utils     datasets 
+##  [9] methods   base     
+## 
+## other attached packages:
+##  [1] ROCR_1.0-11                 KernSmooth_2.23-24         
+##  [3] fields_16.2                 viridisLite_0.4.2          
+##  [5] spam_2.10-0                 lubridate_1.9.3            
+##  [7] forcats_1.0.0               dplyr_1.1.4                
+##  [9] purrr_1.0.2                 readr_2.1.5                
+## [11] tidyr_1.3.1                 tibble_3.2.1               
+## [13] ggplot2_3.5.1               tidyverse_2.0.0            
+## [15] patchwork_1.3.0             cowplot_1.1.3              
+## [17] stringr_1.5.1               DoubletFinder_2.0.4        
+## [19] celda_1.20.0                Matrix_1.7-1               
+## [21] BiocParallel_1.40.0         data.table_1.16.2          
+## [23] gridExtra_2.3               DropletUtils_1.26.0        
+## [25] SingleCellExperiment_1.28.0 SummarizedExperiment_1.36.0
+## [27] Biobase_2.66.0              MatrixGenerics_1.18.0      
+## [29] matrixStats_1.4.1           Seurat_5.1.0               
+## [31] SeuratObject_5.0.2          sp_2.1-4                   
+## [33] rtracklayer_1.64.0          GenomicRanges_1.58.0       
+## [35] GenomeInfoDb_1.42.0         IRanges_2.40.0             
+## [37] S4Vectors_0.44.0            BiocGenerics_0.52.0        
+## 
+## loaded via a namespace (and not attached):
+##   [1] spatstat.sparse_3.1-0     bitops_1.0-9              httr_1.4.7               
+##   [4] RColorBrewer_1.1-3        doParallel_1.0.17         tools_4.4.0              
+##   [7] sctransform_0.4.1         utf8_1.2.4                R6_2.5.1                 
+##  [10] HDF5Array_1.34.0          mgcv_1.9-1                lazyeval_0.2.2           
+##  [13] uwot_0.2.2                rhdf5filters_1.18.0       withr_3.0.2              
+##  [16] progressr_0.15.0          cli_3.6.3                 spatstat.explore_3.3-1   
+##  [19] fastDummies_1.7.4         enrichR_3.2               labeling_0.4.3           
+##  [22] sass_0.4.9                spatstat.data_3.1-2       ggridges_0.5.6           
+##  [25] pbapply_1.7-2             Rsamtools_2.20.0          R.utils_2.12.3           
+##  [28] scater_1.34.0             parallelly_1.38.0         WriteXLS_6.7.0           
+##  [31] maps_3.4.2                limma_3.62.1              rstudioapi_0.15.0        
+##  [34] FNN_1.1.4.1               generics_0.1.3            BiocIO_1.16.0            
+##  [37] combinat_0.0-8            ica_1.0-3                 spatstat.random_3.3-1    
+##  [40] ggbeeswarm_0.7.2          fansi_1.0.6               abind_1.4-8              
+##  [43] R.methodsS3_1.8.2         lifecycle_1.0.4           yaml_2.3.10              
+##  [46] edgeR_4.4.0               rhdf5_2.50.0              SparseArray_1.6.0        
+##  [49] Rtsne_0.17                promises_1.3.0            dqrng_0.4.1              
+##  [52] crayon_1.5.3              miniUI_0.1.1.1            lattice_0.22-6           
+##  [55] beachmat_2.22.0           pillar_1.9.0              knitr_1.48               
+##  [58] rjson_0.2.23              future.apply_1.11.3       codetools_0.2-20         
+##  [61] leiden_0.4.3.1            glue_1.8.0                spatstat.univar_3.0-0    
+##  [64] vctrs_0.6.5               png_0.1-8                 gtable_0.3.6             
+##  [67] cachem_1.1.0              xfun_0.49                 S4Arrays_1.6.0           
+##  [70] mime_0.12                 RcppEigen_0.3.4.0.2       survival_3.7-0           
+##  [73] iterators_1.0.14          statmod_1.5.0             fitdistrplus_1.2-1       
+##  [76] nlme_3.1-166              RcppAnnoy_0.0.22          bslib_0.8.0              
+##  [79] irlba_2.3.5.1             vipor_0.4.7               colorspace_2.1-1         
+##  [82] ggrastr_1.0.2             tidyselect_1.2.1          compiler_4.4.0           
+##  [85] curl_6.0.0                BiocNeighbors_2.0.0       DelayedArray_0.32.0      
+##  [88] plotly_4.10.4             bookdown_0.41             scales_1.3.0             
+##  [91] lmtest_0.9-40             digest_0.6.37             goftest_1.2-3            
+##  [94] presto_1.0.0              spatstat.utils_3.1-1      rmarkdown_2.29           
+##  [97] XVector_0.46.0            htmltools_0.5.8.1         pkgconfig_2.0.3          
+## [100] sparseMatrixStats_1.18.0  highr_0.11                fastmap_1.2.0            
+## [103] rlang_1.1.4               htmlwidgets_1.6.4         UCSC.utils_1.2.0         
+## [106] shiny_1.9.1               DelayedMatrixStats_1.28.0 farver_2.1.2             
+## [109] jquerylib_0.1.4           zoo_1.8-12                jsonlite_1.8.9           
+## [112] R.oo_1.27.0               BiocSingular_1.22.0       RCurl_1.98-1.16          
+## [115] magrittr_2.0.3            scuttle_1.16.0            GenomeInfoDbData_1.2.13  
+## [118] dotCall64_1.2             Rhdf5lib_1.28.0           munsell_0.5.1            
+## [121] Rcpp_1.0.13-1             viridis_0.6.5             reticulate_1.39.0        
+## [124] stringi_1.8.4             MCMCprecision_0.4.0       zlibbioc_1.52.0          
+## [127] MASS_7.3-61               plyr_1.8.9                listenv_0.9.1            
+## [130] ggrepel_0.9.6             deldir_2.0-4              Biostrings_2.72.1        
+## [133] splines_4.4.0             tensor_1.5                hms_1.1.3                
+## [136] locfit_1.5-9.10           igraph_2.1.1              spatstat.geom_3.3-2      
+## [139] RcppHNSW_0.6.0            ScaledMatrix_1.14.0       reshape2_1.4.4           
+## [142] servr_0.32                XML_3.99-0.17             evaluate_1.0.1           
+## [145] tzdb_0.4.0                foreach_1.5.2             httpuv_1.6.15            
+## [148] RANN_2.6.2                polyclip_1.10-7           future_1.34.0            
+## [151] scattermore_1.2           rsvd_1.0.5                xtable_1.8-4             
+## [154] restfulr_0.0.15           RSpectra_0.16-2           later_1.3.2              
+## [157] beeswarm_0.4.0            GenomicAlignments_1.40.0  cluster_2.1.6            
+## [160] timechange_0.3.0          globals_0.16.3</code></pre>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -288,7 +326,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/06_Citations_and_Session_info.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -296,7 +334,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/06_Citations_and_Session_info.Rmd",
 "text": null
 },
 "download": null,

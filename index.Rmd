@@ -1,11 +1,19 @@
 ---
-title: "LR tutorial test"
+title: "FLAMES Single-Cell RNA-seq Tutorial"
 author: "Sefi Prawer"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
+output: bookdown::gitbook
+book_filename: "bookdownproj"
+output_dir: docs
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
 ---
 
 # Introduction
+
+---
 
 Welcome to the FLAMES single sample tutorial!
 
@@ -15,7 +23,9 @@ This tutorial assumes that have;
 
 Run the sc_long_pipeline (to process a single sample) and have set your config file with these parameters set to TRUE
 
-"bambu_isoform_identification": [true] "oarfish_quantification": [true] And
+"bambu_isoform_identification": [true]
+
+"oarfish_quantification": [true] And
 
 That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
 
