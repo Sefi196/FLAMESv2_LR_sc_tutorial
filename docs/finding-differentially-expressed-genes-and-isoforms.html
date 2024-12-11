@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects</title>
-  <meta name="description" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
+  <title>Chapter 5 Finding differentially expressed genes and isoforms | Finding differentially expressed genes and isoforms</title>
+  <meta name="description" content="Chapter 5 Finding differentially expressed genes and isoforms | Finding differentially expressed genes and isoforms" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
+  <meta property="og:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Finding differentially expressed genes and isoforms" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Adding Isoform data to your objects" />
+  <meta name="twitter:title" content="Chapter 5 Finding differentially expressed genes and isoforms | Finding differentially expressed genes and isoforms" />
   
   
   
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your objects</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Finding differentially expressed genes and isoforms</a>
           </h1>
         </div>
 
@@ -189,17 +189,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="differentially-expressed-genes-by-cluster-identity" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Differentially expressed genes by cluster identity<a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find markers for all clusters using the &quot;RNA&quot; and &quot;iso&quot; assay</span></span>
-<span id="cb100-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-3" aria-hidden="true" tabindex="-1"></a>all_markers_gene <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb100-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
-<span id="cb100-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-6" aria-hidden="true" tabindex="-1"></a>all_markers_iso <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb100-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-7" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
-<span id="cb100-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb100-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-9" aria-hidden="true" tabindex="-1"></a><span class="co">#save the list of DE genes </span></span>
-<span id="cb100-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_gene, <span class="st">&quot;./output_files/DE/all_markers_one_gene.csv&quot;</span>)</span>
-<span id="cb100-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_iso, <span class="st">&quot;./output_files/DE/all_markers_one_iso.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find markers for all clusters using the &quot;RNA&quot; and &quot;iso&quot; assay</span></span>
+<span id="cb1-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-3" aria-hidden="true" tabindex="-1"></a>all_markers_gene <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-4" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-6" aria-hidden="true" tabindex="-1"></a>all_markers_iso <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-7" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.20</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#save the list of DE genes </span></span>
+<span id="cb1-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_gene, <span class="st">&quot;./output_files/DE/all_markers_one_gene.csv&quot;</span>)</span>
+<span id="cb1-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_iso, <span class="st">&quot;./output_files/DE/all_markers_one_iso.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="identifying-cell-types" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Identifying cell types<a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>

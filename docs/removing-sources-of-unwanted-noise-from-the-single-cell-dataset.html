@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your objects</title>
-  <meta name="description" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your objects" />
+  <title>Chapter 3 Removing sources of unwanted noise from the single cell dataset | Citations and Session info</title>
+  <meta name="description" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Citations and Session info" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your objects" />
+  <meta property="og:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Citations and Session info" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Adding Isoform data to your objects" />
+  <meta name="twitter:title" content="Chapter 3 Removing sources of unwanted noise from the single cell dataset | Citations and Session info" />
   
   
   
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Adding Isoform data to your objects</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Citations and Session info</a>
           </h1>
         </div>
 
@@ -195,6 +195,153 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="empty-droplets" class="section level3 hasAnchor" number="3.0.1">
 <h3><span class="header-section-number">3.0.1</span> Empty droplets<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">### notes: This fucnion should be refactored and cleaed up. Its very long and complex. </span></span>
+<span id="cb1-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-2" aria-hidden="true" tabindex="-1"></a>perform_empty_drops_analysis <span class="ot">&lt;-</span> <span class="cf">function</span>(output_path, gene_count_file, empty_drops_file, output_seurat_file, <span class="at">fdr_threshold =</span> <span class="fl">0.001</span>, <span class="at">lower =</span> <span class="dv">100</span>) {</span>
+<span id="cb1-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load required libraries</span></span>
+<span id="cb1-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read in data</span></span>
+<span id="cb1-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-5" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(gene_count_file, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-6" aria-hidden="true" tabindex="-1"></a>  df_emptydrops <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(empty_drops_file, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb1-7"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-8"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Combine the dataframes by row names</span></span>
+<span id="cb1-9"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-9" aria-hidden="true" tabindex="-1"></a>  combined_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(df, df_emptydrops, <span class="at">by =</span> <span class="st">&quot;row.names&quot;</span>, <span class="at">all =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(combined_df) <span class="ot">&lt;-</span> combined_df[, <span class="dv">1</span>]</span>
+<span id="cb1-11"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-11" aria-hidden="true" tabindex="-1"></a>  combined_df[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-12"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-12" aria-hidden="true" tabindex="-1"></a>  combined_df[<span class="fu">is.na</span>(combined_df)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb1-13"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-14"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform standard pre-processing before empty drops analysis</span></span>
+<span id="cb1-15"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> df, <span class="at">project =</span> <span class="st">&quot;Day_55&quot;</span>, <span class="at">min.features =</span> <span class="dv">20</span>)</span>
+<span id="cb1-16"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-16" aria-hidden="true" tabindex="-1"></a>  seurat_obj[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_obj, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
+<span id="cb1-17"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">VlnPlot</span>(seurat_obj, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb1-18"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#seurat_obj &lt;- subset(seurat_obj, subset = nFeature_RNA &gt; 10 &amp; nFeature_RNA &lt; 100000 &amp; percent.mt &lt; 100)</span></span>
+<span id="cb1-19"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(seurat_obj, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>, <span class="at">scale.factor =</span> <span class="dv">10000</span>)</span>
+<span id="cb1-20"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-20" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(seurat_obj, <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb1-21"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-21" aria-hidden="true" tabindex="-1"></a>  all.genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(seurat_obj)</span>
+<span id="cb1-22"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-22" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(seurat_obj, <span class="at">features =</span> all.genes)</span>
+<span id="cb1-23"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-23" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(seurat_obj, <span class="at">features =</span> <span class="fu">VariableFeatures</span>(<span class="at">object =</span> seurat_obj))</span>
+<span id="cb1-24"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ElbowPlot</span>(seurat_obj)</span>
+<span id="cb1-25"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-25" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(seurat_obj, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb1-26"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-26" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(seurat_obj, <span class="at">resolution =</span> <span class="fl">0.5</span>)</span>
+<span id="cb1-27"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-27" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(seurat_obj, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb1-28"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DimPlot</span>(seurat_obj, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span>
+<span id="cb1-29"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-30"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define function to make dgCMatrix from combined counts</span></span>
+<span id="cb1-31"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-31" aria-hidden="true" tabindex="-1"></a>  makedgcmatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(count.matrix) {</span>
+<span id="cb1-32"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-32" aria-hidden="true" tabindex="-1"></a>    seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> count.matrix, <span class="at">project =</span> <span class="st">&quot;singlecell&quot;</span>)</span>
+<span id="cb1-33"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">$</span>counts)</span>
+<span id="cb1-34"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-35"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-36"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Empty Drops Analysis</span></span>
+<span id="cb1-37"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-37" aria-hidden="true" tabindex="-1"></a>  combined_df[] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(combined_df, <span class="cf">function</span>(x) <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(x)))</span>
+<span id="cb1-38"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-38" aria-hidden="true" tabindex="-1"></a>  outs.ddcmatrix <span class="ot">&lt;-</span> <span class="fu">makedgcmatrix</span>(combined_df)[[<span class="dv">1</span>]]</span>
+<span id="cb1-39"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-39" aria-hidden="true" tabindex="-1"></a>  br.out <span class="ot">&lt;-</span> DropletUtils<span class="sc">::</span><span class="fu">barcodeRanks</span>(outs.ddcmatrix)</span>
+<span id="cb1-40"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-41"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-41" aria-hidden="true" tabindex="-1"></a>  e.out <span class="ot">&lt;-</span> <span class="fu">emptyDrops</span>(outs.ddcmatrix, <span class="at">lower =</span> lower, <span class="at">niters =</span> <span class="dv">10000</span>, <span class="at">test.ambient =</span> <span class="cn">TRUE</span>, <span class="at">BPPARAM =</span> <span class="fu">SerialParam</span>())</span>
+<span id="cb1-42"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-42" aria-hidden="true" tabindex="-1"></a>  is.cell <span class="ot">&lt;-</span> e.out<span class="sc">$</span>FDR <span class="sc">&lt;</span> fdr_threshold</span>
+<span id="cb1-43"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-44"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a dataframe with FDR of TRUE cells</span></span>
+<span id="cb1-45"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-45" aria-hidden="true" tabindex="-1"></a>  is.true.cell_CR <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(e.out<span class="sc">@</span>listData[[<span class="st">&quot;FDR&quot;</span>]], e.out<span class="sc">@</span>rownames)</span>
+<span id="cb1-46"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-46" aria-hidden="true" tabindex="-1"></a>  is.true.cell_CR <span class="ot">&lt;-</span> is.true.cell_CR <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is.true.cell_CR<span class="sc">$</span><span class="st">`</span><span class="at">e.out@listData[[&quot;FDR&quot;]]</span><span class="st">`</span> <span class="sc">&lt;=</span> fdr_threshold)</span>
+<span id="cb1-47"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-47" aria-hidden="true" tabindex="-1"></a>  is.true.cell_CR <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(is.true.cell_CR, <span class="st">&quot;cell_id&quot;</span>)</span>
+<span id="cb1-48"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-49"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Function for retrieving the Seurat cells and cluster in dataframe</span></span>
+<span id="cb1-50"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-50" aria-hidden="true" tabindex="-1"></a>  overlap_true_cell <span class="ot">&lt;-</span> <span class="cf">function</span>(seurat_object) {</span>
+<span id="cb1-51"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-51" aria-hidden="true" tabindex="-1"></a>    seurat_cluster.df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(seurat_object<span class="sc">$</span>seurat_clusters)</span>
+<span id="cb1-52"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-52" aria-hidden="true" tabindex="-1"></a>    seurat_cluster.df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(seurat_cluster.df, <span class="st">&quot;cell_id&quot;</span>)</span>
+<span id="cb1-53"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-53" aria-hidden="true" tabindex="-1"></a>    seurat_cluster.df</span>
+<span id="cb1-54"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-54" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-55"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-56"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Obtain cluster dataframe from Seurat object</span></span>
+<span id="cb1-57"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-57" aria-hidden="true" tabindex="-1"></a>  overlap_CR <span class="ot">&lt;-</span> <span class="fu">overlap_true_cell</span>(seurat_obj)</span>
+<span id="cb1-58"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-58" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-59"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check overlaps between Seurat object and true cells</span></span>
+<span id="cb1-60"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>(overlap_CR<span class="sc">$</span>cell_id <span class="sc">%in%</span> is.true.cell_CR<span class="sc">$</span>cell_id)</span>
+<span id="cb1-61"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-62"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-62" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Function to add metadata to Seurat object</span></span>
+<span id="cb1-63"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-63" aria-hidden="true" tabindex="-1"></a>  True.cells <span class="ot">&lt;-</span> <span class="cf">function</span>(e.out) {</span>
+<span id="cb1-64"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-64" aria-hidden="true" tabindex="-1"></a>    cells <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(e.out<span class="sc">@</span>rownames)</span>
+<span id="cb1-65"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-65" aria-hidden="true" tabindex="-1"></a>    fdr <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(e.out<span class="sc">$</span>FDR)</span>
+<span id="cb1-66"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-66" aria-hidden="true" tabindex="-1"></a>    T.F.cells <span class="ot">&lt;-</span> <span class="fu">cbind</span>(cells, fdr)</span>
+<span id="cb1-67"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-67" aria-hidden="true" tabindex="-1"></a>    T.F.cells <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(T.F.cells[,<span class="sc">-</span><span class="dv">1</span>], <span class="at">row.names =</span> T.F.cells[,<span class="dv">1</span>])</span>
+<span id="cb1-68"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setnames</span>(T.F.cells, <span class="fu">c</span>(<span class="st">&#39;FDR&#39;</span>))</span>
+<span id="cb1-69"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-69" aria-hidden="true" tabindex="-1"></a>    T.F.cells <span class="sc">%&gt;%</span></span>
+<span id="cb1-70"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-70" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">FDR =</span> <span class="fu">case_when</span>(FDR <span class="sc">&lt;</span> fdr_threshold <span class="sc">~</span> <span class="st">&quot;Cells&quot;</span>, FDR <span class="sc">&gt;</span> fdr_threshold <span class="sc">~</span> <span class="st">&quot;Empty_drops&quot;</span>))</span>
+<span id="cb1-71"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-71" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-72"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-73"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-73" aria-hidden="true" tabindex="-1"></a>  cells_CR <span class="ot">&lt;-</span> <span class="fu">True.cells</span>(e.out)</span>
+<span id="cb1-74"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-74" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">AddMetaData</span>(seurat_obj, <span class="at">metadata =</span> cells_CR, <span class="at">col.name =</span> <span class="st">&#39;is.cell&#39;</span>)</span>
+<span id="cb1-75"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-75" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-76"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot Empty drops on Gene UMAP</span></span>
+<span id="cb1-77"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a ggplot object</span></span>
+<span id="cb1-78"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-78" aria-hidden="true" tabindex="-1"></a>  rankplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(br.out, <span class="fu">aes</span>(<span class="at">x =</span> rank, <span class="at">y =</span> total)) <span class="sc">+</span></span>
+<span id="cb1-79"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-79" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb1-80"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb1-81"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-81" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb1-82"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Rank&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Total&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-83"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> fitted), <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;solid&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-84"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-84" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">metadata</span>(br.out)<span class="sc">$</span>knee, <span class="at">color =</span> <span class="st">&quot;dodgerblue&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-85"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-85" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">metadata</span>(br.out)<span class="sc">$</span>inflection, <span class="at">color =</span> <span class="st">&quot;forestgreen&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span></span>
+<span id="cb1-86"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-86" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb1-87"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-87" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">&quot;bottomleft&quot;</span></span>
+<span id="cb1-88"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-88" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb1-89"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-89" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">colour =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">linetype =</span> <span class="fu">c</span>(<span class="st">&quot;dashed&quot;</span>, <span class="st">&quot;dashed&quot;</span>)))) <span class="sc">+</span></span>
+<span id="cb1-90"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-90" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="cn">Inf</span>, <span class="at">y =</span> <span class="fu">metadata</span>(br.out)<span class="sc">$</span>knee, <span class="at">label =</span> <span class="st">&quot;knee&quot;</span>, <span class="at">color =</span> <span class="st">&quot;dodgerblue&quot;</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-91"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-91" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="at">x =</span> <span class="cn">Inf</span>, <span class="at">y =</span> <span class="fu">metadata</span>(br.out)<span class="sc">$</span>inflection, <span class="at">label =</span> <span class="st">&quot;inflection&quot;</span>, <span class="at">color =</span> <span class="st">&quot;forestgreen&quot;</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb1-92"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-92" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-93"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-93" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summary table -&gt; may want to add a bunch of other summary metrics </span></span>
+<span id="cb1-94"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-94" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract counts with checks for NULL</span></span>
+<span id="cb1-95"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-95" aria-hidden="true" tabindex="-1"></a>  cell_counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(seurat_obj<span class="sc">@</span>meta.data<span class="sc">$</span>is.cell))</span>
+<span id="cb1-96"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-96" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-97"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-97" aria-hidden="true" tabindex="-1"></a>  count_true_cells <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(cell_counts<span class="sc">$</span>Freq[cell_counts<span class="sc">$</span>Var1 <span class="sc">==</span> <span class="st">&quot;Cells&quot;</span>]) <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb1-98"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-98" aria-hidden="true" tabindex="-1"></a>                             cell_counts<span class="sc">$</span>Freq[cell_counts<span class="sc">$</span>Var1 <span class="sc">==</span> <span class="st">&quot;Cells&quot;</span>], <span class="dv">0</span>)</span>
+<span id="cb1-99"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-99" aria-hidden="true" tabindex="-1"></a>  count_empty_drops <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">length</span>(cell_counts<span class="sc">$</span>Freq[cell_counts<span class="sc">$</span>Var1 <span class="sc">==</span> <span class="st">&quot;Empty_drops&quot;</span>]) <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb1-100"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-100" aria-hidden="true" tabindex="-1"></a>                              cell_counts<span class="sc">$</span>Freq[cell_counts<span class="sc">$</span>Var1 <span class="sc">==</span> <span class="st">&quot;Empty_drops&quot;</span>], <span class="dv">0</span>)</span>
+<span id="cb1-101"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-101" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-102"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-102" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the summary table</span></span>
+<span id="cb1-103"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-103" aria-hidden="true" tabindex="-1"></a>  summary_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-104"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">Description =</span> <span class="fu">c</span>(<span class="st">&#39;fdr&#39;</span>, <span class="st">&#39;lower Counts&#39;</span>, <span class="st">&#39;number of true cells&#39;</span>, <span class="st">&#39;number of empty drops&#39;</span>),</span>
+<span id="cb1-105"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">Value =</span> <span class="fu">c</span>(fdr_threshold, lower, count_true_cells, count_empty_drops)</span>
+<span id="cb1-106"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-106" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-107"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-107" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-108"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-108" aria-hidden="true" tabindex="-1"></a>  summary_grob <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(summary_table, <span class="at">rows =</span> <span class="cn">NULL</span>, <span class="at">cols =</span> <span class="cn">NULL</span>)</span>
+<span id="cb1-109"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-109" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-110"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-110" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the combined plot</span></span>
+<span id="cb1-111"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-111" aria-hidden="true" tabindex="-1"></a>  plot1 <span class="ot">&lt;-</span> <span class="fu">grid.arrange</span>(</span>
+<span id="cb1-112"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-112" aria-hidden="true" tabindex="-1"></a>    rankplot,</span>
+<span id="cb1-113"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">DimPlot</span>(seurat_obj, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">group.by =</span> <span class="st">&#39;is.cell&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb1-114"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-114" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;is.cell&quot;</span>, <span class="at">title =</span> <span class="st">&#39;Seurat Object&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb1-115"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-115" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>)),</span>
+<span id="cb1-116"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">FeaturePlot</span>(seurat_obj, <span class="at">features =</span> <span class="st">&quot;nCount_RNA&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb1-117"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-117" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>)),</span>
+<span id="cb1-118"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-118" aria-hidden="true" tabindex="-1"></a>    <span class="fu">FeaturePlot</span>(seurat_obj, <span class="at">features =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb1-119"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-119" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(<span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;white&quot;</span>)),</span>
+<span id="cb1-120"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-120" aria-hidden="true" tabindex="-1"></a>    summary_grob,</span>
+<span id="cb1-121"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-121" aria-hidden="true" tabindex="-1"></a>    <span class="at">ncol =</span> <span class="dv">2</span>,</span>
+<span id="cb1-122"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-122" aria-hidden="true" tabindex="-1"></a>    <span class="at">top =</span> <span class="fu">textGrob</span>(<span class="st">&#39;Empty drops vs real cells&#39;</span>)</span>
+<span id="cb1-123"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-123" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-124"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-124" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-125"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-125" aria-hidden="true" tabindex="-1"></a>  <span class="co">#output the plot and summary stats</span></span>
+<span id="cb1-126"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pdf</span>(<span class="at">file =</span> <span class="fu">file.path</span>(output_path, <span class="fu">paste0</span>(output_seurat_file, <span class="st">&quot;_plots.pdf&quot;</span>)), <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">bg =</span> <span class="st">&quot;white&quot;</span>)</span>
+<span id="cb1-127"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(plot1)</span>
+<span id="cb1-128"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
+<span id="cb1-129"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-129" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-130"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-130" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Subset the Seurat object to remove cells marked as empty drops</span></span>
+<span id="cb1-131"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-131" aria-hidden="true" tabindex="-1"></a>  seurat_obj_rm_empty <span class="ot">&lt;-</span> <span class="fu">subset</span>(seurat_obj, <span class="at">subset =</span> is.cell <span class="sc">==</span> <span class="st">&#39;Cells&#39;</span>)</span>
+<span id="cb1-132"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-132" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-133"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-133" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save the seurat objects</span></span>
+<span id="cb1-134"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(seurat_obj, <span class="at">file =</span> <span class="fu">file.path</span>(output_path, <span class="fu">paste0</span>(<span class="st">&quot;with_empty_&quot;</span>, output_seurat_file, <span class="st">&quot;.rds&quot;</span>)))</span>
+<span id="cb1-135"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(seurat_obj_rm_empty, <span class="at">file =</span> <span class="fu">file.path</span>(output_path, <span class="fu">paste0</span>(<span class="st">&quot;removed_empty_&quot;</span>, output_seurat_file, <span class="st">&quot;.rds&quot;</span>)))</span>
+<span id="cb1-136"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-136" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-137"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-138"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-138" aria-hidden="true" tabindex="-1"></a><span class="do">#####################</span></span>
+<span id="cb1-139"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-139" aria-hidden="true" tabindex="-1"></a><span class="co"># usage</span></span>
+<span id="cb1-140"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="fu">perform_empty_drops_analysis</span>(</span>
+<span id="cb1-141"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-141" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_count_file =</span> <span class="st">&quot;./output_files/counts/geneSymbol_gene_count.csv&quot;</span>,</span>
+<span id="cb1-142"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-142" aria-hidden="true" tabindex="-1"></a>  <span class="at">empty_drops_file =</span> <span class="st">&quot;./output_files/counts/background_geneSymbol_gene_count.csv&quot;</span>,</span>
+<span id="cb1-143"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-143" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_path =</span> <span class="st">&quot;./output_files/empty_drops/&quot;</span>, </span>
+<span id="cb1-144"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_seurat_file =</span> <span class="st">&quot;Day55&quot;</span>,</span>
+<span id="cb1-145"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="at">fdr_threshold =</span> <span class="fl">0.001</span>,  <span class="co"># see droplet utils if you want to adjust these params</span></span>
+<span id="cb1-146"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="dv">500</span> <span class="co"># see droplet utils if you want to adjust these params</span></span>
+<span id="cb1-147"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb1-147" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
 ## Number of nodes: 344
@@ -212,22 +359,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>## Starting DecontX</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Wed Dec 11 20:13:11 2024 .. Analyzing all cells</code></pre>
-<pre><code>## Wed Dec 11 20:13:11 2024 .... Converting to sparse matrix</code></pre>
-<pre><code>## Wed Dec 11 20:13:11 2024 .... Generating UMAP</code></pre>
-<pre><code>## Wed Dec 11 20:13:16 2024 .... Estimating contamination</code></pre>
-<pre><code>## Wed Dec 11 20:13:17 2024 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
-<pre><code>## Wed Dec 11 20:13:17 2024 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
-<pre><code>## Wed Dec 11 20:13:17 2024 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
-<pre><code>## Wed Dec 11 20:13:17 2024 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
-<pre><code>## Wed Dec 11 20:13:18 2024 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
-<pre><code>## Wed Dec 11 20:13:18 2024 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
-<pre><code>## Wed Dec 11 20:13:18 2024 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
-<pre><code>## Wed Dec 11 20:13:18 2024 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
-<pre><code>## Wed Dec 11 20:13:19 2024 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
-<pre><code>## Wed Dec 11 20:13:19 2024 .. Calculating final decontaminated matrix</code></pre>
+<pre><code>## Wed Dec 11 20:26:14 2024 .. Analyzing all cells</code></pre>
+<pre><code>## Wed Dec 11 20:26:15 2024 .... Converting to sparse matrix</code></pre>
+<pre><code>## Wed Dec 11 20:26:15 2024 .... Generating UMAP</code></pre>
+<pre><code>## Wed Dec 11 20:26:20 2024 .... Estimating contamination</code></pre>
+<pre><code>## Wed Dec 11 20:26:20 2024 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
+<pre><code>## Wed Dec 11 20:26:20 2024 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
+<pre><code>## Wed Dec 11 20:26:20 2024 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
+<pre><code>## Wed Dec 11 20:26:21 2024 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
+<pre><code>## Wed Dec 11 20:26:21 2024 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
+<pre><code>## Wed Dec 11 20:26:21 2024 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
+<pre><code>## Wed Dec 11 20:26:22 2024 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
+<pre><code>## Wed Dec 11 20:26:22 2024 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
+<pre><code>## Wed Dec 11 20:26:22 2024 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
+<pre><code>## Wed Dec 11 20:26:22 2024 .. Calculating final decontaminated matrix</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Completed DecontX. Total time: 7.886794 secs</code></pre>
+<pre><code>## Completed DecontX. Total time: 7.738443 secs</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## 0.001336 0.040294 0.065590 0.095857 0.113042 0.810218</code></pre>
@@ -278,20 +425,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Maximum modularity in 10 random starts: 0.8177
 ## Number of communities: 8
 ## Elapsed time: 0 seconds</code></pre>
-<pre><code>## 20:13:20 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>## 20:13:20 Read 339 rows and found 20 numeric columns</code></pre>
-<pre><code>## 20:13:20 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>## 20:13:20 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 20:26:24 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 20:26:24 Read 339 rows and found 20 numeric columns</code></pre>
+<pre><code>## 20:26:24 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 20:26:24 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>## **************************************************|
-## 20:13:20 Writing NN index file to temp file /tmp/Rtmp8EdkU0/file14d806e91f57d
-## 20:13:20 Searching Annoy index using 1 thread, search_k = 3000
-## 20:13:20 Annoy recall = 100%
-## 20:13:21 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-## 20:13:23 Initializing from normalized Laplacian + noise (using RSpectra)
-## 20:13:23 Commencing optimization for 500 epochs, with 11376 positive edges
-## 20:13:25 Optimization finished</code></pre>
+## 20:26:24 Writing NN index file to temp file /tmp/Rtmp8EdkU0/file14d802807a7fd
+## 20:26:24 Searching Annoy index using 1 thread, search_k = 3000
+## 20:26:24 Annoy recall = 100%
+## 20:26:25 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 20:26:26 Initializing from normalized Laplacian + noise (using RSpectra)
+## 20:26:26 Commencing optimization for 500 epochs, with 11376 positive edges
+## 20:26:28 Optimization finished</code></pre>
 <pre><code>## Making plots</code></pre>
 <p><img src="bookdownproj_files/figure-html/decontX-1.png" width="672" /></p>
 <pre><code>## Saving seurat obj
@@ -301,34 +448,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="standard-gene-qc-to-remove-low-quality-cells" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Standard gene QC to remove low quality cells<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have removed empty drops and ambient RNA we will perform standard QC as described in the Seurat tutorial (<a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial.html">found here</a>). First we will determine what our filtering criteria should be using some basic QC plots.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard QC filtering and also remove doublets </span></span>
-<span id="cb42-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co">#define sample name</span></span>
-<span id="cb42-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-3" aria-hidden="true" tabindex="-1"></a>sample_id <span class="ot">=</span> <span class="st">&#39;Day55_tutorial&#39;</span></span>
-<span id="cb42-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Seurat object</span></span>
-<span id="cb42-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-6" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> deconx_results<span class="sc">$</span>decontaminated_counts, <span class="at">project =</span> sample_id)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard QC filtering and also remove doublets </span></span>
+<span id="cb38-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#define sample name</span></span>
+<span id="cb38-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-3" aria-hidden="true" tabindex="-1"></a>sample_id <span class="ot">=</span> <span class="st">&#39;Day55_tutorial&#39;</span></span>
+<span id="cb38-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Seurat object</span></span>
+<span id="cb38-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb38-6" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> deconx_results<span class="sc">$</span>decontaminated_counts, <span class="at">project =</span> sample_id)</span></code></pre></div>
 <pre><code>## Warning: Data is of class matrix. Coercing to dgCMatrix.</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot relationship between reads and unique genes per cell</span></span>
-<span id="cb44-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-2" aria-hidden="true" tabindex="-1"></a>plot_scatter1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(seurat_object, <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
-<span id="cb44-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span></span>
-<span id="cb44-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reads vs Unique Genes per Cell BEFORE Filtering&quot;</span>)</span>
-<span id="cb44-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plot_scatter1)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot relationship between reads and unique genes per cell</span></span>
+<span id="cb40-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-2" aria-hidden="true" tabindex="-1"></a>plot_scatter1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(seurat_object, <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
+<span id="cb40-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span></span>
+<span id="cb40-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reads vs Unique Genes per Cell BEFORE Filtering&quot;</span>)</span>
+<span id="cb40-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plot_scatter1)</span></code></pre></div>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-1.png" width="672" /></p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add mitochondrial percentage</span></span>
-<span id="cb46-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb46-2" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;joined&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add mitochondrial percentage</span></span>
+<span id="cb42-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb42-2" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;joined&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]])</span></code></pre></div>
 <pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-1" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
-<span id="cb48-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb48-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results;
-## utilizing &quot;counts&quot; layer instead.</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb50-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-1" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
+<span id="cb44-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb44-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing
+## &quot;counts&quot; layer instead.</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb46-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-2.png" width="672" /></p>
 <p>Based on these QC plots we will filter the data with the following values listed in the bellow code chunk. QC paramaters might vary based on your own data so please make sure you filter your data accordingly. Here we will also remove doublets - droplets that contain two or more cells - using the package ‘<a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder">doubletfinder</a>’.</p>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results;
-## utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing
+## &quot;counts&quot; layer instead.</code></pre>
 <p><img src="bookdownproj_files/figure-html/plot-1.png" width="672" /></p>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
