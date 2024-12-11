@@ -7,7 +7,7 @@ output: html_document
 
 # Finding differentially expressed genes and isoforms {style="gray"}
 
----
+------------------------------------------------------------------------
 
 ## Differentially expressed genes by cluster identity
 
@@ -17,21 +17,115 @@ first we will look at marker genes for each cluster. This will help us identify 
 #Find markers for all clusters using the "RNA" and "iso" assay
 
 all_markers_gene <- FindAllMarkers(seu_obj, assay = "RNA", do.print = TRUE,
-                                       logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% filter(p_val_adj < 0.05)
+                                       logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% dplyr::filter(p_val_adj < 0.05)
 
 all_markers_iso <- FindAllMarkers(seu_obj, assay = "iso", do.print = TRUE,
-                                      logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% filter(p_val_adj < 0.05)
+                                      logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% dplyr::filter(p_val_adj < 0.05)
 
 #save the list of DE genes 
 write.csv(all_markers_gene, "./output_files/DE/all_markers_one_gene.csv")
 write.csv(all_markers_iso, "./output_files/DE/all_markers_one_iso.csv")
+```
+
+#notes - could add other DE options maybe add this later
+
+## Identifying cell types
+
+Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use **scType** [ref]. However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.
+
+```{r sctype, echo=TRUE, message=FALSE, warning=FALSE}
+# load libraries from sctype
+lapply(c("ggraph","igraph","tidyverse", "data.tree"), library, character.only = T)
+lapply(c("dplyr","Seurat","HGNChelper"), library, character.only = T)
+
+# load gene set preparation function
+source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R")
+# load cell type annotation function
+source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/sctype_score_.R")
+
+####
+# define functions
+perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c(), 
+                                    metadat_col_prefix = "db_prefix", figure_prefix ="fig_name" ,
+                                    cluster_res = "RNA_snn_res.0.9", output_file = "") {
+  # Prepare gene sets
+  gs_list <- gene_sets_prepare(db_, tissue)
+  
+  # Remove specified gene sets
+  for (gs in gs_removal_list) {
+    gs_list[["gs_positive"]][[gs]] <- NULL
+  }
+  
+  # Calculate sctype scores
+  es.max <- sctype_score(scRNAseqData = seurat_obj@assays$RNA$scale.data, scaled = TRUE, 
+                         gs = gs_list$gs_positive, gs2 = gs_list$gs_negative)
+  
+  # Set identities in Seurat object
+  Idents(seurat_obj) <- cluster_res
+  
+  # Merge by cluster
+  cL_results <- do.call("rbind", lapply(unique(seurat_obj@meta.data[[cluster_res]]), function(cl) {
+    es.max.cl <- sort(rowSums(es.max[, rownames(seurat_obj@meta.data[seurat_obj@meta.data[[cluster_res]] == cl, ])]), decreasing = TRUE)
+    head(data.frame(cluster = cl, type = names(es.max.cl), scores = es.max.cl, ncells = sum(seurat_obj@meta.data[[cluster_res]] == cl)), 10)
+  }))
+  
+  sctype_scores <- cL_results %>% group_by(cluster) %>% top_n(n = 1, wt = scores)
+  
+  # Set low-confident clusters to "Unknown"
+  sctype_scores$scores <- as.numeric(sctype_scores$scores)
+  sctype_scores$type[sctype_scores$scores < sctype_scores$ncells / 4] <- "Unknown"
+  print(sctype_scores[, 1:3])
+  
+  # Overlay the labels
+  seurat_obj@meta.data[[metadat_col_prefix]] <- ""
+  for (j in unique(sctype_scores$cluster)) {
+    cl_type <- sctype_scores[sctype_scores$cluster == j,]
+    seurat_obj@meta.data[[metadat_col_prefix]][seurat_obj@meta.data[[cluster_res]] == j] <- as.character(cl_type$type[1])
+  }
+  
+  # Plotting
+  pclass <- DimPlot(seurat_obj, reduction = "umap", label = TRUE, repel = TRUE, group.by = metadat_col_prefix)
+  print(pclass)
+  
+  # Save the plot to a PDF
+  pdf(file = paste0(figure_prefix, "_", metadat_col_prefix, "_sctype_genes.pdf"), width = 8, height = 8)
+  print(pclass + ggtitle(figure_prefix))
+  dev.off()
+  
+  # Save the updated Seurat object to an RDS file
+  if (output_file != "") {
+    saveRDS(seurat_obj, file = paste0(output_file, ".rds"))
+  }
+  
+  # Return the updated Seurat object
+  return(seurat_obj)
+}
+
+
+# Define variables
+db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx"; # this is a defualt databse from sctype 
+tissue <- "Brain"
+gs_removal_list <- c("Tanycytes")
+
+seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list, 
+                        metadat_col_prefix ="sctype_db", figure_prefix = "Day_55",
+                        output_file = "Day_55", cluster_res = "RNA_snn_res.0.9")
 
 ```
 
-## Identifying cell types 
+Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more info
 
-plotting trajectories
+```{r plot marker genes, echo=TRUE, message=FALSE, warning=FALSE}
+FeaturePlot(s_object, features = c("GAD1", "VIM", "TBR1", "SLC17A7"))
 
-Finding isofrms of interest
+```
 
-plotting with ditoplot
+## plotting trajectories
+
+## 
+
+## Finding isofrms of interest
+
+## 
+
+## plotting with ditoplot
