@@ -13,7 +13,7 @@ language:
 
 # Introduction
 
----
+------------------------------------------------------------------------
 
 Welcome to the FLAMES single sample tutorial!
 

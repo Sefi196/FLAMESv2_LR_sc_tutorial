@@ -7,7 +7,7 @@ output: html_document
 
 # Removing sources of unwanted noise from the single cell dataset
 
----
+------------------------------------------------------------------------
 
 Now we will do some initial prepossessing of single cell data to ensure we have some high quality data. This will involve 3 main steps
 
@@ -21,7 +21,7 @@ Now we will do some initial prepossessing of single cell data to ensure we have 
 
 This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.
 
-```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE}
+```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
 
 ### notes: This fucnion should be refactored and cleaed up. Its very long and complex. 
 perform_empty_drops_analysis <- function(output_path, gene_count_file, empty_drops_file, output_seurat_file, fdr_threshold = 0.001, lower = 100) {
@@ -175,9 +175,11 @@ perform_empty_drops_analysis(
 
 ## Removing ambient RNA contamination
 
-Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it's up to the user to decide whether it's necessary. In this case, the barcode rank plot ([found here...]{.underline}) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the 'seurat_obj_rm_empty' object and proceed to standard gene QC step.
+Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it's up to the user to decide whether it's necessary. In this case, the barcode rank plot (Figure \@ref(fig:barcode-rank-plot)) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the 'seurat_obj_rm_empty' object and proceed to standard gene QC step.
 
-```{r decontX, echo=TRUE}
+![Barcode rank plot produced by FLAMES.](images/knee_plot.png){width="600"}
+
+```{r decontX, echo=TRUE, cache=TRUE}
 # Function to run decontX on a single Seurat object
 run_decontX <- function(seurat_obj_path, background_counts_path, sample_id) {
   # Load the Seurat object

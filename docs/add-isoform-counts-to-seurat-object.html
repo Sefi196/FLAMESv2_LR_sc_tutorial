@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2024-12-11" />
+<meta name="date" content="2025-01-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -159,10 +159,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
 <li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories"><i class="fa fa-check"></i><b>5.3</b> plotting trajectories</a></li>
-<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.4</b> </a></li>
-<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.5</b> Finding isofrms of interest</a></li>
-<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section-1"><i class="fa fa-check"></i><b>5.6</b> </a></li>
-<li class="chapter" data-level="5.7" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.7</b> plotting with ditoplot</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
+<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
+<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html"><i class="fa fa-check"></i><b>6</b> Citations and Session info</a>
 <ul>
@@ -206,52 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
 <p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
 <p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000224237.9-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000487938.5-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000485947.1-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000469543.5-VIM in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
-<pre><code>## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: No layers found matching search pattern provided
-## Warning: No layers found matching search pattern provided</code></pre>
-<pre><code>## Warning: Could not find ENST00000389554.8-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000463544.1-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<pre><code>## Warning: Could not find ENST00000410035.1-TBR1 in the default search locations, found in &#39;iso&#39; assay
-## instead</code></pre>
-<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
 <p>We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
 <p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
 

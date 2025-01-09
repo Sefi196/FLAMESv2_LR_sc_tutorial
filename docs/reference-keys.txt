@@ -12,9 +12,8 @@ finding-differentially-expressed-genes-and-isoforms
 differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
 plotting-trajectories
-section
 finding-isofrms-of-interest
-section-1
+section
 plotting-with-ditoplot
 citations-and-session-info
 citations

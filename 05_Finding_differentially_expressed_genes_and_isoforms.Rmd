@@ -105,7 +105,7 @@ perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c
 # Define variables
 db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx"; # this is a defualt databse from sctype 
 tissue <- "Brain"
-gs_removal_list <- c("Tanycytes")
+gs_removal_list <- c("Tanycytes") # list of cell types from the db to remove
 
 seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list, 
                         metadat_col_prefix ="sctype_db", figure_prefix = "Day_55",
@@ -113,16 +113,47 @@ seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list,
 
 ```
 
-Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more info
+Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutatergic Neuronal Markers "SLC17A7","SLC17A6","GRIN1","GRIN2B" are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are indeed glutamatergic neurons.
 
 ```{r plot marker genes, echo=TRUE, message=FALSE, warning=FALSE}
-FeaturePlot(s_object, features = c("GAD1", "VIM", "TBR1", "SLC17A7"))
+# markers for 
+FeaturePlot(seu_obj, features = c("SLC17A7","SLC17A6","GRIN1","GRIN2B"))
+
+## Change the names of ScType DF to Glutatertergic neurons in metadat
+seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", seu_obj@meta.data$sctype_db)
 
 ```
 
+We can now plot the UMAP to ensure we have update the metadata correctly
+
+```{r plot marker genes iso,  fig.height=10, fig.width=10}
+
+DimPlot(seu_obj, group.by = "sctype_db") | DimPlot(seu_obj, reduction ="umap_iso", group.by = "sctype_db")
+
+
+```
+
+It is possible to explore the radial glial cells in more detail as there are likely more subtypes of radial glial cells in this data set. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.
+
+1.  Radial glial cells
+
+2.  Immature neurons
+
+3.  Glutamatergic neurons
+
+4.  GABAergic neuorns
+
 ## plotting trajectories
 
-## 
+```{r setup traj, include=FALSE}
+# Load required libraries
+library(monocle3)
+library(SeuratWrappers)
+library(ggplot2)
+library(tidyverse)
+library(Seurat)
+
+```
 
 ## Finding isofrms of interest
 

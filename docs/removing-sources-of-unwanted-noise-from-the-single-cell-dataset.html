@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2024-12-11" />
+<meta name="date" content="2025-01-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -159,10 +159,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
 <li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories"><i class="fa fa-check"></i><b>5.3</b> plotting trajectories</a></li>
-<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.4</b> </a></li>
-<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.5</b> Finding isofrms of interest</a></li>
-<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section-1"><i class="fa fa-check"></i><b>5.6</b> </a></li>
-<li class="chapter" data-level="5.7" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.7</b> plotting with ditoplot</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
+<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
+<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html"><i class="fa fa-check"></i><b>6</b> Citations and Session info</a>
 <ul>
@@ -360,7 +359,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="removing-ambient-rna-contamination" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Removing ambient RNA contamination<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it’s up to the user to decide whether it’s necessary. In this case, the barcode rank plot (<u>found here…</u>) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the ‘seurat_obj_rm_empty’ object and proceed to standard gene QC step.</p>
+<p>Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it’s up to the user to decide whether it’s necessary. In this case, the barcode rank plot (Figure <a href="#fig:barcode-rank-plot"><strong>??</strong></a>) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the ‘seurat_obj_rm_empty’ object and proceed to standard gene QC step.</p>
+<div class="figure">
+<img src="images/knee_plot.png" width="600" alt="" />
+<p class="caption">Barcode rank plot produced by FLAMES.</p>
+</div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to run decontX on a single Seurat object</span></span>
 <span id="cb8-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb8-2" aria-hidden="true" tabindex="-1"></a>run_decontX <span class="ot">&lt;-</span> <span class="cf">function</span>(seurat_obj_path, background_counts_path, sample_id) {</span>
 <span id="cb8-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load the Seurat object</span></span>
@@ -472,22 +475,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>## Starting DecontX</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Wed Dec 11 21:58:03 2024 .. Analyzing all cells</code></pre>
-<pre><code>## Wed Dec 11 21:58:03 2024 .... Converting to sparse matrix</code></pre>
-<pre><code>## Wed Dec 11 21:58:03 2024 .... Generating UMAP</code></pre>
-<pre><code>## Wed Dec 11 21:58:09 2024 .... Estimating contamination</code></pre>
-<pre><code>## Wed Dec 11 21:58:09 2024 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
-<pre><code>## Wed Dec 11 21:58:09 2024 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
-<pre><code>## Wed Dec 11 21:58:09 2024 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
-<pre><code>## Wed Dec 11 21:58:10 2024 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
-<pre><code>## Wed Dec 11 21:58:10 2024 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
-<pre><code>## Wed Dec 11 21:58:10 2024 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
-<pre><code>## Wed Dec 11 21:58:10 2024 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
-<pre><code>## Wed Dec 11 21:58:11 2024 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
-<pre><code>## Wed Dec 11 21:58:11 2024 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
-<pre><code>## Wed Dec 11 21:58:11 2024 .. Calculating final decontaminated matrix</code></pre>
+<pre><code>## Thu Jan  9 16:57:25 2025 .. Analyzing all cells</code></pre>
+<pre><code>## Thu Jan  9 16:57:25 2025 .... Converting to sparse matrix</code></pre>
+<pre><code>## Thu Jan  9 16:57:25 2025 .... Generating UMAP</code></pre>
+<pre><code>## Thu Jan  9 16:57:31 2025 .... Estimating contamination</code></pre>
+<pre><code>## Thu Jan  9 16:57:31 2025 ...... Completed iteration: 10 | converge: 0.02483</code></pre>
+<pre><code>## Thu Jan  9 16:57:31 2025 ...... Completed iteration: 20 | converge: 0.009197</code></pre>
+<pre><code>## Thu Jan  9 16:57:32 2025 ...... Completed iteration: 30 | converge: 0.005009</code></pre>
+<pre><code>## Thu Jan  9 16:57:32 2025 ...... Completed iteration: 40 | converge: 0.003423</code></pre>
+<pre><code>## Thu Jan  9 16:57:32 2025 ...... Completed iteration: 50 | converge: 0.00254</code></pre>
+<pre><code>## Thu Jan  9 16:57:32 2025 ...... Completed iteration: 60 | converge: 0.002116</code></pre>
+<pre><code>## Thu Jan  9 16:57:33 2025 ...... Completed iteration: 70 | converge: 0.001571</code></pre>
+<pre><code>## Thu Jan  9 16:57:33 2025 ...... Completed iteration: 80 | converge: 0.00118</code></pre>
+<pre><code>## Thu Jan  9 16:57:33 2025 ...... Completed iteration: 87 | converge: 0.0009944</code></pre>
+<pre><code>## Thu Jan  9 16:57:33 2025 .. Calculating final decontaminated matrix</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
-<pre><code>## Completed DecontX. Total time: 8.07131 secs</code></pre>
+<pre><code>## Completed DecontX. Total time: 8.46105 secs</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## 0.001336 0.040294 0.065590 0.095857 0.113042 0.810218</code></pre>
@@ -538,20 +541,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Maximum modularity in 10 random starts: 0.8177
 ## Number of communities: 8
 ## Elapsed time: 0 seconds</code></pre>
-<pre><code>## 21:58:12 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>## 21:58:12 Read 339 rows and found 20 numeric columns</code></pre>
-<pre><code>## 21:58:12 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>## 21:58:12 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 16:57:34 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 16:57:34 Read 339 rows and found 20 numeric columns</code></pre>
+<pre><code>## 16:57:34 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 16:57:34 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
 <pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
 <pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
 <pre><code>## **************************************************|
-## 21:58:13 Writing NN index file to temp file /tmp/Rtmp8EdkU0/file14d80669e3b7
-## 21:58:13 Searching Annoy index using 1 thread, search_k = 3000
-## 21:58:13 Annoy recall = 100%
-## 21:58:14 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-## 21:58:16 Initializing from normalized Laplacian + noise (using RSpectra)
-## 21:58:16 Commencing optimization for 500 epochs, with 11376 positive edges
-## 21:58:17 Optimization finished</code></pre>
+## 16:57:35 Writing NN index file to temp file /tmp/RtmpaSrlUm/file5e84c2f90d2
+## 16:57:35 Searching Annoy index using 1 thread, search_k = 3000
+## 16:57:35 Annoy recall = 100%
+## 16:57:35 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 16:57:37 Initializing from normalized Laplacian + noise (using RSpectra)
+## 16:57:37 Commencing optimization for 500 epochs, with 11376 positive edges
+## 16:57:38 Optimization finished</code></pre>
 <pre><code>## Making plots</code></pre>
 <p><img src="bookdownproj_files/figure-html/decontX-1.png" width="672" /></p>
 <pre><code>## Saving seurat obj
@@ -582,8 +585,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb50-1" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
 <span id="cb50-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb50-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer
-## instead.</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb52-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-2.png" width="672" /></p>
 <p>Based on these QC plots we will filter the data with the following values listed in the bellow code chunk. QC paramaters might vary based on your own data so please make sure you filter your data accordingly. Here we will also remove doublets - droplets that contain two or more cells - using the package ‘<a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder">doubletfinder</a>’.</p>
@@ -604,8 +606,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb53-15"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb53-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-16"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot quality metrics after filtering</span></span>
 <span id="cb53-17"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb53-17" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(filt_seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
-<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer
-## instead.</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb55-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC metrics gene level AFTER Filtering&quot;</span>)</span></code></pre></div>
 <p><img src="bookdownproj_files/figure-html/plot-1.png" width="672" /></p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize data</span></span>

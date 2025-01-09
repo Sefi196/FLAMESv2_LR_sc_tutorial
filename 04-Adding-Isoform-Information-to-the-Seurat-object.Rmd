@@ -7,7 +7,7 @@ output: html_document
 
 # Add isoform counts to Seurat object
 
----
+------------------------------------------------------------------------
 
 Now that we have 309 high-quality cells for our downstream analysis, let's incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We'll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.
 
@@ -121,7 +121,7 @@ Great! We now have an object containing both assays, so we can start by plotting
 
 Let's begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.
 
-```{r ploting_features, echo=FALSE, message=FALSE, paged.print=TRUE}
+```{r ploting_features, echo=FALSE, message=FALSE, paged.print=TRUE, warning=FALSE}
 
 ####### test plotting on iso assays ##
 features <- rownames(filt_seurat_object@assays$iso@features)
