@@ -177,7 +177,10 @@ perform_empty_drops_analysis(
 
 Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it's up to the user to decide whether it's necessary. In this case, the barcode rank plot (Figure \@ref(fig:barcode-rank-plot)) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the 'seurat_obj_rm_empty' object and proceed to standard gene QC step.
 
-![Barcode rank plot produced by FLAMES.](images/knee_plot.png){width="600"}
+```{r barcode-rank-plot, fig.cap="Barcode rank plot produced by FLAMES.", out.width="600px"}
+knitr::include_graphics("images/knee_plot.png")
+```
+
 
 ```{r decontX, echo=TRUE, cache=TRUE}
 # Function to run decontX on a single Seurat object

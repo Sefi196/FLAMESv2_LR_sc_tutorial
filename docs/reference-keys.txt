@@ -1,3 +1,4 @@
+fig:barcode-rank-plot
 introduction
 setup
 load-in-required-packages
