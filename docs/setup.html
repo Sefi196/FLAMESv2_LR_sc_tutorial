@@ -163,7 +163,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
 <li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
-<li class="chapter" data-level="5.3.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete."><i class="fa fa-check"></i><b>5.3.3</b> TBD - Manveer to complete.</a></li>
 </ul></li>
 <li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
 <li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
@@ -198,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <hr />
 <div id="load-in-required-packages" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> load in required packages<a href="setup.html#load-in-required-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="setup.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install packages if required. Note some packages require installation via bioconductor. See installation instruction for each package to ensure installation is successful. </span></span>
 <span id="cb1-2"><a href="setup.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rtracklayer)</span>
 <span id="cb1-3"><a href="setup.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
@@ -233,7 +232,7 @@ The first step is to generate a CSV file containing three key columns: ENSTID, E
 This file will be used as a dictionary to rename entries in both the isoform and gene count matrices, replacing ENSGID with the corresponding gene symbol.
 By adopting this naming convention for ENSTID, we can easily identify the gene origin of each isoform, streamlining the interpretation and analysis of gene and isoform-level data.</p>
 <p>First lets define a helper function for this step:</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="setup.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to make csv naming resource </span></span>
 <span id="cb2-2"><a href="setup.html#cb2-2" aria-hidden="true" tabindex="-1"></a>make_isoform_gene_symbol_dict <span class="ot">&lt;-</span> <span class="cf">function</span>(FLAMES_gtf, </span>
 <span id="cb2-3"><a href="setup.html#cb2-3" aria-hidden="true" tabindex="-1"></a>                                          reference_gtf, </span>
@@ -276,7 +275,7 @@ By adopting this naming convention for ENSTID, we can easily identify the gene o
 <span id="cb2-40"><a href="setup.html#cb2-40" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 <p>Run this chunk to create the dictionary containing ENSTID, ENSGID, and geneSymbol information:</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="setup.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The FLAMES ref can be found in your selected output folder after running the Flames pipeline. </span></span>
 <span id="cb3-2"><a href="setup.html#cb3-2" aria-hidden="true" tabindex="-1"></a>FLAMES_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/FLAMES_out/isoform_annotated.gtf&quot;</span> <span class="co">#ensure file is unzipped</span></span>
 <span id="cb3-3"><a href="setup.html#cb3-3" aria-hidden="true" tabindex="-1"></a>reference_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/gencode.v47.annotation.gtf&quot;</span> <span class="co"># ensure file is unzipped</span></span>
@@ -294,7 +293,7 @@ By adopting this naming convention for ENSTID, we can easily identify the gene o
 <p>With the reference dictionary in place, we can now rename both our count matrix and background count matrix by converting ENSGIDs to geneSymbols.
 This conversion not only simplifies the interpretation of gene expression in single cells but is also necessary for some downstream tools that require gene symbols instead of ENSGIDs, such as automated cell annotation tools.</p>
 <p>Like before, lets define a generic helper function first to do this:</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="setup.html#cb4-1" aria-hidden="true" tabindex="-1"></a>convert_ENSGID_to_geneSymbol <span class="ot">&lt;-</span> <span class="cf">function</span>(gene_count_matrix_path, </span>
 <span id="cb4-2"><a href="setup.html#cb4-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">id_symbol_df =</span> isoform_gene_dict, </span>
 <span id="cb4-3"><a href="setup.html#cb4-3" aria-hidden="true" tabindex="-1"></a>                                         output_file,</span>
@@ -327,7 +326,7 @@ This conversion not only simplifies the interpretation of gene expression in sin
 <span id="cb4-30"><a href="setup.html#cb4-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 <p>Run the chunk below to format gene-level count matrices for background and FLAMES data using the helper function from above:</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="setup.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Gene_id to gene symbol for gene counts</span></span>
 <span id="cb5-2"><a href="setup.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
 <span id="cb5-3"><a href="setup.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_count_matrix_path =</span> <span class="st">&quot;./data/FLAMES_out/gene_count.csv&quot;</span>,</span>

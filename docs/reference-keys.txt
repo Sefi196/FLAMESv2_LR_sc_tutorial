@@ -14,8 +14,9 @@ differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
 de-genes-and-isofroms-based-on-annotaed-cell-types.
 volcano-plots
+findallmarkers-de
+findmarkers-de
 gene-set-enrichemt
-tbd---manveer-to-complete.
 finding-isofrms-of-interest
 section
 plotting-with-ditoplot

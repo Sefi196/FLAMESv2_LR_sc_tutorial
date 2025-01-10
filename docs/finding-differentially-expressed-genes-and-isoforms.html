@@ -163,7 +163,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
 <li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
-<li class="chapter" data-level="5.3.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete."><i class="fa fa-check"></i><b>5.3.3</b> TBD - Manveer to complete.</a></li>
 </ul></li>
 <li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
 <li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
@@ -199,7 +198,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="differentially-expressed-genes-by-cluster-identity" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Differentially expressed genes by cluster identity<a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find markers for all clusters using the &quot;RNA&quot; and &quot;iso&quot; assay</span></span>
 <span id="cb93-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-3" aria-hidden="true" tabindex="-1"></a>all_markers_gene <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
@@ -217,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="identifying-cell-types" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Identifying cell types<a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use <strong>scType</strong> [ref]. However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries from sctype</span></span>
 <span id="cb94-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;ggraph&quot;</span>,<span class="st">&quot;igraph&quot;</span>,<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;data.tree&quot;</span>), library, <span class="at">character.only =</span> T)</span></code></pre></div>
 </details>
@@ -276,7 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
 ## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
 ## [56] &quot;base&quot;</code></pre>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;Seurat&quot;</span>,<span class="st">&quot;HGNChelper&quot;</span>), library, <span class="at">character.only =</span> T)</span></code></pre></div>
 </details>
 <pre><code>## [[1]]
@@ -320,7 +319,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
 ## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
 ## [56] &quot;base&quot;</code></pre>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load gene set preparation function</span></span>
 <span id="cb98-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R&quot;</span>)</span>
 <span id="cb98-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load cell type annotation function</span></span>
@@ -408,17 +407,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 8 1       Radial glial cells         94.0</code></pre>
 <p><img src="bookdownproj_files/figure-html/sctype-1.png" width="672" /></p>
 <p>Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutatergic Neuronal Markers “SLC17A7”,“SLC17A6”,“GRIN1”,“GRIN2B” are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are indeed glutamatergic neurons.</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># markers for </span></span>
 <span id="cb100-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(seu_obj, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&quot;GRIN1&quot;</span>,<span class="st">&quot;GRIN2B&quot;</span>))</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/plot%20marker%20genes-1.png" width="672" /></p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Change the names of ScType DF to Glutatertergic neurons in metadat</span></span>
 <span id="cb101-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb101-2" aria-hidden="true" tabindex="-1"></a>seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;Mature neurons&quot;</span>, <span class="st">&quot;Glutamatergic neurons&quot;</span>, seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db)</span></code></pre></div>
 </details>
 <p>We can now plot the UMAP to ensure we have update the metadata correctly</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(seu_obj, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(seu_obj, <span class="at">reduction =</span><span class="st">&quot;umap_iso&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/plot%20marker%20genes%20iso-1.png" width="960" /></p>
@@ -436,7 +435,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.</p>
 <p>A common downstream approach involves generating volcano plots to visualize DE genes and isoforms. performing gene set enrichment analysis, In the following sections, we will demonstrate how to perform these types of analyses and explore their potential applications.</p>
 <p>The code chunk below provides an example of how to execute these analyses:</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Set identities based on cell type</span></span>
 <span id="cb103-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb103-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&quot;sctype_db&quot;</span></span>
@@ -465,9 +464,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </details>
 <div id="volcano-plots" class="section level3 hasAnchor" number="5.3.1">
 <h3><span class="header-section-number">5.3.1</span> Volcano plots<a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="findallmarkers-de" class="section level4 hasAnchor" number="5.3.1.1">
+<h4><span class="header-section-number">5.3.1.1</span> FIndAllMarkers DE<a href="finding-differentially-expressed-genes-and-isoforms.html#findallmarkers-de" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Fist lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.</p>
-<p>When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p &lt; 0.05) and log2 fold changes -1&lt; or &gt;1. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<p>When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p &lt; 0.05) and log2 fold changes -2&lt; or &gt;2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
 <span id="cb104-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb104-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter for the cell type of interest </span></span>
@@ -477,32 +478,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb104-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our colcano plot </span></span>
 <span id="cb104-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
 <span id="cb104-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
-<span id="cb104-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">1</span>,</span>
+<span id="cb104-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
 <span id="cb104-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb104-12"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb104-13"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>))</span></code></pre></div>
+<span id="cb104-13"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>),</span>
+<span id="cb104-14"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Genes </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="768" /></p>
 <p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow suers to plot all the isofroms from agiven gene on the volacon plot making interpation of the data a bit cleaner. Here just like in @ref(Add isoform counts to Seurat object) we can see two differnt isofroms of the TBR1 gene showing regulation this cell type</p>
-<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
 <span id="cb105-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb105-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb105-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_iso,</span>
 <span id="cb105-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_iso<span class="sc">$</span>gene,</span>
-<span id="cb105-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">1</span>,</span>
+<span id="cb105-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
 <span id="cb105-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb105-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb105-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list)</span></code></pre></div>
+<span id="cb105-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list,</span>
+<span id="cb105-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb105-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/valocano2-1.png" width="672" /></p>
-<p>Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the <code>FindAllMarkers</code> function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis.</p>
+<p><img src="bookdownproj_files/figure-html/valocano2-1.png" width="768" /></p>
+</div>
+<div id="findmarkers-de" class="section level4 hasAnchor" number="5.3.1.2">
+<h4><span class="header-section-number">5.3.1.2</span> FIndMarkers DE<a href="finding-differentially-expressed-genes-and-isoforms.html#findmarkers-de" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the <code>FindAllMarkers</code> function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the <code>FindMarkers</code> function.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;RNA&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb106-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-2" aria-hidden="true" tabindex="-1"></a>glu_RG_gene <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj,</span>
+<span id="cb106-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb106-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb106-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb106-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;iso&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb106-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-8" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj, <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb106-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb106-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb106-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-12"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-13"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots</span></span>
+<span id="cb106-14"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-14" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_gene, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_gene),</span>
+<span id="cb106-15"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
+<span id="cb106-16"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-16" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb106-17"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb106-18"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb106-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Gene </span><span class="sc">\n</span><span class="st"> Glutamatergic Neurons vs Radial glial Cells&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano3-1.png" width="768" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots</span></span>
+<span id="cb107-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
+<span id="cb107-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
+<span id="cb107-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-4" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb107-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb107-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb107-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> Glutamatergic Neurons vs Radial glial Cells&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano3-2.png" width="768" /></p>
+</div>
 </div>
 <div id="gene-set-enrichemt" class="section level3 hasAnchor" number="5.3.2">
 <h3><span class="header-section-number">5.3.2</span> Gene Set enrichemt<a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-</div>
-<div id="tbd---manveer-to-complete." class="section level3 hasAnchor" number="5.3.3">
-<h3><span class="header-section-number">5.3.3</span> TBD - Manveer to complete.<a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>TBD - Manveer to complete.</p>
 <p>From this work we can see … ## plotting trajectories</p>
 </div>
 </div>

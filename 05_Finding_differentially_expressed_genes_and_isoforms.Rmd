@@ -183,11 +183,13 @@ write.csv(all_markers_iso_celltype, "./output_files/DE/all_markers_one_iso_cellt
 
 ### Volcano plots
 
+#### FIndAllMarkers DE
+
 Fist lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.
 
-When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p \< 0.05) and log2 fold changes -1\< or \>1. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.
+When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p \< 0.05) and log2 fold changes -2\< or \>2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.
 
-```{r valocano1, echo=TRUE, message=FALSE, warning=FALSE}
+```{r valocano1, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 library(EnhancedVolcano)
 
 #filter for the cell type of interest 
@@ -197,33 +199,68 @@ glut_DE_gene <- dplyr::filter(all_markers_gene_celltype, cluster == "Glutamaterg
 #we can plot our colcano plot 
 EnhancedVolcano(glut_DE_gene,
                 lab=glut_DE_gene$gene,
-                x='avg_log2FC', y='p_val_adj', pCutoff=0.05, FCcutoff=1,
+                x='avg_log2FC', y='p_val_adj', pCutoff=0.05, FCcutoff=2,
                 boxedLabels = TRUE,
                 drawConnectors = TRUE,
-                selectLab= c("SLC17A7","SLC17A6",'GRIN1',"GRIN2B",'VIM'))
+                selectLab= c("SLC17A7","SLC17A6",'GRIN1',"GRIN2B",'VIM'),
+                title = "Volcano Plot of Differentially Expressed Genes \n in the Glutamatergic Neurons")
 ```
 
 Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow suers to plot all the isofroms from agiven gene on the volacon plot making interpation of the data a bit cleaner. Here just like in \@ref(Add isoform counts to Seurat object) we can see two differnt isofroms of the TBR1 gene showing regulation this cell type
 
-```{r valocano2, echo=TRUE, message=FALSE, warning=FALSE}
+```{r valocano2, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 gene <- "TBR1"
 plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value = TRUE)
 
 EnhancedVolcano(glut_DE_iso,
                 lab=glut_DE_iso$gene,
-                x='avg_log2FC', y='p_val_adj', pCutoff=0.05, FCcutoff=1,
+                x='avg_log2FC', y='p_val_adj', pCutoff=0.05, FCcutoff=2,
                 boxedLabels = TRUE,
                 drawConnectors = TRUE,
-                selectLab= plot_features_list)
+                selectLab= plot_features_list,
+                title = "Volcano Plot of Differentially Expressed Isoforms \n in the Glutamatergic Neurons")
 
 
 ```
 
-Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the `FindAllMarkers` function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis.
+#### FIndMarkers DE
+
+Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the `FindAllMarkers` function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the `FindMarkers` function.
+
+```{r valocano3, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+
+
+DefaultAssay(seu_obj) <- 'RNA' # difeine the gne assay as default
+glu_RG_gene <- FindMarkers(seu_obj,
+                          ident.1 = "Glutamatergic neurons",
+                          ident.2 = "Radial glial cells",
+                          logfc.threshold = 0.5, min.pct = 0.02)
+
+DefaultAssay(seu_obj) <- 'iso' # difeine the gne assay as default
+glu_RG_iso <- FindMarkers(seu_obj, ident.1 = "Glutamatergic neurons",
+                          ident.2 = "Radial glial cells",
+                          logfc.threshold = 0.5, min.pct = 0.02)
+
+
+#Volcano plots
+EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),
+                x='avg_log2FC', y='p_val_adj',
+                #selectLab= "VIM",
+                pCutoff=0.05, FCcutoff=2,
+                title = "Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial Cells")
+
+#Volcano plots
+EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
+                x='avg_log2FC', y='p_val_adj',
+                #selectLab= "VIM",
+                pCutoff=0.05, FCcutoff=2,
+                title = "Volcano Plot of Differentially Expressed Isoforms \n Glutamatergic Neurons vs Radial glial Cells")
+
+```
 
 ### Gene Set enrichemt
 
-### TBD - Manveer to complete.
+TBD - Manveer to complete.
 
 From this work we can see ... \## plotting trajectories
 

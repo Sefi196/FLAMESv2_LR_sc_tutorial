@@ -4,7 +4,7 @@ author: "Sefi Prawer"
 date: "`r Sys.Date()`"
 output:
   bookdown::gitbook:
-    code_folding: hide
+    code_folding: show
 book_filename: "bookdownproj"
 output_dir: docs
 delete_merged_file: true
@@ -27,7 +27,7 @@ Run the sc_long_pipeline (to process a single sample) and have set your config f
 
 `"bambu_isoform_identification": [true]`
 
-`"oarfish_quantification": [true] And`
+`"oarfish_quantification": [true]` And
 
 That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
 
