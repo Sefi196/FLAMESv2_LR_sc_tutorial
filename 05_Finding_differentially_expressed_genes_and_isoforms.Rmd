@@ -126,7 +126,7 @@ seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", s
 
 We can now plot the UMAP to ensure we have update the metadata correctly
 
-```{r plot marker genes iso,  fig.height=10, fig.width=10}
+```{r plot marker genes iso,  fig.height=5, fig.width=10}
 
 DimPlot(seu_obj, group.by = "sctype_db") | DimPlot(seu_obj, reduction ="umap_iso", group.by = "sctype_db")
 
@@ -153,7 +153,7 @@ A common downstream approach involves generating volcano plots to visualize DE g
 
 The code chunk below provides an example of how to execute these analyses:
 
-```{r setup traj, include=FALSE}
+```{r setup traj, echo=TRUE, message=FALSE, warning=FALSE}
 #Set identities based on cell type
 
 Idents(seu_obj) <- "sctype_db"
@@ -187,7 +187,7 @@ Fist lets generate some volcano plots. This analysis can be useful to identify g
 
 When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p \< 0.05) and log2 fold changes -1\< or \>1. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.
 
-```{r valocano1, include=TRUE}
+```{r valocano1, echo=TRUE, message=FALSE, warning=FALSE}
 library(EnhancedVolcano)
 
 #filter for the cell type of interest 
@@ -205,7 +205,7 @@ EnhancedVolcano(glut_DE_gene,
 
 Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow suers to plot all the isofroms from agiven gene on the volacon plot making interpation of the data a bit cleaner. Here just like in \@ref(Add isoform counts to Seurat object) we can see two differnt isofroms of the TBR1 gene showing regulation this cell type
 
-```{r valocano2, include=TRUE }
+```{r valocano2, echo=TRUE, message=FALSE, warning=FALSE}
 gene <- "TBR1"
 plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value = TRUE)
 
