@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-09" />
+<meta name="date" content="2025-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -158,7 +159,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories"><i class="fa fa-check"></i><b>5.3</b> plotting trajectories</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
+<li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
+<li class="chapter" data-level="5.3.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete."><i class="fa fa-check"></i><b>5.3.3</b> TBD - Manveer to complete.</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
 <li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
 <li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
@@ -190,7 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Citations and Session info</h1>
 <p class="author"><em>Sefi Prawer</em></p>
-<p class="date"><em>2025-01-09</em></p>
+<p class="date"><em>2025-01-10</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -199,8 +205,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES, to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.</p>
 <p>This tutorial assumes that have;</p>
 <p>Run the sc_long_pipeline (to process a single sample) and have set your config file with these parameters set to TRUE</p>
-<p>“bambu_isoform_identification”: [true]</p>
-<p>“oarfish_quantification”: [true] And</p>
+<p><code>"bambu_isoform_identification": [true]</code></p>
+<p><code>"oarfish_quantification": [true] And</code></p>
 <p>That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: … [placeholder]</p>
 <p>If you wish to run through the tutorial using the data provided in the ‘data’ folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command wget <a href="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz" class="uri">https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz</a></p>
 <p>Much of the workflow will remain the same if you decide to use other tools for quantification or isoform discovery, which FLAMES does support, but these are the tools that in our hands perform the best and what we would recommend using at this stage.</p>

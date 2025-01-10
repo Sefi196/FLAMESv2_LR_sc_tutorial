@@ -52,7 +52,7 @@ By adopting this naming convention for ENSTID, we can easily identify the gene o
 
 First lets define a helper function for this step:
 
-```{r create_gene_symbol_resource, echo = TRUE}
+```{r create_gene_symbol_resource, echo = TRUE, cache=TRUE}
 # Function to make csv naming resource 
 make_isoform_gene_symbol_dict <- function(FLAMES_gtf, 
                                           reference_gtf, 
@@ -120,7 +120,7 @@ This conversion not only simplifies the interpretation of gene expression in sin
 
 Like before, lets define a generic helper function first to do this:
 
-```{r convert_ENSGID_to_geneSymbol, echo = TRUE}
+```{r convert_ENSGID_to_geneSymbol, echo = TRUE, cache=TRUE}
 convert_ENSGID_to_geneSymbol <- function(gene_count_matrix_path, 
                                          id_symbol_df = isoform_gene_dict, 
                                          output_file,
@@ -156,7 +156,7 @@ convert_ENSGID_to_geneSymbol <- function(gene_count_matrix_path,
 
 Run the chunk below to format gene-level count matrices for background and FLAMES data using the helper function from above:
 
-```{r convert_ENSGID_to_geneSymbol_exec, echo=TRUE}
+```{r convert_ENSGID_to_geneSymbol_exec, echo=TRUE, cache=TRUE}
 
 # convert Gene_id to gene symbol for gene counts
 convert_ENSGID_to_geneSymbol(

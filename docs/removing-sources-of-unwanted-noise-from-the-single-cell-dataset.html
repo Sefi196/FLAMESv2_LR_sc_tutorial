@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-09" />
+<meta name="date" content="2025-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -158,7 +159,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories"><i class="fa fa-check"></i><b>5.3</b> plotting trajectories</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
+<li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
+<li class="chapter" data-level="5.3.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete."><i class="fa fa-check"></i><b>5.3.3</b> TBD - Manveer to complete.</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
 <li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
 <li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
@@ -199,6 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="empty-droplets" class="section level3 hasAnchor" number="3.0.1">
 <h3><span class="header-section-number">3.0.1</span> Empty droplets<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">### notes: This fucnion should be refactored and cleaed up. Its very long and complex. </span></span>
 <span id="cb6-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-2" aria-hidden="true" tabindex="-1"></a>perform_empty_drops_analysis <span class="ot">&lt;-</span> <span class="cf">function</span>(output_path, gene_count_file, empty_drops_file, output_seurat_file, <span class="at">fdr_threshold =</span> <span class="fl">0.001</span>, <span class="at">lower =</span> <span class="dv">100</span>) {</span>
 <span id="cb6-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load required libraries</span></span>
@@ -346,6 +353,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-145"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-145" aria-hidden="true" tabindex="-1"></a>  <span class="at">fdr_threshold =</span> <span class="fl">0.001</span>,  <span class="co"># see droplet utils if you want to adjust these params</span></span>
 <span id="cb6-146"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-146" aria-hidden="true" tabindex="-1"></a>  <span class="at">lower =</span> <span class="dv">500</span> <span class="co"># see droplet utils if you want to adjust these params</span></span>
 <span id="cb6-147"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb6-147" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</details>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
 ## Number of nodes: 344
@@ -360,13 +368,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="removing-ambient-rna-contamination" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Removing ambient RNA contamination<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now we will remove ambient RNA contamination using decontX (or SoupX). This step is optional, and it’s up to the user to decide whether it’s necessary. In this case, the barcode rank plot (Figure <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#fig:barcode-rank-plot">3.1</a>) shows a clear distinction between true barcodes and background barcodes, suggesting that ambient RNA contamination may not significantly contribute to noise in this dataset. However, we’ll demonstrate how to run this step in case your barcode rank plot is noisier and contamination is a concern. if users wish to skip this step take the ‘seurat_obj_rm_empty’ object and proceed to standard gene QC step.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/knee_plot.png&quot;</span>)</span></code></pre></div>
+</details>
 <div class="figure"><span style="display:block;" id="fig:barcode-rank-plot"></span>
 <img src="images/knee_plot.png" alt="Barcode rank plot produced by FLAMES." width="600px" />
 <p class="caption">
 Figure 3.1: Barcode rank plot produced by FLAMES.
 </p>
 </div>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to run decontX on a single Seurat object</span></span>
 <span id="cb9-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-2" aria-hidden="true" tabindex="-1"></a>run_decontX <span class="ot">&lt;-</span> <span class="cf">function</span>(seurat_obj_path, background_counts_path, sample_id) {</span>
 <span id="cb9-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load the Seurat object</span></span>
@@ -475,6 +486,7 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb9-106"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-107"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-107" aria-hidden="true" tabindex="-1"></a><span class="co"># Run decontX on the input Seurat object and background counts file</span></span>
 <span id="cb9-108"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb9-108" aria-hidden="true" tabindex="-1"></a>deconx_results <span class="ot">&lt;-</span> <span class="fu">run_decontX</span>(<span class="st">&quot;./output_files/empty_drops/removed_empty_Day55.rds&quot;</span>, <span class="st">&quot;./output_files/counts/background_geneSymbol_gene_count.csv&quot;</span>, <span class="st">&quot;./output_files/decontx//Day55&quot;</span>)</span></code></pre></div>
+</details>
 <pre><code>## --------------------------------------------------</code></pre>
 <pre><code>## Starting DecontX</code></pre>
 <pre><code>## --------------------------------------------------</code></pre>
@@ -567,31 +579,42 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <div id="standard-gene-qc-to-remove-low-quality-cells" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Standard gene QC to remove low quality cells<a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have removed empty drops and ambient RNA we will perform standard QC as described in the Seurat tutorial (<a href="https://satijalab.org/seurat/articles/pbmc3k_tutorial.html">found here</a>). First we will determine what our filtering criteria should be using some basic QC plots.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standard QC filtering and also remove doublets </span></span>
 <span id="cb45-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">#define sample name</span></span>
 <span id="cb45-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-3" aria-hidden="true" tabindex="-1"></a>sample_id <span class="ot">=</span> <span class="st">&#39;Day55_tutorial&#39;</span></span>
 <span id="cb45-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Seurat object</span></span>
 <span id="cb45-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb45-6" aria-hidden="true" tabindex="-1"></a>seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> deconx_results<span class="sc">$</span>decontaminated_counts, <span class="at">project =</span> sample_id)</span></code></pre></div>
+</details>
 <pre><code>## Warning: Data is of class matrix. Coercing to dgCMatrix.</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot relationship between reads and unique genes per cell</span></span>
 <span id="cb47-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-2" aria-hidden="true" tabindex="-1"></a>plot_scatter1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(seurat_object, <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
 <span id="cb47-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span></span>
 <span id="cb47-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reads vs Unique Genes per Cell BEFORE Filtering&quot;</span>)</span>
 <span id="cb47-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb47-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(plot_scatter1)</span></code></pre></div>
+</details>
 <pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-1.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add mitochondrial percentage</span></span>
 <span id="cb49-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb49-2" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;joined&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]])</span></code></pre></div>
+</details>
 <pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb51-1" aria-hidden="true" tabindex="-1"></a>seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
 <span id="cb51-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb51-3" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
+</details>
 <pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb53-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/gene%20QC-2.png" width="672" /></p>
 <p>Based on these QC plots we will filter the data with the following values listed in the bellow code chunk. QC paramaters might vary based on your own data so please make sure you filter your data accordingly. Here we will also remove doublets - droplets that contain two or more cells - using the package ‘<a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder">doubletfinder</a>’.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter cells based on feature and count thresholds</span></span>
 <span id="cb54-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="do">## define the filtering params - (change these based on your data)</span></span>
 <span id="cb54-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-3" aria-hidden="true" tabindex="-1"></a>max.features <span class="ot">=</span> <span class="dv">10000</span></span>
@@ -609,9 +632,13 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb54-15"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb54-16"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot quality metrics after filtering</span></span>
 <span id="cb54-17"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb54-17" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(filt_seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span></code></pre></div>
+</details>
 <pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb56-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC metrics gene level AFTER Filtering&quot;</span>)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-1.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize data</span></span>
 <span id="cb57-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-2" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(filt_seurat_object, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>, <span class="at">scale.factor =</span> <span class="dv">10000</span>)</span>
 <span id="cb57-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -628,6 +655,7 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb57-14"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster cells</span></span>
 <span id="cb57-15"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-15" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
 <span id="cb57-16"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb57-16" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(filt_seurat_object, <span class="at">resolution =</span> cluster_res)</span></code></pre></div>
+</details>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
 ## Number of nodes: 319
@@ -637,12 +665,14 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 ## Maximum modularity in 10 random starts: 0.7804
 ## Number of communities: 8
 ## Elapsed time: 0 seconds</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform UMAP</span></span>
 <span id="cb59-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-2" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
 <span id="cb59-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-3" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb59-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="do">### Filter out doublets (remember to modify doublet rate if samples have variable target cells)</span></span>
 <span id="cb59-5"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="do">## pK Identification (no ground-truth) </span></span>
 <span id="cb59-6"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb59-6" aria-hidden="true" tabindex="-1"></a>sweep.res.list_pbmc <span class="ot">&lt;-</span> <span class="fu">paramSweep</span>(filt_seurat_object, <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span>npc, <span class="at">sct =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</details>
 <pre><code>## [1] &quot;Creating artificial doublets for pN = 5%&quot;
 ## [1] &quot;Creating Seurat object...&quot;
 ## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
@@ -865,10 +895,13 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 ## [1] &quot;pK = 0.28...&quot;
 ## [1] &quot;pK = 0.29...&quot;
 ## [1] &quot;pK = 0.3...&quot;</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb79-1" aria-hidden="true" tabindex="-1"></a>sweep.stats_pbmc <span class="ot">&lt;-</span> <span class="fu">summarizeSweep</span>(sweep.res.list_pbmc, <span class="at">GT =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb79-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb79-2" aria-hidden="true" tabindex="-1"></a>bcmvn_pbmc <span class="ot">&lt;-</span> <span class="fu">find.pK</span>(sweep.stats_pbmc)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-2.png" width="672" /></p>
 <pre><code>## NULL</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####</span></span>
 <span id="cb81-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-2" aria-hidden="true" tabindex="-1"></a>pK <span class="ot">&lt;-</span> bcmvn_pbmc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(BCmetric <span class="sc">==</span> <span class="fu">max</span>(BCmetric)) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(pK) </span>
 <span id="cb81-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-3" aria-hidden="true" tabindex="-1"></a>pK <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(pK[[<span class="dv">1</span>]]))</span>
@@ -881,6 +914,7 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb81-10"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-10" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb81-11"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run doubletFinder </span></span>
 <span id="cb81-12"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb81-12" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">doubletFinder</span>(filt_seurat_object, <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span>npc, <span class="at">pN =</span> <span class="fl">0.25</span>, <span class="at">pK =</span> pK, <span class="at">nExp =</span> nExp_poi.adj, <span class="at">reuse.pANN =</span> <span class="cn">FALSE</span>, <span class="at">sct =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</details>
 <pre><code>## [1] &quot;Creating 106 artificial doublets...&quot;
 ## [1] &quot;Creating Seurat object...&quot;
 ## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
@@ -890,6 +924,7 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 ## [1] &quot;Calculating PC distance matrix...&quot;
 ## [1] &quot;Computing pANN...&quot;
 ## [1] &quot;Classifying doublets..&quot;</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;DF.classifications_.*$&quot;</span>, <span class="st">&quot;DF.classifications&quot;</span>, <span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data))</span>
 <span id="cb86-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary doublets</span></span>
@@ -926,13 +961,19 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb86-34"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-34" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb86-35"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-35" aria-hidden="true" tabindex="-1"></a>  combined_plots <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(<span class="at">plotlist =</span> ggplot_list, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
 <span id="cb86-36"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb86-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(combined_plots)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-3.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb87-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">DimPlot</span>(filt_seurat_object_doublets, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&quot;DF.classifications&quot;</span>))</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-4.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb88-1" aria-hidden="true" tabindex="-1"></a>  tbl_sts1 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(statsDoublets)</span>
 <span id="cb88-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
 <span id="cb88-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts1)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-5.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-1" aria-hidden="true" tabindex="-1"></a>  stats_sumary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="st">&quot;Sample ID&quot;</span> <span class="ot">=</span> sample_id,</span>
 <span id="cb89-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_before_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(seurat_object)[<span class="dv">2</span>],</span>
 <span id="cb89-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_after_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(filt_seurat_object)[<span class="dv">2</span>],</span>
@@ -953,11 +994,14 @@ Figure 3.1: Barcode rank plot produced by FLAMES.
 <span id="cb89-18"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-18" aria-hidden="true" tabindex="-1"></a>  tbl_sts2 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(stats_sumary)</span>
 <span id="cb89-19"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
 <span id="cb89-20"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb89-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts2)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot-6.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb90-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#save files</span></span>
 <span id="cb90-2"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb90-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(filt_seurat_object, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;./output_files/QC/&quot;</span>, sample_id, <span class="st">&quot;_umap_object.rds&quot;</span>))</span>
 <span id="cb90-3"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">saveRDS</span>(filt_seurat_object_doublets, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;./output_files/QC/&quot;</span>,sample_id, <span class="st">&quot;_with_doublets_umap_object.rds&quot;</span>))</span>
 <span id="cb90-4"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#cb90-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.table</span>(stats_sumary, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&quot;./output_files/QC/&quot;</span>, sample_id, <span class="st">&quot;_stats.csv&quot;</span>)) </span></code></pre></div>
+</details>
 <p>Now that we have filtered the object to ensure we retain high quality data we are going to add in the isoform level information.</p>
 
 </div>

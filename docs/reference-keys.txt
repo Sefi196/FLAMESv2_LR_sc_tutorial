@@ -12,7 +12,10 @@ add-isoform-counts-to-seurat-object
 finding-differentially-expressed-genes-and-isoforms
 differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
-plotting-trajectories
+de-genes-and-isofroms-based-on-annotaed-cell-types.
+volcano-plots
+gene-set-enrichemt
+tbd---manveer-to-complete.
 finding-isofrms-of-interest
 section
 plotting-with-ditoplot

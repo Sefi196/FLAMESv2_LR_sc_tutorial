@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-09" />
+<meta name="date" content="2025-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -49,6 +49,7 @@
 
 
 
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
@@ -158,7 +159,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories"><i class="fa fa-check"></i><b>5.3</b> plotting trajectories</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
+<li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
+<li class="chapter" data-level="5.3.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete."><i class="fa fa-check"></i><b>5.3.3</b> TBD - Manveer to complete.</a></li>
+</ul></li>
 <li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
 <li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
 <li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
@@ -193,6 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="differentially-expressed-genes-by-cluster-identity" class="section level2 hasAnchor" number="5.1">
 <h2><span class="header-section-number">5.1</span> Differentially expressed genes by cluster identity<a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find markers for all clusters using the &quot;RNA&quot; and &quot;iso&quot; assay</span></span>
 <span id="cb93-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb93-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-3" aria-hidden="true" tabindex="-1"></a>all_markers_gene <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(seu_obj, <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, <span class="at">do.print =</span> <span class="cn">TRUE</span>,</span>
@@ -204,89 +211,116 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb93-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="co">#save the list of DE genes </span></span>
 <span id="cb93-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_gene, <span class="st">&quot;./output_files/DE/all_markers_one_gene.csv&quot;</span>)</span>
 <span id="cb93-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_iso, <span class="st">&quot;./output_files/DE/all_markers_one_iso.csv&quot;</span>)</span></code></pre></div>
+</details>
 <p>#notes - could add other DE options maybe add this later</p>
 </div>
 <div id="identifying-cell-types" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Identifying cell types<a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use <strong>scType</strong> [ref]. However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries from sctype</span></span>
 <span id="cb94-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;ggraph&quot;</span>,<span class="st">&quot;igraph&quot;</span>,<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;data.tree&quot;</span>), library, <span class="at">character.only =</span> T)</span></code></pre></div>
+</details>
 <pre><code>## [[1]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;                
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;                
 ## 
 ## [[2]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;                
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;                
 ## 
 ## [[3]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;                
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;                
 ## 
 ## [[4]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;</code></pre>
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;Seurat&quot;</span>,<span class="st">&quot;HGNChelper&quot;</span>), library, <span class="at">character.only =</span> T)</span></code></pre></div>
+</details>
 <pre><code>## [[1]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;                
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;                
 ## 
 ## [[2]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;                
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;                
 ## 
 ## [[3]]
-##  [1] &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;               &quot;ggraph&quot;               &quot;SeuratWrappers&quot;       &quot;monocle3&quot;            
-##  [7] &quot;ROCR&quot;                 &quot;KernSmooth&quot;           &quot;parallel&quot;             &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                
-## [13] &quot;lubridate&quot;            &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
-## [19] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                 &quot;cowplot&quot;             
-## [25] &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;               &quot;BiocParallel&quot;         &quot;data.table&quot;          
-## [31] &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot; &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;      
-## [37] &quot;matrixStats&quot;          &quot;Seurat&quot;               &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;       
-## [43] &quot;GenomeInfoDb&quot;         &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
-## [49] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;              &quot;base&quot;</code></pre>
+##  [1] &quot;EnhancedVolcano&quot;      &quot;ggrepel&quot;              &quot;HGNChelper&quot;           &quot;data.tree&quot;            &quot;igraph&quot;              
+##  [6] &quot;ggraph&quot;               &quot;parallel&quot;             &quot;SeuratWrappers&quot;       &quot;monocle3&quot;             &quot;ROCR&quot;                
+## [11] &quot;KernSmooth&quot;           &quot;fields&quot;               &quot;viridisLite&quot;          &quot;spam&quot;                 &quot;lubridate&quot;           
+## [16] &quot;forcats&quot;              &quot;dplyr&quot;                &quot;purrr&quot;                &quot;readr&quot;                &quot;tidyr&quot;               
+## [21] &quot;tibble&quot;               &quot;ggplot2&quot;              &quot;tidyverse&quot;            &quot;patchwork&quot;            &quot;grid&quot;                
+## [26] &quot;cowplot&quot;              &quot;stringr&quot;              &quot;DoubletFinder&quot;        &quot;celda&quot;                &quot;Matrix&quot;              
+## [31] &quot;BiocParallel&quot;         &quot;data.table&quot;           &quot;gridExtra&quot;            &quot;DropletUtils&quot;         &quot;SingleCellExperiment&quot;
+## [36] &quot;SummarizedExperiment&quot; &quot;Biobase&quot;              &quot;MatrixGenerics&quot;       &quot;matrixStats&quot;          &quot;Seurat&quot;              
+## [41] &quot;SeuratObject&quot;         &quot;sp&quot;                   &quot;rtracklayer&quot;          &quot;GenomicRanges&quot;        &quot;GenomeInfoDb&quot;        
+## [46] &quot;IRanges&quot;              &quot;S4Vectors&quot;            &quot;BiocGenerics&quot;         &quot;stats4&quot;               &quot;stats&quot;               
+## [51] &quot;graphics&quot;             &quot;grDevices&quot;            &quot;utils&quot;                &quot;datasets&quot;             &quot;methods&quot;             
+## [56] &quot;base&quot;</code></pre>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load gene set preparation function</span></span>
 <span id="cb98-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/gene_sets_prepare.R&quot;</span>)</span>
 <span id="cb98-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load cell type annotation function</span></span>
@@ -359,6 +393,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb98-70"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-70" aria-hidden="true" tabindex="-1"></a>seu_obj <span class="ot">&lt;-</span> <span class="fu">perform_sctype_analysis</span>(seu_obj, db_, tissue, gs_removal_list, </span>
 <span id="cb98-71"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-71" aria-hidden="true" tabindex="-1"></a>                        <span class="at">metadat_col_prefix =</span><span class="st">&quot;sctype_db&quot;</span>, <span class="at">figure_prefix =</span> <span class="st">&quot;Day_55&quot;</span>,</span>
 <span id="cb98-72"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb98-72" aria-hidden="true" tabindex="-1"></a>                        <span class="at">output_file =</span> <span class="st">&quot;Day_55&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;RNA_snn_res.0.9&quot;</span>)</span></code></pre></div>
+</details>
 <pre><code>## # A tibble: 8 × 3
 ## # Groups:   cluster [8]
 ##   cluster type                      scores
@@ -373,13 +408,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 8 1       Radial glial cells         94.0</code></pre>
 <p><img src="bookdownproj_files/figure-html/sctype-1.png" width="672" /></p>
 <p>Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutatergic Neuronal Markers “SLC17A7”,“SLC17A6”,“GRIN1”,“GRIN2B” are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are indeed glutamatergic neurons.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># markers for </span></span>
 <span id="cb100-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(seu_obj, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&quot;GRIN1&quot;</span>,<span class="st">&quot;GRIN2B&quot;</span>))</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot%20marker%20genes-1.png" width="672" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Change the names of ScType DF to Glutatertergic neurons in metadat</span></span>
 <span id="cb101-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb101-2" aria-hidden="true" tabindex="-1"></a>seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;Mature neurons&quot;</span>, <span class="st">&quot;Glutamatergic neurons&quot;</span>, seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db)</span></code></pre></div>
+</details>
 <p>We can now plot the UMAP to ensure we have update the metadata correctly</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(seu_obj, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(seu_obj, <span class="at">reduction =</span><span class="st">&quot;umap_iso&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/plot%20marker%20genes%20iso-1.png" width="960" /></p>
 <p>It is possible to explore the radial glial cells in more detail as there are likely more subtypes of radial glial cells in this data set. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.</p>
 <ol style="list-style-type: decimal">
@@ -389,8 +430,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>GABAergic neuorns</p></li>
 </ol>
 </div>
-<div id="plotting-trajectories" class="section level2 hasAnchor" number="5.3">
-<h2><span class="header-section-number">5.3</span> plotting trajectories<a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-trajectories" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="de-genes-and-isofroms-based-on-annotaed-cell-types." class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> DE genes and isofroms based on annotaed cell types.<a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated clustering and differential expression (DE) analysis based on clusters, provides a good indication of the cell types present in our data.</p>
+<p>With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.</p>
+<p>A common downstream approach involves generating volcano plots to visualize DE genes and isoforms. performing gene set enrichment analysis, In the following sections, we will demonstrate how to perform these types of analyses and explore their potential applications.</p>
+<p>The code chunk below provides an example of how to execute these analyses:</p>
+<div id="volcano-plots" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> Volcano plots<a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Fist lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.</p>
+<p>When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p &lt; 0.05) and log2 fold changes -1&lt; or &gt;1. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
+<span id="cb103-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter for the cell type of interest </span></span>
+<span id="cb103-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-4" aria-hidden="true" tabindex="-1"></a>glut_DE_iso <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_iso_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>)</span>
+<span id="cb103-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-5" aria-hidden="true" tabindex="-1"></a>glut_DE_gene <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_gene_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>) </span>
+<span id="cb103-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our colcano plot </span></span>
+<span id="cb103-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
+<span id="cb103-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
+<span id="cb103-10"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">1</span>,</span>
+<span id="cb103-11"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb103-12"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb103-13"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb103-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>))</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="672" /></p>
+<p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow suers to plot all the isofroms from agiven gene on the volacon plot making interpation of the data a bit cleaner. Here just like in @ref(Add isoform counts to Seurat object) we can see two differnt isofroms of the TBR1 gene showing regulation this cell type</p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
+<span id="cb104-2"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb104-3"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-4"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_iso,</span>
+<span id="cb104-5"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_iso<span class="sc">$</span>gene,</span>
+<span id="cb104-6"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">1</span>,</span>
+<span id="cb104-7"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb104-8"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb104-9"><a href="finding-differentially-expressed-genes-and-isoforms.html#cb104-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano2-1.png" width="672" /></p>
+<p>Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the <code>FindAllMarkers</code> function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis.</p>
+</div>
+<div id="gene-set-enrichemt" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Gene Set enrichemt<a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="tbd---manveer-to-complete." class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> TBD - Manveer to complete.<a href="finding-differentially-expressed-genes-and-isoforms.html#tbd---manveer-to-complete." class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>From this work we can see … ## plotting trajectories</p>
+</div>
 </div>
 <div id="finding-isofrms-of-interest" class="section level2 hasAnchor" number="5.4">
 <h2><span class="header-section-number">5.4</span> Finding isofrms of interest<a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h2>

@@ -160,6 +160,6 @@ FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap
 
 ```
 
-We observe that the expression of VIM and TBR genes is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the 'gene' value to your favorite gene and run the code chunk above.
+We observe that the expression of VIM and TBR1 are is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the 'gene' value to your favorite gene and run the code chunk above.
 
 Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster
