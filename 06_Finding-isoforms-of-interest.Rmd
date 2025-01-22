@@ -12,7 +12,7 @@ One of the most powerful aspects of long-read single-cell sequencing is its abil
 
 With long-read single-cell data, we have the ability to analyze all the isoforms expressed by a given gene. In our data we can see that most genes express more than one isoform.
 
-```{r , echo=FALSE}
+```{r, include=TRUE, echo=TRUE, warning=FALSE}
 
 #lets aggeragte the expresstion data by cell type 
 counts <- AggregateExpression(
@@ -125,7 +125,7 @@ ggplot(gene_transcript_counts, aes(x = rank(desc(unique_transcripts)), y = uniqu
 
 We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Lets look at gene *MACF1***.** This gene is know to.... [ref]. The gene seems to play some important role in neural migration which is not fully understood yet. First lets try and visualize the expression of these isofroms on a UMAP to see if we can uncover anything interesting. *MACF1* has 35 expressed isofroms so lets only plot the top 12 most highly expressed.
 
-```{r plotting MACF1, include=TRUE, echo=TRUE, warning=FALSE }
+```{r plotting MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=10 }
 features <- rownames(filt_seurat_object@assays$iso@features)
 
 # Define the gene of interest
@@ -164,7 +164,7 @@ FeaturePlot(
 
 Lets look at isofroms ENST00000564288.6 ENST00000361689.7 , ENST00000289893.8 and ENST00000524432.5 in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of ENST00000524432.5shows a cell type specific profile.
 
-```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE }
+```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=10 }
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000361689.7-MACF1", # most cell types
                     "ENST00000289893.8-MACF1", # msot cell types
@@ -223,7 +223,7 @@ Our pseudobulk expression analysis clearly demonstrates that **ENST00000524432.5
 
 Additionally, **ENST00000289893.8** shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the **Ensembl** data, accessible via the hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.
 
-```{r isoviz-plot, fig.cap="IsoViz visualization of 4 MACF1 isoforms.", out.width="600px"}
+```{r isoviz-plot, fig.cap="IsoViz visualization of 4 MACF1 isoforms.", out.width="1600px"}
 knitr::include_graphics("images/IsoVis_ENSG00000127603.png")
 ```
 
