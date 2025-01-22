@@ -11,6 +11,9 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
+bibliography: references.bib  # Link to your .bib file
+csl: apa.csl  # Citation style (APA in this case)
+link-citations: yes  # Optional: clickable citations in HTML output
 ---
 
 # Introduction
@@ -19,7 +22,7 @@ language:
 
 Welcome to the FLAMES single sample tutorial!
 
-In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES, to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.
+In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES [@tian2021], to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.
 
 This tutorial assumes that have;
 
@@ -27,16 +30,16 @@ Run the sc_long_pipeline (to process a single sample) and have set your config f
 
 `"bambu_isoform_identification": [true]`
 
-`"oarfish_quantification": [true]` And
+`"oarfish_quantification": [true]`
 
-That you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
+and that you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
 
-If you wish to run through the tutorial using the data provided in the 'data' folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command wget <https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz>
+If you wish to run through the tutorial using the data provided in the 'data' folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command `wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz`
 
 Much of the workflow will remain the same if you decide to use other tools for quantification or isoform discovery, which FLAMES does support, but these are the tools that in our hands perform the best and what we would recommend using at this stage.
 
-This single sample tutorial will use data generated in the Clark lab. This is small dataset of approximately 400 cells. The cells are at Day55 of a excitatory neural differentiation protocol. More information on the dataset and sequencing methodology can be found here ....
+This single sample tutorial will use data generated in the Clark lab from the University of Melbourne. This is small dataset of approximately 400 cells. The cells are at Day55 of a excitatory neural differentiation protocol. More information on the dataset and sequencing methodology and differentiation protocal can be found in this publication [@you2023a]
 
-If you find this tutorial useful please cite our work...
+If you find this tutorial useful please cite our work **[PLACE HOLDER]**
 
-If you have questions or suggestions please email '[sefi.prawer\@unimelb.edu.au](mailto:sefi.prawer@unimelb.edu.au){.email}' or leave a comment on this github page.
+If you have questions or suggestions please email [sefi.prawer\@unimelb.edu.au](mailto:sefi.prawer@unimelb.edu.au){.email} or leave a comment on this github page <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>.

@@ -1,5 +1,4 @@
 ---
-title: "setup"
 author: "Sefi"
 date: "`r Sys.Date()`"
 output: html_document

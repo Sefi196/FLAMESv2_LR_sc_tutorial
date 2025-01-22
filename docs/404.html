@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Page not found | Citations and Session info</title>
-  <meta name="description" content="Page not found | Citations and Session info" />
+  <title>Page not found | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Page not found | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Page not found | Citations and Session info" />
+  <meta property="og:title" content="Page not found | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Page not found | Citations and Session info" />
+  <meta name="twitter:title" content="Page not found | FLAMES Single-Cell RNA-seq Tutorial" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-10" />
+<meta name="date" content="2025-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -124,6 +124,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -138,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">FLAMES_tutorial</a></li>
+<li><a href="./">FLAMES single sample RNA-seq Tutorial</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -150,29 +172,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
 <ul>
-<li class="chapter" data-level="3.0.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.0.1</b> Empty droplets</a></li>
-<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.1</b> Removing ambient RNA contamination</a></li>
-<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.2</b> Standard gene QC to remove low quality cells</a></li>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> Finding differentially expressed genes and isoforms</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
-<li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
+<li class="chapter" data-level="5.4.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
-<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
-<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
+<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.5</b> plotting with ditoplot</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html"><i class="fa fa-check"></i><b>6</b> Citations and Session info</a>
+<li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> Exploring isoforms of interest</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#citations"><i class="fa fa-check"></i><b>6.1</b> Citations</a></li>
-<li class="chapter" data-level="6.2" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#session-info"><i class="fa fa-check"></i><b>6.2</b> Session info</a></li>
+<li class="chapter" data-level="6.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene"><i class="fa fa-check"></i><b>6.1</b> Isoforms expressed per gene</a></li>
+<li class="chapter" data-level="6.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms"><i class="fa fa-check"></i><b>6.2</b> Top 10 Genes with Most Isoforms</a></li>
+<li class="chapter" data-level="6.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms"><i class="fa fa-check"></i><b>6.3</b> Exploring MACF1 isoforms</a></li>
+<li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
+<li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>7</b> Session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -184,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Citations and Session info</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
           </h1>
         </div>
 

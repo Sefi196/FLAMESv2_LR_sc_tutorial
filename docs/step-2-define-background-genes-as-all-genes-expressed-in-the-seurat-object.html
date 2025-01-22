@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Step 2: Define background genes as all genes expressed in the Seurat object | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Chapter 6 Step 2: Define background genes as all genes expressed in the Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Step 2: Define background genes as all genes expressed in the Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Step 2: Define background genes as all genes expressed in the Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
+  
+  
+  
+
+<meta name="author" content="Sefi Prawer" />
+
+
+<meta name="date" content="2025-01-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="finding-differentially-expressed-genes-and-isoforms.html"/>
+<link rel="next" href="exploring-isoforms-of-interest.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FLAMES single sample RNA-seq Tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> Finding differentially expressed genes and isoforms</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3</b> Gene Set enrichemt</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><i class="fa fa-check"></i><b>6</b> Step 2: Define background genes as all genes expressed in the Seurat object</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>6.1</b> DE genes and isofroms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="6.2" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#volcano-plots"><i class="fa fa-check"></i><b>6.2</b> Volcano plots</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#findallmarkers-de"><i class="fa fa-check"></i><b>6.2.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="6.2.2" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#findmarkers-de"><i class="fa fa-check"></i><b>6.2.2</b> FindMarkers DE</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>6.3</b> plotting with ditoplot</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>7</b> Exploring isoforms of interest</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualzing-isoforms-expressed-from-a-gene"><i class="fa fa-check"></i><b>7.1</b> Visualzing isoforms expressed from a gene</a></li>
+<li class="chapter" data-level="7.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-novel-isoforrms"><i class="fa fa-check"></i><b>7.2</b> Exploring novel isoforrms</a></li>
+<li class="chapter" data-level="7.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#unique-isofrms-for-cell-types"><i class="fa fa-check"></i><b>7.3</b> Unique isofrms for cell types</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>8</b> Session info</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Step 2: Define background genes as all genes expressed in the Seurat object<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>background_genes &lt;- rownames(GetAssayData(seu_obj, assay = “RNA”, layer = “counts”))[ Matrix::rowSums(GetAssayData(seu_obj, assay = “RNA”, layer = “counts”) &gt; 0) &gt; 0]</p>
+<p># Filter for significant genes in the current cluster sig_genes &lt;- all_markers_gene_cluster %&gt;% filter(cluster == 0 &amp; p_val_adj &lt; 0.05) %&gt;% # Filter for cluster 0 and adjusted p-value &lt; 0.05 pull(gene) # Extract gene names</p>
+<p># Step 5: Run g:Profiler for pathway enrichment analysis pathway_results &lt;- gprofiler2::gost( query = sig_genes, ordered_query = TRUE, correction_method = ‘fdr’, custom_bg = background_genes, sources = c(“GO”, “KEGG”, “REACTOME”) )</p>
+<p># Prepare the data for plotting df_path &lt;- as_tibble(pathway_results<span class="math inline">\(result) %&gt;% filter(term_size &lt; 3000, term_size &gt; 5) %&gt;% filter(!term_id %in% unlist(pathway_results\)</span>parents))</p>
+<p># Step 6: Plot top 5 results per database df_path %&gt;% group_by(source) %&gt;% slice_min(p_value, n = 5, with_ties = TRUE) %&gt;% ungroup() %&gt;% ggplot(aes(x = reorder(term_name, -p_value), y = -log10(p_value), fill = source)) + geom_bar(stat = ‘identity’, position = position_identity()) + coord_flip() + theme_bw() + labs(x = ““) + facet_grid(source ~ ., space = ‘free’, scales = ‘free’) + theme(legend.position = ‘none’) + ggtitle(paste(”Pathway Enrichment for cluster 0”)) # Add title with cluster name</p>
+<p>Based on the enriched terms, we can confidently conclude that the cell type is neuronal. Both the KEGG and the <a href="GO:MF" class="uri">GO:MF</a> terms support the hypothesis that the cells in cluster 0 have glutamatergic synapses. This analysis can be done on all the clusters in the Seurat object.</p>
+<p>We can now change the Mature neurons label to Glutamatergic neurons and plot the updated UMAP.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Change the names of ScType DF to Glutatertergic neurons in metadat</span></span>
+<span id="cb112-2"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb112-2" aria-hidden="true" tabindex="-1"></a>seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;Mature neurons&quot;</span>, <span class="st">&quot;Glutamatergic neurons&quot;</span>, seu_obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db)</span>
+<span id="cb112-3"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb112-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-5"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(seu_obj, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(seu_obj, <span class="at">reduction =</span><span class="st">&quot;umap_iso&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/plot%20marker%20genes%20iso-1.png" width="960" /></p>
+<p>Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated cell type identification, differential expression (DE) analysis based on clusters and Gene set enrichment, provides a good indication of the cell types present in our data. It is possible to explore the radial glial cells in more detail as there are likely many subtypes. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.</p>
+<ol style="list-style-type: decimal">
+<li><p>Radial glial cells</p></li>
+<li><p>Immature neurons</p></li>
+<li><p>Glutamatergic neurons</p></li>
+<li><p>GABAergic neuorns</p></li>
+<li><p>Myelinating Schwann cells</p></li>
+</ol>
+<div id="de-genes-and-isofroms-based-on-annotaed-cell-types." class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> DE genes and isofroms based on annotaed cell types.<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#de-genes-and-isofroms-based-on-annotaed-cell-types." class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.</p>
+<p>A common downstream approach involves generating volcano plots to visualize DE genes and isoforms. performing gene set enrichment analysis, In the following sections, we will demonstrate how to perform these types of analyses and explore their potential applications.</p>
+<p>The code chunk below provides an example of how to execute these analyses:</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Set identities based on cell type</span></span>
+<span id="cb113-2"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&quot;sctype_db&quot;</span></span>
+<span id="cb113-4"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-5"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-5" aria-hidden="true" tabindex="-1"></a>all_markers_gene_celltype <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(</span>
+<span id="cb113-6"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> seu_obj, </span>
+<span id="cb113-7"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span>, </span>
+<span id="cb113-8"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>,  <span class="co"># Replace with your metadata column name</span></span>
+<span id="cb113-9"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, </span>
+<span id="cb113-10"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">min.pct =</span> <span class="fl">0.20</span>, </span>
+<span id="cb113-11"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">only.pos =</span> <span class="cn">FALSE</span> <span class="co"># changed this to false to get negatively DE genes to</span></span>
+<span id="cb113-12"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb113-13"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-14"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-14" aria-hidden="true" tabindex="-1"></a>all_markers_iso_celltype <span class="ot">&lt;-</span> <span class="fu">FindAllMarkers</span>(</span>
+<span id="cb113-15"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">object =</span> seu_obj, </span>
+<span id="cb113-16"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, </span>
+<span id="cb113-17"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>,  <span class="co"># Replace with your metadata column name</span></span>
+<span id="cb113-18"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, </span>
+<span id="cb113-19"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">min.pct =</span> <span class="fl">0.20</span>, </span>
+<span id="cb113-20"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">only.pos =</span> <span class="cn">FALSE</span> <span class="co"># changed this to false to get negatively DE genes to</span></span>
+<span id="cb113-21"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb113-22"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-23"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-23" aria-hidden="true" tabindex="-1"></a><span class="co">#save the list of DE genes </span></span>
+<span id="cb113-24"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-24" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_gene_celltype, <span class="st">&quot;./output_files/DE/all_markers_one_gene_celltype.csv&quot;</span>)</span>
+<span id="cb113-25"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb113-25" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(all_markers_iso_celltype, <span class="st">&quot;./output_files/DE/all_markers_one_iso_celltype.csv&quot;</span>)</span></code></pre></div>
+</details>
+</div>
+<div id="volcano-plots" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Volcano plots<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#volcano-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="findallmarkers-de" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> FIndAllMarkers DE<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#findallmarkers-de" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.</p>
+<p>When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p &lt; 0.05) and log2 fold changes -2&lt; or &gt;2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
+<span id="cb114-2"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter for the cell type of interest </span></span>
+<span id="cb114-4"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-4" aria-hidden="true" tabindex="-1"></a>glut_DE_iso <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_iso_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>)</span>
+<span id="cb114-5"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-5" aria-hidden="true" tabindex="-1"></a>glut_DE_gene <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_gene_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>) </span>
+<span id="cb114-6"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-7"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our colcano plot </span></span>
+<span id="cb114-8"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
+<span id="cb114-9"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
+<span id="cb114-10"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb114-11"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb114-12"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb114-13"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>),</span>
+<span id="cb114-14"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb114-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Genes </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="768" /></p>
+<p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow users to plot all the isofroms from a given gene on the Volaco plot making interpretation of the data a bit cleaner. Here just like in <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets">3.1</a> <strong>(this is wrong just cheeking the citation works)</strong> we can see two different isoforms of the TBR1 gene showing regulation this cell type</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
+<span id="cb115-2"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb115-3"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_iso,</span>
+<span id="cb115-5"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_iso<span class="sc">$</span>gene,</span>
+<span id="cb115-6"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb115-7"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb115-8"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb115-9"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list,</span>
+<span id="cb115-10"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb115-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano2-1.png" width="768" /></p>
+</div>
+<div id="findmarkers-de" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> FindMarkers DE<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#findmarkers-de" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the <code>FindAllMarkers</code> function, which tests the cell type of interest against all other cells. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the <code>FindMarkers</code> function.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;RNA&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb116-2"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-2" aria-hidden="true" tabindex="-1"></a>glu_RG_gene <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj,</span>
+<span id="cb116-3"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb116-4"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb116-5"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb116-6"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-7"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;iso&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb116-8"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-8" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj, <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb116-9"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb116-10"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb116-11"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-12"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-13"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots # to plot at gene level</span></span>
+<span id="cb116-14"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-14" aria-hidden="true" tabindex="-1"></a><span class="co">#EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),</span></span>
+<span id="cb116-15"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                x=&#39;avg_log2FC&#39;, y=&#39;p_val_adj&#39;,</span></span>
+<span id="cb116-16"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                #selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb116-17"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                pCutoff=0.05, FCcutoff=2,</span></span>
+<span id="cb116-18"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                title = &quot;Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial #Cells&quot;)</span></span>
+<span id="cb116-19"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-20"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots</span></span>
+<span id="cb116-21"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-21" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
+<span id="cb116-22"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
+<span id="cb116-23"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-23" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb116-24"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb116-25"><a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#cb116-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> Glutamatergic Neurons vs Radial glial Cells&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/valocano3-1.png" width="768" /></p>
+<p>The volcano plot above is a useful tool for visualizing differentially expressed (DE) isoforms between two cell types. In this plot, red-labeled isoforms on the right-hand side indicate those that are upregulated in glutamatergic neurons compared to radial glial cells, while red dots on the left represent isoforms that are upregulated in radial glial cells compared to glutamatergic neurons. This analysis serves as an initial overview, and users can further explore the DE list (<code>glu_RG_iso</code>) to select specific isoforms of interest for more detailed analysis.</p>
+</div>
+</div>
+<div id="plotting-with-ditoplot" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> plotting with ditoplot<a href="step-2-define-background-genes-as-all-genes-expressed-in-the-seurat-object.html#plotting-with-ditoplot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploring-isoforms-of-interest.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/05_Finding_differentially_expressed_genes_and_isoforms.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/05_Finding_differentially_expressed_genes_and_isoforms.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

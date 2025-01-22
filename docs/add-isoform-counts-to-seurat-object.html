@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Add isoform counts to Seurat object | Citations and Session info</title>
-  <meta name="description" content="Chapter 4 Add isoform counts to Seurat object | Citations and Session info" />
+  <title>Chapter 4 Add isoform counts to Seurat object | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Chapter 4 Add isoform counts to Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Add isoform counts to Seurat object | Citations and Session info" />
+  <meta property="og:title" content="Chapter 4 Add isoform counts to Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Add isoform counts to Seurat object | Citations and Session info" />
+  <meta name="twitter:title" content="Chapter 4 Add isoform counts to Seurat object | FLAMES Single-Cell RNA-seq Tutorial" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-10" />
+<meta name="date" content="2025-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -124,6 +124,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 </style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -138,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">FLAMES_tutorial</a></li>
+<li><a href="./">FLAMES single sample RNA-seq Tutorial</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -150,29 +172,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
 <ul>
-<li class="chapter" data-level="3.0.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.0.1</b> Empty droplets</a></li>
-<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.1</b> Removing ambient RNA contamination</a></li>
-<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.2</b> Standard gene QC to remove low quality cells</a></li>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> Finding differentially expressed genes and isoforms</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
 <li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.3.1</b> Volcano plots</a></li>
-<li class="chapter" data-level="5.3.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#gene-set-enrichemt"><i class="fa fa-check"></i><b>5.3.2</b> Gene Set enrichemt</a></li>
+<li class="chapter" data-level="5.4.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#finding-isofrms-of-interest"><i class="fa fa-check"></i><b>5.4</b> Finding isofrms of interest</a></li>
-<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#section"><i class="fa fa-check"></i><b>5.5</b> </a></li>
-<li class="chapter" data-level="5.6" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.6</b> plotting with ditoplot</a></li>
+<li class="chapter" data-level="5.5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#plotting-with-ditoplot"><i class="fa fa-check"></i><b>5.5</b> plotting with ditoplot</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html"><i class="fa fa-check"></i><b>6</b> Citations and Session info</a>
+<li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> Exploring isoforms of interest</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#citations"><i class="fa fa-check"></i><b>6.1</b> Citations</a></li>
-<li class="chapter" data-level="6.2" data-path="citations-and-session-info.html"><a href="citations-and-session-info.html#session-info"><i class="fa fa-check"></i><b>6.2</b> Session info</a></li>
+<li class="chapter" data-level="6.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene"><i class="fa fa-check"></i><b>6.1</b> Isoforms expressed per gene</a></li>
+<li class="chapter" data-level="6.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms"><i class="fa fa-check"></i><b>6.2</b> Top 10 Genes with Most Isoforms</a></li>
+<li class="chapter" data-level="6.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms"><i class="fa fa-check"></i><b>6.3</b> Exploring MACF1 isoforms</a></li>
+<li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
+<li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>7</b> Session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -184,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Citations and Session info</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
           </h1>
         </div>
 
@@ -195,25 +225,183 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="add-isoform-counts-to-seurat-object" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Add isoform counts to Seurat object<a href="add-isoform-counts-to-seurat-object.html#add-isoform-counts-to-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
+<div id="create-a-seurat-object-with-isoform-expression-data" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Create a Seurat object with isoform expression data<a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we have 309 high-quality cells for our downstream analysis, let’s incorporate isoform-level information into our Seurat object. The first step is to read in the outputs from FLAMES, which provides isoform-level counts from Oarfish. We’ll create a new Seurat object for this data, specifically for the isoform counts, and add it as a new assay to our existing object. This setup will allow us to explore both gene-level and isoform-level counts within a single Seurat object, giving us a more comprehensive view of our data.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="add-isoform-counts-to-seurat-object.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">#This function reads in Oarfish count files and creates a csv file of count data. The function also appends the gene symbol to the ENSTID</span></span>
+<span id="cb91-2"><a href="add-isoform-counts-to-seurat-object.html#cb91-2" aria-hidden="true" tabindex="-1"></a>process_oarfish_files_to_counts_matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(flames_output_folder, sample_name, output_dir) {</span>
+<span id="cb91-3"><a href="add-isoform-counts-to-seurat-object.html#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-4"><a href="add-isoform-counts-to-seurat-object.html#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read in the resource table (transcript_id, gene_id, gene_symbol)</span></span>
+<span id="cb91-5"><a href="add-isoform-counts-to-seurat-object.html#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the file paths based on the sample name</span></span>
+<span id="cb91-6"><a href="add-isoform-counts-to-seurat-object.html#cb91-6" aria-hidden="true" tabindex="-1"></a>  count_matrix_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(flames_output_folder, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.count.mtx&quot;</span>))</span>
+<span id="cb91-7"><a href="add-isoform-counts-to-seurat-object.html#cb91-7" aria-hidden="true" tabindex="-1"></a>  barcodes_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(flames_output_folder, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.barcodes.txt&quot;</span>))</span>
+<span id="cb91-8"><a href="add-isoform-counts-to-seurat-object.html#cb91-8" aria-hidden="true" tabindex="-1"></a>  features_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(flames_output_folder, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.features.txt&quot;</span>))</span>
+<span id="cb91-9"><a href="add-isoform-counts-to-seurat-object.html#cb91-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-10"><a href="add-isoform-counts-to-seurat-object.html#cb91-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the data</span></span>
+<span id="cb91-11"><a href="add-isoform-counts-to-seurat-object.html#cb91-11" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">readMM</span>(count_matrix_path)</span>
+<span id="cb91-12"><a href="add-isoform-counts-to-seurat-object.html#cb91-12" aria-hidden="true" tabindex="-1"></a>  barcodes <span class="ot">&lt;-</span> <span class="fu">readLines</span>(barcodes_path)</span>
+<span id="cb91-13"><a href="add-isoform-counts-to-seurat-object.html#cb91-13" aria-hidden="true" tabindex="-1"></a>  features <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(features_path, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb91-14"><a href="add-isoform-counts-to-seurat-object.html#cb91-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-15"><a href="add-isoform-counts-to-seurat-object.html#cb91-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Transpose the matrix for Seurat compatibility</span></span>
+<span id="cb91-16"><a href="add-isoform-counts-to-seurat-object.html#cb91-16" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">t</span>(counts)</span>
+<span id="cb91-17"><a href="add-isoform-counts-to-seurat-object.html#cb91-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-18"><a href="add-isoform-counts-to-seurat-object.html#cb91-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set row and column names</span></span>
+<span id="cb91-19"><a href="add-isoform-counts-to-seurat-object.html#cb91-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> features<span class="sc">$</span>V1</span>
+<span id="cb91-20"><a href="add-isoform-counts-to-seurat-object.html#cb91-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(counts) <span class="ot">&lt;-</span> barcodes</span>
+<span id="cb91-21"><a href="add-isoform-counts-to-seurat-object.html#cb91-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-22"><a href="add-isoform-counts-to-seurat-object.html#cb91-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
+<span id="cb91-23"><a href="add-isoform-counts-to-seurat-object.html#cb91-23" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts)</span>
+<span id="cb91-24"><a href="add-isoform-counts-to-seurat-object.html#cb91-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-25"><a href="add-isoform-counts-to-seurat-object.html#cb91-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add transcript_id as the first column</span></span>
+<span id="cb91-26"><a href="add-isoform-counts-to-seurat-object.html#cb91-26" aria-hidden="true" tabindex="-1"></a>  counts_df<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="fu">rownames</span>(counts_df)</span>
+<span id="cb91-27"><a href="add-isoform-counts-to-seurat-object.html#cb91-27" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> counts_df[, <span class="fu">c</span>(<span class="fu">ncol</span>(counts_df), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(counts_df)<span class="sc">-</span><span class="dv">1</span>))]</span>
+<span id="cb91-28"><a href="add-isoform-counts-to-seurat-object.html#cb91-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-29"><a href="add-isoform-counts-to-seurat-object.html#cb91-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Merge with the resource table to add gene symbols</span></span>
+<span id="cb91-30"><a href="add-isoform-counts-to-seurat-object.html#cb91-30" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> counts_df <span class="sc">%&gt;%</span></span>
+<span id="cb91-31"><a href="add-isoform-counts-to-seurat-object.html#cb91-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(isoform_gene_dict, <span class="at">by =</span> <span class="st">&quot;transcript_id&quot;</span>)</span>
+<span id="cb91-32"><a href="add-isoform-counts-to-seurat-object.html#cb91-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-33"><a href="add-isoform-counts-to-seurat-object.html#cb91-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the gene_id column and reorder the columns</span></span>
+<span id="cb91-34"><a href="add-isoform-counts-to-seurat-object.html#cb91-34" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb91-35"><a href="add-isoform-counts-to-seurat-object.html#cb91-35" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> df_genesymbol[, <span class="fu">c</span>(<span class="fu">ncol</span>(df_genesymbol), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(df_genesymbol)<span class="sc">-</span><span class="dv">1</span>))]</span>
+<span id="cb91-36"><a href="add-isoform-counts-to-seurat-object.html#cb91-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-37"><a href="add-isoform-counts-to-seurat-object.html#cb91-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update row names to include gene symbol instead of transcript_id</span></span>
+<span id="cb91-38"><a href="add-isoform-counts-to-seurat-object.html#cb91-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(df_genesymbol) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(df_genesymbol<span class="sc">$</span>transcript_id, <span class="st">&quot;_&quot;</span>, df_genesymbol<span class="sc">$</span>gene_symbol)</span>
+<span id="cb91-39"><a href="add-isoform-counts-to-seurat-object.html#cb91-39" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb91-40"><a href="add-isoform-counts-to-seurat-object.html#cb91-40" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_symbol <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb91-41"><a href="add-isoform-counts-to-seurat-object.html#cb91-41" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-42"><a href="add-isoform-counts-to-seurat-object.html#cb91-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write the output to a CSV file</span></span>
+<span id="cb91-43"><a href="add-isoform-counts-to-seurat-object.html#cb91-43" aria-hidden="true" tabindex="-1"></a>  output_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
+<span id="cb91-44"><a href="add-isoform-counts-to-seurat-object.html#cb91-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(df_genesymbol, output_path)</span>
+<span id="cb91-45"><a href="add-isoform-counts-to-seurat-object.html#cb91-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-46"><a href="add-isoform-counts-to-seurat-object.html#cb91-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Processed sample:&quot;</span>, sample_name, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Output saved to:&quot;</span>, output_path, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb91-47"><a href="add-isoform-counts-to-seurat-object.html#cb91-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb91-48"><a href="add-isoform-counts-to-seurat-object.html#cb91-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(df_genesymbol)</span>
+<span id="cb91-49"><a href="add-isoform-counts-to-seurat-object.html#cb91-49" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb91-50"><a href="add-isoform-counts-to-seurat-object.html#cb91-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-51"><a href="add-isoform-counts-to-seurat-object.html#cb91-51" aria-hidden="true" tabindex="-1"></a>oarfish_counts <span class="ot">&lt;-</span> <span class="fu">process_oarfish_files_to_counts_matrix</span>(</span>
+<span id="cb91-52"><a href="add-isoform-counts-to-seurat-object.html#cb91-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">flames_output_folder =</span> <span class="st">&quot;/data/scratch/users/yairp/FLAMES_Day55/outs/&quot;</span>,</span>
+<span id="cb91-53"><a href="add-isoform-counts-to-seurat-object.html#cb91-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_name =</span> <span class="st">&quot;oarfish&quot;</span>,</span>
+<span id="cb91-54"><a href="add-isoform-counts-to-seurat-object.html#cb91-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">output_dir =</span> <span class="st">&quot;./output_files/counts/&quot;</span></span>
+<span id="cb91-55"><a href="add-isoform-counts-to-seurat-object.html#cb91-55" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+</details>
 <pre><code>## Processed sample: oarfish 
 ## Output saved to: ./output_files/counts//gene_symbol_oarfish_counts.csv</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="add-isoform-counts-to-seurat-object.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Seurat object with iso counts</span></span>
+<span id="cb93-2"><a href="add-isoform-counts-to-seurat-object.html#cb93-2" aria-hidden="true" tabindex="-1"></a>iso_seurat_obj <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> oarfish_counts, <span class="at">project =</span> sample_id)</span>
+<span id="cb93-3"><a href="add-isoform-counts-to-seurat-object.html#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-4"><a href="add-isoform-counts-to-seurat-object.html#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(iso_seurat_obj, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>), <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (isoform level) BEFORE Filtering&quot;</span>)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/process_oarfish_file-1.png" width="672" /></p>
+</div>
+<div id="filter-the-new-seurat-object-based-on-gene-level-information" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Filter the new Seurat object based on gene level information<a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
 <p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="add-isoform-counts-to-seurat-object.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### isofrom assay </span></span>
+<span id="cb94-2"><a href="add-isoform-counts-to-seurat-object.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="do">## filter the data so iso and gene cells match</span></span>
+<span id="cb94-3"><a href="add-isoform-counts-to-seurat-object.html#cb94-3" aria-hidden="true" tabindex="-1"></a>oarfish_iso_matched_gene <span class="ot">&lt;-</span> <span class="fu">subset</span>(iso_seurat_obj, <span class="at">cells =</span>filt_seurat_object<span class="sc">@</span>graphs[[<span class="st">&quot;RNA_nn&quot;</span>]]<span class="sc">@</span>Dimnames[[<span class="dv">1</span>]])</span>
+<span id="cb94-4"><a href="add-isoform-counts-to-seurat-object.html#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-5"><a href="add-isoform-counts-to-seurat-object.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Rejoin data sets after integration</span></span>
+<span id="cb94-6"><a href="add-isoform-counts-to-seurat-object.html#cb94-6" aria-hidden="true" tabindex="-1"></a>oarfish_iso_matched_gene <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(oarfish_iso_matched_gene)</span>
+<span id="cb94-7"><a href="add-isoform-counts-to-seurat-object.html#cb94-7" aria-hidden="true" tabindex="-1"></a>counts_table_iso <span class="ot">&lt;-</span> oarfish_iso_matched_gene[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">$</span>counts</span>
+<span id="cb94-8"><a href="add-isoform-counts-to-seurat-object.html#cb94-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-9"><a href="add-isoform-counts-to-seurat-object.html#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(counts_table_iso) <span class="ot">-&gt;</span> df_iso</span>
+<span id="cb94-10"><a href="add-isoform-counts-to-seurat-object.html#cb94-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-11"><a href="add-isoform-counts-to-seurat-object.html#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove rows where the sum is 0</span></span>
+<span id="cb94-12"><a href="add-isoform-counts-to-seurat-object.html#cb94-12" aria-hidden="true" tabindex="-1"></a>df_iso <span class="ot">&lt;-</span> df_iso[<span class="fu">rowSums</span>(df_iso) <span class="sc">!=</span> <span class="dv">0</span>, ]</span>
+<span id="cb94-13"><a href="add-isoform-counts-to-seurat-object.html#cb94-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-14"><a href="add-isoform-counts-to-seurat-object.html#cb94-14" aria-hidden="true" tabindex="-1"></a>filt_seurat_object[[<span class="st">&quot;iso&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">CreateAssay5Object</span>(<span class="at">counts =</span> df_iso)</span>
+<span id="cb94-15"><a href="add-isoform-counts-to-seurat-object.html#cb94-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-16"><a href="add-isoform-counts-to-seurat-object.html#cb94-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize the new assay data</span></span>
+<span id="cb94-17"><a href="add-isoform-counts-to-seurat-object.html#cb94-17" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb94-18"><a href="add-isoform-counts-to-seurat-object.html#cb94-18" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb94-19"><a href="add-isoform-counts-to-seurat-object.html#cb94-19" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb94-20"><a href="add-isoform-counts-to-seurat-object.html#cb94-20" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;pca_iso&quot;</span>)</span>
+<span id="cb94-21"><a href="add-isoform-counts-to-seurat-object.html#cb94-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-22"><a href="add-isoform-counts-to-seurat-object.html#cb94-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Run UMAP</span></span>
+<span id="cb94-23"><a href="add-isoform-counts-to-seurat-object.html#cb94-23" aria-hidden="true" tabindex="-1"></a>filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;pca_iso&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>,</span>
+<span id="cb94-24"><a href="add-isoform-counts-to-seurat-object.html#cb94-24" aria-hidden="true" tabindex="-1"></a>                             <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap_iso&quot;</span>)</span>
+<span id="cb94-25"><a href="add-isoform-counts-to-seurat-object.html#cb94-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-26"><a href="add-isoform-counts-to-seurat-object.html#cb94-26" aria-hidden="true" tabindex="-1"></a><span class="co">#check to see that we have two assays</span></span>
+<span id="cb94-27"><a href="add-isoform-counts-to-seurat-object.html#cb94-27" aria-hidden="true" tabindex="-1"></a>filt_seurat_object</span></code></pre></div>
+</details>
 <pre><code>## An object of class Seurat 
 ## 93557 features across 309 samples within 3 assays 
 ## Active assay: RNA (14906 features, 2000 variable features)
 ##  3 layers present: counts, data, scale.data
 ##  2 other assays present: joined, iso
 ##  4 dimensional reductions calculated: pca, umap, pca_iso, umap_iso</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="add-isoform-counts-to-seurat-object.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># visualize the UMAP for Gene and isoform</span></span>
+<span id="cb96-2"><a href="add-isoform-counts-to-seurat-object.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(filt_seurat_object, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;UMAP gene level clustering&quot;</span>) <span class="sc">|</span></span>
+<span id="cb96-3"><a href="add-isoform-counts-to-seurat-object.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(filt_seurat_object, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;UMAP isoform level clustering&quot;</span>)</span></code></pre></div>
+</details>
 <p><img src="bookdownproj_files/figure-html/isoform_assay-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="add-isoform-counts-to-seurat-object.html#cb97-1" aria-hidden="true" tabindex="-1"></a>seu_obj <span class="ot">&lt;-</span> filt_seurat_object</span>
+<span id="cb97-2"><a href="add-isoform-counts-to-seurat-object.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(seu_obj, <span class="at">file =</span> <span class="st">&quot;./output_files/seu_objects/Day55_tutorial_gene_and_isoform_seurat.rds&quot;</span>)</span></code></pre></div>
+</details>
+</div>
+<div id="add-the-isoform-assay-to-the-seurat-object" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Add the isoform assay to the Seurat object<a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Great! We now have an object containing both assays, so we can start by plotting some of our favorite genes and isoforms. This setup gives us the flexibility to visualize gene expression on isoform UMAPs and vice versa, allowing us to integrate and explore the expression of both gene and isoform expression within single cells on the same dimensional reduction.</p>
 <p>Let’s begin by plotting VIM and TBR1. VIM is a marker of progenitor cells, while TBR1 is a marker of deep layer neurons.</p>
-<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="add-isoform-counts-to-seurat-object.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="do">####### test plotting on iso assays ##</span></span>
+<span id="cb98-2"><a href="add-isoform-counts-to-seurat-object.html#cb98-2" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">@</span>features)</span>
+<span id="cb98-3"><a href="add-isoform-counts-to-seurat-object.html#cb98-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-4"><a href="add-isoform-counts-to-seurat-object.html#cb98-4" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;VIM&quot;</span></span>
+<span id="cb98-5"><a href="add-isoform-counts-to-seurat-object.html#cb98-5" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb98-6"><a href="add-isoform-counts-to-seurat-object.html#cb98-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-7"><a href="add-isoform-counts-to-seurat-object.html#cb98-7" aria-hidden="true" tabindex="-1"></a><span class="co">#We can now plot our favorite gene and all its corresponding isoforms on either the gene or isoform UMAPs. To switch between them, simply change the reduction argument to the desired UMAP (either the gene or isoform reduction)</span></span>
+<span id="cb98-8"><a href="add-isoform-counts-to-seurat-object.html#cb98-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-9"><a href="add-isoform-counts-to-seurat-object.html#cb98-9" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> plot_features_list, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>) </span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="add-isoform-counts-to-seurat-object.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> gene, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-2.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="add-isoform-counts-to-seurat-object.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets also plot the isoform data on the gene level clsuters.</span></span>
+<span id="cb100-2"><a href="add-isoform-counts-to-seurat-object.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> plot_features_list, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span></span>
+<span id="cb100-3"><a href="add-isoform-counts-to-seurat-object.html#cb100-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb100-4"><a href="add-isoform-counts-to-seurat-object.html#cb100-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&#39;VIM isoform expresstion plotted on gene level clusters&#39;</span>,</span>
+<span id="cb100-5"><a href="add-isoform-counts-to-seurat-object.html#cb100-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#caption = &#39;made with patchwork&#39;,</span></span>
+<span id="cb100-6"><a href="add-isoform-counts-to-seurat-object.html#cb100-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span>
+<span id="cb100-7"><a href="add-isoform-counts-to-seurat-object.html#cb100-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-3.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="add-isoform-counts-to-seurat-object.html#cb101-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
+<span id="cb101-2"><a href="add-isoform-counts-to-seurat-object.html#cb101-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb101-3"><a href="add-isoform-counts-to-seurat-object.html#cb101-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="add-isoform-counts-to-seurat-object.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co">#We can now plot our favorite gene and all its corresponding isoforms on either the gene or isoform UMAPs. To switch between them, simply change the reduction argument to the desired UMAP (either the gene or isoform reduction)</span></span>
+<span id="cb101-5"><a href="add-isoform-counts-to-seurat-object.html#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-6"><a href="add-isoform-counts-to-seurat-object.html#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> plot_features_list, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>) </span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-4.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="add-isoform-counts-to-seurat-object.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> gene, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-5.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="add-isoform-counts-to-seurat-object.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets also plot the isoform data on the gene level clsuters.</span></span>
+<span id="cb103-2"><a href="add-isoform-counts-to-seurat-object.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> plot_features_list, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span></span>
+<span id="cb103-3"><a href="add-isoform-counts-to-seurat-object.html#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
+<span id="cb103-4"><a href="add-isoform-counts-to-seurat-object.html#cb103-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&#39;TBR1 isoform expresstion plotted on gene level clusters&#39;</span>,</span>
+<span id="cb103-5"><a href="add-isoform-counts-to-seurat-object.html#cb103-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#caption = &#39;made with patchwork&#39;,</span></span>
+<span id="cb103-6"><a href="add-isoform-counts-to-seurat-object.html#cb103-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span>
+<span id="cb103-7"><a href="add-isoform-counts-to-seurat-object.html#cb103-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/ploting_features-6.png" width="672" /></p>
 <p>We observe that the expression of VIM and TBR1 are is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the ‘gene’ value to your favorite gene and run the code chunk above.</p>
 <p>Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster</p>
 
+</div>
 </div>
             </section>
 

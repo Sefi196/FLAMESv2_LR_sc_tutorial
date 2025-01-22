@@ -1,5 +1,4 @@
 ---
-title: "Removing sources of unwanted noise from the single cell dataset"
 author: "Sefi Prawer"
 date: "`r Sys.Date()`"
 output: html_document
@@ -17,7 +16,7 @@ Now we will do some initial prepossessing of single cell data to ensure we have 
 
 3.  Removing low quality cells that
 
-### Empty droplets
+## Empty droplets
 
 This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.
 
@@ -180,7 +179,6 @@ Now we will remove ambient RNA contamination using decontX (or SoupX). This step
 ```{r barcode-rank-plot, fig.cap="Barcode rank plot produced by FLAMES.", out.width="600px"}
 knitr::include_graphics("images/knee_plot.png")
 ```
-
 
 ```{r decontX, echo=TRUE, cache=TRUE}
 # Function to run decontX on a single Seurat object

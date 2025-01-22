@@ -1,15 +1,13 @@
 ---
-title: "Citations and Session info"
 author: "Sefi Prawer"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    number_sections: true
+bookdown::chapter_name: NULL
 ---
 
-# Citations and Session info
-
-## Citations
-
-## Session info
+# Session info
 
 ```{r setup, include=TRUE, echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)

@@ -1,5 +1,4 @@
 ---
-title: "Finding differentially expressed genes and isoforms"
 author: "Sefi Prawer"
 date: "`r Sys.Date()`"
 output: html_document
@@ -11,23 +10,21 @@ output: html_document
 
 ## Differentially expressed genes by cluster identity
 
-first we will look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate which cell type each cluster belongs to. We will also look at DE isoforms using the same methodology
+First we can look at marker genes for each cluster. This will help us identify which genes are DE in each cluster and indicate the identity of each cluster. We will also look at DE isoforms using the same methodology.
 
 ```{r perform_marker_gene_analysis, echo=TRUE, message=FALSE, warning=FALSE}
 #Find markers for all clusters using the "RNA" and "iso" assay
 
-all_markers_gene <- FindAllMarkers(seu_obj, assay = "RNA", do.print = TRUE,
+all_markers_gene_cluster <- FindAllMarkers(seu_obj, assay = "RNA", do.print = TRUE,
                                        logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% dplyr::filter(p_val_adj < 0.05)
 
-all_markers_iso <- FindAllMarkers(seu_obj, assay = "iso", do.print = TRUE,
+all_markers_iso_cluster <- FindAllMarkers(seu_obj, assay = "iso", do.print = TRUE,
                                       logfc.threshold = 0.5, min.pct = 0.20, only.pos = TRUE) %>% dplyr::filter(p_val_adj < 0.05)
 
 #save the list of DE genes 
-write.csv(all_markers_gene, "./output_files/DE/all_markers_one_gene.csv")
-write.csv(all_markers_iso, "./output_files/DE/all_markers_one_iso.csv")
+write.csv(all_markers_gene_cluster, "./output_files/DE/all_markers_one_gene.csv")
+write.csv(all_markers_iso_cluster, "./output_files/DE/all_markers_one_iso.csv")
 ```
-
-#notes - could add other DE options maybe add this later
 
 ## Identifying cell types
 
@@ -113,27 +110,71 @@ seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list,
 
 ```
 
-Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutatergic Neuronal Markers "SLC17A7","SLC17A6","GRIN1","GRIN2B" are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are indeed glutamatergic neurons.
+Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutatergic Neuronal Markers "SLC17A7","SLC17A6","GRIN1","GRIN2B" are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are likely glutamatergic neurons.
 
 ```{r plot marker genes, echo=TRUE, message=FALSE, warning=FALSE}
 # markers for 
 FeaturePlot(seu_obj, features = c("SLC17A7","SLC17A6","GRIN1","GRIN2B"))
+```
+```{r GO, echo=TRUE, message=FALSE, warning=FALSE}
+library(gprofiler2)
 
-## Change the names of ScType DF to Glutatertergic neurons in metadat
-seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", seu_obj@meta.data$sctype_db)
+background_genes <- rownames(GetAssayData(seu_obj, assay = "RNA", layer = "counts"))[
+  Matrix::rowSums(GetAssayData(seu_obj, assay = "RNA", layer = "counts") > 0) > 0
+]
+  
+set_base_url("https://biit.cs.ut.ee/gprofiler_beta")
+
+# Filter for significant genes in the current cluster
+sig_genes <- all_markers_gene_cluster %>%
+    filter(cluster == 0 & p_val_adj < 0.05) %>%  # Filter for cluster 0 and adjusted p-value < 0.05
+    pull(gene)  # Extract gene names
+  # Step 5: Run g:Profiler for pathway enrichment analysis
+  pathway_results <- gprofiler2::gost(
+    query = sig_genes,
+    ordered_query = TRUE,
+    correction_method = 'fdr',
+    custom_bg = background_genes,
+    sources = c("GO", "KEGG", "REACTOME")
+  )
+  
+  # Prepare the data for plotting
+  df_path <- as_tibble(pathway_results$result) %>%
+    filter(term_size < 3000, term_size > 5) %>%
+    filter(!term_id %in% unlist(pathway_results$parents))
+  
+  # Step 6: Plot top 5 results per database
+ df_path %>%
+    group_by(source) %>%
+    slice_min(p_value, n = 5, with_ties = TRUE) %>%
+    ungroup() %>%
+    ggplot(aes(x = reorder(term_name, -p_value), y = -log10(p_value), fill = source)) +
+    geom_bar(stat = 'identity', position = position_identity()) +
+    coord_flip() +
+    theme_bw() +
+    labs(x = "") +
+    facet_grid(source ~ ., space = 'free', scales = 'free') +
+    theme(legend.position = 'none') +
+    ggtitle(paste("Pathway Enrichment for cluster 0"))  # Add title with cluster name
+  
 
 ```
 
-We can now plot the UMAP to ensure we have update the metadata correctly
+Based on the enriched terms, we can confidently conclude that the cell type is neuronal. Both the KEGG and the <GO:MF> terms support the hypothesis that the cells in cluster 0 have glutamatergic synapses. This analysis can be done on all the clusters in the Seurat object.
+
+We can now change the Mature neurons label to Glutamatergic neurons and plot the updated UMAP.
 
 ```{r plot marker genes iso,  fig.height=5, fig.width=10}
+## Change the names of ScType DF to Glutatertergic neurons in metadat
+seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", seu_obj@meta.data$sctype_db)
+
 
 DimPlot(seu_obj, group.by = "sctype_db") | DimPlot(seu_obj, reduction ="umap_iso", group.by = "sctype_db")
 
 
 ```
 
-It is possible to explore the radial glial cells in more detail as there are likely more subtypes of radial glial cells in this data set. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.
+Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated cell type identification, differential expression (DE) analysis based on clusters and Gene set enrichment, provides a good indication of the cell types present in our data. It is possible to explore the radial glial cells in more detail as there are likely many subtypes. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.
 
 1.  Radial glial cells
 
@@ -143,9 +184,9 @@ It is possible to explore the radial glial cells in more detail as there are lik
 
 4.  GABAergic neuorns
 
-## DE genes and isofroms based on annotaed cell types.
+5.  Myelinating Schwann cells
 
-Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated clustering and differential expression (DE) analysis based on clusters, provides a good indication of the cell types present in our data.
+## DE genes and isofroms based on annotaed cell types.
 
 With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.
 
@@ -181,11 +222,11 @@ write.csv(all_markers_gene_celltype, "./output_files/DE/all_markers_one_gene_cel
 write.csv(all_markers_iso_celltype, "./output_files/DE/all_markers_one_iso_celltype.csv")
 ```
 
-### Volcano plots
+## Volcano plots
 
-#### FIndAllMarkers DE
+### FIndAllMarkers DE
 
-Fist lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.
+First lets generate some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the Glutamatergic neurons.
 
 When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p \< 0.05) and log2 fold changes -2\< or \>2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and projenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.
 
@@ -206,7 +247,7 @@ EnhancedVolcano(glut_DE_gene,
                 title = "Volcano Plot of Differentially Expressed Genes \n in the Glutamatergic Neurons")
 ```
 
-Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow suers to plot all the isofroms from agiven gene on the volacon plot making interpation of the data a bit cleaner. Here just like in \@ref(Add isoform counts to Seurat object) we can see two differnt isofroms of the TBR1 gene showing regulation this cell type
+Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow users to plot all the isofroms from a given gene on the Volaco plot making interpretation of the data a bit cleaner. Here just like in \@ref(empty-droplets) **(this is wrong just cheeking the citation works)** we can see two different isoforms of the TBR1 gene showing regulation this cell type
 
 ```{r valocano2, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 gene <- "TBR1"
@@ -223,9 +264,9 @@ EnhancedVolcano(glut_DE_iso,
 
 ```
 
-#### FIndMarkers DE
+### FindMarkers DE
 
-Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the `FindAllMarkers` function, which tests the cell type of interest against all other cell types. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the `FindMarkers` function.
+Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the `FindAllMarkers` function, which tests the cell type of interest against all other cells. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the `FindMarkers` function.
 
 ```{r valocano3, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 
@@ -242,12 +283,12 @@ glu_RG_iso <- FindMarkers(seu_obj, ident.1 = "Glutamatergic neurons",
                           logfc.threshold = 0.5, min.pct = 0.02)
 
 
-#Volcano plots
-EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),
-                x='avg_log2FC', y='p_val_adj',
-                #selectLab= "VIM",
-                pCutoff=0.05, FCcutoff=2,
-                title = "Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial Cells")
+#Volcano plots # to plot at gene level
+#EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),
+#                x='avg_log2FC', y='p_val_adj',
+#                #selectLab= "VIM",
+#                pCutoff=0.05, FCcutoff=2,
+#                title = "Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial #Cells")
 
 #Volcano plots
 EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
@@ -258,14 +299,6 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
 
 ```
 
-### Gene Set enrichemt
-
-TBD - Manveer to complete.
-
-From this work we can see ... \## plotting trajectories
-
-## Finding isofrms of interest
-
-## 
+The volcano plot above is a useful tool for visualizing differentially expressed (DE) isoforms between two cell types. In this plot, red-labeled isoforms on the right-hand side indicate those that are upregulated in glutamatergic neurons compared to radial glial cells, while red dots on the left represent isoforms that are upregulated in radial glial cells compared to glutamatergic neurons. This analysis serves as an initial overview, and users can further explore the DE list (`glu_RG_iso`) to select specific isoforms of interest for more detailed analysis.
 
 ## plotting with ditoplot
