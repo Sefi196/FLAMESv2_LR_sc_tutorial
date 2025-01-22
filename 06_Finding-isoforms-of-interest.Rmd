@@ -12,7 +12,7 @@ One of the most powerful aspects of long-read single-cell sequencing is its abil
 
 With long-read single-cell data, we have the ability to analyze all the isoforms expressed by a given gene. In our data we can see that most genes express more than one isoform.
 
-```{r, include=TRUE, echo=TRUE, warning=FALSE}
+```{r, include=TRUE, echo=TRUE, warning=FALSE, warning=FALSE}
 
 #lets aggeragte the expresstion data by cell type 
 counts <- AggregateExpression(
@@ -164,7 +164,7 @@ FeaturePlot(
 
 Lets look at isofroms ENST00000564288.6 ENST00000361689.7 , ENST00000289893.8 and ENST00000524432.5 in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of ENST00000524432.5shows a cell type specific profile.
 
-```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=10 }
+```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=15, fig.width=15 }
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000361689.7-MACF1", # most cell types
                     "ENST00000289893.8-MACF1", # msot cell types
@@ -176,7 +176,7 @@ VlnPlot(seu_obj, features = features_MACF1)
 
 ```
 
-lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plotwe see isoform ENST00000524432.5 is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.
+lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plotwe see isoform **ENST00000524432.5** is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.
 
 ```{r DE_MACF1, include=TRUE, echo=TRUE, warning=FALSE}
 glu_RG_iso %>%
@@ -197,11 +197,13 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
 
 ## Visualization of Isoform Structures
 
-Now that we know these isoforms expresstion is significantly different in these two cell popualtions it may be of interest to visualte the isofrom structures. This analysis will help us explore the simailrties and differnces between our isoforms of interest.
+Now that we know these isoforms expresstion is significantly different in these two cell popualtions it may be of interest to visualize the isoform structures. This analysis will help us explore the similarities and differences between our isoforms of interest.
 
-There are many visualtion options avaliable to us and many of these are available in R. In fact FLAMES has its own visualization function `FLAMES::plot_isoform_reduced_dim` . This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.
+There are many visualization options available to us and many of these are available in R. In fact FLAMES has its own visualization function `FLAMES::plot_isoform_reduced_dim` . This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.
 
-We instead recommend using IsoViz [@wan2024], which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms. First lets prepare the count data that we will load into Isoviz[^06_finding-isoforms-of-interest-1]
+We instead recommend using IsoViz [@wan2024], which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms.
+
+First lets prepare the count data that we will load into Isoviz[^06_finding-isoforms-of-interest-1]
 
 [^06_finding-isoforms-of-interest-1]: Please be careful when interpretting psedubolk expresstion data. Although the data can give you some indication of reletevie expresstion across cell types , this numbers can be affected by the number of cells in each cluster.
 
@@ -215,9 +217,9 @@ write.csv(df, "output_files/psedubulk_exp.csv", row.names = FALSE)
 
 ```
 
-To use IsoViz click on the following link <https://isomix.org/isovis/> and uplaod the `isofrom_annotated.gtf` file located in the FLAMES output dir and `psedubulk_exp.csv` genrated above For more detail on how to use Isoviz click the 'IsoViz tutorial' button or read the publication.
+To use IsoViz click on the following link <https://isomix.org/isovis/> and uplaod the `isofrom_annotated.gtf` file located in the FLAMES output dir and `psedubulk_exp.csv` generated above For more detail on how to use Isoviz click the 'IsoViz tutorial' button or read the publication.
 
-Embedded bellow is the figure generated by Isoviz. When Viewing this data in the web broswer users will have more fucntionalty. (eg looking a tprotein domins or clicking on ENST ids and being linked to ensble). Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites and ORFs.
+Embedded bellow is the figure generated by Isoviz. When Viewing this data in the web broswer users will have more functionality. (eg looking a protein domains or clicking on ENST ids and being linked to ensemble). Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites and ORFs.
 
 Our pseudobulk expression analysis clearly demonstrates that **ENST00000524432.5** is predominantly expressed in radial glia cells. This isoform is particularly interesting, as it is significantly shorter than others and lacks many of the protein domains present in **ENST00000564288.6**, the canonical isoform. Notably, all four isoforms exhibit different transcription start sites (TSS), suggesting that TSS variation may be linked to cell-type-specific expression or distinct protein functions.
 
