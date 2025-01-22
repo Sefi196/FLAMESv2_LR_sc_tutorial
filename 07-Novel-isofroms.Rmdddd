@@ -1,0 +1,259 @@
+---
+author: "Sefi"
+date: "`r Sys.Date()`"
+output: html_document
+bibliography: references.bib
+---
+
+# Novel isofroms - Working
+
+With Long read sequencing its possible to explore both known and novel isofroms. In FLAMES we use Bambu [@chen2023] Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail.
+
+## Find all the genes that express at least 1 novel isoform
+
+First lets get a list of genes with at least one novel isoform
+
+```{r atleast_1_novel_isoform, include=TRUE, echo=TRUE, warning=FALSE}
+# Find the genes that express at least one novel isoform and save them to a list
+# Convert row names to a data frame
+isoform_ids <- as.data.frame(row.names(seu_obj@assays$iso$counts))
+colnames(isoform_ids) <- "IDs"
+
+#Add in total expression  
+isoform_ids$Total_Expression <- rowSums(seu_obj@assays$iso$counts)
+
+# Filter rows where 'IDs' contains the string "Bambu"
+isoform_ids <- as.data.frame(isoform_ids[grepl("Bambu", isoform_ids$IDs), ])  # can comment this out if we want to do this for all isofroms 
+
+# Separate the 'IDs' column into two columns 
+filtered_df <- isoform_ids %>% separate(IDs, into = c("transcript_id", "gene_id"), sep = "-",  extra = "merge")
+
+isoform_counts <- filtered_df %>%
+  group_by(gene_id) %>%
+  summarise(
+    Isoform_Count = n(),
+    Total_Expression = sum(Total_Expression)
+  ) %>%
+  arrange(desc(Total_Expression))
+
+
+# Print or return the filtered data frame
+print(isoform_counts)
+
+```
+
+In this table we can see that we have a total of 31 novel isofroms. This number is smaller than we might expect but this is because Bambu is quite conservative for single cell data. Users can change the sensitivity of Bambu when running FLAMES by setting the `NDR` parameter or using a different discovery method like stringtie2 [@kovaka2019].
+
+In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoViz as described in the section \@ref(visualization-of-isoform-structures).
+
+Examining **OAZ2** in more detail reveals that the primary distinction between the novel isoform and the canonical isoform, **OAZ2-201**, is a \~65 bp variation in the 5' UTR. This minor alteration does not affect the canonical open reading frame (ORF). The total expression of this gene by isoform, we observe that the vast majority of its expression is attributed to the **BambuTx25** isoform. However, it is challenging to determine whether this isoform is truly novel. The small change in the UTR might simply result from incomplete reads failing to capture the full 5' end of the canonical isoform.
+
+```{r isoviz-plot, fig.cap="IsoViz visualization of Novel OAZ2 isoform.", out.width="1000px"}
+knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
+```
+
+We could explore this in some more detail and check to see if we can find any interesting regulatory elements in this missing section of the 5'UTR.
+
+## add analysis
+
+```{r isoviz-plot, include=TRUE}
+# Load necessary libraries
+
+
+
+```
+
+We can further examine additional genes from our list. For instance, ZMAT5 has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Interestingly, this splice junction is also found in **ENST00000489010**, a transcript known to undergo nonsense-mediated decay (NMD) and which lacks a functional open reading frame (ORF). Notably, the novel isoform, **BambuTx32**, is the dominantly expressed isoform across all cell types, which is unusual since the canonical isoform typically accounts for the majority of reads.
+
+```{r isoviz-plot2, fig.cap="IsoViz visualization of Novel ZMAT5 isoform.", out.width="1000px"}
+knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
+```
+
+We have looked at two examples here and it is possible to explore these isofroms one at time. But in general an overview of the novel isoforms in our data could be helpful. Some useful tools to explore
+
+Next we can look at the number of novel isofroms in each cluster
+
+```{r working, include=TRUE, echo=TRUE, warning=FALSE}
+# Number of novel isofrm expressed in each clsuter 
+# cut of is at least 10% of cells need 5 counts or more
+counts <- as.matrix(GetAssayData(seu_obj, assay = "iso", slot = "counts"))
+clusters <- seu_obj$sctype_db
+
+novel_isoforms <- grep("Bambu", rownames(counts), value = TRUE)
+novel_counts <- counts[novel_isoforms, ]
+
+# Create a list to store isoforms for each cluster
+isoforms_by_cluster <- list()
+
+# Iterate over each cluster
+for (cluster in unique(clusters)) {
+  # Subset the cells belonging to the current cluster
+  cluster_cells <- which(clusters == cluster)
+  cluster_counts <- novel_counts[, cluster_cells]
+  
+  # Check how many cells have counts >= 5 for each isoform
+  expressed_in_cells <- rowSums(cluster_counts >= 2)
+  
+  # Calculate the percentage of cells expressing each isoform
+  percent_cells_expressing <- expressed_in_cells / length(cluster_cells) * 100
+  
+  # Select isoforms expressed in at least 10% of cells
+  expressed_isoforms <- rownames(cluster_counts)[percent_cells_expressing >= 10]
+  
+  # Save the list of expressed isoforms for this cluster
+  isoforms_by_cluster[[paste0("Cluster_", cluster)]] <- expressed_isoforms
+}
+
+# View the list of isoforms for each cluster
+print(isoforms_by_cluster)
+
+
+```
+
+```{r working2, include=TRUE, echo=TRUE, warning=FALSE}
+
+# Replace `seurat_obj` with the name of your Seurat object
+# Get unique cell types
+cell_types <- unique(seu_obj$sctype_db)
+
+# Initialize a list to store unique features for each cell type
+unique_features <- list()
+
+# Loop through each cell type
+for (cell_type in cell_types) {
+  # Subset Seurat object to the current cell type
+  subset_obj <- subset(seu_obj, idents = cell_type)
+  
+  # Get the count matrix
+  counts <- GetAssayData(subset_obj, slot = "counts")
+  
+  # Identify features that meet the threshold
+  feature_pass <- rowSums(counts > 5) >= (0.10 * ncol(counts)) # can change these params 
+  
+  # Store features that pass the threshold
+  unique_features[[cell_type]] <- rownames(counts)[feature_pass]
+}
+
+# Find unique features for each cell type
+final_unique_features <- lapply(names(unique_features), function(cell_type) {
+  other_features <- unique(unlist(unique_features[names(unique_features) != cell_type]))
+  setdiff(unique_features[[cell_type]], other_features)
+})
+
+# Combine results into a data frame
+names(final_unique_features) <- cell_types
+unique_features_df <- do.call(rbind, lapply(cell_types, function(cell_type) {
+  features <- final_unique_features[[cell_type]]
+  
+  # If no features, return an empty data frame for this cell type
+  if (length(features) == 0) {
+    return(data.frame(CellType = cell_type, Feature = character(0)))
+  }
+  
+  # Otherwise, return the normal data frame
+  data.frame(
+    CellType = cell_type,
+    Feature = features
+  )
+}))
+
+# View the unique features
+head(unique_features_df)
+
+####### test plotting on iso assays ##
+features <- rownames(seu_obj@assays$iso@features)
+
+gene <- "BLCAP"
+plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value = TRUE)
+
+#We can now plot our favorite gene and all its corresponding isoforms on either the gene or isoform UMAPs. To switch between them, simply change the reduction argument to the desired UMAP (either the gene or isoform reduction)
+
+FeaturePlot(seu_obj, features = plot_features_list, reduction = "umap") 
+
+```
+
+
+```{r working3, include=TRUE, echo=TRUE, warning=FALSE}
+
+# any other ideas?
+
+#What are the number of novel isoforms per cluster?
+
+counts <- as.data.frame(AggregateExpression(
+  seu_obj, 
+  assays = "iso", 
+  return.seurat = FALSE,
+  group.by = "sctype_db"
+))
+
+# Filter for rows containing "Bambu" in the row names (novel isoforms)
+bambu_features <- counts[grepl("Bambu", rownames(counts)), ]
+
+# Apply the expression filter (>10) and calculate the number of novel isoforms per cluster
+
+novel_isoform_counts <- as.data.frame(colSums(bambu_features > 0))
+
+# Create a bar plot
+P3 <- ggplot(novel_isoform_counts, aes(x = row.names(novel_isoform_counts), y = novel_isoform_counts$`colSums(bambu_features > 0)`)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(x = "Cluster", y = "Number of Novel Isoforms", title = "Number of Novel Isoforms (> 1 count)") +
+  theme_minimal() +  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+P3
+
+```
+
+## **Isoform Proportion Analysis**
+
+## Calculate the proportion of novel isoforms relative to total gene expression.
+
+```{r uniq isofroms, include=TRUE, echo=TRUE, warning=FALSE}
+#### number_uniq_isoform_per_cluster ###
+# diferent method and im not sure how well compares to the upset plot method
+
+# Define the function with a prefix argument
+  # Step 1: Aggregate expression based on 'broad_categories'
+  counts <- AggregateExpression(
+    seu_obj, 
+    assays = "iso", 
+    return.seurat = FALSE,
+    group.by = "sctype_db" 
+  )
+  
+  # Step 2: Convert the counts to a data frame
+  counts.df <- as.data.frame(counts)
+  
+  # Step 3: Transform data from wide to long format
+  long_df <- counts.df %>%
+    rownames_to_column(var = "isoform") %>%
+    pivot_longer(cols = -isoform, names_to = "cluster", values_to = "expression")
+  
+  # Step 4: Calculate total expression per isoform
+  isoform_total_expression <- long_df %>%
+    group_by(isoform) %>%
+    summarise(total_expression = sum(expression), .groups = 'drop')
+  
+  # Step 5: Calculate expression per cluster and filter based on percentage and total expression
+  isoform_summary <- long_df %>%
+    group_by(isoform, cluster) %>%
+    summarise(cluster_expression = sum(expression), .groups = 'drop') %>%
+    left_join(isoform_total_expression, by = "isoform") %>%
+    mutate(percentage_expression = cluster_expression / total_expression * 100) %>%
+    filter(percentage_expression >= 90 & total_expression >= 10)
+  
+  # Step 6: Count the number of unique isoforms per cluster
+  isoform_counts <- isoform_summary %>%
+    group_by(cluster) %>%
+    summarise(unique_isoform_count = n_distinct(isoform), .groups = 'drop') %>%
+    arrange(cluster)
+  
+  # Step 7: Create a bar plot (P1) showing the number of unique isoforms per cluster
+  P1 <- ggplot(isoform_counts, aes(x = cluster, y = unique_isoform_count)) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    labs(x = "Cluster", y = "Number of Unique Isoforms", title = "Number of Unique Isoforms per Cluster") +
+    theme_minimal() +  
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) + ggtitle("number_uniq_isoform_per_cluster")
+  
+```
+
+ 

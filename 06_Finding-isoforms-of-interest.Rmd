@@ -160,7 +160,7 @@ plots <- FeaturePlot(
 
 # Adjust title size for each plot
 plots <- lapply(plots, function(plot) {
-  plot + theme(plot.title = element_text(size = 12))
+  plot + theme(plot.title = element_text(size = 8))
 })
 
 # Combine the adjusted plots
@@ -172,15 +172,18 @@ CombinePlots(plots = plots, ncol = 3)
 
 Lets look at isofroms ENST00000564288.6 ENST00000361689.7 , ENST00000289893.8 and ENST00000524432.5 in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of ENST00000524432.5shows a cell type specific profile.
 
-```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=15, fig.width=15 }
+```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=10 }
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000361689.7-MACF1", # most cell types
                     "ENST00000289893.8-MACF1", # msot cell types
                     "ENST00000524432.5-MACF1") # radial glia
 
 VlnPlot(seu_obj, features = features_MACF1, ncol = 2)
+```
+We can also show this with A dotplot.  
 
-
+```{r dot MACF1, include=TRUE, echo=TRUE, warning=FALSE}
+dittoDotPlot(seu_obj, vars = features_MACF1, group.by = "sctype_db", scale = FALSE)
 
 ```
 
@@ -205,7 +208,7 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
 
 ## Visualization of Isoform Structures
 
-Now that we know these isoforms expresstion is significantly different in these two cell popualtions it may be of interest to visualize the isoform structures. This analysis will help us explore the similarities and differences between our isoforms of interest.
+Now that we know some MCAF1 isoforms expression is significantly different in these two cell populations it may be of interest to visualize the isoform structures. This analysis will help us explore the similarities and differences between our isoforms of interest.
 
 There are many visualization options available to us and many of these are available in R. In fact FLAMES has its own visualization function `FLAMES::plot_isoform_reduced_dim` . This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.
 
@@ -213,7 +216,7 @@ We instead recommend using IsoViz [@wan2024], which was developed in the Clark L
 
 First lets prepare the count data that we will load into Isoviz[^06_finding-isoforms-of-interest-1]
 
-[^06_finding-isoforms-of-interest-1]: Please be careful when interpretting psedubolk expresstion data. Although the data can give you some indication of reletevie expresstion across cell types , this numbers can be affected by the number of cells in each cluster.
+[^06_finding-isoforms-of-interest-1]: Please be careful when interpreting pseudubulk expression data. Although the data can give you some indication of relative expression across cell types, this numbers can be affected by the number of cells in each cluster.
 
 ```{r pseudo_save, include=TRUE, echo=TRUE, warning=FALSE}
 #extract some isoform expression data to visualize in isoviz 

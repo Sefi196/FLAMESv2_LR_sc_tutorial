@@ -20,7 +20,6 @@ de-genes-and-isofroms-based-on-annotaed-cell-types.
 volcano-plots
 findallmarkers-de
 findmarkers-de
-plotting-with-ditoplot
 exploring-isoforms-of-interest
 isoforms-expressed-per-gene
 top-10-genes-with-most-isoforms
