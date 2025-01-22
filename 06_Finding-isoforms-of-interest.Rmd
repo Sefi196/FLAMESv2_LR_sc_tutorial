@@ -147,16 +147,24 @@ total_expression <- Matrix::rowSums(subset_expression)
 top_features <- names(sort(total_expression, decreasing = TRUE))
 
 # Print the ranked features (optional)
-print(data.frame(Feature = top_features, AvgExpression = total_expression[top_features]))
+print(data.frame(Feature = top_features, Expression = total_expression[top_features]))
 
+options(repr.plot.width=12, repr.plot.height=12)
 # Plot the top 16 features in descending order of their average expression
-FeaturePlot(
+plots <- FeaturePlot(
   filt_seurat_object,
   features = head(top_features, 12),
   reduction = "umap",
-  order = TRUE # Ensures higher-expressing cells are plotted on top
-)
+  order = TRUE, # Ensures higher-expressing cells are plotted on top
+  pt.size = 1)
 
+# Adjust title size for each plot
+plots <- lapply(plots, function(plot) {
+  plot + theme(plot.title = element_text(size = 12))
+})
+
+# Combine the adjusted plots
+CombinePlots(plots = plots, ncol = 3)
 
 ```
 
@@ -170,7 +178,7 @@ features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000289893.8-MACF1", # msot cell types
                     "ENST00000524432.5-MACF1") # radial glia
 
-VlnPlot(seu_obj, features = features_MACF1)
+VlnPlot(seu_obj, features = features_MACF1, ncol = 2)
 
 
 
