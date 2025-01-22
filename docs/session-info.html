@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Session info | FLAMES Single-Cell RNA-seq Tutorial</title>
-  <meta name="description" content="Chapter 7 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
+  <title>Chapter 8 Session info | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Chapter 8 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:title" content="Chapter 8 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="twitter:title" content="Chapter 8 Session info | FLAMES Single-Cell RNA-seq Tutorial" />
   
   
   
@@ -30,7 +30,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="exploring-isoforms-of-interest.html"/>
+<link rel="prev" href="novel-isofroms---working.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -201,7 +201,14 @@ div.csl-indent {
 <li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
 <li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>7</b> Session info</a></li>
+<li class="chapter" data-level="7" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html"><i class="fa fa-check"></i><b>7</b> Novel isofroms - Working</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>7.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="7.2" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#add-analysis"><i class="fa fa-check"></i><b>7.2</b> add analysis</a></li>
+<li class="chapter" data-level="7.3" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#isoform-proportion-analysis"><i class="fa fa-check"></i><b>7.3</b> <strong>Isoform Proportion Analysis</strong></a></li>
+<li class="chapter" data-level="7.4" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#calculate-the-proportion-of-novel-isoforms-relative-to-total-gene-expression."><i class="fa fa-check"></i><b>7.4</b> Calculate the proportion of novel isoforms relative to total gene expression.</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>8</b> Session info</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -221,8 +228,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="session-info" class="section level1 hasAnchor" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Session info<a href="session-info.html#session-info" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="session-info" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Session info<a href="session-info.html#session-info" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <pre><code>## R version 4.4.0 (2024-04-24)
 ## Platform: x86_64-pc-linux-gnu
 ## Running under: Red Hat Enterprise Linux 9.4 (Plow)
@@ -316,6 +323,12 @@ div.csl-indent {
 
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div class="csl-entry">
+Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>
+</div>
+<div class="csl-entry">
+Kovaka, S., Zimin, A. V., Pertea, G. M., Razaghi, R., Salzberg, S. L., &amp; Pertea, M. (2019). Transcriptome assembly from long-read RNA-seq alignments with StringTie2. <em>Genome Biology</em>, <em>20</em>(1). <a href="https://doi.org/10.1186/s13059-019-1910-1">https://doi.org/10.1186/s13059-019-1910-1</a>
+</div>
+<div class="csl-entry">
 Tian, L., Jabbari, J. S., Thijssen, R., Gouil, Q., Amarasinghe, S. L., Voogd, O., Kariyawasam, H., Du, M. R. M., Schuster, J., Wang, C., Su, S., Dong, X., Law, C. W., Lucattini, A., Prawer, Y. D. J., Collar-Fernández, C., Chung, J. D., Naim, T., Chan, A., … Ritchie, M. E. (2021). Comprehensive characterization of single-cell full-length isoforms in human and mouse with long-read sequencing. <em>Genome Biology</em>, <em>22</em>(1). <a href="https://doi.org/10.1186/s13059-021-02525-6">https://doi.org/10.1186/s13059-021-02525-6</a>
 </div>
 <div class="csl-entry">
@@ -337,7 +350,7 @@ You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., S
           </div>
         </div>
       </div>
-<a href="exploring-isoforms-of-interest.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="novel-isofroms---working.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>

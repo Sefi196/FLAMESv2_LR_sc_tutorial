@@ -48,7 +48,7 @@ In the above table we have ordered the the genes that contain a novel isoform by
 
 Examining **OAZ2** in more detail reveals that the primary distinction between the novel isoform and the canonical isoform, **OAZ2-201**, is a \~65 bp variation in the 5' UTR. This minor alteration does not affect the canonical open reading frame (ORF). The total expression of this gene by isoform, we observe that the vast majority of its expression is attributed to the **BambuTx25** isoform. However, it is challenging to determine whether this isoform is truly novel. The small change in the UTR might simply result from incomplete reads failing to capture the full 5' end of the canonical isoform.
 
-```{r isoviz-plot, fig.cap="IsoViz visualization of Novel OAZ2 isoform.", out.width="1000px"}
+```{r isoviz-plot2, fig.cap="IsoViz visualization of Novel OAZ2 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
 ```
 
@@ -56,7 +56,7 @@ We could explore this in some more detail and check to see if we can find any in
 
 ## add analysis
 
-```{r isoviz-plot, include=TRUE}
+```{r motif, include=TRUE}
 # Load necessary libraries
 
 
@@ -65,7 +65,7 @@ We could explore this in some more detail and check to see if we can find any in
 
 We can further examine additional genes from our list. For instance, ZMAT5 has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Interestingly, this splice junction is also found in **ENST00000489010**, a transcript known to undergo nonsense-mediated decay (NMD) and which lacks a functional open reading frame (ORF). Notably, the novel isoform, **BambuTx32**, is the dominantly expressed isoform across all cell types, which is unusual since the canonical isoform typically accounts for the majority of reads.
 
-```{r isoviz-plot2, fig.cap="IsoViz visualization of Novel ZMAT5 isoform.", out.width="1000px"}
+```{r isoviz-plot3, fig.cap="IsoViz visualization of Novel ZMAT5 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
 ```
 
@@ -253,7 +253,6 @@ P3
     labs(x = "Cluster", y = "Number of Unique Isoforms", title = "Number of Unique Isoforms per Cluster") +
     theme_minimal() +  
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) + ggtitle("number_uniq_isoform_per_cluster")
-  
 ```
 
  
