@@ -6,7 +6,7 @@ output: html_document
 
 # **Exploring isoforms of interest**
 
-One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regurgitating this process. We will cover some very general analysis with this focus in mind.
+One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regulating this process. We will cover some very general analysis with this focus in mind.
 
 ## Isoforms expressed per gene
 

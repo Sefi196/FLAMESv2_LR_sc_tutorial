@@ -171,7 +171,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
 <li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
@@ -211,18 +211,20 @@ div.csl-indent {
 <li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
-<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-typye-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell typye specific isoforms</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isofroms</strong></a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing <strong>OAZ2</strong> novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts ofnovel isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
 <li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
+<li class="chapter" data-level="9.3" data-path="conclusion.html"><a href="conclusion.html#references"><i class="fa fa-check"></i><b>9.3</b> <strong>References</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> <strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -244,7 +246,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="exploring-isoforms-of-interest" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> <strong>Exploring isoforms of interest</strong><a href="exploring-isoforms-of-interest.html#exploring-isoforms-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regurgitating this process. We will cover some very general analysis with this focus in mind.</p>
+<p>One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regulating this process. We will cover some very general analysis with this focus in mind.</p>
 <div id="isoforms-expressed-per-gene" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Isoforms expressed per gene<a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>With long-read single-cell data, we have the ability to analyze all the isoforms expressed by a given gene. In our data we can see that most genes express more than one isoform.</p>
@@ -514,7 +516,7 @@ Figure 6.1: IsoViz visualization of 4 MACF1 isoforms.
 
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-wan2024" class="csl-entry">
 Wan, C. Y., Davis, J., Chauhan, M., Gleeson, J., Prawer, Y. J., De Paoli-Iseppi, R., Wells, C., Choi, J., &amp; Clark, M. (2024). IsoVis <span></span> a webserver for visualization and annotation of alternative RNA isoforms. <em>Nucleic Acids Research</em>, <em>52</em>(W1), W341–W347. <a href="https://doi.org/10.1093/nar/gkae343">https://doi.org/10.1093/nar/gkae343</a>

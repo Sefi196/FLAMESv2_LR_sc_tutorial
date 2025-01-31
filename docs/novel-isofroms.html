@@ -171,7 +171,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
 <li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
@@ -211,18 +211,20 @@ div.csl-indent {
 <li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
-<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-typye-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell typye specific isoforms</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isofroms</strong></a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing <strong>OAZ2</strong> novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts ofnovel isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
 <li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
+<li class="chapter" data-level="9.3" data-path="conclusion.html"><a href="conclusion.html#references"><i class="fa fa-check"></i><b>9.3</b> <strong>References</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> <strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -297,6 +299,9 @@ div.csl-indent {
 Figure 8.1: IsoViz visualization of Novel OAZ2 isoform.
 </p>
 </div>
+</div>
+<div id="visualizing-oaz2-novel-isoform" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Visualizing <strong>OAZ2</strong> novel isoform<a href="novel-isofroms.html#visualizing-oaz2-novel-isoform" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Visualizing <strong>OAZ2</strong> reveals that the primary distinction between the novel isoform and the canonical isoform, <strong>OAZ2-201</strong> seems to be a shorter 5’ UTR. This minor alteration at face value should not affect the canonical open reading frame (ORF). However, according to SQANTI, <strong>BambuTx25</strong> is classified as a <strong><em>novel_in_catalog</em></strong> isoform, meaning it is an isoform not present in the reference GTF and SQANTI suggests that <strong>BambuTx25</strong> is non-coding, which is quite surprising! Interestingly, SQANTI also indicates that the primary difference between <strong>BambuTx25</strong> and the canonical isoforms lies in intron retention (Specified in the <em>subcategory</em> column).</p>
 <pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS
 ## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA
@@ -315,6 +320,9 @@ Figure 8.1: IsoViz visualization of Novel OAZ2 isoform.
 Figure 8.2: IsoViz visualization of exon 2 of OAZ2.
 </p>
 </div>
+</div>
+<div id="functional-impacts-ofnovel-isoforms" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> Functional impacts ofnovel isoforms<a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There are many ways to investigate the translated sequence and compare the protein generated from conanocial isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in a online tool like ‘expasy translate’ which can be found here <a href="https://web.expasy.org/translate/" class="uri">https://web.expasy.org/translate/</a>.</p>
 <p>Bellow we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> <span class="citation">(<a href="#ref-tjeldnes2021" role="doc-biblioref">Tjeldnes et al., 2021</a>)</span>. We will visualize these ORFS in Gviz <span class="citation">(<a href="#ref-hahne2016" role="doc-biblioref">Hahne &amp; Ivanek, 2016</a>)</span> an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript <strong>BambuTx25</strong> has been impacted by the change in nucleotide sequence.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
@@ -474,7 +482,7 @@ Figure 8.3: IsoViz visualization of Novel ZMAT5 isoform.
 
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-chen2023" class="csl-entry">
 Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>

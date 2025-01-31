@@ -171,7 +171,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
 <li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
@@ -211,18 +211,20 @@ div.csl-indent {
 <li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
-<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-typye-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell typye specific isoforms</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isofroms</strong></a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing <strong>OAZ2</strong> novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts ofnovel isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
 <li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
+<li class="chapter" data-level="9.3" data-path="conclusion.html"><a href="conclusion.html#references"><i class="fa fa-check"></i><b>9.3</b> <strong>References</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> <strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -424,8 +426,8 @@ div.csl-indent {
 </details>
 <p><img src="bookdownproj_files/figure-html/SQANTI_plots-1.png" width="1536" /></p>
 </div>
-<div id="cell-typye-specific-isoforms" class="section level2 hasAnchor" number="7.2">
-<h2><span class="header-section-number">7.2</span> Cell typye specific isoforms<a href="isoform-classification.html#cell-typye-specific-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="cell-type-specific-isoforms" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Cell type specific isoforms<a href="isoform-classification.html#cell-type-specific-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="isoform-classification.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the data based on the expression cutoff</span></span>
@@ -570,10 +572,10 @@ Lets use another helpful resource to explore these cell type specific isofroms.<
 <span id="cb97-92"><a href="isoform-classification.html#cb97-92" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb97-93"><a href="isoform-classification.html#cb97-93" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p5, p6, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/Glut_specific-1.png" width="576" /></p>
+<p><img src="bookdownproj_files/figure-html/Glut_specific-1.png" width="480" /></p>
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-pardo-palacios2024" class="csl-entry">
 Pardo-Palacios, F. J., Arzalluz-Luque, A., Kondratova, L., Salguero, P., Mestre-Tomás, J., Amorín, R., Estevan-Morió, E., Liu, T., Nanni, A., McIntyre, L., Tseng, E., &amp; Conesa, A. (2024). SQANTI3: curation of long-read transcriptomes for accurate identification of known and novel isoforms. <em>Nature Methods</em>, <em>21</em>(5), 793–797. <a href="https://doi.org/10.1038/s41592-024-02229-2">https://doi.org/10.1038/s41592-024-02229-2</a>

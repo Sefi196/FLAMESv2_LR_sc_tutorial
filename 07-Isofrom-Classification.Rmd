@@ -177,7 +177,7 @@ cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
 
 ```
 
-## Cell typye specific isoforms
+## Cell type specific isoforms
 
 We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow[^07-isofrom-classification-2].
 
@@ -236,7 +236,7 @@ Lets use another helpful resource to explore these cell type specific isofroms.
 
 We can use the BioMart [@smedley2009] package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.
 
-```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=12, fig.width=6}
+```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=14, fig.width=5}
 
 library("biomaRt")
 
@@ -377,6 +377,8 @@ In the above table we have ordered the the genes that contain a novel isoform by
 knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
 ```
 
+## Visualizing **OAZ2** novel isoform
+
 Visualizing **OAZ2** reveals that the primary distinction between the novel isoform and the canonical isoform, **OAZ2-201** seems to be a shorter 5' UTR. This minor alteration at face value should not affect the canonical open reading frame (ORF). However, according to SQANTI, **BambuTx25** is classified as a ***novel_in_catalog*** isoform, meaning it is an isoform not present in the reference GTF and SQANTI suggests that **BambuTx25** is non-coding, which is quite surprising! Interestingly, SQANTI also indicates that the primary difference between **BambuTx25** and the canonical isoforms lies in intron retention (Specified in the *subcategory* column).
 
 ```{r , include=TRUE}
@@ -389,6 +391,8 @@ To better understand these SQANTI results lets zoom in on exon 2 of *OAZ2*. Here
 ```{r isoviz-plot-zoom, fig.cap="IsoViz visualization of exon 2 of OAZ2.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 ```
+
+## Functional impacts ofnovel isoforms
 
 There are many ways to investigate the translated sequence and compare the protein generated from conanocial isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in a online tool like 'expasy translate' which can be found here <https://web.expasy.org/translate/>.
 

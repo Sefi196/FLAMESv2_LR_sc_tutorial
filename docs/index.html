@@ -171,7 +171,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
 <li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
@@ -211,18 +211,20 @@ div.csl-indent {
 <li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
-<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-typye-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell typye specific isoforms</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isofroms</strong></a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing <strong>OAZ2</strong> novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts ofnovel isoforms</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
 <li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
+<li class="chapter" data-level="9.3" data-path="conclusion.html"><a href="conclusion.html#references"><i class="fa fa-check"></i><b>9.3</b> <strong>References</strong></a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>10</b> <strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -259,10 +261,10 @@ div.csl-indent {
 <li><p><strong>Identify differentially expressed isoforms across cell types</strong></p></li>
 <li><p><strong>Detect novel isoforms with potential functional impact</strong></p></li>
 </ul>
-<p>If you’re familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read sequencing provides a unique advantage by enabling isoform-level quantification which is essential for understanding isoform dynamics in single cells.</p>
+<p>If you’re familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read single cell sequencing provides isoform-level information which enables you to explore isoform dynamics in single cells. This can be useful for exploring complex developmental systems or disease parthenogenesis.</p>
 <div id="prerequisites" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>sc_long_pipeline</code> or <code>sc_long_multisample_pipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish<span class="citation">(<a href="#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
+<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>sc_long_pipeline</code> or <code>sc_long_multisample_pipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish <span class="citation">(<a href="#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
 <ul>
 <li><p><code>"bambu_isoform_identification": [true]</code></p></li>
 <li><p><code>"oarfish_quantification": [true]</code></p></li>
@@ -291,7 +293,7 @@ div.csl-indent {
 
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-chen2023" class="csl-entry">
 Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>

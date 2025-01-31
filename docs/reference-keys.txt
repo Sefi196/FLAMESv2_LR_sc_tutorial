@@ -36,9 +36,11 @@ expression-of-mcaf1-isoforms-across-cell-types
 visualization-of-isoform-structures
 isoform-classification
 classification-with-sqanti
-cell-typye-specific-isoforms
+cell-type-specific-isoforms
 novel-isofroms
 find-all-the-genes-that-express-at-least-1-novel-isoform
+visualizing-oaz2-novel-isoform
+functional-impacts-ofnovel-isoforms
 conclusion
 acknowledgements
 session-info

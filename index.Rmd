@@ -34,11 +34,11 @@ We will demonstrate how to load and explore FLAMES outputs in Seurat and other p
 
 -   **Detect novel isoforms with potential functional impact**
 
-If you're familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read sequencing provides a unique advantage by enabling isoform-level quantification which is essential for understanding isoform dynamics in single cells.
+If you're familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read single cell sequencing provides isoform-level information which enables you to explore isoform dynamics in single cells. This can be useful for exploring complex developmental systems or disease parthenogenesis.
 
 ## Prerequisites
 
-This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the `sc_long_pipeline` or `sc_long_multisample_pipeline`. Please ensure that the following parameters in your configuration file are set to `TRUE` to enable isoform identification and quantification with Bambu [@chen2023] and Oarfish[@jousheghani2024]:
+This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the `sc_long_pipeline` or `sc_long_multisample_pipeline`. Please ensure that the following parameters in your configuration file are set to `TRUE` to enable isoform identification and quantification with Bambu [@chen2023] and Oarfish [@jousheghani2024]:
 
 -   `"bambu_isoform_identification": [true]`
 
@@ -50,7 +50,7 @@ Additionally, we provide an optional step for users interested in removing empty
 
 ## Getting Started with the Data
 
-To follow along with this tutorial, you can use the data provided in the 'data' folder. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:
+To follow along with this tutorial, you can use the data provided in the 'data' folder <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:
 
 ```{bash, eval=FALSE, include=TRUE, echo=TRUE}
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz  
