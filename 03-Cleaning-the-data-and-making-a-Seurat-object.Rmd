@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Removing sources of unwanted noise from the single cell dataset
+# **Removing sources of unwanted noise from the single cell dataset**
 
 ------------------------------------------------------------------------
 
@@ -295,7 +295,7 @@ deconx_results <- run_decontX("./output_files/empty_drops/removed_empty_Day55.rd
 
 Now that we have removed empty drops and ambient RNA we will perform standard QC as described in the Seurat tutorial ([found here](https://satijalab.org/seurat/articles/pbmc3k_tutorial.html)). First we will determine what our filtering criteria should be using some basic QC plots.
 
-```{r gene QC, echo=TRUE, paged.print=TRUE, cache=TRUE, message=FALSE}
+```{r gene QC, echo=TRUE, paged.print=TRUE, cache=TRUE, message=FALSE, warning=FALSE, fig.height=6, fig.width=6}
 # standard QC filtering and also remove doublets 
 #define sample name
 sample_id = 'Day55_tutorial'
@@ -321,7 +321,7 @@ p1 +  plot_annotation(title = "QC plots (gene level) BEFORE Filtering")
 
 Based on these QC plots we will filter the data with the following values listed in the bellow code chunk. QC paramaters might vary based on your own data so please make sure you filter your data accordingly. Here we will also remove doublets - droplets that contain two or more cells - using the package '[doubletfinder](https://github.com/chris-mcginnis-ucsf/DoubletFinder)'.
 
-```{r plot, echo=TRUE, message=FALSE, paged.print=TRUE, cache=TRUE, fig.height=12, fig.width=6}
+```{r plot, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE, cache=TRUE, fig.height=6, fig.width=12}
 # Filter cells based on feature and count thresholds
 ## define the filtering params - (change these based on your data)
 max.features = 10000
@@ -414,7 +414,7 @@ filt_seurat_object <- subset(filt_seurat_object, subset = DF.classifications == 
   p2
 )
   
-  combined_plots <- plot_grid(plotlist = ggplot_list, ncol = 2)
+  combined_plots <- plot_grid(plotlist = ggplot_list, ncol = 3)
   plot(combined_plots)
   
   

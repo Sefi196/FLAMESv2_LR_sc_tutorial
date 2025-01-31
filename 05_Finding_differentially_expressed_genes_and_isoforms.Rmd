@@ -234,13 +234,13 @@ write.csv(all_markers_iso_celltype, "./output_files/DE/all_markers_one_iso_cellt
 
 A basic way of exploring this data is to plot these markers on a heatmap. Seurat has a nice function to do so. Let us plot the top 5 marker gene and isofroms in each cell type
 
-```{r heatmap, echo=TRUE, message=FALSE, warning=FALSE}
+```{r heatmap, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=10}
 all_markers_gene_celltype %>%
     group_by(cluster) %>%
     dplyr::filter(avg_log2FC > 1) %>%
     slice_head(n = 5) %>%
     ungroup() -> G_top5
-DoHeatmap(seu_obj, features = G_top5$gene, assay = "RNA", size = 4) + 
+DoHeatmap(seu_obj, features = G_top5$gene, assay = "RNA", size = 3) + 
   NoLegend() 
 
 
@@ -249,7 +249,7 @@ all_markers_iso_celltype %>%
     dplyr::filter(avg_log2FC > 1) %>%
     slice_head(n = 5) %>%
     ungroup() -> I_top5
-DoHeatmap(seu_obj, features = I_top5$gene, assay = "iso", size = 4) +
+DoHeatmap(seu_obj, features = I_top5$gene, assay = "iso", size = 3) +
   NoLegend() 
 ```
 

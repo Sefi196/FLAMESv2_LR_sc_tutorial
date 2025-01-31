@@ -15,7 +15,7 @@ In the previous Chapter we looked at some genes of interst like MCAF1 and some o
 
 If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a `classifications.txt` file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.
 
-```{bash, eval=FALSE}
+```{bash, eval=FALSE, include=TRUE, echo=TRUE}
 GTF="gencode.v47.annotation.gtf" 
 genome="genome.fa"
 #filter gtf file to remove annoatiuon of unknown strands
@@ -37,7 +37,7 @@ head(SQANTI, 3)
 
 There is a lots information one can extract from the `classifications.txt` file. to get a more complete picture of the isoforms in the sample Lets plot some of this information.
 
-```{r SQANTI_plots, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=14}
+```{r SQANTI_plots, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=16}
 
 #we can use the pseudobulk_data counts calculated previously 
 # Select cell type columns and gather into long format
@@ -183,7 +183,7 @@ We can also look at isoforms that are unique to each Cell type. We define unique
 
 [^07-isofrom-classification-2]: It is essential to keep in mind that cell type classification, sequencing depth, and the number of cells in each cluster can significantly impact the results, especially in cases where isoforms are expressed at very low levels.
 
-```{r uniq_isofrom, include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=8}
+```{r uniq_isofrom, include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=6}
 # Filter the data based on the expression cutoff
 # Set expression cutoff threshold
 expression_cutoff <- 5
@@ -234,9 +234,9 @@ ggplot(exclusive_isoforms_count, aes(x = cell_type, y = unique_isoforms, fill = 
 These cell type specific isoforms may be particularly interesting to study further, as they likely play important roles in differentiation and cell function. We could extract these isoforms for further analysis.\
 Lets use another helpful resource to explore these cell type specific isofroms.
 
-We can use the BioMart[@smedley2009] package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.
+We can use the BioMart [@smedley2009] package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.
 
-```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=12}
+```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=12, fig.width=6}
 
 library("biomaRt")
 
@@ -330,12 +330,12 @@ p6 <- ggplot(merged_biomart_data, aes(x = cell_type, y = transcript_length, fill
     legend.position = "none"
   )
 
-cowplot::plot_grid(p5, p6, ncol = 2)
+cowplot::plot_grid(p5, p6, ncol = 1)
 ```
 
-# Novel isofroms
+# **Novel isofroms**
 
-With long read sequencing its possible to explore both known and novel isofroms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isofroms are full-splice-matches i.e they match the reference gtf there are a few we could extract.
+With long read sequencing its possible to explore both known and novel isofroms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isofroms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
 
 ## Find all the genes that express at least 1 novel isoform
 
@@ -396,10 +396,10 @@ Bellow we have written a function that will take a list of isoforms from a gene 
 
 [^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysising differnt genes or isoforms.
 
-```{r ORFS-plot3,include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=12}
-library(ORFik)
-library(GenomicFeatures)
-library(Gviz)
+```{r ORFS-plot3, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE,fig.height=6, fig.width=12}
+invisible(library(ORFik))
+invisible(library(GenomicFeatures))
+invisible(library(Gviz))
 library(BSgenome.Hsapiens.UCSC.hg38)
 
 # Global cache for TxDb
