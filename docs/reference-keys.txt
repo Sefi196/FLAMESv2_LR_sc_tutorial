@@ -1,7 +1,9 @@
 fig:barcode-rank-plot
 fig:isoviz-plot
 fig:isoviz-plot2
-fig:isoviz-plot3
+fig:isoviz-plot-zoom
+fig:isoviz-plot3-1
+fig:isoviz-plot3-2
 introduction
 setup
 load-in-required-packages
@@ -28,9 +30,9 @@ top-10-genes-with-most-isoforms
 exploring-macf1-isoforms
 expression-of-mcaf1-isoforms-across-cell-types
 visualization-of-isoform-structures
-novel-isofroms---working
+isoform-classification
+classification-with-sqanti
+novel-isofroms
 find-all-the-genes-that-express-at-least-1-novel-isoform
-add-analysis
-isoform-proportion-analysis
-calculate-the-proportion-of-novel-isoforms-relative-to-total-gene-expression.
+conclusion
 session-info

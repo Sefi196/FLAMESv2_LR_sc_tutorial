@@ -26,11 +26,11 @@ as.data.frame(counts) -> df
 row.names(df) -> df$gene
 
 #split transcript ids into gene and transcript id
-df <- df %>% separate(gene, into = c("transcript_id", "gene_id"), sep = "-",  extra = "merge") 
+pseudobulk_data <- df %>% separate(gene, into = c("transcript_id", "gene_id"), sep = "-",  extra = "merge") 
 #df$transcript_id <- sub("\\..*", "", df$transcript_id)
 
 # 2. Count the number of isoforms per gene
-isoform_count_per_gene <- df %>%
+isoform_count_per_gene <- pseudobulk_data %>%
   group_by(gene_id) %>%
   summarise(n_isoforms = n_distinct(transcript_id))
 
@@ -67,7 +67,7 @@ We can see that about 45% of genes express a single isoform, however there are s
 
 ```{r make_top10, include=TRUE, echo=TRUE, warning=FALSE}
 # Genes ranked by the number of transcript isoforms detected across all samples 
-gene_transcript_counts <- df %>%
+gene_transcript_counts <- pseudobulk_data %>%
   group_by(gene_id) %>%
   summarise(unique_transcripts = n_distinct(transcript_id)) %>%
   arrange(desc(unique_transcripts))
@@ -78,7 +78,7 @@ top10 <- gene_transcript_counts %>% top_n(10, unique_transcripts)
 top10
 ```
 
-We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies alot across out data.
+We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies across out data.
 
 ```{r plot_unique_isoforms, include=TRUE, echo=TRUE, warning=FALSE}
 # Plot ranked genes by unique "BambuTx" transcript count
@@ -172,7 +172,7 @@ CombinePlots(plots = plots, ncol = 3)
 
 Lets look at isofroms ENST00000564288.6 ENST00000361689.7 , ENST00000289893.8 and ENST00000524432.5 in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of ENST00000524432.5shows a cell type specific profile.
 
-```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=10 }
+```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE}
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000361689.7-MACF1", # most cell types
                     "ENST00000289893.8-MACF1", # msot cell types
@@ -180,14 +180,14 @@ features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
 
 VlnPlot(seu_obj, features = features_MACF1, ncol = 2)
 ```
-We can also show this with A dotplot.  
+We can also show this enrichment with a dotplot.  
 
 ```{r dot MACF1, include=TRUE, echo=TRUE, warning=FALSE}
 dittoDotPlot(seu_obj, vars = features_MACF1, group.by = "sctype_db", scale = FALSE)
 
 ```
 
-lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plotwe see isoform **ENST00000524432.5** is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.
+lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plot we see isoform **ENST00000524432.5** is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.
 
 ```{r DE_MACF1, include=TRUE, echo=TRUE, warning=FALSE}
 glu_RG_iso %>%

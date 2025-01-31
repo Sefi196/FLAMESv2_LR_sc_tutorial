@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-22" />
+<meta name="date" content="2025-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -498,12 +498,13 @@ Figure 7.2: IsoViz visualization of Novel ZMAT5 isoform.
 <span id="cb148-38"><a href="novel-isofroms---working.html#cb148-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(cluster)</span>
 <span id="cb148-39"><a href="novel-isofroms---working.html#cb148-39" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb148-40"><a href="novel-isofroms---working.html#cb148-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Step 7: Create a bar plot (P1) showing the number of unique isoforms per cluster</span></span>
-<span id="cb148-41"><a href="novel-isofroms---working.html#cb148-41" aria-hidden="true" tabindex="-1"></a>  P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(isoform_counts, <span class="fu">aes</span>(<span class="at">x =</span> cluster, <span class="at">y =</span> unique_isoform_count)) <span class="sc">+</span></span>
+<span id="cb148-41"><a href="novel-isofroms---working.html#cb148-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(isoform_counts, <span class="fu">aes</span>(<span class="at">x =</span> cluster, <span class="at">y =</span> unique_isoform_count)) <span class="sc">+</span></span>
 <span id="cb148-42"><a href="novel-isofroms---working.html#cb148-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;steelblue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb148-43"><a href="novel-isofroms---working.html#cb148-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Cluster&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Number of Unique Isoforms&quot;</span>, <span class="at">title =</span> <span class="st">&quot;Number of Unique Isoforms per Cluster&quot;</span>) <span class="sc">+</span></span>
 <span id="cb148-44"><a href="novel-isofroms---working.html#cb148-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span>  </span>
 <span id="cb148-45"><a href="novel-isofroms---working.html#cb148-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;number_uniq_isoform_per_cluster&quot;</span>)</span></code></pre></div>
 </details>
+<p><img src="bookdownproj_files/figure-html/uniq%20isofroms-1.png" width="672" /></p>
 
 </div>
 </div>

@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer" />
 
 
-<meta name="date" content="2025-01-22" />
+<meta name="date" content="2025-01-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="finding-differentially-expressed-genes-and-isoforms.html"/>
-<link rel="next" href="novel-isofroms---working.html"/>
+<link rel="next" href="isoform-classification.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -201,14 +201,18 @@ div.csl-indent {
 <li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
 <li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html"><i class="fa fa-check"></i><b>7</b> Novel isofroms - Working</a>
+<li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> Isoform Classification</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>7.1</b> Find all the genes that express at least 1 novel isoform</a></li>
-<li class="chapter" data-level="7.2" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#add-analysis"><i class="fa fa-check"></i><b>7.2</b> add analysis</a></li>
-<li class="chapter" data-level="7.3" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#isoform-proportion-analysis"><i class="fa fa-check"></i><b>7.3</b> <strong>Isoform Proportion Analysis</strong></a></li>
-<li class="chapter" data-level="7.4" data-path="novel-isofroms---working.html"><a href="novel-isofroms---working.html#calculate-the-proportion-of-novel-isoforms-relative-to-total-gene-expression."><i class="fa fa-check"></i><b>7.4</b> Calculate the proportion of novel isoforms relative to total gene expression.</a></li>
+<li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="session-info.html"><a href="session-info.html"><i class="fa fa-check"></i><b>8</b> Session info</a></li>
+<li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> Novel isofroms</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.1</b> Session info</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -247,11 +251,11 @@ div.csl-indent {
 <span id="cb123-10"><a href="exploring-isoforms-of-interest.html#cb123-10" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(df) <span class="ot">-&gt;</span> df<span class="sc">$</span>gene</span>
 <span id="cb123-11"><a href="exploring-isoforms-of-interest.html#cb123-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb123-12"><a href="exploring-isoforms-of-interest.html#cb123-12" aria-hidden="true" tabindex="-1"></a><span class="co">#split transcript ids into gene and transcript id</span></span>
-<span id="cb123-13"><a href="exploring-isoforms-of-interest.html#cb123-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(gene, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) </span>
+<span id="cb123-13"><a href="exploring-isoforms-of-interest.html#cb123-13" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(gene, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) </span>
 <span id="cb123-14"><a href="exploring-isoforms-of-interest.html#cb123-14" aria-hidden="true" tabindex="-1"></a><span class="co">#df$transcript_id &lt;- sub(&quot;\\..*&quot;, &quot;&quot;, df$transcript_id)</span></span>
 <span id="cb123-15"><a href="exploring-isoforms-of-interest.html#cb123-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb123-16"><a href="exploring-isoforms-of-interest.html#cb123-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Count the number of isoforms per gene</span></span>
-<span id="cb123-17"><a href="exploring-isoforms-of-interest.html#cb123-17" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb123-17"><a href="exploring-isoforms-of-interest.html#cb123-17" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
 <span id="cb123-18"><a href="exploring-isoforms-of-interest.html#cb123-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
 <span id="cb123-19"><a href="exploring-isoforms-of-interest.html#cb123-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_isoforms =</span> <span class="fu">n_distinct</span>(transcript_id))</span>
 <span id="cb123-20"><a href="exploring-isoforms-of-interest.html#cb123-20" aria-hidden="true" tabindex="-1"></a></span>
@@ -279,14 +283,14 @@ div.csl-indent {
 <span id="cb123-42"><a href="exploring-isoforms-of-interest.html#cb123-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
 <span id="cb123-43"><a href="exploring-isoforms-of-interest.html#cb123-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="top-10-genes-with-most-isoforms" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Top 10 Genes with Most Isoforms<a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have alot of unique isofroms, 97 in fact. The top 10 genes with the most isofroms are listed bellow.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="exploring-isoforms-of-interest.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes ranked by the number of transcript isoforms detected across all samples </span></span>
-<span id="cb124-2"><a href="exploring-isoforms-of-interest.html#cb124-2" aria-hidden="true" tabindex="-1"></a>gene_transcript_counts <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb124-2"><a href="exploring-isoforms-of-interest.html#cb124-2" aria-hidden="true" tabindex="-1"></a>gene_transcript_counts <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
 <span id="cb124-3"><a href="exploring-isoforms-of-interest.html#cb124-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
 <span id="cb124-4"><a href="exploring-isoforms-of-interest.html#cb124-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_transcripts =</span> <span class="fu">n_distinct</span>(transcript_id)) <span class="sc">%&gt;%</span></span>
 <span id="cb124-5"><a href="exploring-isoforms-of-interest.html#cb124-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(unique_transcripts))</span>
@@ -309,7 +313,7 @@ div.csl-indent {
 ##  8 ENSG00000300022                 41
 ##  9 FAM66A                          39
 ## 10 SNHG14                          38</code></pre>
-<p>We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies alot across out data.</p>
+<p>We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies across out data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="exploring-isoforms-of-interest.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ranked genes by unique &quot;BambuTx&quot; transcript count</span></span>
 <span id="cb126-2"><a href="exploring-isoforms-of-interest.html#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gene_transcript_counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(unique_transcripts)), <span class="at">y =</span> unique_transcripts)) <span class="sc">+</span></span>
@@ -445,13 +449,13 @@ div.csl-indent {
 <span id="cb130-5"><a href="exploring-isoforms-of-interest.html#cb130-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb130-6"><a href="exploring-isoforms-of-interest.html#cb130-6" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(seu_obj, <span class="at">features =</span> features_MACF1, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/vln%20MACF1-1.png" width="960" />
-We can also show this with A dotplot.</p>
+<p><img src="bookdownproj_files/figure-html/vln%20MACF1-1.png" width="672" />
+We can also show this enrichment with a dotplot.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="exploring-isoforms-of-interest.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDotPlot</span>(seu_obj, <span class="at">vars =</span> features_MACF1, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/dot%20MACF1-1.png" width="672" /></p>
-<p>lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plotwe see isoform <strong>ENST00000524432.5</strong> is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.</p>
+<p>lets look at our DE results comparing Glutamatergic neurons and Radial glia cells that we calcualted in the previous chapter and filter for significant MCAF1 isoforms. If we plot these features on a Volcano plot we see isoform <strong>ENST00000524432.5</strong> is enriched in radial glia cells. In fact its enrichment compared to Glutamatergic neurons is pretty high with a Log2fold change of 4.16.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="exploring-isoforms-of-interest.html#cb132-1" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="sc">%&gt;%</span></span>
 <span id="cb132-2"><a href="exploring-isoforms-of-interest.html#cb132-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;isoform&quot;</span>) <span class="sc">%&gt;%</span></span>
@@ -523,7 +527,7 @@ Wan, C. Y., Davis, J., Chauhan, M., Gleeson, J., Prawer, Y. J., De Paoli-Iseppi
         </div>
       </div>
 <a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="novel-isofroms---working.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="isoform-classification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

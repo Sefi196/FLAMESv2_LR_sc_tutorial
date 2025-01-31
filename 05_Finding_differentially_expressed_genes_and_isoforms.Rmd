@@ -178,7 +178,7 @@ DimPlot(seu_obj, group.by = "sctype_db") | DimPlot(seu_obj, reduction ="umap_iso
 
 Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated cell type identification, differential expression (DE) analysis based on clusters and Gene set enrichment, provides a good indication of the cell types present in our data. It is possible to explore the radial glial cells in more detail as there are likely many subtypes. For the purposes of the tutorial we will leave this annoation as is. Based on this we have 5 main cell types.
 
-1.  Radial glial cells
+1.  Radial glial cells (RG)
 
 2.  Immature neurons
 
@@ -350,4 +350,4 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
 
 ```
 
-The volcano plot above is a useful tool for visualizing differentially expressed (DE) isoforms between two cell types. In this plot, red-labeled isoforms on the right-hand side indicate those that are upregulated in glutamatergic neurons compared to radial glial cells, while red dots on the left represent isoforms that are upregulated in radial glial cells compared to glutamatergic neurons. This analysis serves as an initial overview, and users can further explore the DE list (`glu_RG_iso`) to select specific isoforms of interest for more detailed analysis.
+The volcano plot above is a useful tool for visualizing DE isoforms between two cell types. In this plot, red-labeled isoforms on the right-hand side indicate those that are unregulated in glutamatergic neurons compared to RG cells, while red dots on the left represent isoforms that are unregulated in radial glial cells compared to glutamatergic neurons. This analysis serves as an initial overview, and users can further explore the DE list (`glu_RG_iso`) to select specific isoforms of interest for more detailed analysis.

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Isoform Classification | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Chapter 7 Isoform Classification | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Isoform Classification | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Isoform Classification | FLAMES Single-Cell RNA-seq Tutorial" />
+  
+  
+  
+
+<meta name="author" content="Sefi Prawer" />
+
+
+<meta name="date" content="2025-01-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="exploring-isoforms-of-interest.html"/>
+<link rel="next" href="novel-isofroms.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FLAMES single sample RNA-seq Tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> Setup</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> Removing sources of unwanted noise from the single cell dataset</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> Add isoform counts to Seurat object</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> Finding differentially expressed genes and isoforms</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isofroms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isofroms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> Exploring isoforms of interest</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene"><i class="fa fa-check"></i><b>6.1</b> Isoforms expressed per gene</a></li>
+<li class="chapter" data-level="6.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms"><i class="fa fa-check"></i><b>6.2</b> Top 10 Genes with Most Isoforms</a></li>
+<li class="chapter" data-level="6.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms"><i class="fa fa-check"></i><b>6.3</b> Exploring MACF1 isoforms</a></li>
+<li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
+<li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> Isoform Classification</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> Novel isofroms</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.1</b> Session info</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="isoform-classification" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Isoform Classification<a href="isoform-classification.html#isoform-classification" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="classification-with-sqanti" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Classification with SQANTI<a href="isoform-classification.html#classification-with-sqanti" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the previous Chapter we looked at some genes of interst like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription strat sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 <span class="citation">(<a href="#ref-pardo-palacios2024" role="doc-biblioref">Pardo-Palacios et al., 2024</a>)</span> which will categorize our isoforms<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and determine whether they are coding or non-coding.</p>
+<p>If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a <code>classifications.txt</code> file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.</p>
+<p><code>GTF="gencode.v47.annotation.gtf" genome="genome.fa"</code><br />
+#filter gtf file to remove. strands<br />
+<code>awk '$7 == "+" || $7 == "-"' isoform_annotated.gtf &gt; remove_unknownstrand.gtf</code><br />
+#run SQANTI<br />
+<code>python3 SQANTI3-5.2.1/sqanti3_qc.py remove_unknownstrand.gtf ${GTF} ${genome}</code></p>
+<p>If we examine the classifications file, we can see that each isoform in our <code>GTF</code> file has been categorized based on its structural characteristics, coding potential, and additional attributes.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="isoform-classification.html#cb137-1" aria-hidden="true" tabindex="-1"></a>SQANTI <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/remove_unknownstrand_classification.txt&quot;</span>, <span class="at">sep =</span><span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb137-2"><a href="isoform-classification.html#cb137-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SQANTI$isoform &lt;- sub(&quot;\\..*&quot;, &quot;&quot;, SQANTI$isoform) # remove numbers after . </span></span>
+<span id="cb137-3"><a href="isoform-classification.html#cb137-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb137-4"><a href="isoform-classification.html#cb137-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(SQANTI, <span class="dv">3</span>)</span></code></pre></div>
+</details>
+<pre><code>##              isoform chrom strand length exons structural_category                associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS diff_to_gene_TSS
+## 1           BambuTx1  chr1      +   2381     3    novel_in_catalog              ENSG00000294260.1                 novel       1694         2          NA          NA            -2481
+## 2           BambuTx2  chr1      -    595     2           antisense novelGene_ENSG00000302070.1_AS                 novel         NA        NA          NA          NA               NA
+## 3 ENST00000003583.12  chr1      -   2544     8   full-splice_match             ENSG00000001460.18    ENST00000003583.12       2544         8           0           0                0
+##   diff_to_gene_TTS                      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp
+## 1              -17 combination_of_known_splicesites     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
+## 2               NA                       multi-exon     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
+## 3                0                  reference_match     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
+##   FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak
+## 1         C non_coding         NA         NA        NA      NA                NA              NA            NA                    75 TAAAAAAAAAAAATAAGTGA                NA
+## 2         A non_coding         NA         NA        NA      NA                NA              NA            NA                    95 AAAAAAAAAAAAAAGAAAAA                NA
+## 3         C     coding        122        369      1009    1377          24358540        24358172         FALSE                    15 TATTGAGCTTTTGGGTACCC                NA
+##   within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found
+## 1               NA                 NA                NA          NA         NA                NA
+## 2               NA                 NA                NA          NA         NA                NA
+## 3               NA                 NA                NA          NA         NA                NA
+##                                                                                                                      ORF_seq ratio_TSS
+## 1                                                                                                                       &lt;NA&gt;        NA
+## 2                                                                                                                       &lt;NA&gt;        NA
+## 3 MSHKVKENSSHQPTLPSVPRTFLRRRPIMSVAADNLGGGSTTLAWHPSRTAAIAFVLSWRHCSLETSPQPHRLQWLPEQKGGVDRAPWLLPHAPIQAAFRHDSLPQTEGTPEAQTSRRISPP        NA</code></pre>
+<p>In this file there is lots information one can extract to get a more complete picture of the isoforms in your sample. Lets plot some of this information.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="isoform-classification.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co">#we can use the pseudobulk_data counts calculated previously </span></span>
+<span id="cb139-2"><a href="isoform-classification.html#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Select cell type columns and gather into long format</span></span>
+<span id="cb139-3"><a href="isoform-classification.html#cb139-3" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-4"><a href="isoform-classification.html#cb139-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb139-5"><a href="isoform-classification.html#cb139-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">&quot;iso.&quot;</span>),</span>
+<span id="cb139-6"><a href="isoform-classification.html#cb139-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;cell_type&quot;</span>,</span>
+<span id="cb139-7"><a href="isoform-classification.html#cb139-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;expression&quot;</span></span>
+<span id="cb139-8"><a href="isoform-classification.html#cb139-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-9"><a href="isoform-classification.html#cb139-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-10"><a href="isoform-classification.html#cb139-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for non-zero expression to identify genes and isoforms expressed in each cell type</span></span>
+<span id="cb139-11"><a href="isoform-classification.html#cb139-11" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-12"><a href="isoform-classification.html#cb139-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(expression <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb139-13"><a href="isoform-classification.html#cb139-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(cell_type, transcript_id, gene_id) <span class="sc">%&gt;%</span></span>
+<span id="cb139-14"><a href="isoform-classification.html#cb139-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb139-15"><a href="isoform-classification.html#cb139-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-16"><a href="isoform-classification.html#cb139-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate unique gene and isoform counts for each cell type</span></span>
+<span id="cb139-17"><a href="isoform-classification.html#cb139-17" aria-hidden="true" tabindex="-1"></a>cell_type_summary <span class="ot">&lt;-</span> filtered_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-18"><a href="isoform-classification.html#cb139-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cell_type) <span class="sc">%&gt;%</span></span>
+<span id="cb139-19"><a href="isoform-classification.html#cb139-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb139-20"><a href="isoform-classification.html#cb139-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_genes =</span> <span class="fu">n_distinct</span>(gene_id),</span>
+<span id="cb139-21"><a href="isoform-classification.html#cb139-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_isoforms =</span> <span class="fu">n_distinct</span>(transcript_id)</span>
+<span id="cb139-22"><a href="isoform-classification.html#cb139-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb139-23"><a href="isoform-classification.html#cb139-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(num_genes, num_isoforms), </span>
+<span id="cb139-24"><a href="isoform-classification.html#cb139-24" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">&quot;Category&quot;</span>, </span>
+<span id="cb139-25"><a href="isoform-classification.html#cb139-25" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;Count&quot;</span>)</span>
+<span id="cb139-26"><a href="isoform-classification.html#cb139-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-27"><a href="isoform-classification.html#cb139-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the data</span></span>
+<span id="cb139-28"><a href="isoform-classification.html#cb139-28" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(cell_type_summary, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> Count, <span class="at">fill =</span> Category)) <span class="sc">+</span></span>
+<span id="cb139-29"><a href="isoform-classification.html#cb139-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb139-30"><a href="isoform-classification.html#cb139-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb139-31"><a href="isoform-classification.html#cb139-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of Genes and Isoforms per cell type&quot;</span>,</span>
+<span id="cb139-32"><a href="isoform-classification.html#cb139-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb139-33"><a href="isoform-classification.html#cb139-33" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
+<span id="cb139-34"><a href="isoform-classification.html#cb139-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb139-35"><a href="isoform-classification.html#cb139-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb139-36"><a href="isoform-classification.html#cb139-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-37"><a href="isoform-classification.html#cb139-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-38"><a href="isoform-classification.html#cb139-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb139-39"><a href="isoform-classification.html#cb139-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb139-40"><a href="isoform-classification.html#cb139-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb139-41"><a href="isoform-classification.html#cb139-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-42"><a href="isoform-classification.html#cb139-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-43"><a href="isoform-classification.html#cb139-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-44"><a href="isoform-classification.html#cb139-44" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the structural category per cell type</span></span>
+<span id="cb139-45"><a href="isoform-classification.html#cb139-45" aria-hidden="true" tabindex="-1"></a>  merged_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(pseudobulk_data, SQANTI, </span>
+<span id="cb139-46"><a href="isoform-classification.html#cb139-46" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.x =</span> <span class="st">&quot;transcript_id&quot;</span>, </span>
+<span id="cb139-47"><a href="isoform-classification.html#cb139-47" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.y =</span> <span class="st">&quot;isoform&quot;</span>, </span>
+<span id="cb139-48"><a href="isoform-classification.html#cb139-48" aria-hidden="true" tabindex="-1"></a>                     <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb139-49"><a href="isoform-classification.html#cb139-49" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb139-50"><a href="isoform-classification.html#cb139-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pivot pseudobulk data to long format for cell types</span></span>
+<span id="cb139-51"><a href="isoform-classification.html#cb139-51" aria-hidden="true" tabindex="-1"></a>long_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-52"><a href="isoform-classification.html#cb139-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb139-53"><a href="isoform-classification.html#cb139-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">&quot;iso.&quot;</span>),</span>
+<span id="cb139-54"><a href="isoform-classification.html#cb139-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">&quot;cell_type&quot;</span>,</span>
+<span id="cb139-55"><a href="isoform-classification.html#cb139-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">&quot;expression&quot;</span></span>
+<span id="cb139-56"><a href="isoform-classification.html#cb139-56" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-57"><a href="isoform-classification.html#cb139-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-58"><a href="isoform-classification.html#cb139-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate outr new df thatw e can use for plotting attributes deffiend by cell type</span></span>
+<span id="cb139-59"><a href="isoform-classification.html#cb139-59" aria-hidden="true" tabindex="-1"></a>filtered_data <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-60"><a href="isoform-classification.html#cb139-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(expression <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb139-61"><a href="isoform-classification.html#cb139-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb139-62"><a href="isoform-classification.html#cb139-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-63"><a href="isoform-classification.html#cb139-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate unique counts of genes and isoforms per structural category and cell type</span></span>
+<span id="cb139-64"><a href="isoform-classification.html#cb139-64" aria-hidden="true" tabindex="-1"></a>category_summary <span class="ot">&lt;-</span> filtered_data <span class="sc">%&gt;%</span></span>
+<span id="cb139-65"><a href="isoform-classification.html#cb139-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cell_type, structural_category, subcategory, coding) <span class="sc">%&gt;%</span></span>
+<span id="cb139-66"><a href="isoform-classification.html#cb139-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb139-67"><a href="isoform-classification.html#cb139-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_genes =</span> <span class="fu">n_distinct</span>(gene_id),</span>
+<span id="cb139-68"><a href="isoform-classification.html#cb139-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_isoforms =</span> <span class="fu">n_distinct</span>(transcript_id),</span>
+<span id="cb139-69"><a href="isoform-classification.html#cb139-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb139-70"><a href="isoform-classification.html#cb139-70" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-71"><a href="isoform-classification.html#cb139-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-72"><a href="isoform-classification.html#cb139-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot number of isoforms per structural category for each cell type</span></span>
+<span id="cb139-73"><a href="isoform-classification.html#cb139-73" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(category_summary, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> num_isoforms, <span class="at">fill =</span> structural_category)) <span class="sc">+</span></span>
+<span id="cb139-74"><a href="isoform-classification.html#cb139-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb139-75"><a href="isoform-classification.html#cb139-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb139-76"><a href="isoform-classification.html#cb139-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb139-77"><a href="isoform-classification.html#cb139-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Isoforms by Structural Category Across Cell Types&quot;</span>,</span>
+<span id="cb139-78"><a href="isoform-classification.html#cb139-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb139-79"><a href="isoform-classification.html#cb139-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Isoforms&quot;</span>,</span>
+<span id="cb139-80"><a href="isoform-classification.html#cb139-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Structural Category&quot;</span></span>
+<span id="cb139-81"><a href="isoform-classification.html#cb139-81" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb139-82"><a href="isoform-classification.html#cb139-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb139-83"><a href="isoform-classification.html#cb139-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb139-84"><a href="isoform-classification.html#cb139-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-85"><a href="isoform-classification.html#cb139-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-86"><a href="isoform-classification.html#cb139-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb139-87"><a href="isoform-classification.html#cb139-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb139-88"><a href="isoform-classification.html#cb139-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-89"><a href="isoform-classification.html#cb139-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb139-90"><a href="isoform-classification.html#cb139-90" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-91"><a href="isoform-classification.html#cb139-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-92"><a href="isoform-classification.html#cb139-92" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(category_summary, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> num_isoforms, <span class="at">fill =</span> subcategory)) <span class="sc">+</span></span>
+<span id="cb139-93"><a href="isoform-classification.html#cb139-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb139-94"><a href="isoform-classification.html#cb139-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb139-95"><a href="isoform-classification.html#cb139-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb139-96"><a href="isoform-classification.html#cb139-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Isoforms by Structural subcategory Across Cell Types&quot;</span>,</span>
+<span id="cb139-97"><a href="isoform-classification.html#cb139-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb139-98"><a href="isoform-classification.html#cb139-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Isoforms&quot;</span>,</span>
+<span id="cb139-99"><a href="isoform-classification.html#cb139-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;subcategory&quot;</span></span>
+<span id="cb139-100"><a href="isoform-classification.html#cb139-100" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb139-101"><a href="isoform-classification.html#cb139-101" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb139-102"><a href="isoform-classification.html#cb139-102" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb139-103"><a href="isoform-classification.html#cb139-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-104"><a href="isoform-classification.html#cb139-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-105"><a href="isoform-classification.html#cb139-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb139-106"><a href="isoform-classification.html#cb139-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb139-107"><a href="isoform-classification.html#cb139-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-108"><a href="isoform-classification.html#cb139-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb139-109"><a href="isoform-classification.html#cb139-109" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-110"><a href="isoform-classification.html#cb139-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-111"><a href="isoform-classification.html#cb139-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-112"><a href="isoform-classification.html#cb139-112" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(category_summary, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> num_isoforms, <span class="at">fill =</span> coding)) <span class="sc">+</span></span>
+<span id="cb139-113"><a href="isoform-classification.html#cb139-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;fill&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb139-114"><a href="isoform-classification.html#cb139-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb139-115"><a href="isoform-classification.html#cb139-115" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb139-116"><a href="isoform-classification.html#cb139-116" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Proportion of coding isoforms across cell types&quot;</span>,</span>
+<span id="cb139-117"><a href="isoform-classification.html#cb139-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb139-118"><a href="isoform-classification.html#cb139-118" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Proportion of Isoforms&quot;</span>,</span>
+<span id="cb139-119"><a href="isoform-classification.html#cb139-119" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Structural Category&quot;</span></span>
+<span id="cb139-120"><a href="isoform-classification.html#cb139-120" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb139-121"><a href="isoform-classification.html#cb139-121" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span>  <span class="co"># This will show y-axis as percentages</span></span>
+<span id="cb139-122"><a href="isoform-classification.html#cb139-122" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb139-123"><a href="isoform-classification.html#cb139-123" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb139-124"><a href="isoform-classification.html#cb139-124" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-125"><a href="isoform-classification.html#cb139-125" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-126"><a href="isoform-classification.html#cb139-126" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb139-127"><a href="isoform-classification.html#cb139-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb139-128"><a href="isoform-classification.html#cb139-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb139-129"><a href="isoform-classification.html#cb139-129" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb139-130"><a href="isoform-classification.html#cb139-130" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-131"><a href="isoform-classification.html#cb139-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-132"><a href="isoform-classification.html#cb139-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-133"><a href="isoform-classification.html#cb139-133" aria-hidden="true" tabindex="-1"></a><span class="co">#Plots</span></span>
+<span id="cb139-134"><a href="isoform-classification.html#cb139-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-135"><a href="isoform-classification.html#cb139-135" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/SQANTI_plots-1.png" width="960" /></p>
+<p>We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="isoform-classification.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the data based on the expression cutoff</span></span>
+<span id="cb140-2"><a href="isoform-classification.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set expression cutoff threshold</span></span>
+<span id="cb140-3"><a href="isoform-classification.html#cb140-3" aria-hidden="true" tabindex="-1"></a>expression_cutoff <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb140-4"><a href="isoform-classification.html#cb140-4" aria-hidden="true" tabindex="-1"></a>max_expression_in_all_other_cells_types <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb140-5"><a href="isoform-classification.html#cb140-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-6"><a href="isoform-classification.html#cb140-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter isoforms based on the new criteria</span></span>
+<span id="cb140-7"><a href="isoform-classification.html#cb140-7" aria-hidden="true" tabindex="-1"></a>exclusive_isoforms <span class="ot">&lt;-</span> long_data <span class="sc">%&gt;%</span></span>
+<span id="cb140-8"><a href="isoform-classification.html#cb140-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(transcript_id) <span class="sc">%&gt;%</span></span>
+<span id="cb140-9"><a href="isoform-classification.html#cb140-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb140-10"><a href="isoform-classification.html#cb140-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Only one cell type where expression &gt; cutoff</span></span>
+<span id="cb140-11"><a href="isoform-classification.html#cb140-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(expression <span class="sc">&gt;</span> expression_cutoff) <span class="sc">&lt;=</span> <span class="dv">1</span>,</span>
+<span id="cb140-12"><a href="isoform-classification.html#cb140-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ensure all other cell types have 0 expression</span></span>
+<span id="cb140-13"><a href="isoform-classification.html#cb140-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">all</span>(expression <span class="sc">&lt;</span> max_expression_in_all_other_cells_types <span class="sc">|</span> expression <span class="sc">&gt;</span> expression_cutoff)</span>
+<span id="cb140-14"><a href="isoform-classification.html#cb140-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb140-15"><a href="isoform-classification.html#cb140-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb140-16"><a href="isoform-classification.html#cb140-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-17"><a href="isoform-classification.html#cb140-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Count the unique isoforms per cell type</span></span>
+<span id="cb140-18"><a href="isoform-classification.html#cb140-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust counting logic</span></span>
+<span id="cb140-19"><a href="isoform-classification.html#cb140-19" aria-hidden="true" tabindex="-1"></a>exclusive_isoforms_count <span class="ot">&lt;-</span> exclusive_isoforms <span class="sc">%&gt;%</span></span>
+<span id="cb140-20"><a href="isoform-classification.html#cb140-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cell_type) <span class="sc">%&gt;%</span></span>
+<span id="cb140-21"><a href="isoform-classification.html#cb140-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb140-22"><a href="isoform-classification.html#cb140-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">unique_isoforms =</span> <span class="fu">sum</span>(expression <span class="sc">&gt;</span> expression_cutoff)  <span class="co"># Count only isoforms with valid expression</span></span>
+<span id="cb140-23"><a href="isoform-classification.html#cb140-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb140-24"><a href="isoform-classification.html#cb140-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb140-25"><a href="isoform-classification.html#cb140-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-26"><a href="isoform-classification.html#cb140-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb140-27"><a href="isoform-classification.html#cb140-27" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(exclusive_isoforms_count, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> unique_isoforms, <span class="at">fill =</span> cell_type)) <span class="sc">+</span></span>
+<span id="cb140-28"><a href="isoform-classification.html#cb140-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb140-29"><a href="isoform-classification.html#cb140-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb140-30"><a href="isoform-classification.html#cb140-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb140-31"><a href="isoform-classification.html#cb140-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Number of Isoforms Unique to Each Cell Type&quot;</span>,</span>
+<span id="cb140-32"><a href="isoform-classification.html#cb140-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb140-33"><a href="isoform-classification.html#cb140-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Number of Unique Isoforms&quot;</span></span>
+<span id="cb140-34"><a href="isoform-classification.html#cb140-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb140-35"><a href="isoform-classification.html#cb140-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb140-36"><a href="isoform-classification.html#cb140-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb140-37"><a href="isoform-classification.html#cb140-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb140-38"><a href="isoform-classification.html#cb140-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb140-39"><a href="isoform-classification.html#cb140-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb140-40"><a href="isoform-classification.html#cb140-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb140-41"><a href="isoform-classification.html#cb140-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb140-42"><a href="isoform-classification.html#cb140-42" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/uniq_isofrom-1.png" width="672" /></p>
+<p>These cell type specific isoforms may be particularly interesting to study further, as they likely play important roles in differentiation and cell function. We could extract these isoforms for further analysis.<br />
+Lets use another helpful resource to explore these cell type specific isofroms.</p>
+<p>We can use the BioMart<span class="citation">(<a href="#ref-smedley2009" role="doc-biblioref">Smedley et al., 2009</a>)</span> package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="isoform-classification.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;biomaRt&quot;</span>)</span>
+<span id="cb141-2"><a href="isoform-classification.html#cb141-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-3"><a href="isoform-classification.html#cb141-3" aria-hidden="true" tabindex="-1"></a>exclusive_isoforms_uniq <span class="ot">&lt;-</span> exclusive_isoforms <span class="sc">%&gt;%</span></span>
+<span id="cb141-4"><a href="isoform-classification.html#cb141-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(expression <span class="sc">&gt;=</span> max_expression_in_all_other_cells_types) <span class="sc">%&gt;%</span></span>
+<span id="cb141-5"><a href="isoform-classification.html#cb141-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(expression))</span>
+<span id="cb141-6"><a href="isoform-classification.html#cb141-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-7"><a href="isoform-classification.html#cb141-7" aria-hidden="true" tabindex="-1"></a>exclusive_isoforms_uniq<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">..*&quot;</span>, <span class="st">&quot;&quot;</span>, exclusive_isoforms_uniq<span class="sc">$</span>transcript_id)</span>
+<span id="cb141-8"><a href="isoform-classification.html#cb141-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-9"><a href="isoform-classification.html#cb141-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve gene biotype from Ensembl</span></span>
+<span id="cb141-10"><a href="isoform-classification.html#cb141-10" aria-hidden="true" tabindex="-1"></a>  mart <span class="ot">&lt;-</span> <span class="fu">useMart</span>(<span class="at">biomart =</span> <span class="st">&quot;ensembl&quot;</span>, </span>
+<span id="cb141-11"><a href="isoform-classification.html#cb141-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dataset =</span> <span class="st">&quot;hsapiens_gene_ensembl&quot;</span>) <span class="co"># Change this to another mirror if available</span></span>
+<span id="cb141-12"><a href="isoform-classification.html#cb141-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-13"><a href="isoform-classification.html#cb141-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb141-14"><a href="isoform-classification.html#cb141-14" aria-hidden="true" tabindex="-1"></a>  biotype_info_transcript <span class="ot">&lt;-</span> <span class="fu">getBM</span>(<span class="at">attributes =</span> <span class="fu">c</span>(<span class="st">&quot;ensembl_transcript_id&quot;</span>, <span class="st">&quot;transcript_is_canonical&quot;</span>, <span class="st">&#39;transcript_biotype&#39;</span>, <span class="st">&#39;transcript_length&#39;</span>),</span>
+<span id="cb141-15"><a href="isoform-classification.html#cb141-15" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">filters =</span> <span class="st">&#39;ensembl_transcript_id&#39;</span>,</span>
+<span id="cb141-16"><a href="isoform-classification.html#cb141-16" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">values =</span> exclusive_isoforms_uniq<span class="sc">$</span>transcript_id,</span>
+<span id="cb141-17"><a href="isoform-classification.html#cb141-17" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">mart =</span> mart)</span>
+<span id="cb141-18"><a href="isoform-classification.html#cb141-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb141-19"><a href="isoform-classification.html#cb141-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-20"><a href="isoform-classification.html#cb141-20" aria-hidden="true" tabindex="-1"></a>  merged_biomart_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(exclusive_isoforms_uniq, biotype_info_transcript, </span>
+<span id="cb141-21"><a href="isoform-classification.html#cb141-21" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.x =</span> <span class="st">&quot;transcript_id&quot;</span>, </span>
+<span id="cb141-22"><a href="isoform-classification.html#cb141-22" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.y =</span> <span class="st">&quot;ensembl_transcript_id&quot;</span>, </span>
+<span id="cb141-23"><a href="isoform-classification.html#cb141-23" aria-hidden="true" tabindex="-1"></a>                     <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb141-24"><a href="isoform-classification.html#cb141-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb141-25"><a href="isoform-classification.html#cb141-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the summary data</span></span>
+<span id="cb141-26"><a href="isoform-classification.html#cb141-26" aria-hidden="true" tabindex="-1"></a>category_summary <span class="ot">&lt;-</span> merged_biomart_data <span class="sc">%&gt;%</span></span>
+<span id="cb141-27"><a href="isoform-classification.html#cb141-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cell_type, transcript_biotype) <span class="sc">%&gt;%</span></span>
+<span id="cb141-28"><a href="isoform-classification.html#cb141-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">num_isoforms =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb141-29"><a href="isoform-classification.html#cb141-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(cell_type) <span class="sc">%&gt;%</span></span>
+<span id="cb141-30"><a href="isoform-classification.html#cb141-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> num_isoforms <span class="sc">/</span> <span class="fu">sum</span>(num_isoforms)) <span class="sc">%&gt;%</span></span>
+<span id="cb141-31"><a href="isoform-classification.html#cb141-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb141-32"><a href="isoform-classification.html#cb141-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-33"><a href="isoform-classification.html#cb141-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure consistent factor order for cell_type and transcript_biotype</span></span>
+<span id="cb141-34"><a href="isoform-classification.html#cb141-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure consistent factor order for cell_type and transcript_biotype</span></span>
+<span id="cb141-35"><a href="isoform-classification.html#cb141-35" aria-hidden="true" tabindex="-1"></a>category_summary <span class="ot">&lt;-</span> category_summary <span class="sc">%&gt;%</span></span>
+<span id="cb141-36"><a href="isoform-classification.html#cb141-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb141-37"><a href="isoform-classification.html#cb141-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cell_type =</span> <span class="fu">factor</span>(cell_type, <span class="at">levels =</span> <span class="fu">unique</span>(cell_type)),</span>
+<span id="cb141-38"><a href="isoform-classification.html#cb141-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">transcript_biotype =</span> <span class="fu">factor</span>(transcript_biotype, <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb141-39"><a href="isoform-classification.html#cb141-39" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;protein_coding&quot;</span>, </span>
+<span id="cb141-40"><a href="isoform-classification.html#cb141-40" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;lncRNA&quot;</span>, </span>
+<span id="cb141-41"><a href="isoform-classification.html#cb141-41" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;non_stop_decay&quot;</span>,</span>
+<span id="cb141-42"><a href="isoform-classification.html#cb141-42" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;TEC&quot;</span>,</span>
+<span id="cb141-43"><a href="isoform-classification.html#cb141-43" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;nonsense_mediated_decay&quot;</span>,</span>
+<span id="cb141-44"><a href="isoform-classification.html#cb141-44" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;protein_coding_CDS_not_defined&quot;</span>,</span>
+<span id="cb141-45"><a href="isoform-classification.html#cb141-45" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;retained_intron&quot;</span>,</span>
+<span id="cb141-46"><a href="isoform-classification.html#cb141-46" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;processed_pseudogene&quot;</span>,</span>
+<span id="cb141-47"><a href="isoform-classification.html#cb141-47" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;snoRNA&quot;</span>,</span>
+<span id="cb141-48"><a href="isoform-classification.html#cb141-48" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;transcribed_processed_pseudogene&quot;</span></span>
+<span id="cb141-49"><a href="isoform-classification.html#cb141-49" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb141-50"><a href="isoform-classification.html#cb141-50" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb141-51"><a href="isoform-classification.html#cb141-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-52"><a href="isoform-classification.html#cb141-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the plot </span></span>
+<span id="cb141-53"><a href="isoform-classification.html#cb141-53" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(category_summary, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> proportion, <span class="at">fill =</span> transcript_biotype)) <span class="sc">+</span></span>
+<span id="cb141-54"><a href="isoform-classification.html#cb141-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">position =</span> <span class="st">&quot;fill&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb141-55"><a href="isoform-classification.html#cb141-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> scales<span class="sc">::</span><span class="fu">percent</span>(proportion, <span class="at">accuracy =</span> <span class="fl">0.1</span>)), </span>
+<span id="cb141-56"><a href="isoform-classification.html#cb141-56" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_fill</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>), <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb141-57"><a href="isoform-classification.html#cb141-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb141-58"><a href="isoform-classification.html#cb141-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb141-59"><a href="isoform-classification.html#cb141-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;BioMart Structural Categories cell specific isoforms&quot;</span>,</span>
+<span id="cb141-60"><a href="isoform-classification.html#cb141-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb141-61"><a href="isoform-classification.html#cb141-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Proportion of Isoforms&quot;</span>,</span>
+<span id="cb141-62"><a href="isoform-classification.html#cb141-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;BioMart structual Category&quot;</span></span>
+<span id="cb141-63"><a href="isoform-classification.html#cb141-63" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb141-64"><a href="isoform-classification.html#cb141-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb141-65"><a href="isoform-classification.html#cb141-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb141-66"><a href="isoform-classification.html#cb141-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb141-67"><a href="isoform-classification.html#cb141-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb141-68"><a href="isoform-classification.html#cb141-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb141-69"><a href="isoform-classification.html#cb141-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb141-70"><a href="isoform-classification.html#cb141-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb141-71"><a href="isoform-classification.html#cb141-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb141-72"><a href="isoform-classification.html#cb141-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>)</span>
+<span id="cb141-73"><a href="isoform-classification.html#cb141-73" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb141-74"><a href="isoform-classification.html#cb141-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-75"><a href="isoform-classification.html#cb141-75" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(merged_biomart_data, <span class="fu">aes</span>(<span class="at">x =</span> cell_type, <span class="at">y =</span> transcript_length, <span class="at">fill =</span> cell_type)) <span class="sc">+</span></span>
+<span id="cb141-76"><a href="isoform-classification.html#cb141-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">trim =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span>  <span class="co"># Use violin plot for distribution</span></span>
+<span id="cb141-77"><a href="isoform-classification.html#cb141-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">width =</span> <span class="fl">0.1</span>, <span class="at">outlier.size =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span>  <span class="co"># Add boxplot for summary statistics</span></span>
+<span id="cb141-78"><a href="isoform-classification.html#cb141-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb141-79"><a href="isoform-classification.html#cb141-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb141-80"><a href="isoform-classification.html#cb141-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Transcript Length Distribution Across Cell Types&quot;</span>,</span>
+<span id="cb141-81"><a href="isoform-classification.html#cb141-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Cell Type&quot;</span>,</span>
+<span id="cb141-82"><a href="isoform-classification.html#cb141-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Transcript Length (nt)&quot;</span>,</span>
+<span id="cb141-83"><a href="isoform-classification.html#cb141-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;Cell Type&quot;</span></span>
+<span id="cb141-84"><a href="isoform-classification.html#cb141-84" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb141-85"><a href="isoform-classification.html#cb141-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb141-86"><a href="isoform-classification.html#cb141-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb141-87"><a href="isoform-classification.html#cb141-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb141-88"><a href="isoform-classification.html#cb141-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>),</span>
+<span id="cb141-89"><a href="isoform-classification.html#cb141-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb141-90"><a href="isoform-classification.html#cb141-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb141-91"><a href="isoform-classification.html#cb141-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span></span>
+<span id="cb141-92"><a href="isoform-classification.html#cb141-92" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb141-93"><a href="isoform-classification.html#cb141-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb141-94"><a href="isoform-classification.html#cb141-94" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p5, p6, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/Glut_specific-1.png" width="768" /></p>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-pardo-palacios2024" class="csl-entry">
+Pardo-Palacios, F. J., Arzalluz-Luque, A., Kondratova, L., Salguero, P., Mestre-Tomás, J., Amorín, R., Estevan-Morió, E., Liu, T., Nanni, A., McIntyre, L., Tseng, E., &amp; Conesa, A. (2024). SQANTI3: curation of long-read transcriptomes for accurate identification of known and novel isoforms. <em>Nature Methods</em>, <em>21</em>(5), 793–797. <a href="https://doi.org/10.1038/s41592-024-02229-2">https://doi.org/10.1038/s41592-024-02229-2</a>
+</div>
+<div id="ref-smedley2009" class="csl-entry">
+Smedley, D., Haider, S., Ballester, B., Holland, R., London, D., Thorisson, G., &amp; Kasprzyk, A. (2009). BioMart <span></span> biological queries made easy. <em>BMC Genomics</em>, <em>10</em>(1). <a href="https://doi.org/10.1186/1471-2164-10-22">https://doi.org/10.1186/1471-2164-10-22</a>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>For more detail about the classification system see the SQANTI publication.<a href="isoform-classification.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>It is essential to keep in mind that cell type classification, sequencing depth, and the number of cells in each cluster can significantly impact the results, especially in cases where isoforms are expressed at very low levels.<a href="isoform-classification.html#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploring-isoforms-of-interest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="novel-isofroms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/07-Isofrom-Classification.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/07-Isofrom-Classification.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
