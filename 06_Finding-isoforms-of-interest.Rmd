@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Exploring isoforms of interest
+# **Exploring isoforms of interest**
 
-One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation. There are many examples in the literate of isofroms regurgitating this process. We will cover some very general analysis with this focus in mind. For users of long-read single-cell tools who are interested in exploring additional biological questions, we encourage you to share your suggestions and we can expand this section to include analytical approaches that may cover a wider range of applications.
+One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regurgitating this process. We will cover some very general analysis with this focus in mind.
 
 ## Isoforms expressed per gene
 
@@ -170,9 +170,9 @@ CombinePlots(plots = plots, ncol = 3)
 
 ## Expression of MCAF1 isoforms Across Cell Types
 
-Lets look at isofroms ENST00000564288.6 ENST00000361689.7 , ENST00000289893.8 and ENST00000524432.5 in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of ENST00000524432.5shows a cell type specific profile.
+Lets look at isofroms **ENST00000564288.6**, **ENST00000361689.7**, **ENST00000289893.8** and **ENST00000524432.5** in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of **ENST00000524432.5** shows a cell type specific profile.
 
-```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE}
+```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=10}
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
                     "ENST00000361689.7-MACF1", # most cell types
                     "ENST00000289893.8-MACF1", # msot cell types
@@ -180,7 +180,8 @@ features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
 
 VlnPlot(seu_obj, features = features_MACF1, ncol = 2)
 ```
-We can also show this enrichment with a dotplot.  
+
+We can also show this enrichment with a dotplot.
 
 ```{r dot MACF1, include=TRUE, echo=TRUE, warning=FALSE}
 dittoDotPlot(seu_obj, vars = features_MACF1, group.by = "sctype_db", scale = FALSE)
@@ -202,7 +203,7 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
                 selectLab = "ENST00000524432.5-MACF1",
                 boxedLabels = TRUE,
                 drawConnectors = TRUE,
-                title = "Volcano Plot showing ENST00000524432.5-MACF1 isoforms \n Glutamatergic Neurons vs Radial glial Cells")
+                title = "ENST00000524432.5-MACF1 is upregulated \n in Radial glial Cells compared to Glutamatergic Neurons")
 
 ```
 
@@ -210,7 +211,7 @@ EnhancedVolcano(glu_RG_iso, lab=rownames(glu_RG_iso),
 
 Now that we know some MCAF1 isoforms expression is significantly different in these two cell populations it may be of interest to visualize the isoform structures. This analysis will help us explore the similarities and differences between our isoforms of interest.
 
-There are many visualization options available to us and many of these are available in R. In fact FLAMES has its own visualization function `FLAMES::plot_isoform_reduced_dim` . This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.
+There are many visualization options available to us and many of these are available in R. In fact FLAMES has its own visualization function `FLAMES::plot_isoform_reduced_dim`. This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.
 
 We instead recommend using IsoViz [@wan2024], which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms.
 
@@ -224,23 +225,22 @@ First lets prepare the count data that we will load into Isoviz[^06_finding-isof
 row.names(df) <- NULL 
 df$gene_id <- NULL
 
-write.csv(df, "output_files/psedubulk_exp.csv", row.names = FALSE)
+write.csv(df, "output_files/Pseudobulk_exp.csv", row.names = FALSE)
 
 ```
 
-To use IsoViz click on the following link <https://isomix.org/isovis/> and uplaod the `isofrom_annotated.gtf` file located in the FLAMES output dir and `psedubulk_exp.csv` generated above For more detail on how to use Isoviz click the 'IsoViz tutorial' button or read the publication.
+To use IsoViz click on the following link <https://isomix.org/isovis/> and uplaod the `isofrom_annotated.gtf` file located in the FLAMES output dir and `Pseudobulk_exp.csv` generated above. For more detail on how to use Isoviz click the '**IsoViz tutorial**' button or read the publication.
 
-Embedded bellow is the figure generated by Isoviz. When Viewing this data in the web broswer users will have more functionality. (eg looking a protein domains or clicking on ENST ids and being linked to ensemble). Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites and ORFs.
+Embedded bellow is the figure generated by Isoviz[^06_finding-isoforms-of-interest-2]. Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.
 
-Our pseudobulk expression analysis clearly demonstrates that **ENST00000524432.5** is predominantly expressed in radial glia cells. This isoform is particularly interesting, as it is significantly shorter than others and lacks many of the protein domains present in **ENST00000564288.6**, the canonical isoform. Notably, all four isoforms exhibit different transcription start sites (TSS), suggesting that TSS variation may be linked to cell-type-specific expression or distinct protein functions.
-
-Additionally, **ENST00000289893.8** shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the **Ensembl** data, accessible via the hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.
+[^06_finding-isoforms-of-interest-2]: When Viewing this data in the web browser users will have more functionality. This includes a zoom function, looking at protein domains and rearranging isoform tracks and known visualizing open reading frames.
 
 ```{r isoviz-plot, fig.cap="IsoViz visualization of 4 MACF1 isoforms.", out.width="1600px"}
 knitr::include_graphics("images/IsoVis_ENSG00000127603.png")
 ```
 
-Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains and severs as a powerful tool to infer isoform function. There are lots of additional analysis that could be performed to further explore the function of our *MCAF1* isofroms, these include domain enrichment analysis and protein folding to name a few.
+Our pseudobulk expression data clearly demonstrates that **ENST00000524432.5** is predominantly expressed in radial glia cells. This isoform is particularly interesting, as it is significantly shorter than others and lacks many of the protein domains present in **ENST00000564288.6** (the canonical isoform). Notably, all four isoforms exhibit different transcription start sites (TSS), suggesting that TSS variation may be linked to cell-type-specific expression or distinct proteaforms
 
-**Idea to add Splice Variant Impact**\
-Analyze how alternative splicing affects protein structure and function using tools like **PROSITE** or structural prediction algorithms.
+For example, **ENST00000289893.8** shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the **Ensembl** data, accessible via the isoform hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.
+
+There are lots of additional analysis that could be performed to further explore the function of our *MCAF1* isofroms, these include domain enrichment analysis and protein folding to name a few.

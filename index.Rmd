@@ -20,26 +20,50 @@ link-citations: yes  # Optional: clickable citations in HTML output
 
 ------------------------------------------------------------------------
 
-Welcome to the FLAMES single sample tutorial!
+**Welcome to the FLAMES analysis tutorial!**
 
-In this tutorial, we will guide you through a basic analysis of long-read single-cell RNA sequencing data. Our goal is to demonstrate how to use the output from our package, FLAMES [@tian2021], to create and process long-read single-cell data. Here we will focus on using Seurat and other very popular single cell tools for analysis and processing single cell data. Much of this analysis will follow standard short read single cell processing norms, yet with long read data we can also explore isoform-level expression in single cells. This can be very useful as we hope to demonstrate throughout this tutorial.
+In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package [@tian2021]. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.
 
-This tutorial assumes that have;
+We will demonstrate how to load and explore FLAMES outputs in Seurat and other popular single-cell analysis tools. By following this workflow, you'll learn how to:
 
-Run the sc_long_pipeline (to process a single sample) and have set your config file with these parameters set to TRUE
+-   **Preprocess long-read single-cell data**
 
-`"bambu_isoform_identification": [true]`
+-   **Visualize isoform expression patterns and isoform structure**
 
-`"oarfish_quantification": [true]`
+-   **Identify differentially expressed isoforms across cell types**
 
-and that you have run FLAMES to calculate the ambient RNA profile. An explanation of how to this can be found here: ... [placeholder]
+-   **Detect novel isoforms with potential functional impact**
 
-If you wish to run through the tutorial using the data provided in the 'data' folder please ensure you unzip all the files. If you wish run through the tutorial using your own single sample output from FLAMES, there is no need to unzip your files please ensure you use the correct gtf. The gtf used when running FLAMES must be the same for subsequent analysis. The current version used in this tutorial can be downloaded using the following command `wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz`
+If you're familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read sequencing provides a unique advantage by enabling isoform-level expression profiling in individual cells which is essential for understanding isoform dynamics in single cells.
 
-Much of the workflow will remain the same if you decide to use other tools for quantification or isoform discovery, which FLAMES does support, but these are the tools that in our hands perform the best and what we would recommend using at this stage.
+### **Prerequisites**
 
-This single sample tutorial will use data generated in the Clark lab from the University of Melbourne. This is small dataset of approximately 400 cells. The cells are at Day55 of a excitatory neural differentiation protocol. More information on the dataset and sequencing methodology and differentiation protocal can be found in this publication [@you2023a]
+This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the `sc_long_pipeline` or `sc_long_multisample_pipeline`. Please ensure that the following parameters in your configuration file are set to `TRUE` to enable isoform identification and quantification with Bambu and Oarfish:
 
-If you find this tutorial useful please cite our work **[PLACE HOLDER]**
+-   `"bambu_isoform_identification": [true]`
 
-If you have questions or suggestions please email [sefi.prawer\@unimelb.edu.au](mailto:sefi.prawer@unimelb.edu.au){.email} or leave a comment on this github page <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>.
+-   `"oarfish_quantification": [true]`
+
+While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools. We recommend continuing with the tools FLAMES supports, as they have been validated for the type of analysis demonstrated here.
+
+Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here: [**PLACEHOLDER**].
+
+### **Getting Started with the Data**
+
+To follow along with this tutorial, you can use the data provided in the 'data' folder. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:
+
+```{bash, eval=FALSE}
+wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz  
+```
+
+### Dataset Information
+
+This tutorial uses data generated by the Clark Lab at the University of Melbourne, consisting of a small dataset of approximately 400 cells. The cells were collected at Day 55 of an excitatory neural differentiation protocol. More details on the dataset, sequencing methodology, and the differentiation protocol can be found in the following publication: [@you2023a] **[PLACE HOLDER - FLAMESv2 paper]**
+
+### Citation
+
+If you find this tutorial useful please cite our work **[PLACE HOLDER - FLAMESv2 paper]**
+
+### Contact
+
+For questions or suggestions, please feel free to email us at sefi.prawer\@unimelb.edu.au or leave a comment on our GitHub page: <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>.

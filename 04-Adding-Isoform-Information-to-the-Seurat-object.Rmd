@@ -82,7 +82,7 @@ We have now created a Seurat object with isoform-level count data. Users can tak
 
 Since we've already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.
 
-```{r isoform_assay, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+```{r isoform_assay, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE, fig.height=4, fig.width=8}
 
 #### isofrom assay 
 ## filter the data so iso and gene cells match

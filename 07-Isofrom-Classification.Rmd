@@ -5,7 +5,7 @@ output: html_document
 bibliography: references.bib
 ---
 
-# Isoform Classification
+# **Isoform Classification**
 
 ## Classification with SQANTI
 
@@ -15,11 +15,15 @@ In the previous Chapter we looked at some genes of interst like MCAF1 and some o
 
 If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a `classifications.txt` file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.
 
-`GTF="gencode.v47.annotation.gtf" genome="genome.fa"`\
-#filter gtf file to remove. strands\
-`awk '$7 == "+" || $7 == "-"' isoform_annotated.gtf > remove_unknownstrand.gtf`\
-#run SQANTI\
-`python3 SQANTI3-5.2.1/sqanti3_qc.py remove_unknownstrand.gtf ${GTF} ${genome}`
+```{bash, eval=FALSE}
+GTF="gencode.v47.annotation.gtf" 
+genome="genome.fa"
+#filter gtf file to remove annoatiuon of unknown strands
+awk '$7 == "+" || $7 == "-"' isoform_annotated.gtf > remove_unknownstrand.gtf
+#run SQANTIpython3 
+#you may need need to activate a conda enviroment 
+SQANTI3-5.2.1/sqanti3_qc.py remove_unknownstrand.gtf ${GTF} ${genome}
+```
 
 If we examine the classifications file, we can see that each isoform in our `GTF` file has been categorized based on its structural characteristics, coding potential, and additional attributes.
 
@@ -31,9 +35,9 @@ head(SQANTI, 3)
 
 ```
 
-In this file there is lots information one can extract to get a more complete picture of the isoforms in your sample. Lets plot some of this information.
+There is a lots information one can extract from the `classifications.txt` file. to get a more complete picture of the isoforms in the sample Lets plot some of this information.
 
-```{r SQANTI_plots, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=10}
+```{r SQANTI_plots, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=14}
 
 #we can use the pseudobulk_data counts calculated previously 
 # Select cell type columns and gather into long format
@@ -65,7 +69,7 @@ cell_type_summary <- filtered_data %>%
 p1 <- ggplot(cell_type_summary, aes(x = cell_type, y = Count, fill = Category)) +
   geom_bar(stat = "identity", position = "dodge", color = "black", width = 0.8) +
   theme_minimal() +
-  labs(title = "Number of Genes and Isoforms per cell type",
+  labs(title = "Number of genes and isoforms \n per cell type",
        x = "Cell Type",
        y = "Count") +
   theme(
@@ -111,7 +115,7 @@ p2 <- ggplot(category_summary, aes(x = cell_type, y = num_isoforms, fill = struc
   geom_bar(stat = "identity", position = "stack", width = 0.8) +
   theme_minimal() +
   labs(
-    title = "Isoforms by Structural Category Across Cell Types",
+    title = "Isoforms by structural category \n across cell types",
     x = "Cell Type",
     y = "Number of Isoforms",
     fill = "Structural Category"
@@ -130,7 +134,7 @@ p3 <- ggplot(category_summary, aes(x = cell_type, y = num_isoforms, fill = subca
   geom_bar(stat = "identity", position = "stack", width = 0.8) +
   theme_minimal() +
   labs(
-    title = "Isoforms by Structural subcategory Across Cell Types",
+    title = "Isoforms by structural subcategory \n across cell types",
     x = "Cell Type",
     y = "Number of Isoforms",
     fill = "subcategory"
@@ -150,7 +154,7 @@ p4 <- ggplot(category_summary, aes(x = cell_type, y = num_isoforms, fill = codin
   geom_bar(stat = "identity", position = "fill", width = 0.8) +
   theme_minimal() +
   labs(
-    title = "Proportion of coding isoforms across cell types",
+    title = "Proportion of coding isoforms \n across cell types",
     x = "Cell Type",
     y = "Proportion of Isoforms",
     fill = "Structural Category"
@@ -173,11 +177,13 @@ cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
 
 ```
 
+## Cell typye specific isoforms
+
 We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow[^07-isofrom-classification-2].
 
 [^07-isofrom-classification-2]: It is essential to keep in mind that cell type classification, sequencing depth, and the number of cells in each cluster can significantly impact the results, especially in cases where isoforms are expressed at very low levels.
 
-```{r uniq_isofrom, include=TRUE, echo=TRUE, warning=FALSE}
+```{r uniq_isofrom, include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=8}
 # Filter the data based on the expression cutoff
 # Set expression cutoff threshold
 expression_cutoff <- 5
@@ -208,7 +214,7 @@ ggplot(exclusive_isoforms_count, aes(x = cell_type, y = unique_isoforms, fill = 
   geom_bar(stat = "identity", color = "black", width = 0.8) +
   theme_minimal() +
   labs(
-    title = "Number of Isoforms Unique to Each Cell Type",
+    title = "Number of isoforms unique \n to each cell type",
     x = "Cell Type",
     y = "Number of Unique Isoforms"
   ) +
@@ -230,7 +236,7 @@ Lets use another helpful resource to explore these cell type specific isofroms.
 
 We can use the BioMart[@smedley2009] package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.
 
-```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=8}
+```{r Glut_specific, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=12}
 
 library("biomaRt")
 
@@ -242,15 +248,14 @@ exclusive_isoforms_uniq$transcript_id <- sub("\\..*", "", exclusive_isoforms_uni
 
 # Retrieve gene biotype from Ensembl
   mart <- useMart(biomart = "ensembl", 
-                 dataset = "hsapiens_gene_ensembl") # Change this to another mirror if available
-
+                 dataset = "hsapiens_gene_ensembl") 
   
   biotype_info_transcript <- getBM(attributes = c("ensembl_transcript_id", "transcript_is_canonical", 'transcript_biotype', 'transcript_length'),
                                    filters = 'ensembl_transcript_id',
                                    values = exclusive_isoforms_uniq$transcript_id,
                                    mart = mart)
   
-
+  #merge excluive isofroms and biomart data togehter 
   merged_biomart_data <- merge(exclusive_isoforms_uniq, biotype_info_transcript, 
                      by.x = "transcript_id", 
                      by.y = "ensembl_transcript_id", 
@@ -287,23 +292,23 @@ category_summary <- category_summary %>%
 p5 <- ggplot(category_summary, aes(x = cell_type, y = proportion, fill = transcript_biotype)) +
   geom_bar(stat = "identity", position = "fill", width = 0.8) +
   geom_text(aes(label = scales::percent(proportion, accuracy = 0.1)), 
-            position = position_fill(vjust = 0.5), size = 3) +
+            position = position_fill(vjust = 0.5), size = 2) +
   theme_minimal() +
   labs(
-    title = "BioMart Structural Categories cell specific isoforms",
+    title = "BioMart Structural Categories \n cell specific isoforms",
     x = "Cell Type",
     y = "Proportion of Isoforms",
     fill = "BioMart structual Category"
   ) +
   scale_y_continuous(labels = scales::percent) +
   theme(
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 14),
-    axis.title.y = element_text(size = 14),
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 12),
+    axis.title.y = element_text(size = 12),
     axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 12),
-    legend.title = element_text(size = 14),
-    legend.text = element_text(size = 12)
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 6)
   )
 
 p6 <- ggplot(merged_biomart_data, aes(x = cell_type, y = transcript_length, fill = cell_type)) +
@@ -311,21 +316,21 @@ p6 <- ggplot(merged_biomart_data, aes(x = cell_type, y = transcript_length, fill
   geom_boxplot(width = 0.1, outlier.size = 0.5, alpha = 0.8) +  # Add boxplot for summary statistics
   theme_minimal() +
   labs(
-    title = "Transcript Length Distribution Across Cell Types",
+    title = "Transcript length distribution \n across cell types",
     x = "Cell Type",
     y = "Transcript Length (nt)",
     fill = "Cell Type"
   ) +
   theme(
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
-    axis.title.x = element_text(size = 14),
-    axis.title.y = element_text(size = 14),
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    axis.title.x = element_text(size = 10),
+    axis.title.y = element_text(size = 10),
     axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
     axis.text.y = element_text(size = 12),
     legend.position = "none"
   )
 
-cowplot::plot_grid(p5, p6, ncol = 1)
+cowplot::plot_grid(p5, p6, ncol = 2)
 ```
 
 # Novel isofroms
@@ -379,17 +384,19 @@ Visualizing **OAZ2** reveals that the primary distinction between the novel isof
 SQANTI[grep('BambuTx25', SQANTI$isoform), ]
 ```
 
-To better understand these SQANTI results lets zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. Our Novel BambuTx52 does not contain this break so perhaps this change affects the resulting amino acid sequence.
+To better understand these SQANTI results lets zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. The novel **BambuTx25** does not contain this break so perhaps this change affects the resulting amino acid sequence.
 
-```{r isoviz-plot-zoom, fig.cap="IsoViz visualization of Novel OAZ2 isoform.", out.width="1000px"}
+```{r isoviz-plot-zoom, fig.cap="IsoViz visualization of exon 2 of OAZ2.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 ```
 
 There are many ways to investigate the translated sequence and compare the protein generated from conanocial isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in a online tool like 'expasy translate' which can be found here <https://web.expasy.org/translate/>.
 
-Bellow we will have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik [@tjeldnes2021]. We will visualize these ORFS in Gviz [@hahne2016] an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequencne.
+Bellow we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik[^07-isofrom-classification-3] [@tjeldnes2021]. We will visualize these ORFS in Gviz [@hahne2016] an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequence.
 
-```{r ORFS-plot3,include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=8}
+[^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysising differnt genes or isoforms.
+
+```{r ORFS-plot3,include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=12}
 library(ORFik)
 library(GenomicFeatures)
 library(Gviz)
@@ -532,19 +539,13 @@ plot_isoform_ORFs(
 
 Visualizing ORFs using the above code chunck shows that the **BambuTx25_1\_ORF** is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3\_ORF is complete.
 
-We can further examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the fucntion above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some import regulatory role in the 5' UTR.
+We can examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some import regulatory role in the 5' UTR yet the protein remains unchanged.
 
 ```{r isoviz-plot3, fig.cap="IsoViz visualization of Novel ZMAT5 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
 
+```
 
-plot_isoform_ORFs(
-  reference_gtf = "../../../../resources/gencode.v47.annotation.gtf",
-  target_gtf = "/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf",
-  isoforms_of_interest = c("BambuTx32", "ENST00000344318.4"),
-  chromosome = "chr22",
-  plot_start = 29728956,
-  plot_end = 29769011
-)
-
+```{r ORFS-plot4,include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=12}
+plot_isoform_ORFs( reference_gtf = "../../../../resources/gencode.v47.annotation.gtf", target_gtf = "/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf", isoforms_of_interest = c("BambuTx32", "ENST00000344318.4"), chromosome = "chr22", plot_start = 29728956, plot_end = 29769011 )
 ```

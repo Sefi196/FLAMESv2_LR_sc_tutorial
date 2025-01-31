@@ -2,9 +2,13 @@ fig:barcode-rank-plot
 fig:isoviz-plot
 fig:isoviz-plot2
 fig:isoviz-plot-zoom
-fig:isoviz-plot3-1
-fig:isoviz-plot3-2
+fig:isoviz-plot3
 introduction
+prerequisites
+getting-started-with-the-data
+dataset-information
+citation
+contact
 setup
 load-in-required-packages
 creating-resource-files.
@@ -32,7 +36,9 @@ expression-of-mcaf1-isoforms-across-cell-types
 visualization-of-isoform-structures
 isoform-classification
 classification-with-sqanti
+cell-typye-specific-isoforms
 novel-isofroms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 conclusion
+acknowledgements
 session-info

@@ -13,15 +13,21 @@ In this tutorial, we have demonstrated an end-to-end workflow for analysing and 
 
 While this tutorial covers the core aspects of single-cell long-read data analysis, several additional avenues remain unexplored. Further analyses could include enrichment analysis of differentially expressed transcription factors or splicing regulators, motif analysis to investigate regulatory element binding, and alternative splicing events that may impact cellular functions. Integrating these analyses can provide a more comprehensive understanding of cellular diversity and regulatory mechanisms.
 
-Ultimately, this tutorial, in combination with long-read tools such as FLAMES, offers a powerful toolkit for exploring and analyzing isoform-level dynamics in single cells. This workflow can be applied to other experimental contexts to identify candidate isoforms involved in development or disease pathogenesis advancing our understanding of complex cellular processes.
+Ultimately, this tutorial, in combination with long-read tools such as FLAMES, offers a powerful toolkit for exploring and analyzing isoform-level dynamics in single cells. This workflow can be applied to other experimental contexts to identify candidate isoforms involved in development or disease pathogenesis.
 
-**note: need to add in multiple mode. not sure if this goes in in a separate tutorial or chapter. This would include.**
+**Notes**
+
+**need to add in multiple mode. not sure if this goes in in a separate tutorial or chapter. This would include.**
 
 1.  **Data integration**
 
 2.  **trajectory analysis and isofroms that change with pseudotime**
 
 3.  **DTU using isoform switch analyzer**
+
+## Acknowledgements 
+
+Thank you to Manveer and Michaela for reviewing this book and providing valuable suggestions to improve its clarity and content. Your feedback has contributed to making this a more useful resource for researchers working with long-read single-cell RNA sequencing data.
 
 ## Session info
 
