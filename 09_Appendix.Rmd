@@ -8,7 +8,7 @@ output:
 
 # **Appendix** {-}
 
-## Calculating the ambient RNA profile {-}
+### Calculating the ambient RNA profile {#Calculating the ambient RNA profile}
 
 By calculating the ambient RNA profile, we can perform two important analyses to improve data quality: (1) removing empty droplets and (2) normalizing for background RNA contamination. Chapter 3 of the tutorial outlines both processes. However, the first step is to calculate the background RNA profile by quantifying gene expression for a list of barcodes known to represent background droplets rather than true cells.
 

@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# **Finding differentially expressed genes and isoforms** {style="gray"}
+# **Finding marker genes and isoforms** {style="gray"}
 
 ------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ dittoBarPlot(seu_obj, "orig.ident", group.by = "sctype_db", scale = "count") | d
 
 ```
 
-## DE genes and isofroms based on annotaed cell types.
+## DE genes and isoforms based on annotaed cell types.
 
 With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.
 

@@ -21,9 +21,9 @@ Ultimately, this tutorial, in combination with long-read tools such as FLAMES, o
 
 1.  **Data integration**
 
-2.  **trajectory analysis and isofroms that change with pseudotime**
+2.  **Trajectory analysis and isoforms that change with pseudotime**
 
-3.  **DTU using isoform switch analyzer**
+3.  **DTU using isoform switch analyser**
 
 ## Acknowledgements {-}
 

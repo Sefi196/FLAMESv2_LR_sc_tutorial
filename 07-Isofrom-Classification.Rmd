@@ -333,7 +333,7 @@ p6 <- ggplot(merged_biomart_data, aes(x = cell_type, y = transcript_length, fill
 cowplot::plot_grid(p5, p6, ncol = 1)
 ```
 
-# **Novel isofroms**
+# **Novel isoforms**
 
 With long read sequencing its possible to explore both known and novel isofroms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isofroms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
 
@@ -499,7 +499,8 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
     chromosome = seqnames(txs_grl[[1]])[1],
     col = "green",
     fill = "green",
-    shape = "box"  # Ensure no arrows by using box shape
+    shape = "box", # Ensure no arrows by using box shape
+    stacking = "dense"
   )
   
   stops_track <- AnnotationTrack(
@@ -509,7 +510,8 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
     chromosome = seqnames(txs_grl[[1]])[1],
     col = "red",
     fill = "red",
-    shape = "box"  # Ensure no arrows by using box shape
+    shape = "box", # Ensure no arrows by using box shape
+    stacking = "dense" 
   )
   
   # Plot tracks

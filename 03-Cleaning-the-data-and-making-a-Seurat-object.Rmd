@@ -20,7 +20,7 @@ Now we will do some initial prepossessing of single cell data to ensure we have 
 
 This function removes empty droplets, a critical step to ensure that only true cells are retained for analysis. In short-read analysis using CellRanger, this process is automated, and empty droplets are removed by the software. However, FLAMES does not perform this step automatically, so it must be done manually. The function provided here not only removes empty droplets but also generates general QC metrics, enabling users to assess the reasonableness of the number of cells removed.
 
-```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE,  fig.height=12, fig.width=6}
 
 ### notes: This fucnion should be refactored and cleaed up. Its very long and complex. 
 perform_empty_drops_analysis <- function(output_path, gene_count_file, empty_drops_file, output_seurat_file, fdr_threshold = 0.001, lower = 100) {

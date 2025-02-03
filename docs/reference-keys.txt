@@ -24,7 +24,7 @@ add-the-isoform-assay-to-the-seurat-object
 finding-differentially-expressed-genes-and-isoforms
 differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
-de-genes-and-isofroms-based-on-annotaed-cell-types.
+de-genes-and-isoforms-based-on-annotaed-cell-types.
 volcano-plots
 findallmarkers-de
 findmarkers-de
@@ -37,7 +37,8 @@ visualization-of-isoform-structures
 isoform-classification
 classification-with-sqanti
 cell-type-specific-isoforms
-novel-isofroms
+novel-isoforms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 visualizing-oaz2-novel-isoform
 functional-impacts-of-novel-isoforms
+calculating-the-ambient-rna-profile-calculating-the-ambient-rna-profile
