@@ -11,9 +11,9 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
-bibliography: references.bib  # Link to your .bib file
-csl: apa.csl  # Citation style (APA in this case)
-link-citations: yes  # Optional: clickable citations in HTML output
+bibliography: references.bib
+csl: apa.csl
+link-citations: yes
 ---
 
 # **Introduction**

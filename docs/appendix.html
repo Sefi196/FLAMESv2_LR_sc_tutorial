@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 10 Appendix | FLAMES Single-Cell RNA-seq Tutorial</title>
-  <meta name="description" content="Chapter 10 Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
+  <title>Appendix | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 10 Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:title" content="Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 10 Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="twitter:title" content="Appendix | FLAMES Single-Cell RNA-seq Tutorial" />
   
   
   
@@ -219,14 +219,14 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> <strong>Conclusion</strong></a>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
-<li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
+<li class="chapter" data-level="8.4" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>8.4</b> Acknowledgements</a></li>
+<li class="chapter" data-level="8.5" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>8.5</b> Session info</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>10</b> <strong>Appendix</strong></a>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="8.6" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.6</b> Calculating the ambient RNA profile</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
@@ -248,10 +248,10 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="appendix" class="section level1 hasAnchor" number="10">
-<h1><span class="header-section-number">Chapter 10</span> <strong>Appendix</strong><a href="appendix.html#appendix" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="calculating-the-ambient-rna-profile" class="section level2 hasAnchor" number="10.1">
-<h2><span class="header-section-number">10.1</span> Calculating the ambient RNA profile<a href="appendix.html#calculating-the-ambient-rna-profile" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="appendix" class="section level1 unnumbered hasAnchor">
+<h1><strong>Appendix</strong><a href="appendix.html#appendix" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="calculating-the-ambient-rna-profile" class="section level2 hasAnchor" number="8.6">
+<h2><span class="header-section-number">8.6</span> Calculating the ambient RNA profile<a href="appendix.html#calculating-the-ambient-rna-profile" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>By calculating the ambient RNA profile, we can perform two important analyses to improve data quality: (1) removing empty droplets and (2) normalizing for background RNA contamination. Chapter 3 of the tutorial outlines both processes. However, the first step is to calculate the background RNA profile by quantifying gene expression for a list of barcodes known to represent background droplets rather than true cells.</p>
 <p>When running FLAMES, one of the outputs is the empty_bc_list.csv file, which contains 2,000 barcodes identified as background, not associated with cells. Users can manually add additional background barcodes if needed (for advanced users). For a detailed understanding of how this list is determined, refer to the BLAZE publication <span class="citation">(<a href="#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span>.</p>
 <p>To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set the following parameters to false in the config file</p>
@@ -271,7 +271,7 @@ div.csl-indent {
 
 </div>
 </div>
-<h3><strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-you2023a" class="csl-entry">
 You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., Shim, H., &amp; Clark, M. B. (2023). Identification of cell barcodes from long-read single-cell RNA-seq with BLAZE. <em>Genome Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s13059-023-02907-y">https://doi.org/10.1186/s13059-023-02907-y</a>
