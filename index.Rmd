@@ -16,7 +16,7 @@ csl: apa.csl  # Citation style (APA in this case)
 link-citations: yes  # Optional: clickable citations in HTML output
 ---
 
-# Introduction
+# **Introduction**
 
 ------------------------------------------------------------------------
 
@@ -44,13 +44,13 @@ This tutorial assumes you have already processed your long-read single-cell data
 
 -   `"oarfish_quantification": [true]`
 
-While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools whcih FLAMES supports. We recommend using Bambu and Oarfish as they have been validated for the type of analysis demonstrated here.
+While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools which FLAMES supports. We recommend using Bambu and Oarfish as they have been validated for the type of analysis demonstrated here.
 
-Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here: [**PLACEHOLDER**].
+Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here \@ref(calculating-the-ambient-rna-profile).
 
 ## Getting Started with the Data
 
-To follow along with this tutorial, you can use the data provided in the 'data' folder <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:
+To follow along with this tutorial, you can use the data provided in the 'data' folder here <https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial>[/data](https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial/data). Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:
 
 ```{bash, eval=FALSE, include=TRUE, echo=TRUE}
 wget https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz  

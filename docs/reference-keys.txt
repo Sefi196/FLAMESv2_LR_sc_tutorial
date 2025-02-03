@@ -40,8 +40,10 @@ cell-type-specific-isoforms
 novel-isofroms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 visualizing-oaz2-novel-isoform
-functional-impacts-ofnovel-isoforms
+functional-impacts-of-novel-isoforms
 conclusion
 acknowledgements
 session-info
+appendix
+calculating-the-ambient-rna-profile
 references

@@ -20,10 +20,10 @@
   
   
 
-<meta name="author" content="Sefi Prawer" />
+<meta name="author" content="Sefi" />
 
 
-<meta name="date" content="2025-01-31" />
+<meta name="date" content="2025-02-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -163,7 +163,7 @@ div.csl-indent {
 <li><a href="./">FLAMES single cell RNA-seq Tutorial</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
 <li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#getting-started-with-the-data"><i class="fa fa-check"></i><b>1.2</b> Getting Started with the Data</a></li>
@@ -216,15 +216,19 @@ div.csl-indent {
 <li class="chapter" data-level="8" data-path="novel-isofroms.html"><a href="novel-isofroms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isofroms</strong></a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="novel-isofroms.html"><a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
-<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing <strong>OAZ2</strong> novel isoform</a></li>
-<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-ofnovel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts ofnovel isoforms</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isofroms.html"><a href="novel-isofroms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isofroms.html"><a href="novel-isofroms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> Conclusion</a>
+<li class="chapter" data-level="9" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>9</b> <strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>9.1</b> Acknowledgements</a></li>
 <li class="chapter" data-level="9.2" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>9.2</b> Session info</a></li>
-<li class="chapter" data-level="9.3" data-path="conclusion.html"><a href="conclusion.html#references"><i class="fa fa-check"></i><b>9.3</b> <strong>References</strong></a></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><b>10</b> <strong>Appendix</strong></a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>11</b> <strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -246,11 +250,11 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="header">
 <h1 class="title">FLAMES Single-Cell RNA-seq Tutorial</h1>
-<p class="author"><em>Sefi Prawer</em></p>
-<p class="date"><em>2025-01-31</em></p>
+<p class="author"><em>Sefi</em></p>
+<p class="date"><em>2025-02-03</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">Chapter 1</span> <strong>Introduction</strong><a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
 <p><strong>Welcome to the FLAMES analysis tutorial!</strong></p>
 <p>In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package <span class="citation">(<a href="#ref-tian2021" role="doc-biblioref">Tian et al., 2021</a>)</span>. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.</p>
@@ -269,12 +273,12 @@ div.csl-indent {
 <li><p><code>"bambu_isoform_identification": [true]</code></p></li>
 <li><p><code>"oarfish_quantification": [true]</code></p></li>
 </ul>
-<p>While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools whcih FLAMES supports. We recommend using Bambu and Oarfish as they have been validated for the type of analysis demonstrated here.</p>
-<p>Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here: [<strong>PLACEHOLDER</strong>].</p>
+<p>While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools which FLAMES supports. We recommend using Bambu and Oarfish as they have been validated for the type of analysis demonstrated here.</p>
+<p>Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here <a href="appendix.html#calculating-the-ambient-rna-profile">10.1</a>.</p>
 </div>
 <div id="getting-started-with-the-data" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Getting Started with the Data<a href="index.html#getting-started-with-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To follow along with this tutorial, you can use the data provided in the ‘data’ folder. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:</p>
+<p>To follow along with this tutorial, you can use the data provided in the ‘data’ folder here <a href="https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial" class="uri">https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial</a><a href="https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial/data">/data</a>. Simply unzip all files to begin. If you prefer to run the tutorial using your own output from FLAMES, there is no need to unzip your files. However, be sure to use the correct GTF file. The GTF file used during FLAMES processing must be the same one used for downstream analyses. The current version utilized in this tutorial can be downloaded using the following command:</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_47/gencode.v47.annotation.gtf.gz  </span></code></pre></div>
 </details>
@@ -293,7 +297,7 @@ div.csl-indent {
 
 </div>
 </div>
-<h3>References</h3>
+<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-chen2023" class="csl-entry">
 Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>

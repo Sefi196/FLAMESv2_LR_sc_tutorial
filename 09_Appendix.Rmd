@@ -1,0 +1,30 @@
+---
+author: "Sefi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# **Appendix**
+
+## Calculating the ambient RNA profile
+
+By calculating the ambient RNA profile, we can perform two important analyses to improve data quality: (1) removing empty droplets and (2) normalizing for background RNA contamination. Chapter 3 of the tutorial outlines both processes. However, the first step is to calculate the background RNA profile by quantifying gene expression for a list of barcodes known to represent background droplets rather than true cells.
+
+When running FLAMES, one of the outputs is the empty_bc_list.csv file, which contains 2,000 barcodes identified as background, not associated with cells. Users can manually add additional background barcodes if needed (for advanced users). For a detailed understanding of how this list is determined, refer to the BLAZE publication [@you2023a].
+
+To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set these apraters to flase in the config file
+
+| `"do_isoform_identification": false,`
+| `"bambu_isoform_identification": false,`
+| `"do_read_realignment": false,`
+| `"do_transcript_quantification": false`
+
+```{R, eval=FALSE, include=TRUE, echo=TRUE}
+# Run FLAMES using background barcode list genrated in the first run. 
+
+sce <- sc_long_pipeline(fastq=fastq, outdir=output, annot=GTF, genome_bookdfa=genome, 
+                         #minimap=minimap_dir, k8=k8,
+                         config_file=config_file,
+                         expect_cell_number=1000,  barcodes_file='path/to/emtpy_bc_list.csv')
+
+```
