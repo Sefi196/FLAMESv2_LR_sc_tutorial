@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 output:
   bookdown::gitbook:
     code_folding: show
+    split_bib: no
 book_filename: "bookdownproj"
 output_dir: docs
 delete_merged_file: true

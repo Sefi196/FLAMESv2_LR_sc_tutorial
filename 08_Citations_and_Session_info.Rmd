@@ -25,11 +25,11 @@ Ultimately, this tutorial, in combination with long-read tools such as FLAMES, o
 
 3.  **DTU using isoform switch analyzer**
 
-## Acknowledgements
+## Acknowledgements {-}
 
 Thank you to Manveer and Michaela for reviewing this book and providing valuable suggestions to improve its clarity and content. Your feedback has contributed to making this a more useful resource for researchers working with long-read single-cell RNA sequencing data.
 
-## Session info
+## Session info {-}
 
 ```{r setup, include=TRUE, echo=FALSE}
 knitr::opts_chunk$set(echo = FALSE)

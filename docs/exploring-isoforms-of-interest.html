@@ -221,12 +221,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
-<li class="chapter" data-level="8.4" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>8.4</b> Acknowledgements</a></li>
-<li class="chapter" data-level="8.5" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>8.5</b> Session info</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.6" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.6</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i>Calculating the ambient RNA profile</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
@@ -496,7 +496,7 @@ div.csl-indent {
 <h2><span class="header-section-number">6.5</span> Visualization of Isoform Structures<a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now that we know some MCAF1 isoforms expression is significantly different in these two cell populations it may be of interest to visualize the isoform structures. This analysis will help us explore the similarities and differences between our isoforms of interest.</p>
 <p>There are many visualization options available to us and many of these are available in R. In fact FLAMES has its own visualization function <code>FLAMES::plot_isoform_reduced_dim</code>. This function is designed to work on single cell experiment object and not Seurat object. Although it is possible to switch between these formats, for the purpose of this tutorial we want to keep file conversations to a minimum to keep the analysis simple.</p>
-<p>We instead recommend using IsoViz <span class="citation">(<a href="#ref-wan2024" role="doc-biblioref">Wan et al., 2024</a>)</span>, which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms.</p>
+<p>We instead recommend using IsoViz <span class="citation">(<a href="references.html#ref-wan2024" role="doc-biblioref">Wan et al., 2024</a>)</span>, which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms.</p>
 <p>First lets prepare the count data that we will load into Isoviz<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="exploring-isoforms-of-interest.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#extract some isoform expression data to visualize in isoviz </span></span>
@@ -521,12 +521,6 @@ Figure 6.1: IsoViz visualization of 4 MACF1 isoforms.
 <p>For example, <strong>ENST00000289893.8</strong> shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the <strong>Ensembl</strong> data, accessible via the isoform hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.</p>
 <p>There are lots of additional analysis that could be performed to further explore the function of our <em>MCAF1</em> isofroms, these include domain enrichment analysis and protein folding to name a few.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-wan2024" class="csl-entry">
-Wan, C. Y., Davis, J., Chauhan, M., Gleeson, J., Prawer, Y. J., De Paoli-Iseppi, R., Wells, C., Choi, J., &amp; Clark, M. (2024). IsoVis <span></span> a webserver for visualization and annotation of alternative RNA isoforms. <em>Nucleic Acids Research</em>, <em>52</em>(W1), W341–W347. <a href="https://doi.org/10.1093/nar/gkae343">https://doi.org/10.1093/nar/gkae343</a>
 </div>
 </div>
 <div class="footnotes">

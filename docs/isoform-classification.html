@@ -221,12 +221,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
-<li class="chapter" data-level="8.4" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>8.4</b> Acknowledgements</a></li>
-<li class="chapter" data-level="8.5" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>8.5</b> Session info</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.6" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.6</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i>Calculating the ambient RNA profile</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
@@ -252,7 +252,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 7</span> <strong>Isoform Classification</strong><a href="isoform-classification.html#isoform-classification" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="classification-with-sqanti" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Classification with SQANTI<a href="isoform-classification.html#classification-with-sqanti" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In the previous Chapter we looked at some genes of interst like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription strat sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 <span class="citation">(<a href="#ref-pardo-palacios2024" role="doc-biblioref">Pardo-Palacios et al., 2024</a>)</span> which will categorize our isoforms<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> and determine whether they are coding or non-coding.</p>
+<p>In the previous Chapter we looked at some genes of interst like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription strat sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 <span class="citation">(<a href="references.html#ref-pardo-palacios2024" role="doc-biblioref">Pardo-Palacios et al., 2024</a>)</span> which will categorize our isoforms<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> and determine whether they are coding or non-coding.</p>
 <p>If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a <code>classifications.txt</code> file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb96"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb96-1"><a href="isoform-classification.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="va">GTF</span><span class="op">=</span><span class="st">&quot;gencode.v47.annotation.gtf&quot;</span> </span>
@@ -480,7 +480,7 @@ div.csl-indent {
 <p><img src="bookdownproj_files/figure-html/uniq_isofrom-1.png" width="576" /></p>
 <p>These cell type specific isoforms may be particularly interesting to study further, as they likely play important roles in differentiation and cell function. We could extract these isoforms for further analysis.<br />
 Lets use another helpful resource to explore these cell type specific isofroms.</p>
-<p>We can use the BioMart <span class="citation">(<a href="#ref-smedley2009" role="doc-biblioref">Smedley et al., 2009</a>)</span> package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.</p>
+<p>We can use the BioMart <span class="citation">(<a href="references.html#ref-smedley2009" role="doc-biblioref">Smedley et al., 2009</a>)</span> package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="isoform-classification.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;biomaRt&quot;</span>)</span>
 <span id="cb101-2"><a href="isoform-classification.html#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -577,15 +577,6 @@ Lets use another helpful resource to explore these cell type specific isofroms.<
 <span id="cb101-93"><a href="isoform-classification.html#cb101-93" aria-hidden="true" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p5, p6, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/Glut_specific-1.png" width="480" /></p>
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-pardo-palacios2024" class="csl-entry">
-Pardo-Palacios, F. J., Arzalluz-Luque, A., Kondratova, L., Salguero, P., Mestre-Tomás, J., Amorín, R., Estevan-Morió, E., Liu, T., Nanni, A., McIntyre, L., Tseng, E., &amp; Conesa, A. (2024). SQANTI3: curation of long-read transcriptomes for accurate identification of known and novel isoforms. <em>Nature Methods</em>, <em>21</em>(5), 793–797. <a href="https://doi.org/10.1038/s41592-024-02229-2">https://doi.org/10.1038/s41592-024-02229-2</a>
-</div>
-<div id="ref-smedley2009" class="csl-entry">
-Smedley, D., Haider, S., Ballester, B., Holland, R., London, D., Thorisson, G., &amp; Kasprzyk, A. (2009). BioMart <span></span> biological queries made easy. <em>BMC Genomics</em>, <em>10</em>(1). <a href="https://doi.org/10.1186/1471-2164-10-22">https://doi.org/10.1186/1471-2164-10-22</a>
 </div>
 </div>
 <div class="footnotes">

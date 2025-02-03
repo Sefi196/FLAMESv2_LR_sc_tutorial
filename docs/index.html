@@ -221,12 +221,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
-<li class="chapter" data-level="8.4" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i><b>8.4</b> Acknowledgements</a></li>
-<li class="chapter" data-level="8.5" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i><b>8.5</b> Session info</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.6" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.6</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i>Calculating the ambient RNA profile</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
@@ -257,7 +257,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 1</span> <strong>Introduction</strong><a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
 <p><strong>Welcome to the FLAMES analysis tutorial!</strong></p>
-<p>In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package <span class="citation">(<a href="#ref-tian2021" role="doc-biblioref">Tian et al., 2021</a>)</span>. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.</p>
+<p>In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package <span class="citation">(<a href="references.html#ref-tian2021" role="doc-biblioref">Tian et al., 2021</a>)</span>. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.</p>
 <p>We will demonstrate how to load and explore FLAMES outputs in Seurat and other popular single-cell analysis tools. By following this workflow, you’ll learn how to:</p>
 <ul>
 <li><p><strong>Preprocess long-read single-cell data</strong></p></li>
@@ -268,13 +268,13 @@ div.csl-indent {
 <p>If you’re familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read single cell sequencing provides isoform-level information which enables you to explore isoform dynamics in single cells. This can be useful for exploring complex developmental systems or disease parthenogenesis.</p>
 <div id="prerequisites" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>sc_long_pipeline</code> or <code>sc_long_multisample_pipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish <span class="citation">(<a href="#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
+<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>sc_long_pipeline</code> or <code>sc_long_multisample_pipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="references.html#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish <span class="citation">(<a href="references.html#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
 <ul>
 <li><p><code>"bambu_isoform_identification": [true]</code></p></li>
 <li><p><code>"oarfish_quantification": [true]</code></p></li>
 </ul>
 <p>While FLAMES is optimized for use with specific quantification and isoform discovery tools, much of this workflow can be adapted for use with other tools which FLAMES supports. We recommend using Bambu and Oarfish as they have been validated for the type of analysis demonstrated here.</p>
-<p>Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here <a href="appendix.html#calculating-the-ambient-rna-profile">8.6</a>.</p>
+<p>Additionally, we provide an optional step for users interested in removing empty droplets and ambient RNA contamination. If you plan to use this feature, ensure that you have previously calculated the ambient RNA profile. Detailed instructions for this step can be found here <a href="appendix.html#calculating-the-ambient-rna-profile"><strong>??</strong></a>.</p>
 </div>
 <div id="getting-started-with-the-data" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Getting Started with the Data<a href="index.html#getting-started-with-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -289,7 +289,7 @@ div.csl-indent {
 </div>
 <div id="dataset-information" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Dataset Information<a href="index.html#dataset-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This tutorial uses data generated by the Clark Lab at the University of Melbourne, consisting of a small dataset of approximately 400 cells. The cells were collected at Day 55 of an excitatory neural differentiation protocol. More details on the dataset, sequencing methodology, and the differentiation protocol can be found in the following publication: <span class="citation">(<a href="#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span> <strong>[PLACE HOLDER - FLAMESv2 paper]</strong></p>
+<p>This tutorial uses data generated by the Clark Lab at the University of Melbourne, consisting of a small dataset of approximately 400 cells. The cells were collected at Day 55 of an excitatory neural differentiation protocol. More details on the dataset, sequencing methodology, and the differentiation protocol can be found in the following publication: <span class="citation">(<a href="references.html#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span> <strong>[PLACE HOLDER - FLAMESv2 paper]</strong></p>
 </div>
 <div id="citation" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Citation<a href="index.html#citation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -299,21 +299,6 @@ div.csl-indent {
 <h2><span class="header-section-number">1.5</span> Contact<a href="index.html#contact" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For questions or suggestions, please feel free to email us at sefi.prawer@unimelb.edu.au or leave a comment on our GitHub page: <a href="https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial" class="uri">https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial</a>.</p>
 
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-chen2023" class="csl-entry">
-Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>
-</div>
-<div id="ref-jousheghani2024" class="csl-entry">
-Jousheghani, Z. Z., &amp; Patro, R. (2024). <em>Oarfish: Enhanced probabilistic modeling leads to improved accuracy in long read transcriptome quantification</em>. <a href="http://dx.doi.org/10.1101/2024.02.28.582591">http://dx.doi.org/10.1101/2024.02.28.582591</a>
-</div>
-<div id="ref-tian2021" class="csl-entry">
-Tian, L., Jabbari, J. S., Thijssen, R., Gouil, Q., Amarasinghe, S. L., Voogd, O., Kariyawasam, H., Du, M. R. M., Schuster, J., Wang, C., Su, S., Dong, X., Law, C. W., Lucattini, A., Prawer, Y. D. J., Collar-Fernández, C., Chung, J. D., Naim, T., Chan, A., … Ritchie, M. E. (2021). Comprehensive characterization of single-cell full-length isoforms in human and mouse with long-read sequencing. <em>Genome Biology</em>, <em>22</em>(1). <a href="https://doi.org/10.1186/s13059-021-02525-6">https://doi.org/10.1186/s13059-021-02525-6</a>
-</div>
-<div id="ref-you2023a" class="csl-entry">
-You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., Shim, H., &amp; Clark, M. B. (2023). Identification of cell barcodes from long-read single-cell RNA-seq with BLAZE. <em>Genome Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s13059-023-02907-y">https://doi.org/10.1186/s13059-023-02907-y</a>
 </div>
 </div>
             </section>
