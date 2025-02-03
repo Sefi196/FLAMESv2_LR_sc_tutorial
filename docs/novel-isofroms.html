@@ -228,7 +228,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>11</b> <strong>References</strong></a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -255,31 +255,31 @@ div.csl-indent {
 <h2><span class="header-section-number">8.1</span> Find all the genes that express at least 1 novel isoform<a href="novel-isofroms.html#find-all-the-genes-that-express-at-least-1-novel-isoform" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>First lets get a list of genes with at least one novel isoform</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="novel-isofroms.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the genes that express at least one novel isoform and save them to a list</span></span>
-<span id="cb101-2"><a href="novel-isofroms.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert row names to a data frame</span></span>
-<span id="cb101-3"><a href="novel-isofroms.html#cb101-3" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">row.names</span>(seu_obj<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">$</span>counts))</span>
-<span id="cb101-4"><a href="novel-isofroms.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(isoform_ids) <span class="ot">&lt;-</span> <span class="st">&quot;IDs&quot;</span></span>
-<span id="cb101-5"><a href="novel-isofroms.html#cb101-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-6"><a href="novel-isofroms.html#cb101-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Add in total expression  </span></span>
-<span id="cb101-7"><a href="novel-isofroms.html#cb101-7" aria-hidden="true" tabindex="-1"></a>isoform_ids<span class="sc">$</span>Total_Expression <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(seu_obj<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">$</span>counts)</span>
-<span id="cb101-8"><a href="novel-isofroms.html#cb101-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-9"><a href="novel-isofroms.html#cb101-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows where &#39;IDs&#39; contains the string &quot;Bambu&quot;</span></span>
-<span id="cb101-10"><a href="novel-isofroms.html#cb101-10" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(isoform_ids[<span class="fu">grepl</span>(<span class="st">&quot;Bambu&quot;</span>, isoform_ids<span class="sc">$</span>IDs), ])  <span class="co"># can comment this out if we want to do this for all isofroms </span></span>
-<span id="cb101-11"><a href="novel-isofroms.html#cb101-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-12"><a href="novel-isofroms.html#cb101-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate the &#39;IDs&#39; column into two columns </span></span>
-<span id="cb101-13"><a href="novel-isofroms.html#cb101-13" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="ot">&lt;-</span> isoform_ids <span class="sc">%&gt;%</span> <span class="fu">separate</span>(IDs, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>)</span>
-<span id="cb101-14"><a href="novel-isofroms.html#cb101-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-15"><a href="novel-isofroms.html#cb101-15" aria-hidden="true" tabindex="-1"></a>isoform_counts <span class="ot">&lt;-</span> filtered_df <span class="sc">%&gt;%</span></span>
-<span id="cb101-16"><a href="novel-isofroms.html#cb101-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
-<span id="cb101-17"><a href="novel-isofroms.html#cb101-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb101-18"><a href="novel-isofroms.html#cb101-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Isoform_Count =</span> <span class="fu">n</span>(),</span>
-<span id="cb101-19"><a href="novel-isofroms.html#cb101-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expression =</span> <span class="fu">sum</span>(Total_Expression)</span>
-<span id="cb101-20"><a href="novel-isofroms.html#cb101-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb101-21"><a href="novel-isofroms.html#cb101-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Expression))</span>
-<span id="cb101-22"><a href="novel-isofroms.html#cb101-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-23"><a href="novel-isofroms.html#cb101-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-24"><a href="novel-isofroms.html#cb101-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Print or return the filtered data frame</span></span>
-<span id="cb101-25"><a href="novel-isofroms.html#cb101-25" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(isoform_counts)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="novel-isofroms.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the genes that express at least one novel isoform and save them to a list</span></span>
+<span id="cb102-2"><a href="novel-isofroms.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert row names to a data frame</span></span>
+<span id="cb102-3"><a href="novel-isofroms.html#cb102-3" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">row.names</span>(seu_obj<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">$</span>counts))</span>
+<span id="cb102-4"><a href="novel-isofroms.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(isoform_ids) <span class="ot">&lt;-</span> <span class="st">&quot;IDs&quot;</span></span>
+<span id="cb102-5"><a href="novel-isofroms.html#cb102-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-6"><a href="novel-isofroms.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Add in total expression  </span></span>
+<span id="cb102-7"><a href="novel-isofroms.html#cb102-7" aria-hidden="true" tabindex="-1"></a>isoform_ids<span class="sc">$</span>Total_Expression <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(seu_obj<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">$</span>counts)</span>
+<span id="cb102-8"><a href="novel-isofroms.html#cb102-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-9"><a href="novel-isofroms.html#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows where &#39;IDs&#39; contains the string &quot;Bambu&quot;</span></span>
+<span id="cb102-10"><a href="novel-isofroms.html#cb102-10" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(isoform_ids[<span class="fu">grepl</span>(<span class="st">&quot;Bambu&quot;</span>, isoform_ids<span class="sc">$</span>IDs), ])  <span class="co"># can comment this out if we want to do this for all isofroms </span></span>
+<span id="cb102-11"><a href="novel-isofroms.html#cb102-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-12"><a href="novel-isofroms.html#cb102-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate the &#39;IDs&#39; column into two columns </span></span>
+<span id="cb102-13"><a href="novel-isofroms.html#cb102-13" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="ot">&lt;-</span> isoform_ids <span class="sc">%&gt;%</span> <span class="fu">separate</span>(IDs, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>)</span>
+<span id="cb102-14"><a href="novel-isofroms.html#cb102-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-15"><a href="novel-isofroms.html#cb102-15" aria-hidden="true" tabindex="-1"></a>isoform_counts <span class="ot">&lt;-</span> filtered_df <span class="sc">%&gt;%</span></span>
+<span id="cb102-16"><a href="novel-isofroms.html#cb102-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
+<span id="cb102-17"><a href="novel-isofroms.html#cb102-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb102-18"><a href="novel-isofroms.html#cb102-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Isoform_Count =</span> <span class="fu">n</span>(),</span>
+<span id="cb102-19"><a href="novel-isofroms.html#cb102-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">Total_Expression =</span> <span class="fu">sum</span>(Total_Expression)</span>
+<span id="cb102-20"><a href="novel-isofroms.html#cb102-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb102-21"><a href="novel-isofroms.html#cb102-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Total_Expression))</span>
+<span id="cb102-22"><a href="novel-isofroms.html#cb102-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-23"><a href="novel-isofroms.html#cb102-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-24"><a href="novel-isofroms.html#cb102-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Print or return the filtered data frame</span></span>
+<span id="cb102-25"><a href="novel-isofroms.html#cb102-25" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(isoform_counts)</span></code></pre></div>
 </details>
 <pre><code>## # A tibble: 31 × 3
 ##    gene_id         Isoform_Count Total_Expression
@@ -298,7 +298,7 @@ div.csl-indent {
 <p>In this table we can see that we have a total of 31 novel isofroms. This number is smaller than we might expect but this is because Bambu <span class="citation">(<a href="#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> is quite conservative for single cell data and we haven’t sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the <code>NDR</code> parameter or using a different discovery method like stringtie2 <span class="citation">(<a href="#ref-kovaka2019" role="doc-biblioref">Kovaka et al., 2019</a>)</span>.</p>
 <p>In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoViz as described in the section <a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures">6.5</a>.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="novel-isofroms.html#cb103-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="novel-isofroms.html#cb104-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304.png&quot;</span>)</span></code></pre></div>
 </details>
 <div class="figure"><span style="display:block;" id="fig:isoviz-plot2"></span>
 <img src="images/IsoVis_ENSG00000180304.png" alt="IsoViz visualization of Novel OAZ2 isoform." width="1000px" />
@@ -311,22 +311,20 @@ Figure 8.1: IsoViz visualization of Novel OAZ2 isoform.
 <h2><span class="header-section-number">8.2</span> Visualizing OAZ2 novel isoform<a href="novel-isofroms.html#visualizing-oaz2-novel-isoform" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Visualizing <strong>OAZ2</strong> reveals that the primary distinction between the novel isoform and the canonical isoform, <strong>OAZ2-201</strong> seems to be a shorter 5’ UTR. This minor alteration at face value should not affect the canonical open reading frame (ORF). However, according to SQANTI, <strong>BambuTx25</strong> is classified as a <strong><em>novel_in_catalog</em></strong> isoform, meaning it is an isoform not present in the reference GTF and SQANTI suggests that <strong>BambuTx25</strong> is non-coding, which is quite surprising! Interestingly, SQANTI also indicates that the primary difference between <strong>BambuTx25</strong> and the canonical isoforms lies in intron retention (Specified in the <em>subcategory</em> column).</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="novel-isofroms.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb104-2"><a href="novel-isofroms.html#cb104-2" aria-hidden="true" tabindex="-1"></a>SQANTI[<span class="fu">grep</span>(<span class="st">&#39;BambuTx25&#39;</span>, SQANTI<span class="sc">$</span>isoform), ]</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="novel-isofroms.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb105-2"><a href="novel-isofroms.html#cb105-2" aria-hidden="true" tabindex="-1"></a>SQANTI[<span class="fu">grep</span>(<span class="st">&#39;BambuTx25&#39;</span>, SQANTI<span class="sc">$</span>isoform), ]</span></code></pre></div>
 </details>
-<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS
-## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA
-##       diff_to_gene_TSS diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc
-## 21835               -2               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA
-##        bite iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD
-## 21835 FALSE      NA       NA        NA         C non_coding         NA         NA        NA      NA                NA              NA            NA
-##       perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist
-## 21835                    10 GTGGTTGGTCTATTCTTTAT                NA               NA                 NA                NA          NA         NA
-##       polyA_motif_found ORF_seq ratio_TSS
-## 21835                NA    &lt;NA&gt;        NA</code></pre>
+<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS diff_to_gene_TSS
+## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA               -2
+##       diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp
+## 21835               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
+##       FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS
+## 21835         C non_coding         NA         NA        NA      NA                NA              NA            NA                    10 GTGGTTGGTCTATTCTTTAT
+##       dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found ORF_seq ratio_TSS
+## 21835                NA               NA                 NA                NA          NA         NA                NA    &lt;NA&gt;        NA</code></pre>
 <p>To better understand these SQANTI results lets zoom in on exon 2 of <em>OAZ2</em>. Here, we observe a small break within the exon. The novel <strong>BambuTx25</strong> does not contain this break so perhaps this change affects the resulting amino acid sequence.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="novel-isofroms.html#cb106-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304_zoom.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="novel-isofroms.html#cb107-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304_zoom.png&quot;</span>)</span></code></pre></div>
 </details>
 <div class="figure"><span style="display:block;" id="fig:isoviz-plot-zoom"></span>
 <img src="images/IsoVis_ENSG00000180304_zoom.png" alt="IsoViz visualization of exon 2 of OAZ2." width="1000px" />
@@ -340,150 +338,150 @@ Figure 8.2: IsoViz visualization of exon 2 of OAZ2.
 <p>There are many ways to investigate the translated sequence and compare the protein generated from conanocial isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in a online tool like ‘expasy translate’ which can be found here <a href="https://web.expasy.org/translate/" class="uri">https://web.expasy.org/translate/</a>.</p>
 <p>Bellow we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> <span class="citation">(<a href="#ref-tjeldnes2021" role="doc-biblioref">Tjeldnes et al., 2021</a>)</span>. We will visualize these ORFS in Gviz <span class="citation">(<a href="#ref-hahne2016" role="doc-biblioref">Hahne &amp; Ivanek, 2016</a>)</span> an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript <strong>BambuTx25</strong> has been impacted by the change in nucleotide sequence.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="novel-isofroms.html#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(ORFik))</span>
-<span id="cb107-2"><a href="novel-isofroms.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(GenomicFeatures))</span>
-<span id="cb107-3"><a href="novel-isofroms.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(Gviz))</span>
-<span id="cb107-4"><a href="novel-isofroms.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BSgenome.Hsapiens.UCSC.hg38)</span>
-<span id="cb107-5"><a href="novel-isofroms.html#cb107-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-6"><a href="novel-isofroms.html#cb107-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Global cache for TxDb</span></span>
-<span id="cb107-7"><a href="novel-isofroms.html#cb107-7" aria-hidden="true" tabindex="-1"></a>txdb_cache <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb107-8"><a href="novel-isofroms.html#cb107-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-9"><a href="novel-isofroms.html#cb107-9" aria-hidden="true" tabindex="-1"></a>get_txdb <span class="ot">&lt;-</span> <span class="cf">function</span>(reference_gtf) {</span>
-<span id="cb107-10"><a href="novel-isofroms.html#cb107-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check if the TxDb for this file is already in cache</span></span>
-<span id="cb107-11"><a href="novel-isofroms.html#cb107-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(txdb_cache[[reference_gtf]])) {</span>
-<span id="cb107-12"><a href="novel-isofroms.html#cb107-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Using cached TxDb...&quot;</span>)</span>
-<span id="cb107-13"><a href="novel-isofroms.html#cb107-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(txdb_cache[[reference_gtf]])</span>
-<span id="cb107-14"><a href="novel-isofroms.html#cb107-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb107-15"><a href="novel-isofroms.html#cb107-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-16"><a href="novel-isofroms.html#cb107-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create TxDb and cache it</span></span>
-<span id="cb107-17"><a href="novel-isofroms.html#cb107-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">&quot;Creating TxDb object from reference GTF. This may take time...&quot;</span>)</span>
-<span id="cb107-18"><a href="novel-isofroms.html#cb107-18" aria-hidden="true" tabindex="-1"></a>  txdb <span class="ot">&lt;-</span> txdbmaker<span class="sc">::</span><span class="fu">makeTxDbFromGFF</span>(reference_gtf)</span>
-<span id="cb107-19"><a href="novel-isofroms.html#cb107-19" aria-hidden="true" tabindex="-1"></a>  txdb_cache[[reference_gtf]] <span class="ot">&lt;&lt;-</span> txdb</span>
-<span id="cb107-20"><a href="novel-isofroms.html#cb107-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(txdb)</span>
-<span id="cb107-21"><a href="novel-isofroms.html#cb107-21" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb107-22"><a href="novel-isofroms.html#cb107-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-23"><a href="novel-isofroms.html#cb107-23" aria-hidden="true" tabindex="-1"></a>plot_isoform_ORFs <span class="ot">&lt;-</span> <span class="cf">function</span>(reference_gtf, target_gtf, isoforms_of_interest, </span>
-<span id="cb107-24"><a href="novel-isofroms.html#cb107-24" aria-hidden="true" tabindex="-1"></a>                               chromosome, plot_start, plot_end) {</span>
-<span id="cb107-25"><a href="novel-isofroms.html#cb107-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-26"><a href="novel-isofroms.html#cb107-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load genome reference</span></span>
-<span id="cb107-27"><a href="novel-isofroms.html#cb107-27" aria-hidden="true" tabindex="-1"></a>  genomedb <span class="ot">&lt;-</span> BSgenome.Hsapiens.UCSC.hg38</span>
-<span id="cb107-28"><a href="novel-isofroms.html#cb107-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-29"><a href="novel-isofroms.html#cb107-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retrieve cached TxDb or create if not available</span></span>
-<span id="cb107-30"><a href="novel-isofroms.html#cb107-30" aria-hidden="true" tabindex="-1"></a>  txdb <span class="ot">&lt;-</span> <span class="fu">get_txdb</span>(reference_gtf)</span>
-<span id="cb107-31"><a href="novel-isofroms.html#cb107-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-32"><a href="novel-isofroms.html#cb107-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import and filter GTF for specific isoforms</span></span>
-<span id="cb107-33"><a href="novel-isofroms.html#cb107-33" aria-hidden="true" tabindex="-1"></a>  gtf_data <span class="ot">&lt;-</span> <span class="fu">import</span>(target_gtf)</span>
-<span id="cb107-34"><a href="novel-isofroms.html#cb107-34" aria-hidden="true" tabindex="-1"></a>  gtf_filtered <span class="ot">&lt;-</span> gtf_data[gtf_data<span class="sc">$</span>transcript_id <span class="sc">%in%</span> isoforms_of_interest]</span>
-<span id="cb107-35"><a href="novel-isofroms.html#cb107-35" aria-hidden="true" tabindex="-1"></a>  txdb_filtered <span class="ot">&lt;-</span> txdbmaker<span class="sc">::</span><span class="fu">makeTxDbFromGRanges</span>(gtf_filtered)</span>
-<span id="cb107-36"><a href="novel-isofroms.html#cb107-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-37"><a href="novel-isofroms.html#cb107-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract exons and convert to GRangesList</span></span>
-<span id="cb107-38"><a href="novel-isofroms.html#cb107-38" aria-hidden="true" tabindex="-1"></a>  txs <span class="ot">&lt;-</span> <span class="fu">exonsBy</span>(txdb_filtered, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;tx&quot;</span>, <span class="st">&quot;gene&quot;</span>), <span class="at">use.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb107-39"><a href="novel-isofroms.html#cb107-39" aria-hidden="true" tabindex="-1"></a>  txs_grl <span class="ot">&lt;-</span> <span class="fu">GRangesList</span>(txs)</span>
-<span id="cb107-40"><a href="novel-isofroms.html#cb107-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-41"><a href="novel-isofroms.html#cb107-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract transcript sequences and identify ORFs</span></span>
-<span id="cb107-42"><a href="novel-isofroms.html#cb107-42" aria-hidden="true" tabindex="-1"></a>  tx_seqs <span class="ot">&lt;-</span> <span class="fu">extractTranscriptSeqs</span>(genomedb, txs_grl)</span>
-<span id="cb107-43"><a href="novel-isofroms.html#cb107-43" aria-hidden="true" tabindex="-1"></a>  ORFs <span class="ot">&lt;-</span> <span class="fu">findMapORFs</span>(txs_grl, tx_seqs, <span class="at">groupByTx =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb107-44"><a href="novel-isofroms.html#cb107-44" aria-hidden="true" tabindex="-1"></a>                       <span class="at">longestORF =</span> <span class="cn">FALSE</span>, <span class="at">minimumLength =</span> <span class="dv">30</span>, </span>
-<span id="cb107-45"><a href="novel-isofroms.html#cb107-45" aria-hidden="true" tabindex="-1"></a>                       <span class="at">startCodon =</span> <span class="st">&quot;ATG&quot;</span>, <span class="at">stopCodon =</span> <span class="fu">stopDefinition</span>(<span class="dv">1</span>))</span>
-<span id="cb107-46"><a href="novel-isofroms.html#cb107-46" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-47"><a href="novel-isofroms.html#cb107-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Unlist and prepare ORF data for plotting</span></span>
-<span id="cb107-48"><a href="novel-isofroms.html#cb107-48" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted <span class="ot">&lt;-</span> <span class="fu">unlist</span>(ORFs)</span>
-<span id="cb107-49"><a href="novel-isofroms.html#cb107-49" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;exon&quot;</span></span>
-<span id="cb107-50"><a href="novel-isofroms.html#cb107-50" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>transcript <span class="ot">&lt;-</span> ORFs_unlisted<span class="sc">$</span>names</span>
-<span id="cb107-51"><a href="novel-isofroms.html#cb107-51" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>transcript <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ORFs_unlisted<span class="sc">$</span>transcript, <span class="st">&quot;_ORF&quot;</span>)</span>
-<span id="cb107-52"><a href="novel-isofroms.html#cb107-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-53"><a href="novel-isofroms.html#cb107-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define start and stop codons</span></span>
-<span id="cb107-54"><a href="novel-isofroms.html#cb107-54" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">startCodons</span>(ORFs, <span class="at">is.sorted =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb107-55"><a href="novel-isofroms.html#cb107-55" aria-hidden="true" tabindex="-1"></a>  stops <span class="ot">&lt;-</span> <span class="fu">stopCodons</span>(ORFs, <span class="at">is.sorted =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb107-56"><a href="novel-isofroms.html#cb107-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-57"><a href="novel-isofroms.html#cb107-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualization Tracks</span></span>
-<span id="cb107-58"><a href="novel-isofroms.html#cb107-58" aria-hidden="true" tabindex="-1"></a>  gtrack <span class="ot">&lt;-</span> <span class="fu">GenomeAxisTrack</span>()</span>
-<span id="cb107-59"><a href="novel-isofroms.html#cb107-59" aria-hidden="true" tabindex="-1"></a>  itrack <span class="ot">&lt;-</span> <span class="fu">IdeogramTrack</span>(<span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>, <span class="at">chromosome =</span> chromosome)</span>
-<span id="cb107-60"><a href="novel-isofroms.html#cb107-60" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-61"><a href="novel-isofroms.html#cb107-61" aria-hidden="true" tabindex="-1"></a>  ref_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
-<span id="cb107-62"><a href="novel-isofroms.html#cb107-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> txdb,</span>
-<span id="cb107-63"><a href="novel-isofroms.html#cb107-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;gencodev47&quot;</span>,</span>
-<span id="cb107-64"><a href="novel-isofroms.html#cb107-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
-<span id="cb107-65"><a href="novel-isofroms.html#cb107-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> chromosome,</span>
-<span id="cb107-66"><a href="novel-isofroms.html#cb107-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;darkblue&quot;</span>,</span>
-<span id="cb107-67"><a href="novel-isofroms.html#cb107-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>,</span>
-<span id="cb107-68"><a href="novel-isofroms.html#cb107-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrowHead =</span> <span class="cn">FALSE</span></span>
-<span id="cb107-69"><a href="novel-isofroms.html#cb107-69" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb107-70"><a href="novel-isofroms.html#cb107-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-71"><a href="novel-isofroms.html#cb107-71" aria-hidden="true" tabindex="-1"></a>  input_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
-<span id="cb107-72"><a href="novel-isofroms.html#cb107-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> txdb_filtered,</span>
-<span id="cb107-73"><a href="novel-isofroms.html#cb107-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Isoforms (Exons)&quot;</span>,</span>
-<span id="cb107-74"><a href="novel-isofroms.html#cb107-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
-<span id="cb107-75"><a href="novel-isofroms.html#cb107-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> chromosome,</span>
-<span id="cb107-76"><a href="novel-isofroms.html#cb107-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>,</span>
-<span id="cb107-77"><a href="novel-isofroms.html#cb107-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;lightgreen&quot;</span>,</span>
-<span id="cb107-78"><a href="novel-isofroms.html#cb107-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrowHead =</span> <span class="cn">FALSE</span></span>
-<span id="cb107-79"><a href="novel-isofroms.html#cb107-79" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb107-80"><a href="novel-isofroms.html#cb107-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-81"><a href="novel-isofroms.html#cb107-81" aria-hidden="true" tabindex="-1"></a>  orf_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
-<span id="cb107-82"><a href="novel-isofroms.html#cb107-82" aria-hidden="true" tabindex="-1"></a>    ORFs_unlisted,</span>
-<span id="cb107-83"><a href="novel-isofroms.html#cb107-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
-<span id="cb107-84"><a href="novel-isofroms.html#cb107-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">unique</span>(<span class="fu">seqnames</span>(ORFs_unlisted)),</span>
-<span id="cb107-85"><a href="novel-isofroms.html#cb107-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">transcriptAnnotation =</span> <span class="st">&quot;transcript&quot;</span>,</span>
-<span id="cb107-86"><a href="novel-isofroms.html#cb107-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;ORFs&quot;</span>,</span>
-<span id="cb107-87"><a href="novel-isofroms.html#cb107-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb107-88"><a href="novel-isofroms.html#cb107-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb107-89"><a href="novel-isofroms.html#cb107-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">stacking =</span> <span class="st">&quot;squish&quot;</span></span>
-<span id="cb107-90"><a href="novel-isofroms.html#cb107-90" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb107-91"><a href="novel-isofroms.html#cb107-91" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-92"><a href="novel-isofroms.html#cb107-92" aria-hidden="true" tabindex="-1"></a>  starts_track <span class="ot">&lt;-</span> <span class="fu">AnnotationTrack</span>(</span>
-<span id="cb107-93"><a href="novel-isofroms.html#cb107-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> starts,</span>
-<span id="cb107-94"><a href="novel-isofroms.html#cb107-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Starts&quot;</span>,</span>
-<span id="cb107-95"><a href="novel-isofroms.html#cb107-95" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
-<span id="cb107-96"><a href="novel-isofroms.html#cb107-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">seqnames</span>(txs_grl[[<span class="dv">1</span>]])[<span class="dv">1</span>],</span>
-<span id="cb107-97"><a href="novel-isofroms.html#cb107-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;green&quot;</span>,</span>
-<span id="cb107-98"><a href="novel-isofroms.html#cb107-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;green&quot;</span>,</span>
-<span id="cb107-99"><a href="novel-isofroms.html#cb107-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">&quot;box&quot;</span>  <span class="co"># Ensure no arrows by using box shape</span></span>
-<span id="cb107-100"><a href="novel-isofroms.html#cb107-100" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb107-101"><a href="novel-isofroms.html#cb107-101" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-102"><a href="novel-isofroms.html#cb107-102" aria-hidden="true" tabindex="-1"></a>  stops_track <span class="ot">&lt;-</span> <span class="fu">AnnotationTrack</span>(</span>
-<span id="cb107-103"><a href="novel-isofroms.html#cb107-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> stops,</span>
-<span id="cb107-104"><a href="novel-isofroms.html#cb107-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Stops&quot;</span>,</span>
-<span id="cb107-105"><a href="novel-isofroms.html#cb107-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
-<span id="cb107-106"><a href="novel-isofroms.html#cb107-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">seqnames</span>(txs_grl[[<span class="dv">1</span>]])[<span class="dv">1</span>],</span>
-<span id="cb107-107"><a href="novel-isofroms.html#cb107-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb107-108"><a href="novel-isofroms.html#cb107-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb107-109"><a href="novel-isofroms.html#cb107-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">&quot;box&quot;</span>  <span class="co"># Ensure no arrows by using box shape</span></span>
-<span id="cb107-110"><a href="novel-isofroms.html#cb107-110" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb107-111"><a href="novel-isofroms.html#cb107-111" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb107-112"><a href="novel-isofroms.html#cb107-112" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot tracks</span></span>
-<span id="cb107-113"><a href="novel-isofroms.html#cb107-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotTracks</span>(<span class="fu">list</span>(itrack, gtrack, ref_track, input_track, </span>
-<span id="cb107-114"><a href="novel-isofroms.html#cb107-114" aria-hidden="true" tabindex="-1"></a>                   orf_track, stops_track, starts_track), </span>
-<span id="cb107-115"><a href="novel-isofroms.html#cb107-115" aria-hidden="true" tabindex="-1"></a>             <span class="at">from =</span> plot_start, <span class="at">to =</span> plot_end, </span>
-<span id="cb107-116"><a href="novel-isofroms.html#cb107-116" aria-hidden="true" tabindex="-1"></a>             <span class="at">transcriptAnnotation =</span> <span class="st">&quot;transcript&quot;</span>)</span>
-<span id="cb107-117"><a href="novel-isofroms.html#cb107-117" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb107-118"><a href="novel-isofroms.html#cb107-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb107-119"><a href="novel-isofroms.html#cb107-119" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage</span></span>
-<span id="cb107-120"><a href="novel-isofroms.html#cb107-120" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>(</span>
-<span id="cb107-121"><a href="novel-isofroms.html#cb107-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">reference_gtf =</span> <span class="st">&quot;../../../../resources/gencode.v47.annotation.gtf&quot;</span>,</span>
-<span id="cb107-122"><a href="novel-isofroms.html#cb107-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">target_gtf =</span> <span class="st">&quot;/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf&quot;</span>,</span>
-<span id="cb107-123"><a href="novel-isofroms.html#cb107-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000326005.10&quot;</span>, <span class="st">&quot;BambuTx25&quot;</span>),</span>
-<span id="cb107-124"><a href="novel-isofroms.html#cb107-124" aria-hidden="true" tabindex="-1"></a>  <span class="at">chromosome =</span> <span class="st">&quot;chr15&quot;</span>,</span>
-<span id="cb107-125"><a href="novel-isofroms.html#cb107-125" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_start =</span> <span class="dv">64687015</span>,</span>
-<span id="cb107-126"><a href="novel-isofroms.html#cb107-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_end =</span> <span class="dv">64703412</span></span>
-<span id="cb107-127"><a href="novel-isofroms.html#cb107-127" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="novel-isofroms.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(ORFik))</span>
+<span id="cb108-2"><a href="novel-isofroms.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(GenomicFeatures))</span>
+<span id="cb108-3"><a href="novel-isofroms.html#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">library</span>(Gviz))</span>
+<span id="cb108-4"><a href="novel-isofroms.html#cb108-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BSgenome.Hsapiens.UCSC.hg38)</span>
+<span id="cb108-5"><a href="novel-isofroms.html#cb108-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="novel-isofroms.html#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Global cache for TxDb</span></span>
+<span id="cb108-7"><a href="novel-isofroms.html#cb108-7" aria-hidden="true" tabindex="-1"></a>txdb_cache <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb108-8"><a href="novel-isofroms.html#cb108-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-9"><a href="novel-isofroms.html#cb108-9" aria-hidden="true" tabindex="-1"></a>get_txdb <span class="ot">&lt;-</span> <span class="cf">function</span>(reference_gtf) {</span>
+<span id="cb108-10"><a href="novel-isofroms.html#cb108-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Check if the TxDb for this file is already in cache</span></span>
+<span id="cb108-11"><a href="novel-isofroms.html#cb108-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(txdb_cache[[reference_gtf]])) {</span>
+<span id="cb108-12"><a href="novel-isofroms.html#cb108-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">&quot;Using cached TxDb...&quot;</span>)</span>
+<span id="cb108-13"><a href="novel-isofroms.html#cb108-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(txdb_cache[[reference_gtf]])</span>
+<span id="cb108-14"><a href="novel-isofroms.html#cb108-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb108-15"><a href="novel-isofroms.html#cb108-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-16"><a href="novel-isofroms.html#cb108-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create TxDb and cache it</span></span>
+<span id="cb108-17"><a href="novel-isofroms.html#cb108-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">&quot;Creating TxDb object from reference GTF. This may take time...&quot;</span>)</span>
+<span id="cb108-18"><a href="novel-isofroms.html#cb108-18" aria-hidden="true" tabindex="-1"></a>  txdb <span class="ot">&lt;-</span> txdbmaker<span class="sc">::</span><span class="fu">makeTxDbFromGFF</span>(reference_gtf)</span>
+<span id="cb108-19"><a href="novel-isofroms.html#cb108-19" aria-hidden="true" tabindex="-1"></a>  txdb_cache[[reference_gtf]] <span class="ot">&lt;&lt;-</span> txdb</span>
+<span id="cb108-20"><a href="novel-isofroms.html#cb108-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(txdb)</span>
+<span id="cb108-21"><a href="novel-isofroms.html#cb108-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb108-22"><a href="novel-isofroms.html#cb108-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-23"><a href="novel-isofroms.html#cb108-23" aria-hidden="true" tabindex="-1"></a>plot_isoform_ORFs <span class="ot">&lt;-</span> <span class="cf">function</span>(reference_gtf, target_gtf, isoforms_of_interest, </span>
+<span id="cb108-24"><a href="novel-isofroms.html#cb108-24" aria-hidden="true" tabindex="-1"></a>                               chromosome, plot_start, plot_end) {</span>
+<span id="cb108-25"><a href="novel-isofroms.html#cb108-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-26"><a href="novel-isofroms.html#cb108-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load genome reference</span></span>
+<span id="cb108-27"><a href="novel-isofroms.html#cb108-27" aria-hidden="true" tabindex="-1"></a>  genomedb <span class="ot">&lt;-</span> BSgenome.Hsapiens.UCSC.hg38</span>
+<span id="cb108-28"><a href="novel-isofroms.html#cb108-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-29"><a href="novel-isofroms.html#cb108-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retrieve cached TxDb or create if not available</span></span>
+<span id="cb108-30"><a href="novel-isofroms.html#cb108-30" aria-hidden="true" tabindex="-1"></a>  txdb <span class="ot">&lt;-</span> <span class="fu">get_txdb</span>(reference_gtf)</span>
+<span id="cb108-31"><a href="novel-isofroms.html#cb108-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-32"><a href="novel-isofroms.html#cb108-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import and filter GTF for specific isoforms</span></span>
+<span id="cb108-33"><a href="novel-isofroms.html#cb108-33" aria-hidden="true" tabindex="-1"></a>  gtf_data <span class="ot">&lt;-</span> <span class="fu">import</span>(target_gtf)</span>
+<span id="cb108-34"><a href="novel-isofroms.html#cb108-34" aria-hidden="true" tabindex="-1"></a>  gtf_filtered <span class="ot">&lt;-</span> gtf_data[gtf_data<span class="sc">$</span>transcript_id <span class="sc">%in%</span> isoforms_of_interest]</span>
+<span id="cb108-35"><a href="novel-isofroms.html#cb108-35" aria-hidden="true" tabindex="-1"></a>  txdb_filtered <span class="ot">&lt;-</span> txdbmaker<span class="sc">::</span><span class="fu">makeTxDbFromGRanges</span>(gtf_filtered)</span>
+<span id="cb108-36"><a href="novel-isofroms.html#cb108-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-37"><a href="novel-isofroms.html#cb108-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract exons and convert to GRangesList</span></span>
+<span id="cb108-38"><a href="novel-isofroms.html#cb108-38" aria-hidden="true" tabindex="-1"></a>  txs <span class="ot">&lt;-</span> <span class="fu">exonsBy</span>(txdb_filtered, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;tx&quot;</span>, <span class="st">&quot;gene&quot;</span>), <span class="at">use.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb108-39"><a href="novel-isofroms.html#cb108-39" aria-hidden="true" tabindex="-1"></a>  txs_grl <span class="ot">&lt;-</span> <span class="fu">GRangesList</span>(txs)</span>
+<span id="cb108-40"><a href="novel-isofroms.html#cb108-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-41"><a href="novel-isofroms.html#cb108-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract transcript sequences and identify ORFs</span></span>
+<span id="cb108-42"><a href="novel-isofroms.html#cb108-42" aria-hidden="true" tabindex="-1"></a>  tx_seqs <span class="ot">&lt;-</span> <span class="fu">extractTranscriptSeqs</span>(genomedb, txs_grl)</span>
+<span id="cb108-43"><a href="novel-isofroms.html#cb108-43" aria-hidden="true" tabindex="-1"></a>  ORFs <span class="ot">&lt;-</span> <span class="fu">findMapORFs</span>(txs_grl, tx_seqs, <span class="at">groupByTx =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb108-44"><a href="novel-isofroms.html#cb108-44" aria-hidden="true" tabindex="-1"></a>                       <span class="at">longestORF =</span> <span class="cn">FALSE</span>, <span class="at">minimumLength =</span> <span class="dv">30</span>, </span>
+<span id="cb108-45"><a href="novel-isofroms.html#cb108-45" aria-hidden="true" tabindex="-1"></a>                       <span class="at">startCodon =</span> <span class="st">&quot;ATG&quot;</span>, <span class="at">stopCodon =</span> <span class="fu">stopDefinition</span>(<span class="dv">1</span>))</span>
+<span id="cb108-46"><a href="novel-isofroms.html#cb108-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-47"><a href="novel-isofroms.html#cb108-47" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Unlist and prepare ORF data for plotting</span></span>
+<span id="cb108-48"><a href="novel-isofroms.html#cb108-48" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted <span class="ot">&lt;-</span> <span class="fu">unlist</span>(ORFs)</span>
+<span id="cb108-49"><a href="novel-isofroms.html#cb108-49" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;exon&quot;</span></span>
+<span id="cb108-50"><a href="novel-isofroms.html#cb108-50" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>transcript <span class="ot">&lt;-</span> ORFs_unlisted<span class="sc">$</span>names</span>
+<span id="cb108-51"><a href="novel-isofroms.html#cb108-51" aria-hidden="true" tabindex="-1"></a>  ORFs_unlisted<span class="sc">$</span>transcript <span class="ot">&lt;-</span> <span class="fu">paste0</span>(ORFs_unlisted<span class="sc">$</span>transcript, <span class="st">&quot;_ORF&quot;</span>)</span>
+<span id="cb108-52"><a href="novel-isofroms.html#cb108-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-53"><a href="novel-isofroms.html#cb108-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define start and stop codons</span></span>
+<span id="cb108-54"><a href="novel-isofroms.html#cb108-54" aria-hidden="true" tabindex="-1"></a>  starts <span class="ot">&lt;-</span> <span class="fu">startCodons</span>(ORFs, <span class="at">is.sorted =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb108-55"><a href="novel-isofroms.html#cb108-55" aria-hidden="true" tabindex="-1"></a>  stops <span class="ot">&lt;-</span> <span class="fu">stopCodons</span>(ORFs, <span class="at">is.sorted =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb108-56"><a href="novel-isofroms.html#cb108-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-57"><a href="novel-isofroms.html#cb108-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualization Tracks</span></span>
+<span id="cb108-58"><a href="novel-isofroms.html#cb108-58" aria-hidden="true" tabindex="-1"></a>  gtrack <span class="ot">&lt;-</span> <span class="fu">GenomeAxisTrack</span>()</span>
+<span id="cb108-59"><a href="novel-isofroms.html#cb108-59" aria-hidden="true" tabindex="-1"></a>  itrack <span class="ot">&lt;-</span> <span class="fu">IdeogramTrack</span>(<span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>, <span class="at">chromosome =</span> chromosome)</span>
+<span id="cb108-60"><a href="novel-isofroms.html#cb108-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-61"><a href="novel-isofroms.html#cb108-61" aria-hidden="true" tabindex="-1"></a>  ref_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
+<span id="cb108-62"><a href="novel-isofroms.html#cb108-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> txdb,</span>
+<span id="cb108-63"><a href="novel-isofroms.html#cb108-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;gencodev47&quot;</span>,</span>
+<span id="cb108-64"><a href="novel-isofroms.html#cb108-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
+<span id="cb108-65"><a href="novel-isofroms.html#cb108-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> chromosome,</span>
+<span id="cb108-66"><a href="novel-isofroms.html#cb108-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;darkblue&quot;</span>,</span>
+<span id="cb108-67"><a href="novel-isofroms.html#cb108-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>,</span>
+<span id="cb108-68"><a href="novel-isofroms.html#cb108-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrowHead =</span> <span class="cn">FALSE</span></span>
+<span id="cb108-69"><a href="novel-isofroms.html#cb108-69" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-70"><a href="novel-isofroms.html#cb108-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-71"><a href="novel-isofroms.html#cb108-71" aria-hidden="true" tabindex="-1"></a>  input_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
+<span id="cb108-72"><a href="novel-isofroms.html#cb108-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> txdb_filtered,</span>
+<span id="cb108-73"><a href="novel-isofroms.html#cb108-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Isoforms (Exons)&quot;</span>,</span>
+<span id="cb108-74"><a href="novel-isofroms.html#cb108-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
+<span id="cb108-75"><a href="novel-isofroms.html#cb108-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> chromosome,</span>
+<span id="cb108-76"><a href="novel-isofroms.html#cb108-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>,</span>
+<span id="cb108-77"><a href="novel-isofroms.html#cb108-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;lightgreen&quot;</span>,</span>
+<span id="cb108-78"><a href="novel-isofroms.html#cb108-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrowHead =</span> <span class="cn">FALSE</span></span>
+<span id="cb108-79"><a href="novel-isofroms.html#cb108-79" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-80"><a href="novel-isofroms.html#cb108-80" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-81"><a href="novel-isofroms.html#cb108-81" aria-hidden="true" tabindex="-1"></a>  orf_track <span class="ot">&lt;-</span> <span class="fu">GeneRegionTrack</span>(</span>
+<span id="cb108-82"><a href="novel-isofroms.html#cb108-82" aria-hidden="true" tabindex="-1"></a>    ORFs_unlisted,</span>
+<span id="cb108-83"><a href="novel-isofroms.html#cb108-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
+<span id="cb108-84"><a href="novel-isofroms.html#cb108-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">unique</span>(<span class="fu">seqnames</span>(ORFs_unlisted)),</span>
+<span id="cb108-85"><a href="novel-isofroms.html#cb108-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">transcriptAnnotation =</span> <span class="st">&quot;transcript&quot;</span>,</span>
+<span id="cb108-86"><a href="novel-isofroms.html#cb108-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;ORFs&quot;</span>,</span>
+<span id="cb108-87"><a href="novel-isofroms.html#cb108-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb108-88"><a href="novel-isofroms.html#cb108-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb108-89"><a href="novel-isofroms.html#cb108-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">stacking =</span> <span class="st">&quot;squish&quot;</span></span>
+<span id="cb108-90"><a href="novel-isofroms.html#cb108-90" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-91"><a href="novel-isofroms.html#cb108-91" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-92"><a href="novel-isofroms.html#cb108-92" aria-hidden="true" tabindex="-1"></a>  starts_track <span class="ot">&lt;-</span> <span class="fu">AnnotationTrack</span>(</span>
+<span id="cb108-93"><a href="novel-isofroms.html#cb108-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> starts,</span>
+<span id="cb108-94"><a href="novel-isofroms.html#cb108-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Starts&quot;</span>,</span>
+<span id="cb108-95"><a href="novel-isofroms.html#cb108-95" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
+<span id="cb108-96"><a href="novel-isofroms.html#cb108-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">seqnames</span>(txs_grl[[<span class="dv">1</span>]])[<span class="dv">1</span>],</span>
+<span id="cb108-97"><a href="novel-isofroms.html#cb108-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;green&quot;</span>,</span>
+<span id="cb108-98"><a href="novel-isofroms.html#cb108-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;green&quot;</span>,</span>
+<span id="cb108-99"><a href="novel-isofroms.html#cb108-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">&quot;box&quot;</span>  <span class="co"># Ensure no arrows by using box shape</span></span>
+<span id="cb108-100"><a href="novel-isofroms.html#cb108-100" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-101"><a href="novel-isofroms.html#cb108-101" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-102"><a href="novel-isofroms.html#cb108-102" aria-hidden="true" tabindex="-1"></a>  stops_track <span class="ot">&lt;-</span> <span class="fu">AnnotationTrack</span>(</span>
+<span id="cb108-103"><a href="novel-isofroms.html#cb108-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">range =</span> stops,</span>
+<span id="cb108-104"><a href="novel-isofroms.html#cb108-104" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">&quot;Stops&quot;</span>,</span>
+<span id="cb108-105"><a href="novel-isofroms.html#cb108-105" aria-hidden="true" tabindex="-1"></a>    <span class="at">genome =</span> <span class="st">&quot;hg38&quot;</span>,</span>
+<span id="cb108-106"><a href="novel-isofroms.html#cb108-106" aria-hidden="true" tabindex="-1"></a>    <span class="at">chromosome =</span> <span class="fu">seqnames</span>(txs_grl[[<span class="dv">1</span>]])[<span class="dv">1</span>],</span>
+<span id="cb108-107"><a href="novel-isofroms.html#cb108-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb108-108"><a href="novel-isofroms.html#cb108-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb108-109"><a href="novel-isofroms.html#cb108-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">&quot;box&quot;</span>  <span class="co"># Ensure no arrows by using box shape</span></span>
+<span id="cb108-110"><a href="novel-isofroms.html#cb108-110" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb108-111"><a href="novel-isofroms.html#cb108-111" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb108-112"><a href="novel-isofroms.html#cb108-112" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot tracks</span></span>
+<span id="cb108-113"><a href="novel-isofroms.html#cb108-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plotTracks</span>(<span class="fu">list</span>(itrack, gtrack, ref_track, input_track, </span>
+<span id="cb108-114"><a href="novel-isofroms.html#cb108-114" aria-hidden="true" tabindex="-1"></a>                   orf_track, stops_track, starts_track), </span>
+<span id="cb108-115"><a href="novel-isofroms.html#cb108-115" aria-hidden="true" tabindex="-1"></a>             <span class="at">from =</span> plot_start, <span class="at">to =</span> plot_end, </span>
+<span id="cb108-116"><a href="novel-isofroms.html#cb108-116" aria-hidden="true" tabindex="-1"></a>             <span class="at">transcriptAnnotation =</span> <span class="st">&quot;transcript&quot;</span>)</span>
+<span id="cb108-117"><a href="novel-isofroms.html#cb108-117" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb108-118"><a href="novel-isofroms.html#cb108-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-119"><a href="novel-isofroms.html#cb108-119" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage</span></span>
+<span id="cb108-120"><a href="novel-isofroms.html#cb108-120" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>(</span>
+<span id="cb108-121"><a href="novel-isofroms.html#cb108-121" aria-hidden="true" tabindex="-1"></a>  <span class="at">reference_gtf =</span> <span class="st">&quot;data/gencode.v47.annotation.gtf&quot;</span>,</span>
+<span id="cb108-122"><a href="novel-isofroms.html#cb108-122" aria-hidden="true" tabindex="-1"></a>  <span class="at">target_gtf =</span> <span class="st">&quot;data/FLAMES_out/isoform_annotated_unfiltered.gtf&quot;</span>,</span>
+<span id="cb108-123"><a href="novel-isofroms.html#cb108-123" aria-hidden="true" tabindex="-1"></a>  <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000326005.10&quot;</span>, <span class="st">&quot;BambuTx25&quot;</span>),</span>
+<span id="cb108-124"><a href="novel-isofroms.html#cb108-124" aria-hidden="true" tabindex="-1"></a>  <span class="at">chromosome =</span> <span class="st">&quot;chr15&quot;</span>,</span>
+<span id="cb108-125"><a href="novel-isofroms.html#cb108-125" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_start =</span> <span class="dv">64687015</span>,</span>
+<span id="cb108-126"><a href="novel-isofroms.html#cb108-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_end =</span> <span class="dv">64703412</span></span>
+<span id="cb108-127"><a href="novel-isofroms.html#cb108-127" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/ORFS-plot3-1.png" width="1152" /></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="novel-isofroms.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>(</span>
-<span id="cb108-2"><a href="novel-isofroms.html#cb108-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">reference_gtf =</span> <span class="st">&quot;../../../../resources/gencode.v47.annotation.gtf&quot;</span>,</span>
-<span id="cb108-3"><a href="novel-isofroms.html#cb108-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">target_gtf =</span> <span class="st">&quot;/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf&quot;</span>,</span>
-<span id="cb108-4"><a href="novel-isofroms.html#cb108-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000326005.10&quot;</span>, <span class="st">&quot;BambuTx25&quot;</span>),</span>
-<span id="cb108-5"><a href="novel-isofroms.html#cb108-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chromosome =</span> <span class="st">&quot;chr15&quot;</span>,</span>
-<span id="cb108-6"><a href="novel-isofroms.html#cb108-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_start =</span> <span class="dv">64691416</span>,</span>
-<span id="cb108-7"><a href="novel-isofroms.html#cb108-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_end =</span> <span class="dv">64691685</span></span>
-<span id="cb108-8"><a href="novel-isofroms.html#cb108-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="novel-isofroms.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>(</span>
+<span id="cb109-2"><a href="novel-isofroms.html#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">reference_gtf =</span> <span class="st">&quot;data/gencode.v47.annotation.gtf&quot;</span>,</span>
+<span id="cb109-3"><a href="novel-isofroms.html#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">target_gtf =</span> <span class="st">&quot;data/FLAMES_out/isoform_annotated_unfiltered.gtf&quot;</span>,</span>
+<span id="cb109-4"><a href="novel-isofroms.html#cb109-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000326005.10&quot;</span>, <span class="st">&quot;BambuTx25&quot;</span>),</span>
+<span id="cb109-5"><a href="novel-isofroms.html#cb109-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">chromosome =</span> <span class="st">&quot;chr15&quot;</span>,</span>
+<span id="cb109-6"><a href="novel-isofroms.html#cb109-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_start =</span> <span class="dv">64691416</span>,</span>
+<span id="cb109-7"><a href="novel-isofroms.html#cb109-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot_end =</span> <span class="dv">64691685</span></span>
+<span id="cb109-8"><a href="novel-isofroms.html#cb109-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/ORFS-plot3-2.png" width="1152" /></p>
 <p>Visualizing ORFs using the above code chunck shows that the <strong>BambuTx25_1_ORF</strong> is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3_ORF is complete.</p>
 <p>We can examine additional genes from our list. For instance, <strong>ZMAT5</strong> has a novel isoform that utilizes a different, known splice junction in the 5’ UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some import regulatory role in the 5’ UTR yet the protein remains unchanged.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="novel-isofroms.html#cb109-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000100319.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="novel-isofroms.html#cb110-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000100319.png&quot;</span>)</span></code></pre></div>
 </details>
 <div class="figure"><span style="display:block;" id="fig:isoviz-plot3"></span>
 <img src="images/IsoVis_ENSG00000100319.png" alt="IsoViz visualization of Novel ZMAT5 isoform." width="1000px" />
@@ -492,14 +490,17 @@ Figure 8.3: IsoViz visualization of Novel ZMAT5 isoform.
 </p>
 </div>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="novel-isofroms.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>( <span class="at">reference_gtf =</span> <span class="st">&quot;../../../../resources/gencode.v47.annotation.gtf&quot;</span>, <span class="at">target_gtf =</span> <span class="st">&quot;/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf&quot;</span>, <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;BambuTx32&quot;</span>, <span class="st">&quot;ENST00000344318.4&quot;</span>), <span class="at">chromosome =</span> <span class="st">&quot;chr22&quot;</span>, <span class="at">plot_start =</span> <span class="dv">29728956</span>, <span class="at">plot_end =</span> <span class="dv">29769011</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="novel-isofroms.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_isoform_ORFs</span>( <span class="at">reference_gtf =</span> <span class="st">&quot;../../../../resources/gencode.v47.annotation.gtf&quot;</span>, <span class="at">target_gtf =</span> <span class="st">&quot;/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf&quot;</span>, <span class="at">isoforms_of_interest =</span> <span class="fu">c</span>(<span class="st">&quot;BambuTx32&quot;</span>, <span class="st">&quot;ENST00000344318.4&quot;</span>), <span class="at">chromosome =</span> <span class="st">&quot;chr22&quot;</span>, <span class="at">plot_start =</span> <span class="dv">29728956</span>, <span class="at">plot_end =</span> <span class="dv">29769011</span> )</span></code></pre></div>
 </details>
-<pre><code>## Using cached TxDb...</code></pre>
+<pre><code>## Creating TxDb object from reference GTF. This may take time...</code></pre>
+<pre><code>## Import genomic features from the file as a GRanges object ... OK
+## Prepare the &#39;metadata&#39; data frame ... OK
+## Make the TxDb object ... OK</code></pre>
 <p><img src="bookdownproj_files/figure-html/ORFS-plot4-1.png" width="1152" /></p>
 
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-chen2023" class="csl-entry">
 Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>

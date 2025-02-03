@@ -228,7 +228,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>11</b> <strong>References</strong></a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -254,23 +254,24 @@ div.csl-indent {
 <h2><span class="header-section-number">10.1</span> Calculating the ambient RNA profile<a href="appendix.html#calculating-the-ambient-rna-profile" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>By calculating the ambient RNA profile, we can perform two important analyses to improve data quality: (1) removing empty droplets and (2) normalizing for background RNA contamination. Chapter 3 of the tutorial outlines both processes. However, the first step is to calculate the background RNA profile by quantifying gene expression for a list of barcodes known to represent background droplets rather than true cells.</p>
 <p>When running FLAMES, one of the outputs is the empty_bc_list.csv file, which contains 2,000 barcodes identified as background, not associated with cells. Users can manually add additional background barcodes if needed (for advanced users). For a detailed understanding of how this list is determined, refer to the BLAZE publication <span class="citation">(<a href="#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span>.</p>
-<p>To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set these apraters to flase in the config file</p>
+<p>To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set the following parameters to false in the config file</p>
 <div class="line-block"><code>"do_isoform_identification": false,</code><br />
 <code>"bambu_isoform_identification": false,</code><br />
 <code>"do_read_realignment": false,</code><br />
-<code>"do_transcript_quantification": false</code></div>
+<code>"do_transcript_quantification": false</code><br />
+</div>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="appendix.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run FLAMES using background barcode list genrated in the first run. </span></span>
-<span id="cb113-2"><a href="appendix.html#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-3"><a href="appendix.html#cb113-3" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">sc_long_pipeline</span>(<span class="at">fastq=</span>fastq, <span class="at">outdir=</span>output, <span class="at">annot=</span>GTF, <span class="at">genome_bookdfa=</span>genome, </span>
-<span id="cb113-4"><a href="appendix.html#cb113-4" aria-hidden="true" tabindex="-1"></a>                         <span class="co">#minimap=minimap_dir, k8=k8,</span></span>
-<span id="cb113-5"><a href="appendix.html#cb113-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">config_file=</span>config_file,</span>
-<span id="cb113-6"><a href="appendix.html#cb113-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">expect_cell_number=</span><span class="dv">1000</span>,  <span class="at">barcodes_file=</span><span class="st">&#39;path/to/emtpy_bc_list.csv&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="appendix.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run FLAMES using background barcode list genrated in the first run. </span></span>
+<span id="cb115-2"><a href="appendix.html#cb115-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="appendix.html#cb115-3" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">sc_long_pipeline</span>(<span class="at">fastq=</span>fastq, <span class="at">outdir=</span>output, <span class="at">annot=</span>GTF, <span class="at">genome_bookdfa=</span>genome, </span>
+<span id="cb115-4"><a href="appendix.html#cb115-4" aria-hidden="true" tabindex="-1"></a>                         <span class="co">#minimap=minimap_dir, k8=k8,</span></span>
+<span id="cb115-5"><a href="appendix.html#cb115-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">config_file=</span>config_file,</span>
+<span id="cb115-6"><a href="appendix.html#cb115-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">expect_cell_number=</span><span class="dv">1000</span>,  <span class="at">barcodes_file=</span><span class="st">&#39;path/to/emtpy_bc_list.csv&#39;</span>)</span></code></pre></div>
 </details>
 
 </div>
 </div>
-<h3> <strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-you2023a" class="csl-entry">
 You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., Shim, H., &amp; Clark, M. B. (2023). Identification of cell barcodes from long-read single-cell RNA-seq with BLAZE. <em>Genome Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s13059-023-02907-y">https://doi.org/10.1186/s13059-023-02907-y</a>

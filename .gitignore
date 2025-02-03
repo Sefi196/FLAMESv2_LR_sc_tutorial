@@ -3,8 +3,14 @@
 .Rproj.user
 *.Rproj
 _bookdown_files/
-data/
-output_files/
+data/FLAMES_out/gene_count.csv
+data/background/gene_count.csv
+data/gencode.v47.annotation.gtf
+data/FLAMES_out/oarfish.count.mtx
+data/FLAMES_out/isoform_annotated.gtf
+data/FLAMES_out/isoform_annotated_unfiltered.gtf
+data/remove_unknownstrand_classification.txt
+output_files
 bookdownproj_cache/
 06_Trajectory.Rmddddd
 code_notes.txt

@@ -101,7 +101,7 @@ Run this chunk to create the dictionary containing ENSTID, ENSGID, and geneSymbo
 
 # The FLAMES ref can be found in your selected output folder after running the Flames pipeline. 
 FLAMES_gtf_file <- "./data/FLAMES_out/isoform_annotated.gtf" #ensure file is unzipped
-reference_gtf_file <- "./data/gencode.v47.annotation.gtf" # ensure file is unzipped
+reference_gtf_file <- "data/gencode.v47.annotation.gtf" # ensure file is unzipped
 output_file <- "isoform_gene_dict.csv"
 
 # Call the helper function defined in code block above to create a dictionary containing corresponding gene information for each isoform

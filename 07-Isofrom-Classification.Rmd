@@ -521,8 +521,8 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
 
 # Example usage
 plot_isoform_ORFs(
-  reference_gtf = "../../../../resources/gencode.v47.annotation.gtf",
-  target_gtf = "/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf",
+  reference_gtf = "data/gencode.v47.annotation.gtf",
+  target_gtf = "data/FLAMES_out/isoform_annotated_unfiltered.gtf",
   isoforms_of_interest = c("ENST00000326005.10", "BambuTx25"),
   chromosome = "chr15",
   plot_start = 64687015,
@@ -530,8 +530,8 @@ plot_isoform_ORFs(
 )
 
 plot_isoform_ORFs(
-  reference_gtf = "../../../../resources/gencode.v47.annotation.gtf",
-  target_gtf = "/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf",
+  reference_gtf = "data/gencode.v47.annotation.gtf",
+  target_gtf = "data/FLAMES_out/isoform_annotated_unfiltered.gtf",
   isoforms_of_interest = c("ENST00000326005.10", "BambuTx25"),
   chromosome = "chr15",
   plot_start = 64691416,

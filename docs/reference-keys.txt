@@ -46,4 +46,3 @@ acknowledgements
 session-info
 appendix
 calculating-the-ambient-rna-profile
-references

@@ -1,7 +1,9 @@
 ---
 author: "Sefi"
 date: "`r Sys.Date()`"
-output: html_document
+output: 
+  bookdown::gitbook:
+    number_sections: false
 ---
 
 # **Appendix**
@@ -12,12 +14,13 @@ By calculating the ambient RNA profile, we can perform two important analyses to
 
 When running FLAMES, one of the outputs is the empty_bc_list.csv file, which contains 2,000 barcodes identified as background, not associated with cells. Users can manually add additional background barcodes if needed (for advanced users). For a detailed understanding of how this list is determined, refer to the BLAZE publication [@you2023a].
 
-To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set these apraters to flase in the config file
+To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set the following parameters to false in the config file
 
 | `"do_isoform_identification": false,`
 | `"bambu_isoform_identification": false,`
 | `"do_read_realignment": false,`
 | `"do_transcript_quantification": false`
+| 
 
 ```{R, eval=FALSE, include=TRUE, echo=TRUE}
 # Run FLAMES using background barcode list genrated in the first run. 

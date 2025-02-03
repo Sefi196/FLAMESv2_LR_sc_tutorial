@@ -1,0 +1,15 @@
+{
+  "prob_model": "no_coverage",
+  "bin_width": 100,
+  "alignments": "/data/scratch/users/yairp/FLAMES_Day55/outs/realign2transcript.bam",
+  "output": "/data/scratch/users/yairp/FLAMES_Day55/outs/oarfish",
+  "verbose": false,
+  "single_cell": true,
+  "quiet": false,
+  "em_max_iter": 1000,
+  "em_convergence_thresh": 0.001,
+  "threads": 8,
+  "filter_group": null,
+  "short_quant": null,
+  "seqcol_digest": "E0DgitGpa-3PVcGT5ytWxQR0C11aiFZW"
+}
