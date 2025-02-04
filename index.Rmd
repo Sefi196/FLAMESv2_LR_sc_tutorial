@@ -1,6 +1,6 @@
 ---
 title: "FLAMES Single-Cell RNA-seq Tutorial"
-author: "strong>Sefi Prawer</strong><br>Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics<br>University of Melbourne"
+author: "<strong>Sefi Prawer</strong><br>Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics<br>University of Melbourne"
 date: "`r Sys.Date()`"
 output:
   bookdown::gitbook:
