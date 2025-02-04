@@ -21,7 +21,7 @@ add-isoform-counts-to-seurat-object
 create-a-seurat-object-with-isoform-expression-data
 filter-the-new-seurat-object-based-on-gene-level-information
 add-the-isoform-assay-to-the-seurat-object
-finding-differentially-expressed-genes-and-isoforms
+finding-marker-genes-and-isoforms
 differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
 de-genes-and-isoforms-based-on-annotaed-cell-types.
@@ -41,4 +41,4 @@ novel-isoforms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 visualizing-oaz2-novel-isoform
 functional-impacts-of-novel-isoforms
-calculating-the-ambient-rna-profile-calculating-the-ambient-rna-profile
+calculating-the-ambient-rna-profile

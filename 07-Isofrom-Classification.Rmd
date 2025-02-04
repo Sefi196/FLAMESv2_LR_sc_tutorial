@@ -1,5 +1,4 @@
 ---
-author: "Sefi"
 date: "`r Sys.Date()`"
 output: html_document
 bibliography: references.bib
@@ -438,7 +437,7 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
   txdb_filtered <- txdbmaker::makeTxDbFromGRanges(gtf_filtered)
   
   # Extract exons and convert to GRangesList
-  txs <- exonsBy(txdb_filtered, by = c("tx", "gene"), use.names = TRUE)
+  txs <- GenomicFeatures::exonsBy(txdb_filtered, by = c("tx", "gene"), use.names = TRUE)
   txs_grl <- GRangesList(txs)
   
   # Extract transcript sequences and identify ORFs
@@ -452,6 +451,8 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
   ORFs_unlisted$type <- "exon"
   ORFs_unlisted$transcript <- ORFs_unlisted$names
   ORFs_unlisted$transcript <- paste0(ORFs_unlisted$transcript, "_ORF")
+  
+  #could add in a filter for ORFs here 
 
   # Define start and stop codons
   starts <- startCodons(ORFs, is.sorted = TRUE)
@@ -489,7 +490,7 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
     name = "ORFs",
     col = "grey",
     fill = "grey",
-    stacking = "squish"
+    stacking = "squish",
   )
   
   starts_track <- AnnotationTrack(
@@ -517,7 +518,7 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
   # Plot tracks
   plotTracks(list(itrack, gtrack, ref_track, input_track, 
                    orf_track, stops_track, starts_track), 
-             from = plot_start, to = plot_end, 
+             from = plot_start, to = plot_end,  
              transcriptAnnotation = "transcript")
 }
 

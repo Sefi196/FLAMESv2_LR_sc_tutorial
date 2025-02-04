@@ -20,10 +20,10 @@
   
   
 
-<meta name="author" content="Sefi" />
+<meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-03" />
+<meta name="date" content="2025-02-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"/>
-<link rel="next" href="finding-differentially-expressed-genes-and-isoforms.html"/>
+<link rel="next" href="finding-marker-genes-and-isoforms.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -189,15 +189,15 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
 <li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> <strong>Finding differentially expressed genes and isoforms</strong></a>
+<li class="chapter" data-level="5" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> <strong>Finding marker genes and isoforms</strong></a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
-<li class="chapter" data-level="5.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
-<li class="chapter" data-level="5.3" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#de-genes-and-isoforms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isoforms based on annotaed cell types.</a></li>
-<li class="chapter" data-level="5.4" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
+<li class="chapter" data-level="5.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#de-genes-and-isoforms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isoforms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
-<li class="chapter" data-level="5.4.2" data-path="finding-differentially-expressed-genes-and-isoforms.html"><a href="finding-differentially-expressed-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
+<li class="chapter" data-level="5.4.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> <strong>Exploring isoforms of interest</strong></a>
@@ -226,7 +226,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile-calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.3.1</b> Calculating the ambient RNA profile {#Calculating the ambient RNA profile}</a></li>
+<li class="chapter" data-level="8.4" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.4</b> Calculating the ambient RNA profile</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
@@ -435,7 +435,7 @@ div.csl-indent {
         </div>
       </div>
 <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="finding-differentially-expressed-genes-and-isoforms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="finding-marker-genes-and-isoforms.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

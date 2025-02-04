@@ -1,5 +1,4 @@
 ---
-author: "Sefi"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -46,7 +45,7 @@ isoform_count_per_gene <- isoform_count_per_gene %>%
 
 # 4. Calculate the percentage of genes in each bin
 isoform_count_summary <- isoform_count_per_gene %>%
-  count(isoform_category) %>%
+  dplyr::count(isoform_category) %>%
   mutate(percent = (n / sum(n)) * 100)
 
 ggplot(isoform_count_summary, aes(x = isoform_category, y = percent)) +
