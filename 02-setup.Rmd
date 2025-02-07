@@ -28,6 +28,10 @@ library(cowplot)
 library(grid)
 library(patchwork)
 library(tidyverse)
+library(ORFik)
+library(GenomicFeatures)
+library(Gviz)
+library(BSgenome.Hsapiens.UCSC.hg38)
 
 # Set working directory and create folders for output files
 setwd(".")  # Set this to correct location
@@ -38,7 +42,7 @@ dir.create("./output_files/empty_drops", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/decontx", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/QC", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/DE", recursive = TRUE, showWarnings = FALSE)
-
+dir.create("./output_files/mutli_sample", recursive = TRUE, showWarnings = FALSE)
 ```
 
 ## Creating resource files.
@@ -125,22 +129,22 @@ convert_ENSGID_to_geneSymbol <- function(gene_count_matrix_path,
                                          return_df = FALSE) {
   
   # Load the reference dictionary we made earlier - select gene-level cols
-  id_symbol_df <- id_symbol_df %>%
+  id_symbol_df <- as_tibble(id_symbol_df) %>%
     dplyr::select(gene_id, gene_symbol)
   
   # Load the data object with ENSGID row names
-  gene_count_matrix <- read.csv(gene_count_matrix_path, header = TRUE)
+  gene_count_matrix <- fread(gene_count_matrix_path, header = TRUE)
   colnames(gene_count_matrix)[1] <- "gene_id"
   
   # Replace ENSGIDs with gene symbols in original flames gene-level count matrix
   formatted_gene_count_matrix <- gene_count_matrix %>%
     merge(id_symbol_df, by.x = 'gene_id', by.y = 'gene_id') %>%   # Add gene symbol information
     distinct(gene_symbol, .keep_all = TRUE) %>%   # Remove duplicates based on gene symbol
-    select(-gene_id) %>%   # Remove the ENSGID column
+    dplyr::select(-gene_id) %>%   # Remove the ENSGID column
     column_to_rownames(var = "gene_symbol")   # use the gene symbols we added as rownames
   
   # Write out the processed data frame
-  write.csv(formatted_gene_count_matrix, 
+  fwrite(formatted_gene_count_matrix, 
             output_file, 
             row.names = TRUE)
   

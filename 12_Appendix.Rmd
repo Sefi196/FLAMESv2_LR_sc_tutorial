@@ -1,0 +1,343 @@
+---
+date: "`r Sys.Date()`"
+output: 
+  bookdown::gitbook:
+    number_sections: false
+---
+
+# **Appendix** {.unnumbered}
+
+## Calculating the ambient RNA profile
+
+By calculating the ambient RNA profile, we can perform two important analyses to improve data quality: (1) removing empty droplets and (2) normalizing for background RNA contamination. Chapter 3 of the tutorial outlines both processes. However, the first step is to calculate the background RNA profile by quantifying gene expression for a list of barcodes known to represent background droplets rather than true cells.
+
+When running FLAMES, one of the outputs is the empty_bc_list.csv file, which contains 2,000 barcodes identified as background, not associated with cells. Users can manually add additional background barcodes if needed (for advanced users). For a detailed understanding of how this list is determined, refer to the BLAZE publication [@you2023a].
+
+To incorporate the background barcode list, users should run FLAMES as they did previously, but include the background barcode list as the barcode_file parameter. There is no need to identify or quantify isoforms so users can set the following parameters to false in the config file
+
+| `"do_isoform_identification": false,`
+| `"bambu_isoform_identification": false,`
+| `"do_read_realignment": false,`
+| `"do_transcript_quantification": false`
+| 
+
+```{R, eval=FALSE, include=TRUE, echo=TRUE}
+# Run FLAMES using background barcode list genrated in the first run. 
+
+sce <- sc_long_pipeline(fastq=fastq, outdir=output, annot=GTF, genome_bookdfa=genome, 
+                         #minimap=minimap_dir, k8=k8,
+                         config_file=config_file,
+                         expect_cell_number=1000,  barcodes_file='path/to/emtpy_bc_list.csv')
+
+```
+
+## Multisample QC function
+
+```{r,multisample_qc_function, echo=TRUE, cache=TRUE, eval=FALSE}
+# Perform QC for each sample 
+
+perform_qc_filtering <- function(count.matrix=C1_STC, min.features = 5000 ,
+                                 max.features = 10000, max.counts = 100000,
+                                 min.counts = 3000, npc = 15, cluster_res = 0.9,
+                                 fig_name = '1', project = "2",
+                                 MT = 10, doublet_rate = 0.039) {
+  
+  # Function to calculate min.features and max.features if not provided
+  calculate_feature_range <- function(nFeature_RNA) {
+    min_feature <- round(mean(nFeature_RNA) - (1.5 * sd(nFeature_RNA)))
+    max_feature <- round(mean(nFeature_RNA) + (1.5 * sd(nFeature_RNA)))
+    return(list(min_feature = min_feature, max_feature = max_feature))
+  }
+  
+  # If min.features and max.features not provided, calculate them
+  if (is.null(min.features) || is.null(max.features)) {
+    seurat_obj_org <- CreateSeuratObject(counts = count.matrix, project = project)
+    feature_range <- calculate_feature_range(seurat_obj_org$nFeature_RNA)
+    min.features <- feature_range$min_feature
+    max.features <- feature_range$max_feature
+  }
+  
+  rst_figures <- list()
+  rst_table <- data.frame()
+ 
+  ##### remove features expressed in less than 1% of cells ##### 
+  # Calculate the percentage of cells expressing each gene
+  #gene_percent_expression <- base::rowMeans(count.matrix > 0) * 100
+  
+  # Select genes expressed in at least 1% of cells
+  #genes_filter <- names(gene_percent_expression[gene_percent_expression > 1])
+  
+  # Filter counts
+  #counts_sub <- count.matrix[genes_filter, ]
+  
+  # Record the number of features removed
+  #removed_features <- dim(count.matrix)[1] - length(genes_filter)
+  
+  #######
+  # Initialize Seurat object
+  seurat_object <- CreateSeuratObject(counts = count.matrix, 
+                                      project = project)
+
+  plot_scatter1 <- FeatureScatter(seurat_object,
+                                  feature1 = "nCount_RNA", feature2 = "nFeature_RNA") +
+    geom_smooth(method = "lm") + 
+    NoLegend() + 
+    labs(title = "Association between reads and \nunique genes per cell BEFORE filtering")
+  
+  plot(plot_scatter1)
+  
+  # Add mitochondrial percentage
+  seurat_object[["joined"]] <- JoinLayers(seurat_object[["RNA"]])
+  seurat_object[["percent.mt"]] <- PercentageFeatureSet(seurat_object, pattern = "^MT-")
+  
+  # Plot violin plots
+  p1 <- VlnPlot(seurat_object, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
+  p1 +  plot_annotation(title = "QC plots (gene level) BEFORE Filtering")
+  
+  plot(p1)
+  
+  # Remove low quality cells
+  filt_seurat_object <- subset(seurat_object,
+                              subset = nFeature_RNA > min.features & nFeature_RNA < max.features & percent.mt < MT & nCount_RNA < max.counts & nCount_RNA > min.counts) 
+  
+  # Plot quality metrics after filtering
+  p2 <- VlnPlot(filt_seurat_object, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"))
+  p2 + plot_annotation(title = "QC metrics gene level AFTER Filtering")
+  
+  plot(p2)
+  
+  #######
+  # Normalize data
+  filt_seurat_object <- NormalizeData(filt_seurat_object,
+                                     normalization.method = "LogNormalize",
+                                     scale.factor = 10000)
+  
+  # Identify highly variable features
+  filt_seurat_object <- FindVariableFeatures(filt_seurat_object,
+                                            selection.method = "vst",
+                                            nfeatures = 2000)
+  
+  # Apply linear transformation
+  all_genes <- rownames(filt_seurat_object)
+  filt_seurat_object <- ScaleData(filt_seurat_object, features = all_genes)
+  
+  # Perform PCA
+  filt_seurat_object <- RunPCA(filt_seurat_object,
+                              features = VariableFeatures(object = filt_seurat_object))
+  
+  # Visualize PCA
+  rst_figures <- append(rst_figures, ElbowPlot(filt_seurat_object))
+  
+  # Cluster cells
+  filt_seurat_object <- FindNeighbors(filt_seurat_object, dims = 1:npc)
+  filt_seurat_object <- FindClusters(filt_seurat_object, resolution = cluster_res)
+  
+  # Perform UMAP
+  filt_seurat_object <- RunUMAP(filt_seurat_object, dims = 1:npc)
+  
+  ### Filter out doublets (remember to modify doublet rate if samples have variable target cells)
+  ## pK Identification (no ground-truth) ---------------------------------------------------------------------------------------
+  sweep.res.list_pbmc <- paramSweep(filt_seurat_object, PCs = 1:20, sct = FALSE)
+  sweep.stats_pbmc <- summarizeSweep(sweep.res.list_pbmc, GT = FALSE)
+  bcmvn_pbmc <- find.pK(sweep.stats_pbmc)
+  
+  pK <- bcmvn_pbmc %>% filter(BCmetric == max(BCmetric)) %>% dplyr::select(pK) 
+  pK <- as.numeric(as.character(pK[[1]]))
+  
+  ## Homotypic Doublet Proportion Estimate -------------------------------------------------------------------------------------
+  annotations <- filt_seurat_object@meta.data$seurat_clusters
+  homotypic.prop <- modelHomotypic(annotations)
+  nExp_poi <- round(doublet_rate * nrow(filt_seurat_object@meta.data))
+  nExp_poi.adj <- round(nExp_poi * (1 - homotypic.prop))
+  
+  # Run doubletFinder 
+  filt_seurat_object <- doubletFinder(filt_seurat_object,
+                                      PCs = 1:20,
+                                      pN = 0.25,
+                                      pK = pK,
+                                      nExp = nExp_poi.adj,
+                                      reuse.pANN = FALSE,
+                                      sct = FALSE)
+  
+  colnames(filt_seurat_object@meta.data) <- sub("DF.classifications_.*$", "DF.classifications", colnames(filt_seurat_object@meta.data))
+  
+  # Summary doublets
+  statsDoublets <- filt_seurat_object@meta.data %>%
+    group_by(DF.classifications) %>%
+    dplyr::summarize(Median_nCount_RNA = median(nCount_RNA),
+                     Median_nFeature_RNA = median(nFeature_RNA), Count = n())
+  
+  # Visualize doublets
+  doublets <- DimPlot(filt_seurat_object,
+                      reduction = 'umap',
+                      group.by = "DF.classifications")
+  
+  ### i want to save the seurat object with doublets listed 
+  filt_seurat_object_doublets <- filt_seurat_object
+  
+  filt_seurat_object <- subset(filt_seurat_object, subset = DF.classifications == 'Singlet')
+  
+# figures
+  ggplot_list <- list(
+  ElbowPlot(filt_seurat_object) +
+    labs(title = 'SD explained by each PC') + theme(text = element_text(size = 10)),
+  
+  FeatureScatter(filt_seurat_object, feature1 = "nCount_RNA", feature2 = "nFeature_RNA") +
+    geom_smooth(method = "lm") + NoLegend() + 
+    labs(title = "Association between reads and \nunique genes per cell AFTER filtering"),
+  
+  DimPlot(filt_seurat_object, reduction = "umap") + 
+    labs(color = "Cluster \n(from PCA)", title = '') + 
+    theme(text = element_text(size = 10)),
+  
+  FeaturePlot(filt_seurat_object, reduction = "umap", features = 'nCount_RNA') + 
+    labs(color = "UMI count", title = '') + 
+    theme(text = element_text(size = 10)),
+  
+  FeaturePlot(filt_seurat_object, reduction = "umap", features = 'nFeature_RNA') + 
+    labs(color = str_wrap("Feature count (gene)", 15), title = '') + 
+    theme(text = element_text(size = 10)),
+  
+  p2
+)
+  
+   combined_plots <- plot_grid(plotlist = ggplot_list, ncol = 3)
+  
+   plot(combined_plots)
+   
+   plot(DimPlot(filt_seurat_object_doublets, reduction = 'umap',
+                 group.by = "DF.classifications"))
+
+     tbl_sts1 <- tableGrob(statsDoublets)
+  grid.newpage()
+  grid.draw(tbl_sts1)
+  
+  
+# summary stats  
+   
+ stats_sumary <- rbind("Sample ID" = project,
+                        "Cells_before_filter" = dim(seurat_object)[2],
+                        "Cells_after_filter" = dim(filt_seurat_object)[2],
+                        "Median Feature per Cell before filter" = median(seurat_object$nFeature_RNA),
+                        "Median Reads per Gene before filter" = median(seurat_object$nCount_RNA),
+                        "Median Feature per Cell" = median(filt_seurat_object$nFeature_RNA),
+                        "Median Reads per Gene" = median(filt_seurat_object$nCount_RNA),
+                        "Max Features" = max.features,
+                        "Min Features" = min.features,
+                        "Min Counts" = min.counts,
+                        "Max Counts" = max.counts,
+                        "MT Percentage" = MT,
+                        "NPCs" = npc,
+                        "Median Percent MT before Filter" = median(seurat_object@meta.data[["percent.mt"]]),
+                        "Median Percent MT after Filter" = median(filt_seurat_object@meta.data[["percent.mt"]])
+                        )
+  
+  tbl_sts2 <- tableGrob(stats_sumary)
+  grid.newpage()
+  grid.draw(tbl_sts2)
+
+       list(filt_seurat_object, 
+            statsDoublets, 
+            stats_sumary, 
+            filt_seurat_object_doublets)
+}
+
+```
+
+## Convert Oarfish files to count matrix
+
+This is a function to take all oarfish files from FLAMES multisample output folder and convert the files into a gene count matrix that contains gene symbol ids instead of ENSGIDs. To use this fucntion ensure that the `isoform_gene_dict.csv` file has been genrated as decibed in \@ref(creating-resource-files)
+
+```{r, multisample_create_csv, cache=TRUE, echo=TRUE, eval=FALSE}
+### readSeurat### read in oarfish count files and add them to seurat objects ###
+process_oarfish_files_to_counts_matrix <- function(sample_name, resource_table_path, output_dir, input_dir) {
+  
+  # Load required libraries
+  library(Matrix)
+  library(dplyr)
+  
+  # Read in the resource table (transcript_id, gene_id, gene_symbol)
+  combined_data <- fread(resource_table_path)
+  
+  # Define the file paths based on the sample name
+  # Construct file paths
+  count_matrix_path <- file.path(input_dir, paste0(sample_name, ".count.mtx"))
+  barcodes_path <- file.path(input_dir, paste0(sample_name, ".barcodes.txt"))
+  features_path <- file.path(input_dir, paste0(sample_name, ".features.txt"))
+  
+  # Read the data
+  counts <- readMM(count_matrix_path)
+  barcodes <- readLines(barcodes_path)
+  features <- read.delim(features_path, header = FALSE)
+  
+  # Transpose the matrix if needed (for Seurat compatibility)
+  counts <- t(counts)
+  
+  # Set row and column names
+  rownames(counts) <- features$V1
+  colnames(counts) <- barcodes
+  
+  # Convert to a data frame
+  counts_df <- as.data.frame(counts)
+  
+  # Add transcript_id as the first column
+  counts_df$transcript_id <- rownames(counts_df)
+  counts_df <- counts_df[, c(ncol(counts_df), 1:(ncol(counts_df)-1))]
+  
+  # Merge with the resource table to add gene symbols
+  df_genesymbol <- counts_df %>%
+    left_join(combined_data, by = "transcript_id")
+  
+  # Remove the gene_id column and reorder the columns
+  df_genesymbol$gene_id <- NULL
+  df_genesymbol <- df_genesymbol[, c(ncol(df_genesymbol), 1:(ncol(df_genesymbol)-1))]
+  
+  # Update row names to include gene symbol instead of transcript_id
+  rownames(df_genesymbol) <- paste0(df_genesymbol$transcript_id, "_", df_genesymbol$gene_symbol)
+  df_genesymbol$transcript_id <- NULL
+  df_genesymbol$gene_symbol <- NULL
+  
+  # Write the output to a CSV file
+  output_path <- file.path(output_dir, paste0("gene_symbol_oarfish_", sample_name, "_counts.csv"))
+  fwrite(df_genesymbol, output_path, row.names = TRUE)
+  
+  cat("Processed sample:", sample_name, "\nOutput saved to:", output_path, "\n")
+}
+
+# Example usage:
+# List of sample names
+sample_names <- c("C1_STC")
+
+#create a resource 
+# Call the helper function defined in code block above to create a dictionary containing corresponding gene information for each isoform
+# This may take a few minutes 
+# The FLAMES ref can be found in your selected output folder after running the Flames pipeline. 
+FLAMES_gtf_file <- "./data/muti_sample/isoform_annotated.gtf" #ensure file is unzipped
+reference_gtf_file <- "./data/gencode.v47.annotation.gtf" # ensure file is unzipped
+output_file <- "multi_isoform_gene_dict.csv"
+
+isoform_gene_dict <- make_isoform_gene_symbol_dict(FLAMES_gtf_file,
+                                                   reference_gtf_file,
+                                                   output_file)
+# run this in the output FLAMES dir
+
+# Loop through each sample and process the count files
+for (sample in sample_names) {
+  # Use tryCatch to handle errors
+  tryCatch({
+    # Call the function to process the sample
+    process_oarfish_files_to_counts_matrix(
+      sample_name = sample,
+      resource_table_path = "./output_files/ref_files/multi_isoform_gene_dict.csv",
+      output_dir = "./output_files/mutli_sample/oarfish_counts",
+      input_dir = "./output_files/mutli_sample/oarfish_counts"
+    )
+  }, error = function(e) {
+    # Print the error message and exit the loop
+    cat("Error processing sample:", sample, "\nError message:", e$message, "\nExiting loop.\n")
+    stop(e)
+  })
+}
+
+
+```

@@ -42,9 +42,9 @@ source("https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/R/sct
 ####
 # define functions
 perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c(), 
-                                    metadat_col_prefix = "db_prefix", figure_prefix ="fig_name" ,
-                                    cluster_res = "RNA_snn_res.0.9", output_file = "") {
-  # Prepare gene sets
+                                    metadat_col_prefix = "db_prefix", figure_prefix ="fig_name", cluster_res = "RNA_snn_res.0.9", output_file = "", reduction = "umap") {
+
+    # Prepare gene sets
   gs_list <- gene_sets_prepare(db_, tissue)
   
   # Remove specified gene sets
@@ -80,7 +80,7 @@ perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c
   }
   
   # Plotting
-  pclass <- DimPlot(seurat_obj, reduction = "umap", label = TRUE, repel = TRUE, group.by = metadat_col_prefix)
+  pclass <- DimPlot(seurat_obj, reduction = reduction, label = TRUE, repel = TRUE, group.by = metadat_col_prefix)
   print(pclass)
   
   # Save the plot to a PDF
@@ -89,9 +89,9 @@ perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c
   dev.off()
   
   # Save the updated Seurat object to an RDS file
-  if (output_file != "") {
-    saveRDS(seurat_obj, file = paste0(output_file, ".rds"))
-  }
+  #if (output_file != "") {
+  #  saveRDS(seurat_obj, file = paste0(output_file, ".rds"))
+  #}
   
   # Return the updated Seurat object
   return(seurat_obj)
@@ -105,7 +105,7 @@ gs_removal_list <- c("Tanycytes") # list of cell types from the db to remove
 
 seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list, 
                         metadat_col_prefix ="sctype_db", figure_prefix = "Day_55",
-                        output_file = "Day_55", cluster_res = "RNA_snn_res.0.9")
+                        output_file = "Day_55", cluster_res = "RNA_snn_res.0.9", reduction = "umap")
 
 ```
 

@@ -23,15 +23,15 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-04" />
+<meta name="date" content="2025-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="appendix.html"/>
-
+<link rel="prev" href="trajectory-analysis.html"/>
+<link rel="next" href="conclusion.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -219,6 +219,18 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> <strong>Dataset Information</strong></a></li>
+<li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multi-sample-integration"><i class="fa fa-check"></i><b>9.2</b> Multi-Sample integration</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="add-isoform-counts.html"><a href="add-isoform-counts.html"><i class="fa fa-check"></i><b>10</b> Add isoform counts</a></li>
+<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> Trajectory analysis</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
@@ -226,9 +238,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.4" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.4</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to count matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -260,6 +273,9 @@ Hahne, F., &amp; Ivanek, R. (2016). <em>Visualizing genomic data using gviz and 
 <div id="ref-jousheghani2024" class="csl-entry">
 Jousheghani, Z. Z., &amp; Patro, R. (2024). <em>Oarfish: Enhanced probabilistic modeling leads to improved accuracy in long read transcriptome quantification</em>. <a href="http://dx.doi.org/10.1101/2024.02.28.582591">http://dx.doi.org/10.1101/2024.02.28.582591</a>
 </div>
+<div id="ref-korsunsky2019" class="csl-entry">
+Korsunsky, I., Millard, N., Fan, J., Slowikowski, K., Zhang, F., Wei, K., Baglaenko, Y., Brenner, M., Loh, P., &amp; Raychaudhuri, S. (2019). Fast, sensitive and accurate integration of single-cell data with Harmony. <em>Nature Methods</em>, <em>16</em>(12), 1289–1296. <a href="https://doi.org/10.1038/s41592-019-0619-0">https://doi.org/10.1038/s41592-019-0619-0</a>
+</div>
 <div id="ref-kovaka2019" class="csl-entry">
 Kovaka, S., Zimin, A. V., Pertea, G. M., Razaghi, R., Salzberg, S. L., &amp; Pertea, M. (2019). Transcriptome assembly from long-read RNA-seq alignments with StringTie2. <em>Genome Biology</em>, <em>20</em>(1). <a href="https://doi.org/10.1186/s13059-019-1910-1">https://doi.org/10.1186/s13059-019-1910-1</a>
 </div>
@@ -275,6 +291,9 @@ Tian, L., Jabbari, J. S., Thijssen, R., Gouil, Q., Amarasinghe, S. L., Voogd, O.
 <div id="ref-tjeldnes2021" class="csl-entry">
 Tjeldnes, H., Labun, K., Torres Cleuren, Y., Chyżyńska, K., Świrski, M., &amp; Valen, E. (2021). ORFik: a comprehensive R toolkit for the analysis of translation. <em>BMC Bioinformatics</em>, <em>22</em>(1). <a href="https://doi.org/10.1186/s12859-021-04254-w">https://doi.org/10.1186/s12859-021-04254-w</a>
 </div>
+<div id="ref-trapnell2014" class="csl-entry">
+Trapnell, C., Cacchiarelli, D., Grimsby, J., Pokharel, P., Li, S., Morse, M., Lennon, N. J., Livak, K. J., Mikkelsen, T. S., &amp; Rinn, J. L. (2014). The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. <em>Nature Biotechnology</em>, <em>32</em>(4), 381–386. <a href="https://doi.org/10.1038/nbt.2859">https://doi.org/10.1038/nbt.2859</a>
+</div>
 <div id="ref-wan2024" class="csl-entry">
 Wan, C. Y., Davis, J., Chauhan, M., Gleeson, J., Prawer, Y. J., De Paoli-Iseppi, R., Wells, C., Choi, J., &amp; Clark, M. (2024). IsoVis <span></span> a webserver for visualization and annotation of alternative RNA isoforms. <em>Nucleic Acids Research</em>, <em>52</em>(W1), W341–W347. <a href="https://doi.org/10.1093/nar/gkae343">https://doi.org/10.1093/nar/gkae343</a>
 </div>
@@ -284,23 +303,13 @@ You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., S
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="appendix.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="trajectory-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusion.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

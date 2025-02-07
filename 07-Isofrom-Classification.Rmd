@@ -400,11 +400,6 @@ Bellow we have written a function that will take a list of isoforms from a gene 
 [^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysising differnt genes or isoforms.
 
 ```{r ORFS-plot3, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE,fig.height=6, fig.width=12, cache=TRUE}
-invisible(library(ORFik))
-invisible(library(GenomicFeatures))
-invisible(library(Gviz))
-library(BSgenome.Hsapiens.UCSC.hg38)
-
 # Global cache for TxDb
 txdb_cache <- list()
 
@@ -553,6 +548,6 @@ knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
 
 ```
 
-```{r ORFS-plot4,include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=12}
+```{r ORFS-plot4,include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=12, cache=TRUE}
 plot_isoform_ORFs( reference_gtf = "../../../../resources/gencode.v47.annotation.gtf", target_gtf = "/data/scratch/users/yairp/FLAMES_Day55/outs/isoform_annotated_unfiltered.gtf", isoforms_of_interest = c("BambuTx32", "ENST00000344318.4"), chromosome = "chr22", plot_start = 29728956, plot_end = 29769011 )
 ```

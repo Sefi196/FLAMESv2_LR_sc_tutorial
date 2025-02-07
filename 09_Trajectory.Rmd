@@ -1,23 +1,24 @@
 ---
-title: "Trajectory"
-author: "Sefi"
 date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup traj, include=FALSE}
-# Load required libraries
-library(monocle3)
-library(SeuratWrappers)
-library(ggplot2)
-library(tidyverse)
-library(Seurat)
+# Trajectory analysis
 
-```
+Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or (in the case of long read data) isoforms whose expression patterns are correlated with pseudotime
 
+In our example dataset we are interested in looking at genes or isofroms that change as a function of pseudotime as this will highlight imporat features that control stem cell to neuronal differentiating into neural cells. In the bellow code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to to identify gene or isoforms that change with pseudotime. [^09_trajectory-1]
 
-```{r traj, include=FALSE}
-perform_trajectory_analysis <- function(seurat_obj, assay, prefix, root_cells = NULL, cores = 8) {
+[^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible. The parameter `quantile` can be used to specify the number of features to test (0.75 means your testing the top 25% of features)
+
+    .
+
+```{r traj_fucntion, include=FALSE}
+
+perform_trajectory_analysis <- function(seurat_obj, assay, prefix, cluster_name="harm_cluster", 
+                                        root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE, quantile = 0.50) {
+  library(monocle3)
+  library(SeuratWrappers)
   
   # Step 1: Subset and Remove RNA Assay
   DefaultAssay(seurat_obj) <- assay
@@ -49,20 +50,17 @@ perform_trajectory_analysis <- function(seurat_obj, assay, prefix, root_cells = 
     theme(legend.position = "right")
   
   # Save plot
-  pdf(file = paste0(prefix, "_cluster_before_trajectory.pdf"), width = 6, height = 6)
   print(cluster_before_trajectory)
-  dev.off()
+
   
   # Step 4: Learn trajectory graph
   cds <- learn_graph(cds, use_partition = FALSE, close_loop = FALSE)
   
   # Plot learned trajectory
-  plot_trajectory <- plot_cells(cds, color_cells_by = 'cluster_annotations') +
+  plot_trajectory <- plot_cells(cds, color_cells_by = cluster_name) +
     theme(legend.position = "right")
   
-  pdf(file = paste0(prefix, "_trajectory_plot.pdf"), width = 6, height = 6)
   print(plot_trajectory)
-  dev.off()
   
   # Step 5: Order cells in pseudotime
   cds <- order_cells(cds, reduction_method = 'UMAP', root_cells = root_cells)
@@ -71,15 +69,17 @@ perform_trajectory_analysis <- function(seurat_obj, assay, prefix, root_cells = 
   p_pseudotime <- plot_cells(cds, color_cells_by = 'pseudotime') +
     theme(legend.position = "right")
   
-  pdf(file = paste0(prefix, "_pseudotime_plot.pdf"), width = 6, height = 6)
+  
   print(p_pseudotime)
-  dev.off()
   
   # Save pseudotime to Seurat object
   seurat_obj$pseudotime <- pseudotime(cds)
   
+  if (order_features_by_pseudotime == TRUE) {
   # Step 6: Finding genes that change as a function of pseudotime
-  deg_results <- graph_test(cds, neighbor_graph = 'principal_graph', cores = cores)
+  threshold <- quantile(rowData(cds)$mean_expression, quantile) # 0.75 means Top 25% genes
+  cds_subset <- cds[rowData(cds)$mean_expression > threshold, ]
+  deg_results <- graph_test(cds_subset, neighbor_graph = 'principal_graph', cores = cores)
   
   # Filter for significant genes
   MI_sig <- deg_results %>%
@@ -108,44 +108,30 @@ perform_trajectory_analysis <- function(seurat_obj, assay, prefix, root_cells = 
   
   monocle_plot <- monocle3::plot_genes_in_pseudotime(cds_subset = cds_subset, min_expr = 0.5, cell_size = 0.25,
                                      nrow = NULL, ncol = 1, panel_order = NULL,
-                                     label_by_short_name = TRUE, color_cells_by = "cluster_annotations")
+                                     label_by_short_name = TRUE, color_cells_by = cluster_name)
   
   pdf(file = paste0(prefix, "monocle_top_genes_pseudotime.pdf"), width = 10, height = 10)
   print(monocle_plot)
   dev.off()
   
+    }
   
   # Save the Seurat object with pseudotime info
-  saveRDS(seurat_obj, file = paste0(prefix, "_seurat_with_pseudotime.rds"))
+  #saveRDS(seurat_obj, file = paste0(prefix, "_seurat_with_pseudotime.rds"))
+
 }
 
 
+```
 
-perform_trajectory_analysis(seurat_obj = six_month_seurat.intergrated_harm.isofrom, "RNA", prefix = "six", root_cells = NULL, cores = 8)
-perform_trajectory_analysis(seurat_obj = six_month_seurat.intergrated_harm.isofrom, "iso", prefix = "six_iso", root_cells = NULL, cores = 8)
-
-
-
-
+```{r traj_genes, include=FALSE}
+perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
+                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE)
 
 ```
 
-## R Markdown
+```{r traj_iso, include=FALSE}
+perform_trajectory_analysis(seurat_obj = obj, "iso", prefix = "iso_Multi-sample_tutorial",
+                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

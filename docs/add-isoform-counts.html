@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Add isoform counts | FLAMES Single-Cell RNA-seq Tutorial</title>
+  <meta name="description" content="Chapter 10 Add isoform counts | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Add isoform counts | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Add isoform counts | FLAMES Single-Cell RNA-seq Tutorial" />
+  
+  
+  
+
+<meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
+
+
+<meta name="date" content="2025-02-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="multisample-analysis.html"/>
+<link rel="next" href="trajectory-analysis.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">FLAMES single cell RNA-seq Tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#getting-started-with-the-data"><i class="fa fa-check"></i><b>1.2</b> Getting Started with the Data</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#dataset-information"><i class="fa fa-check"></i><b>1.3</b> Dataset Information</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> <strong>Removing sources of unwanted noise from the single cell dataset</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> <strong>Add isoform counts to Seurat object</strong></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> <strong>Finding marker genes and isoforms</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#de-genes-and-isoforms-based-on-annotaed-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isoforms based on annotaed cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FIndAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> <strong>Exploring isoforms of interest</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene"><i class="fa fa-check"></i><b>6.1</b> Isoforms expressed per gene</a></li>
+<li class="chapter" data-level="6.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms"><i class="fa fa-check"></i><b>6.2</b> Top 10 Genes with Most Isoforms</a></li>
+<li class="chapter" data-level="6.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms"><i class="fa fa-check"></i><b>6.3</b> Exploring MACF1 isoforms</a></li>
+<li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of MCAF1 isoforms Across Cell Types</a></li>
+<li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="novel-isoforms.html"><a href="novel-isoforms.html"><i class="fa fa-check"></i><b>8</b> <strong>Novel isoforms</strong></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="novel-isoforms.html"><a href="novel-isoforms.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>8.1</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
+<li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> <strong>Dataset Information</strong></a></li>
+<li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multi-sample-integration"><i class="fa fa-check"></i><b>9.2</b> Multi-Sample integration</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="add-isoform-counts.html"><a href="add-isoform-counts.html"><i class="fa fa-check"></i><b>10</b> Add isoform counts</a></li>
+<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> Trajectory analysis</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to count matrix</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="add-isoform-counts" class="section level1 hasAnchor" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Add isoform counts<a href="add-isoform-counts.html#add-isoform-counts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Now we can add isoform level information to the merged Seurat object. When doing this you may need to convert the oafish files into a count.csv file the row names in the ENSTID_gene_symbol ID form. The function to do so can be found here @ref(Convert Oarfish files to count matrix)</p>
+<p>The workflow follows these steps.</p>
+<ol style="list-style-type: decimal">
+<li>Create a Seurat object per sample</li>
+<li>Merge the objects together</li>
+<li>Filter the isoform merged object based on cell types that are high quality (based on gene level filtering)</li>
+<li>Add the isoform filtered and merged object to the gene level object as a new assay</li>
+<li>Integration on the isoform assay is possible but not shown here.</li>
+</ol>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="add-isoform-counts.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="do">############ read in count matix and add isoform assay to Seurat object  #########</span></span>
+<span id="cb139-2"><a href="add-isoform-counts.html#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Define sample names</span></span>
+<span id="cb139-3"><a href="add-isoform-counts.html#cb139-3" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span>, <span class="st">&quot;C2_Day55&quot;</span>, <span class="st">&quot;C3_Day55&quot;</span>, <span class="st">&quot;C3_Day80&quot;</span>, <span class="st">&quot;C5_Day80&quot;</span>)</span>
+<span id="cb139-4"><a href="add-isoform-counts.html#cb139-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-5"><a href="add-isoform-counts.html#cb139-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Make Seurat objects not filtered</span></span>
+<span id="cb139-6"><a href="add-isoform-counts.html#cb139-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to read a CSV file and create a Seurat object</span></span>
+<span id="cb139-7"><a href="add-isoform-counts.html#cb139-7" aria-hidden="true" tabindex="-1"></a>create_seurat_object <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_name, input_dir, project_name) {</span>
+<span id="cb139-8"><a href="add-isoform-counts.html#cb139-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct file path</span></span>
+<span id="cb139-9"><a href="add-isoform-counts.html#cb139-9" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_oarfish_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
+<span id="cb139-10"><a href="add-isoform-counts.html#cb139-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb139-11"><a href="add-isoform-counts.html#cb139-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the CSV file</span></span>
+<span id="cb139-12"><a href="add-isoform-counts.html#cb139-12" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_path)</span>
+<span id="cb139-13"><a href="add-isoform-counts.html#cb139-13" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts) </span>
+<span id="cb139-14"><a href="add-isoform-counts.html#cb139-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> counts[[<span class="dv">1</span>]]            <span class="co"># Set row names from the first column</span></span>
+<span id="cb139-15"><a href="add-isoform-counts.html#cb139-15" aria-hidden="true" tabindex="-1"></a>  counts[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="cn">NULL</span>     </span>
+<span id="cb139-16"><a href="add-isoform-counts.html#cb139-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb139-17"><a href="add-isoform-counts.html#cb139-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the Seurat object</span></span>
+<span id="cb139-18"><a href="add-isoform-counts.html#cb139-18" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> counts, <span class="at">project =</span> project_name, <span class="at">min.cells =</span> <span class="dv">5</span>, <span class="at">min.features =</span> <span class="dv">500</span>)</span>
+<span id="cb139-19"><a href="add-isoform-counts.html#cb139-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb139-20"><a href="add-isoform-counts.html#cb139-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(seurat_obj)</span>
+<span id="cb139-21"><a href="add-isoform-counts.html#cb139-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb139-22"><a href="add-isoform-counts.html#cb139-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-23"><a href="add-isoform-counts.html#cb139-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Directory where the CSV files are stored</span></span>
+<span id="cb139-24"><a href="add-isoform-counts.html#cb139-24" aria-hidden="true" tabindex="-1"></a>input_directory <span class="ot">&lt;-</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts/&quot;</span></span>
+<span id="cb139-25"><a href="add-isoform-counts.html#cb139-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-26"><a href="add-isoform-counts.html#cb139-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty list to store Seurat objects</span></span>
+<span id="cb139-27"><a href="add-isoform-counts.html#cb139-27" aria-hidden="true" tabindex="-1"></a>iso_seurat_objects <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb139-28"><a href="add-isoform-counts.html#cb139-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-29"><a href="add-isoform-counts.html#cb139-29" aria-hidden="true" tabindex="-1"></a>total_samples <span class="ot">&lt;-</span> <span class="fu">length</span>(sample_names)</span>
+<span id="cb139-30"><a href="add-isoform-counts.html#cb139-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(sample_names)) {</span>
+<span id="cb139-31"><a href="add-isoform-counts.html#cb139-31" aria-hidden="true" tabindex="-1"></a>  sample <span class="ot">&lt;-</span> sample_names[i]</span>
+<span id="cb139-32"><a href="add-isoform-counts.html#cb139-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb139-33"><a href="add-isoform-counts.html#cb139-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing sample %d of %d: %s&quot;</span>, i, total_samples, sample))</span>
+<span id="cb139-34"><a href="add-isoform-counts.html#cb139-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb139-35"><a href="add-isoform-counts.html#cb139-35" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[sample]] <span class="ot">&lt;-</span> <span class="fu">create_seurat_object</span>(</span>
+<span id="cb139-36"><a href="add-isoform-counts.html#cb139-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_name =</span> sample,</span>
+<span id="cb139-37"><a href="add-isoform-counts.html#cb139-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_dir =</span> input_directory,</span>
+<span id="cb139-38"><a href="add-isoform-counts.html#cb139-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">project_name =</span> sample</span>
+<span id="cb139-39"><a href="add-isoform-counts.html#cb139-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-40"><a href="add-isoform-counts.html#cb139-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb139-41"><a href="add-isoform-counts.html#cb139-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-42"><a href="add-isoform-counts.html#cb139-42" aria-hidden="true" tabindex="-1"></a><span class="do">####### Merge the samples into one object ######</span></span>
+<span id="cb139-43"><a href="add-isoform-counts.html#cb139-43" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb139-44"><a href="add-isoform-counts.html#cb139-44" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[<span class="st">&quot;C1_STC&quot;</span>]],</span>
+<span id="cb139-45"><a href="add-isoform-counts.html#cb139-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">list</span>(</span>
+<span id="cb139-46"><a href="add-isoform-counts.html#cb139-46" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C4_STC&quot;</span>]],</span>
+<span id="cb139-47"><a href="add-isoform-counts.html#cb139-47" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C2_Day25&quot;</span>]],</span>
+<span id="cb139-48"><a href="add-isoform-counts.html#cb139-48" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C5_Day25&quot;</span>]],</span>
+<span id="cb139-49"><a href="add-isoform-counts.html#cb139-49" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C2_Day55&quot;</span>]],</span>
+<span id="cb139-50"><a href="add-isoform-counts.html#cb139-50" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C3_Day55&quot;</span>]],</span>
+<span id="cb139-51"><a href="add-isoform-counts.html#cb139-51" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C3_Day80&quot;</span>]],</span>
+<span id="cb139-52"><a href="add-isoform-counts.html#cb139-52" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C5_Day80&quot;</span>]]</span>
+<span id="cb139-53"><a href="add-isoform-counts.html#cb139-53" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb139-54"><a href="add-isoform-counts.html#cb139-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.cell.ids =</span> <span class="fu">c</span>(</span>
+<span id="cb139-55"><a href="add-isoform-counts.html#cb139-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span>,</span>
+<span id="cb139-56"><a href="add-isoform-counts.html#cb139-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C2_Day55&quot;</span>, <span class="st">&quot;C3_Day55&quot;</span>, <span class="st">&quot;C3_Day80&quot;</span>, <span class="st">&quot;C5_Day80&quot;</span></span>
+<span id="cb139-57"><a href="add-isoform-counts.html#cb139-57" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb139-58"><a href="add-isoform-counts.html#cb139-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;iso-Multi-sample_tutorial&quot;</span></span>
+<span id="cb139-59"><a href="add-isoform-counts.html#cb139-59" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb139-60"><a href="add-isoform-counts.html#cb139-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-61"><a href="add-isoform-counts.html#cb139-61" aria-hidden="true" tabindex="-1"></a><span class="co"># create a sample column</span></span>
+<span id="cb139-62"><a href="add-isoform-counts.html#cb139-62" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">$</span>sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(iso.merged_seurat<span class="sc">@</span>meta.data)</span>
+<span id="cb139-63"><a href="add-isoform-counts.html#cb139-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-64"><a href="add-isoform-counts.html#cb139-64" aria-hidden="true" tabindex="-1"></a><span class="do">## split sample column to makw a batch col</span></span>
+<span id="cb139-65"><a href="add-isoform-counts.html#cb139-65" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> <span class="fu">separate</span>(iso.merged_seurat<span class="sc">@</span>meta.data, <span class="at">col =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;batch&#39;</span>, <span class="st">&#39;Day&#39;</span>, <span class="st">&#39;Barcode&#39;</span>), </span>
+<span id="cb139-66"><a href="add-isoform-counts.html#cb139-66" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb139-67"><a href="add-isoform-counts.html#cb139-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-68"><a href="add-isoform-counts.html#cb139-68" aria-hidden="true" tabindex="-1"></a><span class="do">#### rember to laod in the correct seurat object #####</span></span>
+<span id="cb139-69"><a href="add-isoform-counts.html#cb139-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-70"><a href="add-isoform-counts.html#cb139-70" aria-hidden="true" tabindex="-1"></a><span class="do">## filter the data to iso and gene cells match</span></span>
+<span id="cb139-71"><a href="add-isoform-counts.html#cb139-71" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">subset</span>(iso.merged_seurat, <span class="at">cells =</span>obj<span class="sc">@</span>graphs[[<span class="st">&quot;RNA_nn&quot;</span>]]<span class="sc">@</span>Dimnames[[<span class="dv">1</span>]])</span>
+<span id="cb139-72"><a href="add-isoform-counts.html#cb139-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-73"><a href="add-isoform-counts.html#cb139-73" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(merged_seurat_isoform_filtered, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb139-74"><a href="add-isoform-counts.html#cb139-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-75"><a href="add-isoform-counts.html#cb139-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-76"><a href="add-isoform-counts.html#cb139-76" aria-hidden="true" tabindex="-1"></a><span class="co"># perform standard workflow steps</span></span>
+<span id="cb139-77"><a href="add-isoform-counts.html#cb139-77" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb139-78"><a href="add-isoform-counts.html#cb139-78" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb139-79"><a href="add-isoform-counts.html#cb139-79" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb139-80"><a href="add-isoform-counts.html#cb139-80" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(<span class="at">object =</span> merged_seurat_isoform_filtered)</span>
+<span id="cb139-81"><a href="add-isoform-counts.html#cb139-81" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(merged_seurat_isoform_filtered)</span>
+<span id="cb139-82"><a href="add-isoform-counts.html#cb139-82" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb139-83"><a href="add-isoform-counts.html#cb139-83" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">resolution =</span> <span class="fl">0.6</span>)</span>
+<span id="cb139-84"><a href="add-isoform-counts.html#cb139-84" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb139-85"><a href="add-isoform-counts.html#cb139-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb139-86"><a href="add-isoform-counts.html#cb139-86" aria-hidden="true" tabindex="-1"></a><span class="co">#Save file</span></span>
+<span id="cb139-87"><a href="add-isoform-counts.html#cb139-87" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(merged_seurat_isoform_filtered, file = &quot;./output_files/mutli_sample/merged_seurat_isoform_filtered.rds&quot;)</span></span></code></pre></div>
+</details>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="add-isoform-counts.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readRDS</span>(merged_seurat_isoform_filtered, <span class="at">file =</span> <span class="st">&quot;./output_files/mutli_sample/merged_seurat_isoform_filtered.rds&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## An object of class Seurat 
+## 163280 features across 7216 samples within 1 assay 
+## Active assay: RNA (163280 features, 2000 variable features)
+##  3 layers present: data, counts, scale.data
+##  2 dimensional reductions calculated: pca, umap</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="add-isoform-counts.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="do">######### ########</span></span>
+<span id="cb142-2"><a href="add-isoform-counts.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="co">#plots</span></span>
+<span id="cb142-3"><a href="add-isoform-counts.html#cb142-3" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
+<span id="cb142-4"><a href="add-isoform-counts.html#cb142-4" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
+<span id="cb142-5"><a href="add-isoform-counts.html#cb142-5" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
+<span id="cb142-6"><a href="add-isoform-counts.html#cb142-6" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
+<span id="cb142-7"><a href="add-isoform-counts.html#cb142-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb142-8"><a href="add-isoform-counts.html#cb142-8" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p5, p6, p7, p8, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/multisample_add_iso_counts_2-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="add-isoform-counts.html#cb143-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####</span></span>
+<span id="cb143-2"><a href="add-isoform-counts.html#cb143-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-3"><a href="add-isoform-counts.html#cb143-3" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(merged_seurat_isoform_filtered)</span>
+<span id="cb143-4"><a href="add-isoform-counts.html#cb143-4" aria-hidden="true" tabindex="-1"></a>counts_table <span class="ot">&lt;-</span> merged_seurat_isoform_filtered[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">$</span>counts</span>
+<span id="cb143-5"><a href="add-isoform-counts.html#cb143-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-6"><a href="add-isoform-counts.html#cb143-6" aria-hidden="true" tabindex="-1"></a>obj[[<span class="st">&quot;iso&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">CreateAssay5Object</span>(<span class="at">counts =</span> counts_table)</span>
+<span id="cb143-7"><a href="add-isoform-counts.html#cb143-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb143-8"><a href="add-isoform-counts.html#cb143-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Normalize the new assay data</span></span>
+<span id="cb143-9"><a href="add-isoform-counts.html#cb143-9" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Normalizing layer: counts</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="add-isoform-counts.html#cb145-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="add-isoform-counts.html#cb147-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="add-isoform-counts.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Perform PCA</span></span>
+<span id="cb149-2"><a href="add-isoform-counts.html#cb149-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;pca_iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## PC_ 1 
+## Positive:  ENST00000430027.3-DLX6-AS1, ENST00000303177.8-NSG2, ENST00000220876.12-STMN2, ENST00000304886.6-SNAP25, ENST00000367816.5-ATP1B1, ENST00000704697.1-SYT1, ENST00000373489.10-PBX3, ENST00000305124.11-GAP43, ENST00000249330.3-VGF, ENST00000261205.9-SYT1 
+##     ENST00000482108.1-PEG10, ENST00000420428.7-CELF4, ENST00000651844.1-COPG2IT1, ENST00000635795.1-DCX, ENST00000636035.2-DCX, ENST00000526355.7-GUCY1A2, ENST00000458352.5-DLX6-AS1, ENST00000360351.8-MAP2, ENST00000393658.7-GPM6A, ENST00000281523.8-ZNF385D 
+##     ENST00000263630.13-CCDC88A, ENST00000381620.9-GABRA2, ENST00000259271.7-GAD2, ENST00000610778.1-ENSG00000274422, ENST00000682079.1-MAP2, ENST00000284292.11-NRGN, ENST00000264426.14-GRIA2, ENST00000302277.7-ZNF804A, ENST00000285900.10-GRIA1, ENST00000436346.7-CCDC88A 
+## Negative:  ENST00000259915.13-POU5F1, ENST00000613865.5-RPS24, ENST00000335658.7-DPPA4, ENST00000252486.9-APOE, ENST00000396210.8-MGST1, ENST00000372692.8-SET, ENST00000498273.2-L1TD1, ENST00000228251.9-YBX3, ENST00000276602.10-TERF1, ENST00000301072.11-TUBA1C 
+##     ENST00000296145.6-CRIPTO, ENST00000295830.13-RPL22L1, ENST00000326279.11-LIN28A, ENST00000223271.8-RARRES2, ENST00000308987.6-CKS1B, ENST00000314355.7-CKS2, ENST00000329305.6-TPM2, ENST00000282561.4-GJA1, ENST00000396925.1-CLDN6, ENST00000271638.3-S100A11 
+##     ENST00000258499.8-USP44, ENST00000316660.7-PMAIP1, ENST00000388835.4-KRT18, ENST00000319248.13-PRDX1, ENST00000374561.6-ID3, ENST00000265643.4-GAL, ENST00000473291.1-HHLA1, ENST00000377962.8-CNMD, ENST00000383763.6-TRIM71, ENST00000261769.10-CDH1 
+## PC_ 2 
+## Positive:  ENST00000544301.7-VIM, ENST00000368444.8-FABP7, ENST00000373615.9-LHX2, ENST00000376530.8-TTYH1, ENST00000282928.5-ZIC1, ENST00000357727.7-CREB5, ENST00000380518.8-COL2A1, ENST00000296503.10-HMGB2, ENST00000454729.3-PANTR1, ENST00000245479.3-SOX9 
+##     ENST00000443988.8-PANTR1, ENST00000381192.10-CD99, ENST00000395566.9-MDK, ENST00000301905.9-PBK, ENST00000553456.5-EMX2, ENST00000399387.9-LINC01551, ENST00000295113.5-FRZB, ENST00000344113.8-SYNE2, ENST00000376925.8-CST3, ENST00000341267.9-DLK1 
+##     ENST00000378453.4-HES5, ENST00000718304.1-HMGN2, ENST00000439742.7-MXD3, ENST00000358025.7-SYNE2, ENST00000568223.7-METRN, ENST00000319420.4-SHISA2, ENST00000362074.8-NOTCH2NLA, ENST00000378700.8-ID4, ENST00000445125.2-ENSG00000225840, ENST00000530167.2-H2AX 
+## Negative:  ENST00000303177.8-NSG2, ENST00000263735.9-EPCAM, ENST00000388948.8-LRRK1, ENST00000304886.6-SNAP25, ENST00000367816.5-ATP1B1, ENST00000259915.13-POU5F1, ENST00000613865.5-RPS24, ENST00000249330.3-VGF, ENST00000261205.9-SYT1, ENST00000473291.1-HHLA1 
+##     ENST00000296145.6-CRIPTO, ENST00000404735.1-RPS27A, ENST00000299529.7-CRABP1, ENST00000316902.12-SLC7A8, ENST00000498273.2-L1TD1, ENST00000276602.10-TERF1, ENST00000265643.4-GAL, ENST00000420428.7-CELF4, ENST00000396925.1-CLDN6, ENST00000396210.8-MGST1 
+##     ENST00000373489.10-PBX3, ENST00000261769.10-CDH1, ENST00000505215.4-MIR302CHG, ENST00000373713.7-FABP3, ENST00000377962.8-CNMD, ENST00000731552.1-MIR302CHG, ENST00000326279.11-LIN28A, ENST00000383763.6-TRIM71, ENST00000256362.5-VRTN, ENST00000381620.9-GABRA2 
+## PC_ 3 
+## Positive:  ENST00000341267.9-DLK1, ENST00000368222.8-CRABP2, ENST00000445125.2-ENSG00000225840, ENST00000319420.4-SHISA2, ENST00000295113.5-FRZB, ENST00000627981.1-ENSG00000281181, ENST00000625598.1-ENSG00000280614, ENST00000631211.1-ENSG00000280800, ENST00000553456.5-EMX2, ENST00000373615.9-LHX2 
+##     ENST00000282928.5-ZIC1, BambuTx4122-ENSG00000286149, ENST00000325870.3-DMRTA1, ENST00000399387.9-LINC01551, ENST00000393957.7-TPPP3, ENST00000340857.4-H1-0, ENST00000474034.1-ZIC1, ENST00000331224.10-DLK1, ENST00000330233.11-CRIP1, ENST00000356545.7-RSPO1 
+##     ENST00000582401.6-TXNIP, ENST00000693335.1-GNG8, ENST00000649451.1-NNAT, ENST00000377028.10-DCT, ENST00000606645.4-ENSG00000272449, ENST00000422447.8-LDHA, ENST00000252506.11-GADD45G, ENST00000614247.2-H4C4, ENST00000366756.4-DLL1, ENST00000383075.8-ZIC4 
+## Negative:  ENST00000350763.9-TNC, ENST00000403491.8-NFIA, ENST00000554144.5-HOPX, ENST00000337881.12-HOPX, ENST00000603233.2-NFIA, ENST00000329117.10-BCAN, ENST00000681775.1-SLC1A3, ENST00000624112.2-SLC1A3, ENST00000262593.10-DOK5, ENST00000395882.6-NTRK2 
+##     ENST00000367963.8-MOXD1, ENST00000265113.9-SLC1A3, ENST00000453190.7-LIFR, ENST00000454189.7-GPM6B, ENST00000371941.4-PREX1, ENST00000578921.6-RAB31, ENST00000557010.5-DIO2, ENST00000329203.5-FAM181B, ENST00000296506.8-SCRG1, ENST00000273261.8-LRIG1 
+##     ENST00000286657.10-ADAMTS3, ENST00000242152.7-NPY, ENST00000360472.9-PEA15, ENST00000418533.6-LTBP1, ENST00000680205.1-SLC1A3, ENST00000265071.3-CDH6, ENST00000438257.9-DIO2, ENST00000680064.1-SLC1A3, ENST00000246070.3-LAMP5, ENST00000517956.5-FBXO32 
+## PC_ 4 
+## Positive:  ENST00000693335.1-GNG8, ENST00000341267.9-DLK1, ENST00000376925.8-CST3, ENST00000395566.9-MDK, ENST00000355852.6-PCBP4, ENST00000393957.7-TPPP3, ENST00000633531.1-PON2, ENST00000325870.3-DMRTA1, ENST00000445125.2-ENSG00000225840, ENST00000331224.10-DLK1 
+##     ENST00000631211.1-ENSG00000280800, ENST00000625598.1-ENSG00000280614, ENST00000550697.6-MYL6, ENST00000368222.8-CRABP2, ENST00000378700.8-ID4, ENST00000627981.1-ENSG00000281181, ENST00000442544.7-DCC, ENST00000649451.1-NNAT, ENST00000440480.8-CDKN1C, ENST00000368444.8-FABP7 
+##     ENST00000544301.7-VIM, ENST00000659034.4-LINC02609, ENST00000252506.11-GADD45G, ENST00000551357.4-LHX5-AS1, BambuTx4122-ENSG00000286149, ENST00000501122.3-NEAT1, ENST00000389554.8-TBR1, ENST00000234091.8-ID2, ENST00000606645.4-ENSG00000272449, ENST00000428101.6-LMO1 
+## Negative:  ENST00000439742.7-MXD3, ENST00000271452.8-NUF2, ENST00000368654.8-MKI67, ENST00000301905.9-PBK, ENST00000366999.9-NEK2, ENST00000380026.8-CENPE, ENST00000394249.8-PRC1, ENST00000423485.6-TOP2A, ENST00000538862.7-CDCA3, ENST00000414849.6-NUSAP1 
+##     ENST00000372224.9-KIF2C, ENST00000454366.2-GTSE1, ENST00000260359.10-NUSAP1, ENST00000335756.9-CENPA, ENST00000357799.9-SGO2, ENST00000356455.9-UBE2C, ENST00000367409.9-ASPM, ENST00000366955.8-CENPF, ENST00000232458.9-ECT2, ENST00000300403.11-TPX2 
+##     ENST00000399668.7-KNL1, ENST00000340384.5-TUBB4B, ENST00000313288.9-TACC3, ENST00000335183.11-CDKN3, ENST00000373055.6-CDCA8, ENST00000302450.11-CKAP2L, ENST00000300093.9-PLK1, ENST00000400889.3-FAM72D, ENST00000264552.14-UBE2S, ENST00000310955.11-CDC20 
+## PC_ 5 
+## Positive:  ENST00000318789.11-FOXP1, ENST00000295156.9-VSNL1, ENST00000372524.5-ZNF503, ENST00000313708.11-EBF1, ENST00000241416.12-ACVR2A, ENST00000521268.6-RALYL, ENST00000370544.10-LMO4, ENST00000525166.6-FAT3, ENST00000649528.3-FOXP1, ENST00000482108.1-PEG10 
+##     ENST00000488574.5-PEG10, ENST00000406316.6-NRXN1, ENST00000305124.11-GAP43, ENST00000255224.8-SYT4, ENST00000490035.7-LSAMP, ENST00000641206.2-ZFHX3, ENST00000260653.5-SIX3, ENST00000230658.12-ISL1, ENST00000435030.6-KIF5C, ENST00000394480.6-NTRK3 
+##     ENST00000265840.12-ELMOD1, ENST00000623230.1-ENSG00000279814, ENST00000397463.3-LYPD1, ENST00000651372.2-ZFHX4, ENST00000274289.8-PLK2, ENST00000287641.4-SST, ENST00000265361.8-SEMA3C, ENST00000629765.3-NTRK3, ENST00000233813.5-IGFBP5, ENST00000376544.7-TLE4 
+## Negative:  ENST00000377049.4-CORT, ENST00000315087.12-ST8SIA5, ENST00000295101.3-KCNJ3, ENST00000274382.9-LIX1, ENST00000295894.9-SYNPR, ENST00000478300.6-SYNPR, ENST00000338037.11-PLCB1, ENST00000377961.3-SCGN, ENST00000302005.3-HSPB3, ENST00000758276.1-MIR9-1HG 
+##     ENST00000309950.8-DAPL1, ENST00000397016.6-CPNE6, ENST00000537691.5-CPNE6, ENST00000497824.6-MIR9-1HG, ENST00000636471.1-ZEB2, ENST00000451755.2-ENSG00000235431, ENST00000627532.3-ZEB2, ENST00000392056.8-SPHKAP, ENST00000436346.7-CCDC88A, ENST00000841000.1-LINC03112 
+##     ENST00000281523.8-ZNF385D, ENST00000409343.5-ZNF385B, ENST00000382496.10-SEMA5A, ENST00000361725.5-DLX1, ENST00000373713.7-FABP3, ENST00000315930.11-FGF13, ENST00000264426.14-GRIA2, ENST00000400991.8-MIR9-1HG, ENST00000445907.6-CHRM2, ENST00000402395.5-SELENOM</code></pre>
+<pre><code>## Warning: Key &#39;PC_&#39; taken, using &#39;pcaiso_&#39; instead</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="add-isoform-counts.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Run UMAP</span></span>
+<span id="cb152-2"><a href="add-isoform-counts.html#cb152-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;pca_iso&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap_iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## 16:26:35 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 16:26:35 Read 7216 rows and found 20 numeric columns</code></pre>
+<pre><code>## 16:26:35 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 16:26:35 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
+<pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
+<pre><code>## **************************************************|
+## 16:26:36 Writing NN index file to temp file /tmp/RtmpFLSb7W/file2ef735d52bc25
+## 16:26:36 Searching Annoy index using 1 thread, search_k = 3000
+## 16:26:37 Annoy recall = 100%
+## 16:26:39 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 16:26:42 Found 2 connected components, falling back to &#39;spca&#39; initialization with init_sdev = 1
+## 16:26:42 Using &#39;irlba&#39; for PCA
+## 16:26:42 PCA: 2 components explained 47.78% variance
+## 16:26:42 Scaling init to sdev = 1
+## 16:26:42 Commencing optimization for 500 epochs, with 283368 positive edges
+## 16:26:49 Optimization finished</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="add-isoform-counts.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the UMAP</span></span>
+<span id="cb160-2"><a href="add-isoform-counts.html#cb160-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/multisample_add_iso_counts_2-2.png" width="672" /></p>
+<p>Here will annotate the cell types using the sctype and some prior knowledge.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="add-isoform-counts.html#cb161-1" aria-hidden="true" tabindex="-1"></a>gs_removal_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Tanycytes&quot;</span>, <span class="st">&quot;Dopaminergic neurons&quot;</span>, <span class="st">&quot;Oligodendrocyte precursor cells&quot;</span>, <span class="st">&quot;Non myelinating Schwann cells&quot;</span>, <span class="st">&quot;Endothelial cells&quot;</span>) </span>
+<span id="cb161-2"><a href="add-isoform-counts.html#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="co"># list of cell types from the db to remove</span></span>
+<span id="cb161-3"><a href="add-isoform-counts.html#cb161-3" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">perform_sctype_analysis</span>(obj, db_, tissue, gs_removal_list, </span>
+<span id="cb161-4"><a href="add-isoform-counts.html#cb161-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">metadat_col_prefix =</span><span class="st">&quot;sctype_db&quot;</span>, <span class="at">figure_prefix =</span> <span class="st">&quot;multi&quot;</span>,</span>
+<span id="cb161-5"><a href="add-isoform-counts.html#cb161-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">output_file =</span> <span class="st">&quot;multi&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;harm_cluster&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## # A tibble: 12 × 3
+## # Groups:   cluster [12]
+##    cluster type                    scores
+##    &lt;fct&gt;   &lt;chr&gt;                    &lt;dbl&gt;
+##  1 2       Cancer stem cells        873. 
+##  2 4       Cancer stem cells        659. 
+##  3 5       Radial glial cells      1124. 
+##  4 3       Radial glial cells       929. 
+##  5 9       Immature neurons         480. 
+##  6 6       Mature neurons           951. 
+##  7 1       GABAergic neurons        616. 
+##  8 0       GABAergic neurons        688. 
+##  9 11      Schwann precursor cells   37.3
+## 10 7       GABAergic neurons        825. 
+## 11 8       Microglial cells         419. 
+## 12 10      Radial glial cells      1333.</code></pre>
+<p><img src="bookdownproj_files/figure-html/sctype_multi-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="add-isoform-counts.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="co">#change name of cancer stem cell to stem cell</span></span>
+<span id="cb163-2"><a href="add-isoform-counts.html#cb163-2" aria-hidden="true" tabindex="-1"></a>obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;Cancer stem cells&quot;</span>, <span class="st">&quot;Stem cells&quot;</span>, obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db)</span>
+<span id="cb163-3"><a href="add-isoform-counts.html#cb163-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb163-4"><a href="add-isoform-counts.html#cb163-4" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">reduction=</span><span class="st">&quot;umap.harm&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>, <span class="at">label =</span> T)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/sctype_multi-2.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="add-isoform-counts.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/mutli_sample/multisample_seurat.intergrated_harm.isofrom.rds&quot;)</span></span></code></pre></div>
+</details>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multisample-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="trajectory-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/08_multi_sample_chapter_1.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/08_multi_sample_chapter_1.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

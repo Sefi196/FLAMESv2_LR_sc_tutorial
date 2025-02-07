@@ -10,9 +10,11 @@ data/FLAMES_out/oarfish.count.mtx
 data/FLAMES_out/isoform_annotated.gtf
 data/FLAMES_out/isoform_annotated_unfiltered.gtf
 data/remove_unknownstrand_classification.txt
+data/
 output_files
 bookdownproj_cache/
 06_Trajectory.Rmddddd
 code_notes.txt
 Day_55.rds
 Day_55_sctype_db_sctype_genes.pdf
+multi_sctype_db_sctype_genes.pdf

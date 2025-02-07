@@ -41,4 +41,13 @@ novel-isoforms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 visualizing-oaz2-novel-isoform
 functional-impacts-of-novel-isoforms
+multisample-analysis
+dataset-information-1
+standard-pre-processing-and-quality-control
+define-qc-function
+multi-sample-integration
+add-isoform-counts
+trajectory-analysis
 calculating-the-ambient-rna-profile
+multisample-qc-function
+convert-oarfish-files-to-count-matrix

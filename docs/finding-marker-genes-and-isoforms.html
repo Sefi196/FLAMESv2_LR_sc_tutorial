@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-04" />
+<meta name="date" content="2025-02-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,6 +219,18 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> <strong>Dataset Information</strong></a></li>
+<li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multi-sample-integration"><i class="fa fa-check"></i><b>9.2</b> Multi-Sample integration</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="add-isoform-counts.html"><a href="add-isoform-counts.html"><i class="fa fa-check"></i><b>10</b> Add isoform counts</a></li>
+<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> Trajectory analysis</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
@@ -226,9 +238,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="8.4" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>8.4</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to count matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -284,9 +297,9 @@ div.csl-indent {
 <span id="cb68-10"><a href="finding-marker-genes-and-isoforms.html#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="do">####</span></span>
 <span id="cb68-11"><a href="finding-marker-genes-and-isoforms.html#cb68-11" aria-hidden="true" tabindex="-1"></a><span class="co"># define functions</span></span>
 <span id="cb68-12"><a href="finding-marker-genes-and-isoforms.html#cb68-12" aria-hidden="true" tabindex="-1"></a>perform_sctype_analysis <span class="ot">&lt;-</span> <span class="cf">function</span>(seurat_obj, db_, tissue, <span class="at">gs_removal_list =</span> <span class="fu">c</span>(), </span>
-<span id="cb68-13"><a href="finding-marker-genes-and-isoforms.html#cb68-13" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">metadat_col_prefix =</span> <span class="st">&quot;db_prefix&quot;</span>, <span class="at">figure_prefix =</span><span class="st">&quot;fig_name&quot;</span> ,</span>
-<span id="cb68-14"><a href="finding-marker-genes-and-isoforms.html#cb68-14" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">cluster_res =</span> <span class="st">&quot;RNA_snn_res.0.9&quot;</span>, <span class="at">output_file =</span> <span class="st">&quot;&quot;</span>) {</span>
-<span id="cb68-15"><a href="finding-marker-genes-and-isoforms.html#cb68-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Prepare gene sets</span></span>
+<span id="cb68-13"><a href="finding-marker-genes-and-isoforms.html#cb68-13" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">metadat_col_prefix =</span> <span class="st">&quot;db_prefix&quot;</span>, <span class="at">figure_prefix =</span><span class="st">&quot;fig_name&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;RNA_snn_res.0.9&quot;</span>, <span class="at">output_file =</span> <span class="st">&quot;&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) {</span>
+<span id="cb68-14"><a href="finding-marker-genes-and-isoforms.html#cb68-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-15"><a href="finding-marker-genes-and-isoforms.html#cb68-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prepare gene sets</span></span>
 <span id="cb68-16"><a href="finding-marker-genes-and-isoforms.html#cb68-16" aria-hidden="true" tabindex="-1"></a>  gs_list <span class="ot">&lt;-</span> <span class="fu">gene_sets_prepare</span>(db_, tissue)</span>
 <span id="cb68-17"><a href="finding-marker-genes-and-isoforms.html#cb68-17" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb68-18"><a href="finding-marker-genes-and-isoforms.html#cb68-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove specified gene sets</span></span>
@@ -322,7 +335,7 @@ div.csl-indent {
 <span id="cb68-48"><a href="finding-marker-genes-and-isoforms.html#cb68-48" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb68-49"><a href="finding-marker-genes-and-isoforms.html#cb68-49" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb68-50"><a href="finding-marker-genes-and-isoforms.html#cb68-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plotting</span></span>
-<span id="cb68-51"><a href="finding-marker-genes-and-isoforms.html#cb68-51" aria-hidden="true" tabindex="-1"></a>  pclass <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(seurat_obj, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="at">group.by =</span> metadat_col_prefix)</span>
+<span id="cb68-51"><a href="finding-marker-genes-and-isoforms.html#cb68-51" aria-hidden="true" tabindex="-1"></a>  pclass <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(seurat_obj, <span class="at">reduction =</span> reduction, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="at">group.by =</span> metadat_col_prefix)</span>
 <span id="cb68-52"><a href="finding-marker-genes-and-isoforms.html#cb68-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(pclass)</span>
 <span id="cb68-53"><a href="finding-marker-genes-and-isoforms.html#cb68-53" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb68-54"><a href="finding-marker-genes-and-isoforms.html#cb68-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save the plot to a PDF</span></span>
@@ -331,9 +344,9 @@ div.csl-indent {
 <span id="cb68-57"><a href="finding-marker-genes-and-isoforms.html#cb68-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
 <span id="cb68-58"><a href="finding-marker-genes-and-isoforms.html#cb68-58" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb68-59"><a href="finding-marker-genes-and-isoforms.html#cb68-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Save the updated Seurat object to an RDS file</span></span>
-<span id="cb68-60"><a href="finding-marker-genes-and-isoforms.html#cb68-60" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (output_file <span class="sc">!=</span> <span class="st">&quot;&quot;</span>) {</span>
-<span id="cb68-61"><a href="finding-marker-genes-and-isoforms.html#cb68-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">saveRDS</span>(seurat_obj, <span class="at">file =</span> <span class="fu">paste0</span>(output_file, <span class="st">&quot;.rds&quot;</span>))</span>
-<span id="cb68-62"><a href="finding-marker-genes-and-isoforms.html#cb68-62" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb68-60"><a href="finding-marker-genes-and-isoforms.html#cb68-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">#if (output_file != &quot;&quot;) {</span></span>
+<span id="cb68-61"><a href="finding-marker-genes-and-isoforms.html#cb68-61" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  saveRDS(seurat_obj, file = paste0(output_file, &quot;.rds&quot;))</span></span>
+<span id="cb68-62"><a href="finding-marker-genes-and-isoforms.html#cb68-62" aria-hidden="true" tabindex="-1"></a>  <span class="co">#}</span></span>
 <span id="cb68-63"><a href="finding-marker-genes-and-isoforms.html#cb68-63" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb68-64"><a href="finding-marker-genes-and-isoforms.html#cb68-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return the updated Seurat object</span></span>
 <span id="cb68-65"><a href="finding-marker-genes-and-isoforms.html#cb68-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(seurat_obj)</span>
@@ -347,7 +360,7 @@ div.csl-indent {
 <span id="cb68-73"><a href="finding-marker-genes-and-isoforms.html#cb68-73" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb68-74"><a href="finding-marker-genes-and-isoforms.html#cb68-74" aria-hidden="true" tabindex="-1"></a>seu_obj <span class="ot">&lt;-</span> <span class="fu">perform_sctype_analysis</span>(seu_obj, db_, tissue, gs_removal_list, </span>
 <span id="cb68-75"><a href="finding-marker-genes-and-isoforms.html#cb68-75" aria-hidden="true" tabindex="-1"></a>                        <span class="at">metadat_col_prefix =</span><span class="st">&quot;sctype_db&quot;</span>, <span class="at">figure_prefix =</span> <span class="st">&quot;Day_55&quot;</span>,</span>
-<span id="cb68-76"><a href="finding-marker-genes-and-isoforms.html#cb68-76" aria-hidden="true" tabindex="-1"></a>                        <span class="at">output_file =</span> <span class="st">&quot;Day_55&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;RNA_snn_res.0.9&quot;</span>)</span></code></pre></div>
+<span id="cb68-76"><a href="finding-marker-genes-and-isoforms.html#cb68-76" aria-hidden="true" tabindex="-1"></a>                        <span class="at">output_file =</span> <span class="st">&quot;Day_55&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;RNA_snn_res.0.9&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
 </details>
 <pre><code>## # A tibble: 8 × 3
 ## # Groups:   cluster [8]
