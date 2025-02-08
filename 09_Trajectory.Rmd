@@ -3,11 +3,11 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Trajectory analysis
+# **Trajectory analysis**
 
 Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or (in the case of long read data) isoforms whose expression patterns are correlated with pseudotime
 
-In our example dataset we are interested in looking at genes or isofroms that change as a function of pseudotime as this will highlight imporat features that control stem cell to neuronal differentiating into neural cells. In the bellow code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to to identify gene or isoforms that change with pseudotime. [^09_trajectory-1]
+In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight impor features that control stem cell to neuronal differentiation. In the bellow code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to to identify gene or isoforms that change with pseudotime. [^09_trajectory-1]
 
 [^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible. The parameter `quantile` can be used to specify the number of features to test (0.75 means your testing the top 25% of features)
 
@@ -79,7 +79,7 @@ perform_trajectory_analysis <- function(seurat_obj, assay, prefix, cluster_name=
   # Step 6: Finding genes that change as a function of pseudotime
   threshold <- quantile(rowData(cds)$mean_expression, quantile) # 0.75 means Top 25% genes
   cds_subset <- cds[rowData(cds)$mean_expression > threshold, ]
-  deg_results <- graph_test(cds_subset, neighbor_graph = 'principal_graph', cores = cores)
+  deg_results <- graph_test(cds, neighbor_graph = 'principal_graph', cores = cores) # need to fix this bug of cds not filtering properly 
   
   # Filter for significant genes
   MI_sig <- deg_results %>%
@@ -124,13 +124,13 @@ perform_trajectory_analysis <- function(seurat_obj, assay, prefix, cluster_name=
 
 ```
 
-```{r traj_genes, include=FALSE}
+```{r traj_genes, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
-                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE)
+                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE)
 
 ```
 
-```{r traj_iso, include=FALSE}
+```{r traj_iso, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, "iso", prefix = "iso_Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE)
 

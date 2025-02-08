@@ -23,14 +23,14 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-07" />
+<meta name="date" content="2025-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="references.html"/>
+<link rel="prev" href="trajectory-analysis.html"/>
 <link rel="next" href="appendix.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -221,16 +221,15 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
 <ul>
-<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> <strong>Dataset Information</strong></a></li>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
 <ul>
 <li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
 </ul></li>
 <li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multi-sample-integration"><i class="fa fa-check"></i><b>9.2</b> Multi-Sample integration</a></li>
+<li class="chapter" data-level="9.3" data-path="multisample-analysis.html"><a href="multisample-analysis.html#add-isoform-counts"><i class="fa fa-check"></i><b>9.3</b> Add isoform counts</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="add-isoform-counts.html"><a href="add-isoform-counts.html"><i class="fa fa-check"></i><b>10</b> Add isoform counts</a></li>
-<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> Trajectory analysis</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
+<li class="chapter" data-level="10" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>10</b> <strong>Trajectory analysis</strong></a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
@@ -238,10 +237,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
-<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
-<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to count matrix</a></li>
+<li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="10.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>10.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="10.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>10.3</b> Convert Oarfish files to count matrix</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -287,8 +287,8 @@ div.csl-indent {
 ## BLAS/LAPACK: FlexiBLAS OPENBLAS;  LAPACK version 3.10.1
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C               LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8     LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
-##  [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C               LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8     LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8    LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## time zone: Australia/Melbourne
 ## tzcode source: system (glibc)
@@ -297,59 +297,46 @@ div.csl-indent {
 ## [1] grid      stats4    stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] shiny_1.9.1                       SeuratWrappers_0.3.5              monocle3_1.3.7                    ROCR_1.0-11                      
-##  [5] KernSmooth_2.23-24                fields_16.2                       viridisLite_0.4.2                 spam_2.10-0                      
-##  [9] biomaRt_2.62.0                    EnhancedVolcano_1.24.0            ggrepel_0.9.6                     dittoSeq_1.16.0                  
-## [13] gprofiler2_0.2.3                  HGNChelper_0.8.14                 data.tree_1.1.0                   igraph_2.1.1                     
-## [17] ggraph_2.2.1                      BSgenome.Hsapiens.UCSC.hg38_1.4.5 BSgenome_1.74.0                   BiocIO_1.16.0                    
-## [21] Gviz_1.50.0                       GenomicFeatures_1.58.0            AnnotationDbi_1.68.0              ORFik_1.26.1                     
-## [25] GenomicAlignments_1.40.0          Rsamtools_2.20.0                  Biostrings_2.72.1                 XVector_0.46.0                   
-## [29] lubridate_1.9.3                   forcats_1.0.0                     dplyr_1.1.4                       purrr_1.0.2                      
-## [33] readr_2.1.5                       tidyr_1.3.1                       tibble_3.2.1                      ggplot2_3.5.1                    
-## [37] tidyverse_2.0.0                   patchwork_1.3.0                   cowplot_1.1.3                     stringr_1.5.1                    
-## [41] DoubletFinder_2.0.4               celda_1.20.0                      Matrix_1.7-1                      BiocParallel_1.40.0              
-## [45] data.table_1.16.2                 gridExtra_2.3                     DropletUtils_1.26.0               SingleCellExperiment_1.28.0      
-## [49] SummarizedExperiment_1.36.0       Biobase_2.66.0                    MatrixGenerics_1.18.0             matrixStats_1.4.1                
-## [53] Seurat_5.1.0                      SeuratObject_5.0.2                sp_2.1-4                          rtracklayer_1.64.0               
-## [57] GenomicRanges_1.58.0              GenomeInfoDb_1.42.0               IRanges_2.40.0                    S4Vectors_0.44.0                 
-## [61] BiocGenerics_0.52.0              
+##  [1] shiny_1.9.1                       SeuratWrappers_0.3.5              monocle3_1.3.7                    biomaRt_2.62.0                    EnhancedVolcano_1.24.0            ggrepel_0.9.6                    
+##  [7] dittoSeq_1.16.0                   gprofiler2_0.2.3                  HGNChelper_0.8.14                 data.tree_1.1.0                   igraph_2.1.1                      ggraph_2.2.1                     
+## [13] BSgenome.Hsapiens.UCSC.hg38_1.4.5 BSgenome_1.74.0                   BiocIO_1.16.0                     Gviz_1.50.0                       GenomicFeatures_1.58.0            AnnotationDbi_1.68.0             
+## [19] ORFik_1.26.1                      GenomicAlignments_1.40.0          Rsamtools_2.20.0                  Biostrings_2.72.1                 XVector_0.46.0                    lubridate_1.9.3                  
+## [25] forcats_1.0.0                     dplyr_1.1.4                       purrr_1.0.2                       readr_2.1.5                       tidyr_1.3.1                       tibble_3.2.1                     
+## [31] ggplot2_3.5.1                     tidyverse_2.0.0                   patchwork_1.3.0                   cowplot_1.1.3                     stringr_1.5.1                     DoubletFinder_2.0.4              
+## [37] celda_1.20.0                      Matrix_1.7-1                      BiocParallel_1.40.0               data.table_1.16.2                 gridExtra_2.3                     DropletUtils_1.26.0              
+## [43] SingleCellExperiment_1.28.0       SummarizedExperiment_1.36.0       Biobase_2.66.0                    MatrixGenerics_1.18.0             matrixStats_1.4.1                 Seurat_5.1.0                     
+## [49] SeuratObject_5.0.2                sp_2.1-4                          rtracklayer_1.64.0                GenomicRanges_1.58.0              GenomeInfoDb_1.42.0               IRanges_2.40.0                   
+## [55] S4Vectors_0.44.0                  BiocGenerics_0.52.0              
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] R.methodsS3_1.8.2         dichromat_2.0-0.1         progress_1.2.3            nnet_7.3-19               goftest_1.2-3             biomartr_1.0.7           
-##   [7] HDF5Array_1.34.0          vctrs_0.6.5               spatstat.random_3.3-1     proxy_0.4-27              digest_0.6.37             png_0.1-8                
-##  [13] deldir_2.0-4              parallelly_1.38.0         combinat_0.0-8            MASS_7.3-61               reshape2_1.4.4            httpuv_1.6.15            
-##  [19] foreach_1.5.2             withr_3.0.2               ggrastr_1.0.2             xfun_0.49                 survival_3.7-0            memoise_2.0.1            
-##  [25] ggbeeswarm_0.7.2          systemfonts_1.0.5         ragg_1.2.6                zoo_1.8-12                pbapply_1.7-2             R.oo_1.27.0              
-##  [31] Formula_1.2-5             prettyunits_1.2.0         KEGGREST_1.46.0           promises_1.3.0            httr_1.4.7                restfulr_0.0.15          
-##  [37] globals_0.16.3            fitdistrplus_1.2-1        rhdf5filters_1.18.0       fstcore_0.9.18            rhdf5_2.50.0              rstudioapi_0.15.0        
-##  [43] UCSC.utils_1.2.0          miniUI_0.1.1.1            generics_0.1.3            base64enc_0.1-3           curl_6.0.0                zlibbioc_1.52.0          
-##  [49] polyclip_1.10-7           GenomeInfoDbData_1.2.13   SparseArray_1.6.0         RcppEigen_0.3.4.0.2       xtable_1.8-4              doParallel_1.0.17        
-##  [55] evaluate_1.0.1            S4Arrays_1.6.0            BiocFileCache_2.14.0      hms_1.1.3                 bookdown_0.41             irlba_2.3.5.1            
-##  [61] colorspace_2.1-1          filelock_1.0.3            harmony_1.2.1             reticulate_1.39.0         spatstat.data_3.1-2       magrittr_2.0.3           
-##  [67] lmtest_0.9-40             viridis_0.6.5             later_1.3.2               lattice_0.22-6            spatstat.geom_3.3-2       future.apply_1.11.3      
-##  [73] scattermore_1.2           XML_3.99-0.17             scuttle_1.16.0            RcppAnnoy_0.0.22          Hmisc_5.2-0               pillar_1.9.0             
-##  [79] nlme_3.1-166              iterators_1.0.14          compiler_4.4.0            beachmat_2.22.0           RSpectra_0.16-2           stringi_1.8.4            
-##  [85] tensor_1.5                minqa_1.2.8               MCMCprecision_0.4.0       plyr_1.8.9                crayon_1.5.3              abind_1.4-8              
-##  [91] locfit_1.5-9.10           graphlayouts_1.2.0        bit_4.5.0                 textshaping_0.3.7         codetools_0.2-20          bslib_0.8.0              
-##  [97] biovizBase_1.54.0         plotly_4.10.4             mime_0.12                 splines_4.4.0             Rcpp_1.0.13-1             fastDummies_1.7.4        
-## [103] fst_0.9.8                 dbplyr_2.5.0              sparseMatrixStats_1.18.0  interp_1.1-6              knitr_1.48                blob_1.2.4               
-## [109] utf8_1.2.4                AnnotationFilter_1.30.0   lme4_1.1-35.5             WriteXLS_6.7.0            listenv_0.9.1             checkmate_2.3.2          
-## [115] DelayedMatrixStats_1.28.0 openxlsx_4.2.6.1          statmod_1.5.0             tzdb_0.4.0                pheatmap_1.0.12           tweenr_2.0.3             
-## [121] pkgconfig_2.0.3           tools_4.4.0               cachem_1.1.0              RhpcBLASctl_0.23-42       RSQLite_2.3.7             DBI_1.2.3                
-## [127] splitstackshape_1.4.8     fastmap_1.2.0             rmarkdown_2.29            scales_1.3.0              ica_1.0-3                 sass_0.4.9               
-## [133] BiocManager_1.30.25       dotCall64_1.2             VariantAnnotation_1.52.0  RANN_2.6.2                rpart_4.1.23              farver_2.1.2             
-## [139] tidygraph_1.3.1           yaml_2.3.10               latticeExtra_0.6-30       foreign_0.8-87            cli_3.6.3                 txdbmaker_1.0.1          
-## [145] leiden_0.4.3.1            lifecycle_1.0.4           rsconnect_1.3.2           uwot_0.2.2                presto_1.0.0              backports_1.5.0          
-## [151] timechange_0.3.0          gtable_0.3.6              rjson_0.2.23              ggridges_0.5.6            progressr_0.15.0          parallel_4.4.0           
-## [157] limma_3.62.1              jsonlite_1.8.9            edgeR_4.4.0               RcppHNSW_0.6.0            bitops_1.0-9              assertthat_0.2.1         
-## [163] bit64_4.5.2               Rtsne_0.17                spatstat.utils_3.1-1      zip_2.3.0                 highr_0.11                jquerylib_0.1.4          
-## [169] dqrng_0.4.1               enrichR_3.2               spatstat.univar_3.0-0     R.utils_2.12.3            lazyeval_0.2.2            htmltools_0.5.8.1        
-## [175] sctransform_0.4.1         rappdirs_0.3.3            ensembldb_2.28.0          glue_1.8.0                httr2_0.2.3               RCurl_1.98-1.16          
-## [181] jpeg_0.1-10               boot_1.3-31               R6_2.5.1                  DESeq2_1.46.0             labeling_0.4.3            cluster_2.1.6            
-## [187] Rhdf5lib_1.28.0           nloptr_2.1.1              vipor_0.4.7               DelayedArray_0.32.0       tidyselect_1.2.1          ProtGenerics_1.38.0      
-## [193] maps_3.4.2                htmlTable_2.4.3           ggforce_0.4.2             xml2_1.3.5                future_1.34.0             rsvd_1.0.5               
-## [199] munsell_0.5.1             htmlwidgets_1.6.4         RColorBrewer_1.1-3        rlang_1.1.4               spatstat.sparse_3.1-0     spatstat.explore_3.3-1   
-## [205] remotes_2.5.0             fansi_1.0.6               beeswarm_0.4.0</code></pre>
+##   [1] ica_1.0-3                 plotly_4.10.4             Formula_1.2-5             zlibbioc_1.52.0           tidyselect_1.2.1          bit_4.5.0                 doParallel_1.0.17         lattice_0.22-6           
+##   [9] rjson_0.2.23              blob_1.2.4                S4Arrays_1.6.0            parallel_4.4.0            dichromat_2.0-0.1         png_0.1-8                 cli_3.6.3                 ProtGenerics_1.38.0      
+##  [17] goftest_1.2-3             textshaping_0.3.7         pbmcapply_1.5.1           uwot_0.2.2                curl_6.0.0                mime_0.12                 evaluate_1.0.1            leiden_0.4.3.1           
+##  [25] stringi_1.8.4             backports_1.5.0           XML_3.99-0.17             httpuv_1.6.15             magrittr_2.0.3            rappdirs_0.3.3            splines_4.4.0             jpeg_0.1-10              
+##  [33] wk_0.9.4                  sctransform_0.4.1         ggbeeswarm_0.7.2          DBI_1.2.3                 HDF5Array_1.34.0          jquerylib_0.1.4           withr_3.0.2               class_7.3-22             
+##  [41] systemfonts_1.0.5         lmtest_0.9-40             tidygraph_1.3.1           BiocManager_1.30.25       htmlwidgets_1.6.4         fst_0.9.8                 labeling_0.4.3            SparseArray_1.6.0        
+##  [49] DESeq2_1.46.0             reticulate_1.39.0         VariantAnnotation_1.52.0  zoo_1.8-12                knitr_1.48                UCSC.utils_1.2.0          RhpcBLASctl_0.23-42       speedglm_0.3-5           
+##  [57] timechange_0.3.0          foreach_1.5.2             fansi_1.0.6               biglm_0.9-3               rhdf5_2.50.0              R.oo_1.27.0               RSpectra_0.16-2           irlba_2.3.5.1            
+##  [65] ggrastr_1.0.2             fastDummies_1.7.4         lazyeval_0.2.2            yaml_2.3.10               survival_3.7-0            scattermore_1.2           crayon_1.5.3              RcppAnnoy_0.0.22         
+##  [73] RColorBrewer_1.1-3        progressr_0.15.0          tweenr_2.0.3              later_1.3.2               ggridges_0.5.6            codetools_0.2-20          base64enc_0.1-3           KEGGREST_1.46.0          
+##  [81] Rtsne_0.17                limma_3.62.1              filelock_1.0.3            splitstackshape_1.4.8     foreign_0.8-87            pkgconfig_2.0.3           xml2_1.3.5                spatstat.univar_3.0-0    
+##  [89] spatstat.sparse_3.1-0     viridisLite_0.4.2         biovizBase_1.54.0         xtable_1.8-4              interp_1.1-6              highr_0.11                plyr_1.8.9                httr_1.4.7               
+##  [97] tools_4.4.0               globals_0.16.3            beeswarm_0.4.0            htmlTable_2.4.3           checkmate_2.3.2           nlme_3.1-166              fstcore_0.9.18            dbplyr_2.5.0             
+## [105] assertthat_0.2.1          lme4_1.1-35.5             digest_0.6.37             bookdown_0.41             farver_2.1.2              tzdb_0.4.0                AnnotationFilter_1.30.0   reshape2_1.4.4           
+## [113] biomartr_1.0.7            WriteXLS_6.7.0            viridis_0.6.5             rpart_4.1.23              glue_1.8.0                cachem_1.1.0              BiocFileCache_2.14.0      polyclip_1.10-7          
+## [121] Hmisc_5.2-0               generics_0.1.3            classInt_0.4-10           presto_1.0.0              spdep_1.3-5               parallelly_1.38.0         txdbmaker_1.0.1           statmod_1.5.0            
+## [129] RcppHNSW_0.6.0            ragg_1.2.6                minqa_1.2.8               pbapply_1.7-2             httr2_0.2.3               spam_2.10-0               dqrng_0.4.1               utf8_1.2.4               
+## [137] graphlayouts_1.2.0        RcppEigen_0.3.4.0.2       GenomeInfoDbData_1.2.13   R.utils_2.12.3            rhdf5filters_1.18.0       RCurl_1.98-1.16           memoise_2.0.1             rmarkdown_2.29           
+## [145] pheatmap_1.0.12           scales_1.3.0              R.methodsS3_1.8.2         future_1.34.0             RANN_2.6.2                spatstat.data_3.1-2       rstudioapi_0.15.0         cluster_2.1.6            
+## [153] spatstat.utils_3.1-1      hms_1.1.3                 fitdistrplus_1.2-1        munsell_0.5.1             colorspace_2.1-1          rlang_1.1.4               s2_1.1.7                  DelayedMatrixStats_1.28.0
+## [161] sparseMatrixStats_1.18.0  dotCall64_1.2             ggforce_0.4.2             scuttle_1.16.0            xfun_0.49                 e1071_1.7-14              remotes_2.5.0             iterators_1.0.14         
+## [169] abind_1.4-8               MCMCprecision_0.4.0       Rhdf5lib_1.28.0           bitops_1.0-9              promises_1.3.0            RSQLite_2.3.7             openxlsx_4.2.6.1          DelayedArray_0.32.0      
+## [177] harmony_1.2.1             proxy_0.4-27              compiler_4.4.0            prettyunits_1.2.0         boot_1.3-31               beachmat_2.22.0           listenv_0.9.1             Rcpp_1.0.13-1            
+## [185] enrichR_3.2               edgeR_4.4.0               tensor_1.5                units_0.8-5               MASS_7.3-61               progress_1.2.3            spatstat.random_3.3-1     R6_2.5.1                 
+## [193] fastmap_1.2.0             vipor_0.4.7               ensembldb_2.28.0          ROCR_1.0-11               rsvd_1.0.5                nnet_7.3-19               gtable_0.3.6              KernSmooth_2.23-24       
+## [201] latticeExtra_0.6-30       miniUI_0.1.1.1            deldir_2.0-4              htmltools_0.5.8.1         bit64_4.5.2               spatstat.explore_3.3-1    lifecycle_1.0.4           sf_1.0-16                
+## [209] zip_2.3.0                 spData_2.3.1              nloptr_2.1.1              restfulr_0.0.15           sass_0.4.9                vctrs_0.6.5               rsconnect_1.3.2           slam_0.1-54              
+## [217] spatstat.geom_3.3-2       future.apply_1.11.3       bslib_0.8.0               pillar_1.9.0              locfit_1.5-9.10           combinat_0.0-8            jsonlite_1.8.9</code></pre>
 
 </div>
 </div>
@@ -358,7 +345,7 @@ div.csl-indent {
           </div>
         </div>
       </div>
-<a href="references.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="trajectory-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="appendix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

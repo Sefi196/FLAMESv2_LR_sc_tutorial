@@ -1,0 +1,209 @@
+---
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Differential Transcript Usage (DTU)
+
+Differential Transcript Usage (DTU) or Isoform switching refers to the study of changes in the relative expression of different transcript isoforms from the same gene across conditions, cell types, or time points. Unlike traditional gene-level analysis, which focuses on total gene expression, DTU provides insights into how alternative splicing or isoform regulation contributes to cellular processes and phenotypic differences.
+
+This analysis is particularly useful for understanding complex regulatory mechanisms, such as those involved in neuronal differentiation, disease progression, or cell state transitions. By identifying isoforms that are preferentially expressed under specific conditions.
+
+This space is relatively new for single cell sequencing and therefore tools specifically designed for this analysis are not really available. Therefore we will use a tool designed for bulk analysis called the Isoform Switch Analyzer. The link to the vinette can be found here <https://www.bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html>
+
+We will laod the pacakages and subset the data to a smaller set of cells.
+
+```{r DTU setup, echo=TRUE, message=FALSE, warning=FALSE}
+library(DRIMSeq)
+library(DEXSeq)
+library(stageR)
+library(IsoformSwitchAnalyzeR)
+library(rtracklayer)
+
+# Define the cell types to keep
+cell_types_to_keep <- c("Stem cells", "GABAergic neurons")
+
+# Subset the object based on the metadata
+subset_obj <- subset(obj, subset = sctype_db %in% cell_types_to_keep)
+
+# Check the result
+table(subset_obj@meta.data$sctype_db)
+
+#Get pseudobulk counts split by sample and celll type
+pseudo.seurat.isoforms <- AggregateExpression(
+  subset_obj, 
+  assays = "iso", 
+  return.seurat = FALSE,
+  group.by = c("orig.ident", "sctype_db")
+)
+
+
+#make df
+pseudo.seurat.isoforms.df <- as.data.frame(pseudo.seurat.isoforms)
+colnames(pseudo.seurat.isoforms.df)
+
+##define sample condtions
+sample_data <-as.data.frame(colnames(pseudo.seurat.isoforms.df))
+
+# Rename the column for clarity
+colnames(sample_data) <- "colnames"
+
+# Split the column names into sampleID and celltype
+split_sample_data <- strsplit(sample_data$colnames, "_")
+
+# Create a new data frame with the original column names and extracted sampleID and celltype
+samps <- data.frame(
+  sampleID = sample_data$colnames,
+  condition = sapply(split_sample_data, `[`, 2)
+)
+
+
+samps$condition <- as.factor(samps$condition)
+
+## Before generating a switch list we need to subset both the gtf and counts to ensure we have a 1:1 match 
+## isoform FASTA 
+# TBD
+#read in gtf 
+tx2gene <- import("./data/muti_sample/isoform_annotated.gtf")
+
+# Set row names of pseudo.seurat.isoforms.df to the transcript_id column
+# Extract the row names
+rownames_split <- strsplit(rownames(pseudo.seurat.isoforms.df), "-")
+# Add new columns 'transcript_id' and 'gene_id' to the data frame
+rownames(pseudo.seurat.isoforms.df) <- sapply(rownames_split, `[`, 1)
+
+subset_txt2gene <- tx2gene[tx2gene$transcript_id %in% row.names(pseudo.seurat.isoforms.df), ]
+subset_cts <- pseudo.seurat.isoforms.df[row.names(pseudo.seurat.isoforms.df) %in% tx2gene$transcript_id, ]
+
+# write gtf
+export(subset_txt2gene, "broad_cat.gtf", format = "gtf")
+
+
+#### genrate a switch list
+aSwitchList <- importRdata(
+  isoformCountMatrix   = subset_cts,
+  isoformRepExpression = subset_cts,
+  designMatrix         = samps,
+  isoformExonAnnoation = "broad_cat.gtf",
+  isoformNtFasta       = "/data/scratch/users/yairp/Kolf2.1_FLAMESv2/outs/kolf2.1_matched_fastq_trimmedA/transcript_assembly.fa", # provide the FLAMES transcript_output .fasta
+  showProgress = TRUE,
+  fixStringTieAnnotationProblem = TRUE
+)
+
+summary(aSwitchList)
+
+aSwitchList_ORF <- analyzeORF(switchAnalyzeRlist = aSwitchList, orfMethod = "longest" )
+
+saveRDS("aSwitchList_ORF.rds", object = aSwitchList)
+
+
+#Add genesymbol to switch lsit 
+
+resource_table <- read.csv("/data/scratch/projects/punim1441/Project_cortex_organoid_LRsc/resources/transcript_id_gene_id_gene_symbol.csv", header = T)
+
+# Access the isoform features list
+
+isoform_features <- aSwitchList_ORF[["isoformFeatures"]]
+
+# Use match to fill in the 'gene_name' based on 'gene_id'
+isoform_features[["gene_name"]] <- resource_table$gene_symbol[match(isoform_features[["gene_id"]], resource_table$gene_id)]
+
+# Save the updated isoformFeatures back into the main list
+aSwitchList_ORF[["isoformFeatures"]] <- isoform_features
+
+#### filter switch lsit ###
+
+SwitchListFiltered <- preFilter(
+  switchAnalyzeRlist = aSwitchList_ORF,
+  geneExpressionCutoff = 30,
+  isoformExpressionCutoff = 20, 
+  removeSingleIsoformGenes = TRUE)
+
+##### ok its workign up to here #### 
+
+saveRDS("SwitchListFiltered.rds", object = SwitchListFiltered)
+
+
+```
+
+
+```{r DTU_plots, setup, echo=TRUE, message=FALSE, warning=FALSE}
+SwitchListAnalyzed <- isoformSwitchTestDEXSeq(
+  switchAnalyzeRlist = SwitchListFiltered,
+  reduceToSwitchingGenes=FALSE,
+  reduceFurtherToGenesWithConsequencePotential=FALSE,
+  alpha = 0.01,
+  dIFcutoff = 0.25,
+  onlySigIsoforms=FALSE
+)
+
+
+extractSwitchSummary(SwitchListAnalyzed)
+
+
+extractTopSwitches(SwitchListAnalyzed, n=20)
+
+# Main results file
+iso_feat <- as.data.frame(SwitchListAnalyzed$isoformFeatures)
+write.csv(SwitchListAnalyzed$isoformFeatures, "stem_gaba_dtu.csv")
+
+extractSwitchSummary(SwitchListAnalyzed)
+
+
+##### genrate some plots ####
+switchPlot(
+  SwitchListAnalyzed,
+  gene="ZNF148",
+  condition1 = 'Stem.cells',
+  condition2 = 'GABAergic.neurons',
+  localTheme = theme_bw(base_size = 13,) # making text sightly larger for vignette
+)
+
+#output switch plots for all
+switchPlotTopSwitches(
+  switchAnalyzeRlist = SwitchListAnalyzed, 
+  n = 5,                  
+  splitFunctionalConsequences = F,
+  filterForConsequences = FALSE, #this could be changed to add in consequeces
+  fileType = "pdf",                                 
+  pathToOutput = ".",
+  alpha = 0.01
+)
+
+
+####### test plotting on iso assays ##
+features <- rownames(obj@assays$iso@features)
+
+gene <- "CDC42"
+plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value = TRUE)
+FeaturePlot(obj, features = head(plot_features_list, 12), reduction = "umap.harm") 
+
+
+
+#just curious about any possible novel isoforms i can show
+isoform_ids <- as.data.frame(row.names(obj@assays$iso$counts))
+colnames(isoform_ids) <- "IDs"
+
+#Add in total expression  
+isoform_ids$Total_Expression <- rowSums(obj@assays$iso$counts)
+
+# Filter rows where 'IDs' contains the string "Bambu"
+isoform_ids <- as.data.frame(isoform_ids[grepl("Bambu", isoform_ids$IDs), ])  # can comment this out if we want to do this for all isofroms 
+
+# Separate the 'IDs' column into two columns 
+filtered_df <- isoform_ids %>% separate(IDs, into = c("transcript_id", "gene_id"), sep = "-",  extra = "merge")
+
+isoform_counts <- filtered_df %>%
+  group_by(gene_id) %>%
+  summarise(
+    Isoform_Count = n(),
+    Total_Expression = sum(Total_Expression)
+  ) %>%
+  arrange(desc(Total_Expression))
+
+
+# Print or return the filtered data frame
+print(isoform_counts)
+
+NPIPB14P
+```

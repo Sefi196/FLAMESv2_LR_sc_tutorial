@@ -1,9 +1,0 @@
----
-date: "`r Sys.Date()`"
-output: html_document
----
-
-# **References** {.unnumbered}
-
-::: {#refs}
-:::

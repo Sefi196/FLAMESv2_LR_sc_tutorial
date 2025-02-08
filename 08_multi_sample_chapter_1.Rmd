@@ -21,17 +21,17 @@ Most preprocessing and QC steps remain the same. However, we will also demonstra
 
 ------------------------------------------------------------------------
 
-### **Dataset Information**
+### Dataset Information
 
 For this analysis, we are using a dataset comprising eight samples spanning four time points from an excitatory neuronal differentiation protocol. The protocol is the same as the one used for the D55 sample in previous chapters but utilizes a different cell line. Two samples were collected from each of the following time points:
 
--   **Day -1** or Stem cells (STC)
+-   **Stem cells** (STC)
 
--   **Day 25 (**D25**)**
+-   **Day 25**
 
--   **Day 55 (**D55**)**
+-   **Day 55**
 
--   **Day 80 (**D80**)**
+    **Day 80**
 
 This comprehensive dataset will allow us to explore temporal changes in gene and isoform expression throughout neuronal differentiation.
 
@@ -43,7 +43,6 @@ As before we will modify the count matrix for each sample so we use gene_symbol 
 # convert Gene_id to gene symbol for all counts
 #run aloop to run this fucntion on all count files.
 # Directory with input files
-set.seed(1234)
 input_dir <- "./data/muti_sample/"
 output_dir <- "./data/muti_sample/"
 
@@ -180,8 +179,10 @@ merged_seurat <- RunUMAP(object = merged_seurat, dims = 1:30)
 
 ```
 
-```{r, multisample_integration_2, include=TRUE, fig.height=6, fig.width=10}
-readRDS(merged_seurat, file = "./output_files/mutli_sample/merged_seurat.rds")
+```{r, multisample_integration_2, include=TRUE, fig.height=6, fig.width=10, message=FALSE}
+set.seed(00003)
+merged_seurat <- readRDS("./output_files/mutli_sample/merged_seurat.rds")
+
 
 #Lets plot the merged file. 
 p1 <- FeaturePlot(merged_seurat, reduction = 'umap', features = 'nCount_RNA')
@@ -200,11 +201,11 @@ obj <- IntegrateLayers(object = merged_seurat,
                        method = HarmonyIntegration,
                        orig.reduction = "pca",
                        new.reduction = 'integrated.harm',
-                       verbose = FALSE
+                       verbose = FALSE,
 )
 
 obj <- FindNeighbors(obj, reduction="integrated.harm")
-obj <- FindClusters(obj, resolution=0.6, cluster.name="harm_cluster")
+obj <- FindClusters(obj, resolution=0.4, cluster.name="harm_cluster")
 obj <- RunUMAP(obj, reduction="integrated.harm", dims=1:20, reduction.name = "umap.harm")
 
 
@@ -214,7 +215,7 @@ DimPlot(obj, reduction = "umap.harm", group.by = c("Day", "orig.ident", "harm_cl
 #saveRDS(obj, file = "./output_files/mutli_sample/integrated_harm_seurat.rds")
 ```
 
-# Add isoform counts
+## Add isoform counts
 
 Now we can add isoform level information to the merged Seurat object. When doing this you may need to convert the oafish files into a count.csv file the row names in the ENSTID_gene_symbol ID form. The function to do so can be found here \@ref(Convert Oarfish files to count matrix)
 
@@ -291,17 +292,14 @@ iso.merged_seurat <- merge(
 # create a sample column
 iso.merged_seurat$sample <- rownames(iso.merged_seurat@meta.data)
 
-## split sample column to makw a batch col
+# split sample column to makw a batch col
 iso.merged_seurat@meta.data <- separate(iso.merged_seurat@meta.data, col = 'sample', into = c('batch', 'Day', 'Barcode'), 
                                     sep = '_')
-
-#### rember to laod in the correct seurat object #####
 
 ## filter the data to iso and gene cells match
 merged_seurat_isoform_filtered <- subset(iso.merged_seurat, cells =obj@graphs[["RNA_nn"]]@Dimnames[[1]])
 
 VlnPlot(merged_seurat_isoform_filtered, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
-
 
 # perform standard workflow steps
 merged_seurat_isoform_filtered <- NormalizeData(object = merged_seurat_isoform_filtered) # if using SCT dont run this
@@ -317,10 +315,9 @@ merged_seurat_isoform_filtered <- RunUMAP(object = merged_seurat_isoform_filtere
 #saveRDS(merged_seurat_isoform_filtered, file = "./output_files/mutli_sample/merged_seurat_isoform_filtered.rds")
 ```
 
-```{r, multisample_add_iso_counts_2, echo=TRUE, cache=FALSE}
-readRDS(merged_seurat_isoform_filtered, file = "./output_files/mutli_sample/merged_seurat_isoform_filtered.rds")
+```{r, multisample_add_iso_counts_2, echo=TRUE, cache=FALSE, message=FALSE}
+merged_seurat_isoform_filtered <- readRDS(file = "./output_files/mutli_sample/merged_seurat_isoform_filtered.rds")
 
-######### ########
 #plots
 p5 <- DimPlot(merged_seurat_isoform_filtered, reduction = 'umap', group.by = 'orig.ident')
 p6 <- DimPlot(merged_seurat_isoform_filtered, reduction = 'umap', group.by = 'Day')
@@ -344,7 +341,7 @@ obj <- ScaleData(obj, assay = "iso")
 # Step 4: Perform PCA
 obj <- RunPCA(obj, assay = "iso", reduction.name = "pca_iso")
 # Step 5: Run UMAP
-obj <- RunUMAP(obj, reduction = "pca_iso", dims = 1:20, assay = "iso", reduction.name = "umap_iso")
+obj <- RunUMAP(obj, reduction = "pca_iso", dims = 1:15, assay = "iso", reduction.name = "umap_iso")
 
 # Visualize the UMAP
 DimPlot(obj, label = TRUE, reduction = "umap_iso") | DimPlot(obj, label = TRUE, reduction = "umap.harm")

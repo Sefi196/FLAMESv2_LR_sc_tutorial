@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-07" />
+<meta name="date" content="2025-02-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="novel-isoforms.html"/>
-<link rel="next" href="add-isoform-counts.html"/>
+<link rel="next" href="trajectory-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -221,16 +221,15 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
 <ul>
-<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> <strong>Dataset Information</strong></a></li>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
 <ul>
 <li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
 </ul></li>
 <li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multi-sample-integration"><i class="fa fa-check"></i><b>9.2</b> Multi-Sample integration</a></li>
+<li class="chapter" data-level="9.3" data-path="multisample-analysis.html"><a href="multisample-analysis.html#add-isoform-counts"><i class="fa fa-check"></i><b>9.3</b> Add isoform counts</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="add-isoform-counts.html"><a href="add-isoform-counts.html"><i class="fa fa-check"></i><b>10</b> Add isoform counts</a></li>
-<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> Trajectory analysis</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
+<li class="chapter" data-level="10" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>10</b> <strong>Trajectory analysis</strong></a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
@@ -238,10 +237,11 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
-<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
-<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to count matrix</a></li>
+<li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="10.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>10.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="10.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>10.3</b> Convert Oarfish files to count matrix</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -274,13 +274,13 @@ div.csl-indent {
 <p>Most preprocessing and QC steps remain the same. However, we will also demonstrate how to proceed directly from FLAMES output to initial QC without performing empty droplet removal or ambient RNA normalization. Although these steps are recommended, they may not always be necessary depending on the data.</p>
 <hr />
 <div id="dataset-information-1" class="section level3 hasAnchor" number="9.0.1">
-<h3><span class="header-section-number">9.0.1</span> <strong>Dataset Information</strong><a href="multisample-analysis.html#dataset-information-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">9.0.1</span> Dataset Information<a href="multisample-analysis.html#dataset-information-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For this analysis, we are using a dataset comprising eight samples spanning four time points from an excitatory neuronal differentiation protocol. The protocol is the same as the one used for the D55 sample in previous chapters but utilizes a different cell line. Two samples were collected from each of the following time points:</p>
 <ul>
-<li><p><strong>Day -1</strong> or Stem cells (STC)</p></li>
-<li><p><strong>Day 25 (</strong>D25<strong>)</strong></p></li>
-<li><p><strong>Day 55 (</strong>D55<strong>)</strong></p></li>
-<li><p><strong>Day 80 (</strong>D80<strong>)</strong></p></li>
+<li><p><strong>Stem cells</strong> (STC)</p></li>
+<li><p><strong>Day 25</strong></p></li>
+<li><p><strong>Day 55</strong></p>
+<p><strong>Day 80</strong></p></li>
 </ul>
 <p>This comprehensive dataset will allow us to explore temporal changes in gene and isoform expression throughout neuronal differentiation.</p>
 </div>
@@ -291,38 +291,37 @@ div.csl-indent {
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="multisample-analysis.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Gene_id to gene symbol for all counts</span></span>
 <span id="cb114-2"><a href="multisample-analysis.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co">#run aloop to run this fucntion on all count files.</span></span>
 <span id="cb114-3"><a href="multisample-analysis.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Directory with input files</span></span>
-<span id="cb114-4"><a href="multisample-analysis.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb114-5"><a href="multisample-analysis.html#cb114-5" aria-hidden="true" tabindex="-1"></a>input_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/&quot;</span></span>
-<span id="cb114-6"><a href="multisample-analysis.html#cb114-6" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/&quot;</span></span>
-<span id="cb114-7"><a href="multisample-analysis.html#cb114-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-8"><a href="multisample-analysis.html#cb114-8" aria-hidden="true" tabindex="-1"></a><span class="co"># List all CSV files in the input directory</span></span>
-<span id="cb114-9"><a href="multisample-analysis.html#cb114-9" aria-hidden="true" tabindex="-1"></a>input_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(input_dir, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">count.csv$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb114-10"><a href="multisample-analysis.html#cb114-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-11"><a href="multisample-analysis.html#cb114-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store data frames</span></span>
-<span id="cb114-12"><a href="multisample-analysis.html#cb114-12" aria-hidden="true" tabindex="-1"></a>result_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb114-13"><a href="multisample-analysis.html#cb114-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-14"><a href="multisample-analysis.html#cb114-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Process each file in the directory</span></span>
-<span id="cb114-15"><a href="multisample-analysis.html#cb114-15" aria-hidden="true" tabindex="-1"></a>total_files <span class="ot">&lt;-</span> <span class="fu">length</span>(input_files)  <span class="co"># Total number of files</span></span>
-<span id="cb114-16"><a href="multisample-analysis.html#cb114-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb114-17"><a href="multisample-analysis.html#cb114-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(input_files)) {</span>
-<span id="cb114-18"><a href="multisample-analysis.html#cb114-18" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> input_files[i]</span>
-<span id="cb114-19"><a href="multisample-analysis.html#cb114-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb114-20"><a href="multisample-analysis.html#cb114-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract file name without extension</span></span>
-<span id="cb114-21"><a href="multisample-analysis.html#cb114-21" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(file_path))</span>
-<span id="cb114-22"><a href="multisample-analysis.html#cb114-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb114-23"><a href="multisample-analysis.html#cb114-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct the output file name</span></span>
-<span id="cb114-24"><a href="multisample-analysis.html#cb114-24" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(file_name, <span class="st">&quot;_gene_symbol.csv&quot;</span>))</span>
-<span id="cb114-25"><a href="multisample-analysis.html#cb114-25" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb114-26"><a href="multisample-analysis.html#cb114-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Show progress to the user</span></span>
-<span id="cb114-27"><a href="multisample-analysis.html#cb114-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing file %d of %d: %s&quot;</span>, i, total_files, file_name))</span>
-<span id="cb114-28"><a href="multisample-analysis.html#cb114-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb114-29"><a href="multisample-analysis.html#cb114-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Call the function with return_df = TRUE to store the result</span></span>
-<span id="cb114-30"><a href="multisample-analysis.html#cb114-30" aria-hidden="true" tabindex="-1"></a>  result_list[[file_name]] <span class="ot">&lt;-</span> <span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
-<span id="cb114-31"><a href="multisample-analysis.html#cb114-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_count_matrix_path =</span> file_path,</span>
-<span id="cb114-32"><a href="multisample-analysis.html#cb114-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">output_file =</span> output_file,</span>
-<span id="cb114-33"><a href="multisample-analysis.html#cb114-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">return_df =</span> <span class="cn">TRUE</span></span>
-<span id="cb114-34"><a href="multisample-analysis.html#cb114-34" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb114-35"><a href="multisample-analysis.html#cb114-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb114-4"><a href="multisample-analysis.html#cb114-4" aria-hidden="true" tabindex="-1"></a>input_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/&quot;</span></span>
+<span id="cb114-5"><a href="multisample-analysis.html#cb114-5" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/&quot;</span></span>
+<span id="cb114-6"><a href="multisample-analysis.html#cb114-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-7"><a href="multisample-analysis.html#cb114-7" aria-hidden="true" tabindex="-1"></a><span class="co"># List all CSV files in the input directory</span></span>
+<span id="cb114-8"><a href="multisample-analysis.html#cb114-8" aria-hidden="true" tabindex="-1"></a>input_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(input_dir, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">count.csv$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb114-9"><a href="multisample-analysis.html#cb114-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-10"><a href="multisample-analysis.html#cb114-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store data frames</span></span>
+<span id="cb114-11"><a href="multisample-analysis.html#cb114-11" aria-hidden="true" tabindex="-1"></a>result_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb114-12"><a href="multisample-analysis.html#cb114-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-13"><a href="multisample-analysis.html#cb114-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Process each file in the directory</span></span>
+<span id="cb114-14"><a href="multisample-analysis.html#cb114-14" aria-hidden="true" tabindex="-1"></a>total_files <span class="ot">&lt;-</span> <span class="fu">length</span>(input_files)  <span class="co"># Total number of files</span></span>
+<span id="cb114-15"><a href="multisample-analysis.html#cb114-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-16"><a href="multisample-analysis.html#cb114-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(input_files)) {</span>
+<span id="cb114-17"><a href="multisample-analysis.html#cb114-17" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> input_files[i]</span>
+<span id="cb114-18"><a href="multisample-analysis.html#cb114-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-19"><a href="multisample-analysis.html#cb114-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract file name without extension</span></span>
+<span id="cb114-20"><a href="multisample-analysis.html#cb114-20" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(file_path))</span>
+<span id="cb114-21"><a href="multisample-analysis.html#cb114-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-22"><a href="multisample-analysis.html#cb114-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct the output file name</span></span>
+<span id="cb114-23"><a href="multisample-analysis.html#cb114-23" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(file_name, <span class="st">&quot;_gene_symbol.csv&quot;</span>))</span>
+<span id="cb114-24"><a href="multisample-analysis.html#cb114-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-25"><a href="multisample-analysis.html#cb114-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Show progress to the user</span></span>
+<span id="cb114-26"><a href="multisample-analysis.html#cb114-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing file %d of %d: %s&quot;</span>, i, total_files, file_name))</span>
+<span id="cb114-27"><a href="multisample-analysis.html#cb114-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb114-28"><a href="multisample-analysis.html#cb114-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Call the function with return_df = TRUE to store the result</span></span>
+<span id="cb114-29"><a href="multisample-analysis.html#cb114-29" aria-hidden="true" tabindex="-1"></a>  result_list[[file_name]] <span class="ot">&lt;-</span> <span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
+<span id="cb114-30"><a href="multisample-analysis.html#cb114-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_count_matrix_path =</span> file_path,</span>
+<span id="cb114-31"><a href="multisample-analysis.html#cb114-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">output_file =</span> output_file,</span>
+<span id="cb114-32"><a href="multisample-analysis.html#cb114-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">return_df =</span> <span class="cn">TRUE</span></span>
+<span id="cb114-33"><a href="multisample-analysis.html#cb114-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb114-34"><a href="multisample-analysis.html#cb114-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 <div id="define-qc-function" class="section level3 hasAnchor" number="9.1.1">
 <h3><span class="header-section-number">9.1.1</span> Define QC function<a href="multisample-analysis.html#define-qc-function" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -421,81 +420,225 @@ div.csl-indent {
 <span id="cb116-51"><a href="multisample-analysis.html#cb116-51" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(merged_seurat, file = &quot;./output_files/mutli_sample/merged_seurat.rds&quot;)</span></span></code></pre></div>
 </details>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="multisample-analysis.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">readRDS</span>(merged_seurat, <span class="at">file =</span> <span class="st">&quot;./output_files/mutli_sample/merged_seurat.rds&quot;</span>)</span></code></pre></div>
-</details>
-<pre><code>## An object of class Seurat 
-## 51176 features across 7216 samples within 2 assays 
-## Active assay: RNA (25588 features, 2000 variable features)
-##  25 layers present: counts.C1_STC, counts.C4_STC, counts.C2_Day25, counts.C5_Day25, counts.C2_Day55, counts.C3_Day55, counts.C3_Day80, counts.C5_Day80, data.C1_STC, scale.data.C1_STC, data.C4_STC, scale.data.C4_STC, data.C2_Day25, scale.data.C2_Day25, data.C5_Day25, scale.data.C5_Day25, data.C2_Day55, scale.data.C2_Day55, data.C3_Day55, scale.data.C3_Day55, data.C3_Day80, scale.data.C3_Day80, data.C5_Day80, scale.data.C5_Day80, scale.data
-##  1 other assay present: joined
-##  2 dimensional reductions calculated: pca, umap</code></pre>
-<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="multisample-analysis.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Lets plot the merged file. </span></span>
-<span id="cb119-2"><a href="multisample-analysis.html#cb119-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
-<span id="cb119-3"><a href="multisample-analysis.html#cb119-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
-<span id="cb119-4"><a href="multisample-analysis.html#cb119-4" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
-<span id="cb119-5"><a href="multisample-analysis.html#cb119-5" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
-<span id="cb119-6"><a href="multisample-analysis.html#cb119-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb119-7"><a href="multisample-analysis.html#cb119-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="multisample-analysis.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">00003</span>)</span>
+<span id="cb117-2"><a href="multisample-analysis.html#cb117-2" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./output_files/mutli_sample/merged_seurat.rds&quot;</span>)</span>
+<span id="cb117-3"><a href="multisample-analysis.html#cb117-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-4"><a href="multisample-analysis.html#cb117-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-5"><a href="multisample-analysis.html#cb117-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Lets plot the merged file. </span></span>
+<span id="cb117-6"><a href="multisample-analysis.html#cb117-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
+<span id="cb117-7"><a href="multisample-analysis.html#cb117-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
+<span id="cb117-8"><a href="multisample-analysis.html#cb117-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
+<span id="cb117-9"><a href="multisample-analysis.html#cb117-9" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
+<span id="cb117-10"><a href="multisample-analysis.html#cb117-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-11"><a href="multisample-analysis.html#cb117-11" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/multisample_integration_2-1.png" width="960" /></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="multisample-analysis.html#cb120-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(<span class="at">object =</span> merged_seurat)</span>
-<span id="cb120-2"><a href="multisample-analysis.html#cb120-2" aria-hidden="true" tabindex="-1"></a>merged_seurat[[<span class="st">&quot;RNA&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">split</span>(merged_seurat[[<span class="st">&quot;RNA&quot;</span>]], <span class="at">f =</span> merged_seurat<span class="sc">$</span>orig.ident)</span></code></pre></div>
-</details>
-<pre><code>## Splitting &#39;counts&#39;, &#39;data&#39; layers. Not splitting &#39;scale.data.C1_STC&#39;, &#39;scale.data.C4_STC&#39;, &#39;scale.data.C2_Day25&#39;, &#39;scale.data.C5_Day25&#39;, &#39;scale.data.C2_Day55&#39;, &#39;scale.data.C3_Day55&#39;, &#39;scale.data.C3_Day80&#39;, &#39;scale.data.C5_Day80&#39;, &#39;scale.data&#39;. If you would like to split other layers, set in `layers` argument.</code></pre>
-<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="multisample-analysis.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="co">#perform intergation with Harmony</span></span>
-<span id="cb122-2"><a href="multisample-analysis.html#cb122-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">IntegrateLayers</span>(<span class="at">object =</span> merged_seurat,</span>
-<span id="cb122-3"><a href="multisample-analysis.html#cb122-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> HarmonyIntegration,</span>
-<span id="cb122-4"><a href="multisample-analysis.html#cb122-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">orig.reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
-<span id="cb122-5"><a href="multisample-analysis.html#cb122-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">new.reduction =</span> <span class="st">&#39;integrated.harm&#39;</span>,</span>
-<span id="cb122-6"><a href="multisample-analysis.html#cb122-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">verbose =</span> <span class="cn">FALSE</span></span>
-<span id="cb122-7"><a href="multisample-analysis.html#cb122-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="multisample-analysis.html#cb118-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(<span class="at">object =</span> merged_seurat)</span>
+<span id="cb118-2"><a href="multisample-analysis.html#cb118-2" aria-hidden="true" tabindex="-1"></a>merged_seurat[[<span class="st">&quot;RNA&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">split</span>(merged_seurat[[<span class="st">&quot;RNA&quot;</span>]], <span class="at">f =</span> merged_seurat<span class="sc">$</span>orig.ident)</span>
+<span id="cb118-3"><a href="multisample-analysis.html#cb118-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-4"><a href="multisample-analysis.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co">#perform intergation with Harmony</span></span>
+<span id="cb118-5"><a href="multisample-analysis.html#cb118-5" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">IntegrateLayers</span>(<span class="at">object =</span> merged_seurat,</span>
+<span id="cb118-6"><a href="multisample-analysis.html#cb118-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> HarmonyIntegration,</span>
+<span id="cb118-7"><a href="multisample-analysis.html#cb118-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">orig.reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb118-8"><a href="multisample-analysis.html#cb118-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">new.reduction =</span> <span class="st">&#39;integrated.harm&#39;</span>,</span>
+<span id="cb118-9"><a href="multisample-analysis.html#cb118-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb118-10"><a href="multisample-analysis.html#cb118-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </details>
 <pre><code>## Warning in harmony::HarmonyMatrix(data_mat = Embeddings(object = orig), : HarmonyMatrix is deprecated and will be removed in the future from the API in the future</code></pre>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="multisample-analysis.html#cb124-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>)</span></code></pre></div>
-</details>
-<pre><code>## Computing nearest neighbor graph</code></pre>
-<pre><code>## Computing SNN</code></pre>
-<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="multisample-analysis.html#cb127-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(obj, <span class="at">resolution=</span><span class="fl">0.6</span>, <span class="at">cluster.name=</span><span class="st">&quot;harm_cluster&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="multisample-analysis.html#cb120-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>)</span>
+<span id="cb120-2"><a href="multisample-analysis.html#cb120-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(obj, <span class="at">resolution=</span><span class="fl">0.4</span>, <span class="at">cluster.name=</span><span class="st">&quot;harm_cluster&quot;</span>)</span></code></pre></div>
 </details>
 <pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
 ## 
 ## Number of nodes: 7216
-## Number of edges: 233901
+## Number of edges: 233507
 ## 
 ## Running Louvain algorithm...
-## Maximum modularity in 10 random starts: 0.9109
-## Number of communities: 12
+## Maximum modularity in 10 random starts: 0.9338
+## Number of communities: 10
 ## Elapsed time: 0 seconds</code></pre>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="multisample-analysis.html#cb129-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>, <span class="at">dims=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
-</details>
-<pre><code>## 16:25:04 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-<pre><code>## 16:25:04 Read 7216 rows and found 20 numeric columns</code></pre>
-<pre><code>## 16:25:04 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
-<pre><code>## 16:25:04 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
-<pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
-<pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
-<pre><code>## **************************************************|
-## 16:25:04 Writing NN index file to temp file /tmp/RtmpFLSb7W/file2ef732f30d28
-## 16:25:04 Searching Annoy index using 1 thread, search_k = 3000
-## 16:25:06 Annoy recall = 100%
-## 16:25:08 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-## 16:25:11 Initializing from normalized Laplacian + noise (using RSpectra)
-## 16:25:11 Commencing optimization for 500 epochs, with 289862 positive edges
-## 16:25:19 Optimization finished</code></pre>
-<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="multisample-analysis.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">group.by =</span> <span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;orig.ident&quot;</span>, <span class="st">&quot;harm_cluster&quot;</span>), <span class="at">label =</span> T)  </span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="multisample-analysis.html#cb122-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>, <span class="at">dims=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap.harm&quot;</span>)</span>
+<span id="cb122-2"><a href="multisample-analysis.html#cb122-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-3"><a href="multisample-analysis.html#cb122-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-4"><a href="multisample-analysis.html#cb122-4" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">group.by =</span> <span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;orig.ident&quot;</span>, <span class="st">&quot;harm_cluster&quot;</span>), <span class="at">label =</span> T)  </span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/multisample_integration_2-2.png" width="960" /></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="multisample-analysis.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="do">### save object </span></span>
-<span id="cb138-2"><a href="multisample-analysis.html#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/mutli_sample/integrated_harm_seurat.rds&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="multisample-analysis.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="do">### save object </span></span>
+<span id="cb123-2"><a href="multisample-analysis.html#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/mutli_sample/integrated_harm_seurat.rds&quot;)</span></span></code></pre></div>
 </details>
+</div>
+<div id="add-isoform-counts" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Add isoform counts<a href="multisample-analysis.html#add-isoform-counts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we can add isoform level information to the merged Seurat object. When doing this you may need to convert the oafish files into a count.csv file the row names in the ENSTID_gene_symbol ID form. The function to do so can be found here @ref(Convert Oarfish files to count matrix)</p>
+<p>The workflow follows these steps.</p>
+<ol style="list-style-type: decimal">
+<li>Create a Seurat object per sample</li>
+<li>Merge the objects together</li>
+<li>Filter the isoform merged object based on cell types that are high quality (based on gene level filtering)</li>
+<li>Add the isoform filtered and merged object to the gene level object as a new assay</li>
+<li>Integration on the isoform assay is possible but not shown here.</li>
+</ol>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="multisample-analysis.html#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="do">############ read in count matix and add isoform assay to Seurat object  #########</span></span>
+<span id="cb124-2"><a href="multisample-analysis.html#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Define sample names</span></span>
+<span id="cb124-3"><a href="multisample-analysis.html#cb124-3" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span>, <span class="st">&quot;C2_Day55&quot;</span>, <span class="st">&quot;C3_Day55&quot;</span>, <span class="st">&quot;C3_Day80&quot;</span>, <span class="st">&quot;C5_Day80&quot;</span>)</span>
+<span id="cb124-4"><a href="multisample-analysis.html#cb124-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-5"><a href="multisample-analysis.html#cb124-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Make Seurat objects not filtered</span></span>
+<span id="cb124-6"><a href="multisample-analysis.html#cb124-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to read a CSV file and create a Seurat object</span></span>
+<span id="cb124-7"><a href="multisample-analysis.html#cb124-7" aria-hidden="true" tabindex="-1"></a>create_seurat_object <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_name, input_dir, project_name) {</span>
+<span id="cb124-8"><a href="multisample-analysis.html#cb124-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct file path</span></span>
+<span id="cb124-9"><a href="multisample-analysis.html#cb124-9" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_oarfish_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
+<span id="cb124-10"><a href="multisample-analysis.html#cb124-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb124-11"><a href="multisample-analysis.html#cb124-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the CSV file</span></span>
+<span id="cb124-12"><a href="multisample-analysis.html#cb124-12" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_path)</span>
+<span id="cb124-13"><a href="multisample-analysis.html#cb124-13" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts) </span>
+<span id="cb124-14"><a href="multisample-analysis.html#cb124-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> counts[[<span class="dv">1</span>]]            <span class="co"># Set row names from the first column</span></span>
+<span id="cb124-15"><a href="multisample-analysis.html#cb124-15" aria-hidden="true" tabindex="-1"></a>  counts[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="cn">NULL</span>     </span>
+<span id="cb124-16"><a href="multisample-analysis.html#cb124-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb124-17"><a href="multisample-analysis.html#cb124-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the Seurat object</span></span>
+<span id="cb124-18"><a href="multisample-analysis.html#cb124-18" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> counts, <span class="at">project =</span> project_name, <span class="at">min.cells =</span> <span class="dv">5</span>, <span class="at">min.features =</span> <span class="dv">500</span>)</span>
+<span id="cb124-19"><a href="multisample-analysis.html#cb124-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb124-20"><a href="multisample-analysis.html#cb124-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(seurat_obj)</span>
+<span id="cb124-21"><a href="multisample-analysis.html#cb124-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb124-22"><a href="multisample-analysis.html#cb124-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-23"><a href="multisample-analysis.html#cb124-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Directory where the CSV files are stored</span></span>
+<span id="cb124-24"><a href="multisample-analysis.html#cb124-24" aria-hidden="true" tabindex="-1"></a>input_directory <span class="ot">&lt;-</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts/&quot;</span></span>
+<span id="cb124-25"><a href="multisample-analysis.html#cb124-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-26"><a href="multisample-analysis.html#cb124-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty list to store Seurat objects</span></span>
+<span id="cb124-27"><a href="multisample-analysis.html#cb124-27" aria-hidden="true" tabindex="-1"></a>iso_seurat_objects <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb124-28"><a href="multisample-analysis.html#cb124-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-29"><a href="multisample-analysis.html#cb124-29" aria-hidden="true" tabindex="-1"></a>total_samples <span class="ot">&lt;-</span> <span class="fu">length</span>(sample_names)</span>
+<span id="cb124-30"><a href="multisample-analysis.html#cb124-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(sample_names)) {</span>
+<span id="cb124-31"><a href="multisample-analysis.html#cb124-31" aria-hidden="true" tabindex="-1"></a>  sample <span class="ot">&lt;-</span> sample_names[i]</span>
+<span id="cb124-32"><a href="multisample-analysis.html#cb124-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb124-33"><a href="multisample-analysis.html#cb124-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing sample %d of %d: %s&quot;</span>, i, total_samples, sample))</span>
+<span id="cb124-34"><a href="multisample-analysis.html#cb124-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb124-35"><a href="multisample-analysis.html#cb124-35" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[sample]] <span class="ot">&lt;-</span> <span class="fu">create_seurat_object</span>(</span>
+<span id="cb124-36"><a href="multisample-analysis.html#cb124-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_name =</span> sample,</span>
+<span id="cb124-37"><a href="multisample-analysis.html#cb124-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_dir =</span> input_directory,</span>
+<span id="cb124-38"><a href="multisample-analysis.html#cb124-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">project_name =</span> sample</span>
+<span id="cb124-39"><a href="multisample-analysis.html#cb124-39" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb124-40"><a href="multisample-analysis.html#cb124-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb124-41"><a href="multisample-analysis.html#cb124-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-42"><a href="multisample-analysis.html#cb124-42" aria-hidden="true" tabindex="-1"></a><span class="do">####### Merge the samples into one object ######</span></span>
+<span id="cb124-43"><a href="multisample-analysis.html#cb124-43" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb124-44"><a href="multisample-analysis.html#cb124-44" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[<span class="st">&quot;C1_STC&quot;</span>]],</span>
+<span id="cb124-45"><a href="multisample-analysis.html#cb124-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">list</span>(</span>
+<span id="cb124-46"><a href="multisample-analysis.html#cb124-46" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C4_STC&quot;</span>]],</span>
+<span id="cb124-47"><a href="multisample-analysis.html#cb124-47" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C2_Day25&quot;</span>]],</span>
+<span id="cb124-48"><a href="multisample-analysis.html#cb124-48" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C5_Day25&quot;</span>]],</span>
+<span id="cb124-49"><a href="multisample-analysis.html#cb124-49" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C2_Day55&quot;</span>]],</span>
+<span id="cb124-50"><a href="multisample-analysis.html#cb124-50" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C3_Day55&quot;</span>]],</span>
+<span id="cb124-51"><a href="multisample-analysis.html#cb124-51" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C3_Day80&quot;</span>]],</span>
+<span id="cb124-52"><a href="multisample-analysis.html#cb124-52" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C5_Day80&quot;</span>]]</span>
+<span id="cb124-53"><a href="multisample-analysis.html#cb124-53" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb124-54"><a href="multisample-analysis.html#cb124-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.cell.ids =</span> <span class="fu">c</span>(</span>
+<span id="cb124-55"><a href="multisample-analysis.html#cb124-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span>,</span>
+<span id="cb124-56"><a href="multisample-analysis.html#cb124-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C2_Day55&quot;</span>, <span class="st">&quot;C3_Day55&quot;</span>, <span class="st">&quot;C3_Day80&quot;</span>, <span class="st">&quot;C5_Day80&quot;</span></span>
+<span id="cb124-57"><a href="multisample-analysis.html#cb124-57" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb124-58"><a href="multisample-analysis.html#cb124-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;iso-Multi-sample_tutorial&quot;</span></span>
+<span id="cb124-59"><a href="multisample-analysis.html#cb124-59" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb124-60"><a href="multisample-analysis.html#cb124-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-61"><a href="multisample-analysis.html#cb124-61" aria-hidden="true" tabindex="-1"></a><span class="co"># create a sample column</span></span>
+<span id="cb124-62"><a href="multisample-analysis.html#cb124-62" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">$</span>sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(iso.merged_seurat<span class="sc">@</span>meta.data)</span>
+<span id="cb124-63"><a href="multisample-analysis.html#cb124-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-64"><a href="multisample-analysis.html#cb124-64" aria-hidden="true" tabindex="-1"></a><span class="co"># split sample column to makw a batch col</span></span>
+<span id="cb124-65"><a href="multisample-analysis.html#cb124-65" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> <span class="fu">separate</span>(iso.merged_seurat<span class="sc">@</span>meta.data, <span class="at">col =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;batch&#39;</span>, <span class="st">&#39;Day&#39;</span>, <span class="st">&#39;Barcode&#39;</span>), </span>
+<span id="cb124-66"><a href="multisample-analysis.html#cb124-66" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb124-67"><a href="multisample-analysis.html#cb124-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-68"><a href="multisample-analysis.html#cb124-68" aria-hidden="true" tabindex="-1"></a><span class="do">## filter the data to iso and gene cells match</span></span>
+<span id="cb124-69"><a href="multisample-analysis.html#cb124-69" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">subset</span>(iso.merged_seurat, <span class="at">cells =</span>obj<span class="sc">@</span>graphs[[<span class="st">&quot;RNA_nn&quot;</span>]]<span class="sc">@</span>Dimnames[[<span class="dv">1</span>]])</span>
+<span id="cb124-70"><a href="multisample-analysis.html#cb124-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-71"><a href="multisample-analysis.html#cb124-71" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(merged_seurat_isoform_filtered, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb124-72"><a href="multisample-analysis.html#cb124-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-73"><a href="multisample-analysis.html#cb124-73" aria-hidden="true" tabindex="-1"></a><span class="co"># perform standard workflow steps</span></span>
+<span id="cb124-74"><a href="multisample-analysis.html#cb124-74" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb124-75"><a href="multisample-analysis.html#cb124-75" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb124-76"><a href="multisample-analysis.html#cb124-76" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb124-77"><a href="multisample-analysis.html#cb124-77" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(<span class="at">object =</span> merged_seurat_isoform_filtered)</span>
+<span id="cb124-78"><a href="multisample-analysis.html#cb124-78" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(merged_seurat_isoform_filtered)</span>
+<span id="cb124-79"><a href="multisample-analysis.html#cb124-79" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb124-80"><a href="multisample-analysis.html#cb124-80" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">resolution =</span> <span class="fl">0.6</span>)</span>
+<span id="cb124-81"><a href="multisample-analysis.html#cb124-81" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb124-82"><a href="multisample-analysis.html#cb124-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb124-83"><a href="multisample-analysis.html#cb124-83" aria-hidden="true" tabindex="-1"></a><span class="co">#Save file</span></span>
+<span id="cb124-84"><a href="multisample-analysis.html#cb124-84" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(merged_seurat_isoform_filtered, file = &quot;./output_files/mutli_sample/merged_seurat_isoform_filtered.rds&quot;)</span></span></code></pre></div>
+</details>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="multisample-analysis.html#cb125-1" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;./output_files/mutli_sample/merged_seurat_isoform_filtered.rds&quot;</span>)</span>
+<span id="cb125-2"><a href="multisample-analysis.html#cb125-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-3"><a href="multisample-analysis.html#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plots</span></span>
+<span id="cb125-4"><a href="multisample-analysis.html#cb125-4" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
+<span id="cb125-5"><a href="multisample-analysis.html#cb125-5" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
+<span id="cb125-6"><a href="multisample-analysis.html#cb125-6" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
+<span id="cb125-7"><a href="multisample-analysis.html#cb125-7" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
+<span id="cb125-8"><a href="multisample-analysis.html#cb125-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-9"><a href="multisample-analysis.html#cb125-9" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p5, p6, p7, p8, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/multisample_add_iso_counts_2-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="multisample-analysis.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####</span></span>
+<span id="cb126-2"><a href="multisample-analysis.html#cb126-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-3"><a href="multisample-analysis.html#cb126-3" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(merged_seurat_isoform_filtered)</span>
+<span id="cb126-4"><a href="multisample-analysis.html#cb126-4" aria-hidden="true" tabindex="-1"></a>counts_table <span class="ot">&lt;-</span> merged_seurat_isoform_filtered[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">$</span>counts</span>
+<span id="cb126-5"><a href="multisample-analysis.html#cb126-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-6"><a href="multisample-analysis.html#cb126-6" aria-hidden="true" tabindex="-1"></a>obj[[<span class="st">&quot;iso&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">CreateAssay5Object</span>(<span class="at">counts =</span> counts_table)</span>
+<span id="cb126-7"><a href="multisample-analysis.html#cb126-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-8"><a href="multisample-analysis.html#cb126-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Normalize the new assay data</span></span>
+<span id="cb126-9"><a href="multisample-analysis.html#cb126-9" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb126-10"><a href="multisample-analysis.html#cb126-10" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb126-11"><a href="multisample-analysis.html#cb126-11" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb126-12"><a href="multisample-analysis.html#cb126-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb126-13"><a href="multisample-analysis.html#cb126-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Perform PCA</span></span>
+<span id="cb126-14"><a href="multisample-analysis.html#cb126-14" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;pca_iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Warning: Key &#39;PC_&#39; taken, using &#39;pcaiso_&#39; instead</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="multisample-analysis.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Run UMAP</span></span>
+<span id="cb128-2"><a href="multisample-analysis.html#cb128-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;pca_iso&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap_iso&quot;</span>)</span>
+<span id="cb128-3"><a href="multisample-analysis.html#cb128-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb128-4"><a href="multisample-analysis.html#cb128-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the UMAP</span></span>
+<span id="cb128-5"><a href="multisample-analysis.html#cb128-5" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/multisample_add_iso_counts_2-2.png" width="672" /></p>
+<p>Here will annotate the cell types using the sctype and some prior knowledge.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="multisample-analysis.html#cb129-1" aria-hidden="true" tabindex="-1"></a>gs_removal_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Tanycytes&quot;</span>, <span class="st">&quot;Dopaminergic neurons&quot;</span>, <span class="st">&quot;Oligodendrocyte precursor cells&quot;</span>, <span class="st">&quot;Non myelinating Schwann cells&quot;</span>, <span class="st">&quot;Endothelial cells&quot;</span>) </span>
+<span id="cb129-2"><a href="multisample-analysis.html#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="co"># list of cell types from the db to remove</span></span>
+<span id="cb129-3"><a href="multisample-analysis.html#cb129-3" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">perform_sctype_analysis</span>(obj, db_, tissue, gs_removal_list, </span>
+<span id="cb129-4"><a href="multisample-analysis.html#cb129-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">metadat_col_prefix =</span><span class="st">&quot;sctype_db&quot;</span>, <span class="at">figure_prefix =</span> <span class="st">&quot;multi&quot;</span>,</span>
+<span id="cb129-5"><a href="multisample-analysis.html#cb129-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">output_file =</span> <span class="st">&quot;multi&quot;</span>, <span class="at">cluster_res =</span> <span class="st">&quot;harm_cluster&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## # A tibble: 10 × 3
+## # Groups:   cluster [10]
+##    cluster type               scores
+##    &lt;fct&gt;   &lt;chr&gt;               &lt;dbl&gt;
+##  1 7       Cancer stem cells    713.
+##  2 1       Cancer stem cells    819.
+##  3 4       Radial glial cells  1136.
+##  4 2       Radial glial cells   896.
+##  5 9       Immature neurons     486.
+##  6 3       Mature neurons       979.
+##  7 0       GABAergic neurons   1268.
+##  8 5       GABAergic neurons    792.
+##  9 8       Radial glial cells  1506.
+## 10 6       Microglial cells     408.</code></pre>
+<p><img src="bookdownproj_files/figure-html/sctype_multi-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="multisample-analysis.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="co">#change name of cancer stem cell to stem cell</span></span>
+<span id="cb131-2"><a href="multisample-analysis.html#cb131-2" aria-hidden="true" tabindex="-1"></a>obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;Cancer stem cells&quot;</span>, <span class="st">&quot;Stem cells&quot;</span>, obj<span class="sc">@</span>meta.data<span class="sc">$</span>sctype_db)</span>
+<span id="cb131-3"><a href="multisample-analysis.html#cb131-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb131-4"><a href="multisample-analysis.html#cb131-4" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">reduction=</span><span class="st">&quot;umap.harm&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>, <span class="at">label =</span> T)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/sctype_multi-2.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="multisample-analysis.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/mutli_sample/multisample_seurat.intergrated_harm.isofrom.rds&quot;)</span></span></code></pre></div>
+</details>
+
 </div>
 </div>
             </section>
@@ -504,7 +647,7 @@ div.csl-indent {
         </div>
       </div>
 <a href="novel-isoforms.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="add-isoform-counts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="trajectory-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
