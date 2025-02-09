@@ -13,7 +13,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
 
     .
 
-    ```{r traj_fucntion, echo=TRUE, include=FALSE}
+```{r traj_fucntion, echo=TRUE, include=TRUE}
 
     perform_trajectory_analysis <- function(seurat_obj, assay, prefix, cluster_name="harm_cluster", 
                                             root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE, number_of_features = 500) {
@@ -51,7 +51,6 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       
       # Save plot
       print(cluster_before_trajectory)
-
       
       # Step 4: Learn trajectory graph
       cds <- learn_graph(cds, use_partition = FALSE, close_loop = FALSE)
@@ -60,8 +59,6 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       plot_trajectory <- plot_cells(cds, color_cells_by = cluster_name) +
         theme(legend.position = "right")
       
-      print(plot_trajectory)
-      
       # Step 5: Order cells in pseudotime
       cds <- order_cells(cds, reduction_method = 'UMAP', root_cells = root_cells)
       
@@ -69,13 +66,11 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       p_pseudotime <- plot_cells(cds, color_cells_by = 'pseudotime') +
         theme(legend.position = "right")
       
-      
-      print(p_pseudotime)
+      #plot
+      cowplot::plot_grid(plot_trajectory, p_pseudotimencol = 2)
       
       # Save pseudotime to Seurat object
       seurat_obj$pseudotime <- pseudotime(cds)
-      
-      
       
       if (order_features_by_pseudotime == TRUE) {
       # Step 6: Finding genes that change as a function of pseudotime
@@ -105,10 +100,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       #print plot
       print(FeaturePlot(seurat_obj, features = top_genes$gene_short_name, reduction ="umap.harm"))
 
-      
-      
-      ##### plot pseduotime
-      ####plot genes based on pseudo time expresstion 
+      ####plot genes based on pseudo time expression 
       my_genes <- row.names(subset(fData(cds_subset), gene_short_name %in% top_genes$gene_short_name)) 
       #my_genes <- row.names(subset(fData(cds), gene_short_name %in% c("DLK1","GRIA2","GRIN2B", "VIM", "PKM", "GAD1", "DCX", "POU5F1", "HOPX"))) 
       
@@ -126,20 +118,23 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       #saveRDS(seurat_obj, file = paste0(prefix, "_seurat_with_pseudotime.rds"))
 
     }
+```
 
+From this analysis, we observe a well-defined trajectory that transitions from stem cells through immature neurons (likely neural progenitor cells) to radial glial cells, and finally toward more mature neuronal subtypes. This trajectory aligns well with known biological processes, supporting its validity.
 
-    ```
+Given this biologically meaningful trajectory, we examined genes that exhibit expression changes along pseudotime. Below are 16 top hits, identified based on the number of features tested, showing significant correlations between expression and trajectory progression. These genes may serve as markers for specific cell clusters or be differentially expressed based on other testing methods. We have visualized these results using both a feature plot and a Monocle3 dot plot.
 
 ```{r traj_genes, echo=TRUE, fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
-                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 100)
+                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 500)
 
+### need to add in output path
 ```
 
-The same analysis can be perform at the isoform level. Set the `assay = "iso"`.
+The same analysis can be performed at the isoform level by setting `assay = "iso"`. This allows for the identification of differentially expressed isoforms along the trajectory. Users can also plot trajectories based on isoform-level clustering. If choosing this approach, ensure that the isoform-level data is properly integrated, and modify the function to specify the appropriate dimensional reduction method for trajectory learning.
 
 ```{r traj_iso, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, assay="iso", prefix = "iso_Multi-sample_tutorial",
-                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = FALSE, number_of_features = 500)
+                            cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 1000)
 
 ```
