@@ -11,7 +11,7 @@ This analysis is particularly useful for understanding complex regulatory mechan
 
 This space is relatively new for single cell sequencing and therefore tools specifically designed for this analysis are not really available. Therefore we will use a tool designed for bulk analysis called the Isoform Switch Analyzer. The link to the vinette can be found here <https://www.bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html>
 
-We will laod the pacakages and subset the data to a smaller set of cells.
+We will load the packages and subset the data to a smaller set of cells.
 
 ```{r DTU setup, echo=TRUE, message=FALSE, warning=FALSE}
 library(DRIMSeq)
@@ -21,7 +21,7 @@ library(IsoformSwitchAnalyzeR)
 library(rtracklayer)
 
 # Define the cell types to keep
-cell_types_to_keep <- c("Stem cells", "GABAergic neurons")
+cell_types_to_keep <- c("Radial glial cells", "GABAergic neurons")
 
 # Subset the object based on the metadata
 subset_obj <- subset(obj, subset = sctype_db %in% cell_types_to_keep)
@@ -76,7 +76,7 @@ subset_txt2gene <- tx2gene[tx2gene$transcript_id %in% row.names(pseudo.seurat.is
 subset_cts <- pseudo.seurat.isoforms.df[row.names(pseudo.seurat.isoforms.df) %in% tx2gene$transcript_id, ]
 
 # write gtf
-export(subset_txt2gene, "broad_cat.gtf", format = "gtf")
+export(subset_txt2gene, "Radial_glia_GABA_neurons.gtf", format = "gtf")
 
 
 #### genrate a switch list
@@ -84,7 +84,7 @@ aSwitchList <- importRdata(
   isoformCountMatrix   = subset_cts,
   isoformRepExpression = subset_cts,
   designMatrix         = samps,
-  isoformExonAnnoation = "broad_cat.gtf",
+  isoformExonAnnoation = "Radial_glia_GABA_neurons.gtf",
   isoformNtFasta       = "/data/scratch/users/yairp/Kolf2.1_FLAMESv2/outs/kolf2.1_matched_fastq_trimmedA/transcript_assembly.fa", # provide the FLAMES transcript_output .fasta
   showProgress = TRUE,
   fixStringTieAnnotationProblem = TRUE
@@ -94,7 +94,7 @@ summary(aSwitchList)
 
 aSwitchList_ORF <- analyzeORF(switchAnalyzeRlist = aSwitchList, orfMethod = "longest" )
 
-saveRDS("aSwitchList_ORF.rds", object = aSwitchList)
+saveRDS("./output_files/mutli_sample/Radial_glia_GABA_neurons_switch_list_ORF.rds", object = aSwitchList)
 
 
 #Add genesymbol to switch lsit 
@@ -121,11 +121,10 @@ SwitchListFiltered <- preFilter(
 
 ##### ok its workign up to here #### 
 
-saveRDS("SwitchListFiltered.rds", object = SwitchListFiltered)
+saveRDS("./output_files/mutli_sample/Radial_glia_GABA_SwitchListFiltered.rds", object = SwitchListFiltered)
 
 
 ```
-
 
 ```{r DTU_plots, setup, echo=TRUE, message=FALSE, warning=FALSE}
 SwitchListAnalyzed <- isoformSwitchTestDEXSeq(
@@ -204,6 +203,4 @@ isoform_counts <- filtered_df %>%
 
 # Print or return the filtered data frame
 print(isoform_counts)
-
-NPIPB14P
 ```

@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-09" />
+<meta name="date" content="2025-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -283,22 +283,26 @@ div.csl-indent {
 <span id="cb97-3"><a href="isoform-classification.html#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb97-4"><a href="isoform-classification.html#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(SQANTI, <span class="dv">3</span>)</span></code></pre></div>
 </details>
-<pre><code>##              isoform chrom strand length exons structural_category                associated_gene associated_transcript ref_length ref_exons diff_to_TSS
-## 1           BambuTx1  chr1      +   2381     3    novel_in_catalog              ENSG00000294260.1                 novel       1694         2          NA
-## 2           BambuTx2  chr1      -    595     2           antisense novelGene_ENSG00000302070.1_AS                 novel         NA        NA          NA
-## 3 ENST00000003583.12  chr1      -   2544     8   full-splice_match             ENSG00000001460.18    ENST00000003583.12       2544         8           0
-##   diff_to_TTS diff_to_gene_TSS diff_to_gene_TTS                      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels
-## 1          NA            -2481              -17 combination_of_known_splicesites     FALSE     canonical             NA      NA          NA     NA NA       NA
-## 2          NA               NA               NA                       multi-exon     FALSE     canonical             NA      NA          NA     NA NA       NA
-## 3           0                0                0                  reference_match     FALSE     canonical             NA      NA          NA     NA NA       NA
-##   n_indels_junc  bite iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD
-## 1            NA FALSE      NA       NA        NA         C non_coding         NA         NA        NA      NA                NA              NA            NA
-## 2            NA FALSE      NA       NA        NA         A non_coding         NA         NA        NA      NA                NA              NA            NA
-## 3            NA FALSE      NA       NA        NA         C     coding        122        369      1009    1377          24358540        24358172         FALSE
-##   perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found
-## 1                    75 TAAAAAAAAAAAATAAGTGA                NA               NA                 NA                NA          NA         NA                NA
-## 2                    95 AAAAAAAAAAAAAAGAAAAA                NA               NA                 NA                NA          NA         NA                NA
-## 3                    15 TATTGAGCTTTTGGGTACCC                NA               NA                 NA                NA          NA         NA                NA
+<pre><code>##              isoform chrom strand length exons structural_category                associated_gene associated_transcript ref_length ref_exons
+## 1           BambuTx1  chr1      +   2381     3    novel_in_catalog              ENSG00000294260.1                 novel       1694         2
+## 2           BambuTx2  chr1      -    595     2           antisense novelGene_ENSG00000302070.1_AS                 novel         NA        NA
+## 3 ENST00000003583.12  chr1      -   2544     8   full-splice_match             ENSG00000001460.18    ENST00000003583.12       2544         8
+##   diff_to_TSS diff_to_TTS diff_to_gene_TSS diff_to_gene_TTS                      subcategory RTS_stage all_canonical min_sample_cov min_cov
+## 1          NA          NA            -2481              -17 combination_of_known_splicesites     FALSE     canonical             NA      NA
+## 2          NA          NA               NA               NA                       multi-exon     FALSE     canonical             NA      NA
+## 3           0           0                0                0                  reference_match     FALSE     canonical             NA      NA
+##   min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end
+## 1          NA     NA NA       NA            NA FALSE      NA       NA        NA         C non_coding         NA         NA        NA      NA
+## 2          NA     NA NA       NA            NA FALSE      NA       NA        NA         A non_coding         NA         NA        NA      NA
+## 3          NA     NA NA       NA            NA FALSE      NA       NA        NA         C     coding        122        369      1009    1377
+##   CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site
+## 1                NA              NA            NA                    75 TAAAAAAAAAAAATAAGTGA                NA               NA                 NA
+## 2                NA              NA            NA                    95 AAAAAAAAAAAAAAGAAAAA                NA               NA                 NA
+## 3          24358540        24358172         FALSE                    15 TATTGAGCTTTTGGGTACCC                NA               NA                 NA
+##   within_polyA_site polyA_motif polyA_dist polyA_motif_found
+## 1                NA          NA         NA                NA
+## 2                NA          NA         NA                NA
+## 3                NA          NA         NA                NA
 ##                                                                                                                      ORF_seq ratio_TSS
 ## 1                                                                                                                       &lt;NA&gt;        NA
 ## 2                                                                                                                       &lt;NA&gt;        NA

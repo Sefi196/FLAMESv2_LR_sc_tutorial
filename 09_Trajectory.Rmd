@@ -66,8 +66,8 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       p_pseudotime <- plot_cells(cds, color_cells_by = 'pseudotime') +
         theme(legend.position = "right")
       
-      #plot
-      cowplot::plot_grid(plot_trajectory, p_pseudotimencol = 2)
+      # plot
+      print(plot_trajectory | p_pseudotime)
       
       # Save pseudotime to Seurat object
       seurat_obj$pseudotime <- pseudotime(cds)
@@ -77,7 +77,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       # Find the X most variable genes
       seurat_obj <- FindVariableFeatures(seurat_obj, selection.method = "vst", nfeatures = number_of_features)
 
-      # Extract the top 100 variable gene names
+      # Extract the top n variable gene names
       top_variable_genes <- VariableFeatures(seurat_obj)
       
       cds_subset <- cds[top_variable_genes, ]
@@ -100,14 +100,14 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       #print plot
       print(FeaturePlot(seurat_obj, features = top_genes$gene_short_name, reduction ="umap.harm"))
 
-      ####plot genes based on pseudo time expression 
+      # Another plot for top 16 fetautes DE acrose pseudotime 
       my_genes <- row.names(subset(fData(cds_subset), gene_short_name %in% top_genes$gene_short_name)) 
       #my_genes <- row.names(subset(fData(cds), gene_short_name %in% c("DLK1","GRIA2","GRIN2B", "VIM", "PKM", "GAD1", "DCX", "POU5F1", "HOPX"))) 
       
       cds_top_genes <- cds_subset[my_genes,]
       
       monocle_plot <- monocle3::plot_genes_in_pseudotime(cds = cds_top_genes, min_expr = 0.5, cell_size = 0.5,
-                                         nrow = NULL, ncol = 3, panel_order = NULL,
+                                         nrow = NULL, ncol = 4, panel_order = NULL,
                                          label_by_short_name = TRUE, color_cells_by = cluster_name)
       
       print(monocle_plot)
@@ -124,7 +124,14 @@ From this analysis, we observe a well-defined trajectory that transitions from s
 
 Given this biologically meaningful trajectory, we examined genes that exhibit expression changes along pseudotime. Below are 16 top hits, identified based on the number of features tested, showing significant correlations between expression and trajectory progression. These genes may serve as markers for specific cell clusters or be differentially expressed based on other testing methods. We have visualized these results using both a feature plot and a Monocle3 dot plot.
 
-```{r traj_genes, echo=TRUE, fig.height=10, fig.width=10, message=FALSE, warning=FALSE}
+Notes:
+
+1.   Add labelles for figures
+2.  correct figure size.
+3.  Add reduction param
+4.   work out the empty space
+
+```{r traj_genes, echo=TRUE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 500)
 
@@ -133,7 +140,7 @@ perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tuto
 
 The same analysis can be performed at the isoform level by setting `assay = "iso"`. This allows for the identification of differentially expressed isoforms along the trajectory. Users can also plot trajectories based on isoform-level clustering. If choosing this approach, ensure that the isoform-level data is properly integrated, and modify the function to specify the appropriate dimensional reduction method for trajectory learning.
 
-```{r traj_iso, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
+```{r traj_iso, echo=TRUE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE}
 perform_trajectory_analysis(seurat_obj = obj, assay="iso", prefix = "iso_Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 1000)
 
