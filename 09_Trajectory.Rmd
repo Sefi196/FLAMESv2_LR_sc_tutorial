@@ -9,9 +9,7 @@ Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to tra
 
 In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight impor features that control stem cell to neuronal differentiation. In the bellow code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to to identify gene or isoforms that change with pseudotime. [^09_trajectory-1]
 
-[^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible. The parameter `number_of_features` can be used to specify the number of highly variable features to test.
-
-    .
+[^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive. The parameter `number_of_features` can be used to specify the number of highly variable features to test. Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible.
 
 ```{r traj_fucntion, echo=TRUE, include=TRUE}
 
@@ -50,7 +48,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
         theme(legend.position = "right")
       
       # Save plot
-      print(cluster_before_trajectory)
+      #print(cluster_before_trajectory)
       
       # Step 4: Learn trajectory graph
       cds <- learn_graph(cds, use_partition = FALSE, close_loop = FALSE)
@@ -95,7 +93,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       # Plot top genes
       top_genes <- MI_sig %>% 
         arrange(desc(morans_I)) %>% 
-        head(16)
+        head(12)
       
       #print plot
       print(FeaturePlot(seurat_obj, features = top_genes$gene_short_name, reduction ="umap.harm"))
@@ -122,25 +120,23 @@ In our example dataset we are interested in looking at genes or isoforms that ch
 
 From this analysis, we observe a well-defined trajectory that transitions from stem cells through immature neurons (likely neural progenitor cells) to radial glial cells, and finally toward more mature neuronal subtypes. This trajectory aligns well with known biological processes, supporting its validity.
 
-Given this biologically meaningful trajectory, we examined genes that exhibit expression changes along pseudotime. Below are 16 top hits, identified based on the number of features tested, showing significant correlations between expression and trajectory progression. These genes may serve as markers for specific cell clusters or be differentially expressed based on other testing methods. We have visualized these results using both a feature plot and a Monocle3 dot plot.
+Given this biologically meaningful trajectory, we examined genes that exhibit expression changes along pseudotime. Below are 12 top hits, identified based on the number of features tested, showing significant correlations between expression and trajectory progression. These genes may serve as markers for specific cell clusters or be differentially expressed based on other testing methods. We have visualized these results using both a feature plot and a Monocle3 dot plot.
 
 Notes:
 
-1.   Add labelles for figures
+1.  Add labelles for figures
 2.  correct figure size.
 3.  Add reduction param
-4.   work out the empty space
+4.  work out the empty space
 
-```{r traj_genes, echo=TRUE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE}
+```{r traj_genes, echo=TRUE, fig.height=6, fig.width=12, message=FALSE, warning=FALSE, cache=TRUE}
 perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 500)
-
-### need to add in output path
 ```
 
 The same analysis can be performed at the isoform level by setting `assay = "iso"`. This allows for the identification of differentially expressed isoforms along the trajectory. Users can also plot trajectories based on isoform-level clustering. If choosing this approach, ensure that the isoform-level data is properly integrated, and modify the function to specify the appropriate dimensional reduction method for trajectory learning.
 
-```{r traj_iso, echo=TRUE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE}
+```{r traj_iso, echo=TRUE, fig.height=6, fig.width=12, message=FALSE, warning=FALSE, cache=TRUE}
 perform_trajectory_analysis(seurat_obj = obj, assay="iso", prefix = "iso_Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 1000)
 

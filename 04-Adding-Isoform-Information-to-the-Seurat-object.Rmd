@@ -83,7 +83,7 @@ Since we've already filtered out low-quality cells based on our gene-level data,
 
 ```{r isoform_assay, echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE, fig.height=4, fig.width=8}
 
-#### isofrom assay 
+#### isoform assay 
 ## filter the data so iso and gene cells match
 oarfish_iso_matched_gene <- subset(iso_seurat_obj, cells =filt_seurat_object@graphs[["RNA_nn"]]@Dimnames[[1]])
 
@@ -141,7 +141,7 @@ FeaturePlot(filt_seurat_object, features = gene, reduction = "umap")
 #lets also plot the isoform data on the gene level clsuters.
 FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap") +
   plot_annotation(
-    title = 'VIM isoform expresstion plotted on gene level clusters',
+    title = 'VIM isoform expression plotted on gene level clusters',
     #caption = 'made with patchwork',
     theme = theme(plot.title = element_text(size = 20))
   )

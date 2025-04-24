@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-10" />
+<meta name="date" content="2025-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,7 +219,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
@@ -263,7 +263,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="exploring-isoforms-of-interest" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> <strong>Exploring isoforms of interest</strong><a href="exploring-isoforms-of-interest.html#exploring-isoforms-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regulating this process. We will cover some very general analysis with this focus in mind.</p>
+<p>One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isoforms in neuronal differentiation and there are many examples in the literate of isoforms regulating this process. We will cover some very general analysis with this focus in mind.</p>
 <div id="isoforms-expressed-per-gene" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Isoforms expressed per gene<a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>With long-read single-cell data, we have the ability to analyze all the isoforms expressed by a given gene. In our data we can see that most genes express more than one isoform.</p>
@@ -316,7 +316,7 @@ div.csl-indent {
 </div>
 <div id="top-10-genes-with-most-isoforms" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Top 10 Genes with Most Isoforms<a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have alot of unique isofroms, 97 in fact. The top 10 genes with the most isofroms are listed bellow.</p>
+<p>We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have alot of unique isoforms, 97 in fact. The top 10 genes with the most isoforms are listed bellow.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="exploring-isoforms-of-interest.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes ranked by the number of transcript isoforms detected across all samples </span></span>
 <span id="cb83-2"><a href="exploring-isoforms-of-interest.html#cb83-2" aria-hidden="true" tabindex="-1"></a>gene_transcript_counts <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
@@ -342,7 +342,7 @@ div.csl-indent {
 ##  8 ENSG00000300022                 41
 ##  9 FAM66A                          39
 ## 10 SNHG14                          38</code></pre>
-<p>We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies across out data.</p>
+<p>We can also plot unique transcripts per gene on a log scale showing that the number of isoforms per gene varies across out data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="exploring-isoforms-of-interest.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ranked genes by unique &quot;BambuTx&quot; transcript count</span></span>
 <span id="cb85-2"><a href="exploring-isoforms-of-interest.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gene_transcript_counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(unique_transcripts)), <span class="at">y =</span> unique_transcripts)) <span class="sc">+</span></span>
@@ -386,7 +386,7 @@ div.csl-indent {
 </div>
 <div id="exploring-macf1-isoforms" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Exploring MACF1 isoforms<a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Lets look at gene <em>MACF1</em><strong>.</strong> This gene is know to…. [ref]. The gene seems to play some important role in neural migration which is not fully understood yet. First lets try and visualize the expression of these isofroms on a UMAP to see if we can uncover anything interesting. <em>MACF1</em> has 35 expressed isofroms so lets only plot the top 12 most highly expressed.</p>
+<p>We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Lets look at gene <em>MACF1</em><strong>.</strong> This gene is know to…. [ref]. The gene seems to play some important role in neural migration which is not fully understood yet. First lets try and visualize the expression of these isoforms on a UMAP to see if we can uncover anything interesting. <em>MACF1</em> has 35 expressed isoforms so lets only plot the top 12 most highly expressed.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="exploring-isoforms-of-interest.html#cb86-1" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">@</span>features)</span>
 <span id="cb86-2"><a href="exploring-isoforms-of-interest.html#cb86-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -469,7 +469,7 @@ div.csl-indent {
 </div>
 <div id="expression-of-mcaf1-isoforms-across-cell-types" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Expression of MCAF1 isoforms Across Cell Types<a href="exploring-isoforms-of-interest.html#expression-of-mcaf1-isoforms-across-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Lets look at isofroms <strong>ENST00000564288.6</strong>, <strong>ENST00000361689.7</strong>, <strong>ENST00000289893.8</strong> and <strong>ENST00000524432.5</strong> in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of <strong>ENST00000524432.5</strong> shows a cell type specific profile.</p>
+<p>Lets look at isoforms <strong>ENST00000564288.6</strong>, <strong>ENST00000361689.7</strong>, <strong>ENST00000289893.8</strong> and <strong>ENST00000524432.5</strong> in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of <strong>ENST00000524432.5</strong> shows a cell type specific profile.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="exploring-isoforms-of-interest.html#cb89-1" aria-hidden="true" tabindex="-1"></a>features_MACF1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000564288.6-MACF1&quot;</span>, <span class="co"># cononical</span></span>
 <span id="cb89-2"><a href="exploring-isoforms-of-interest.html#cb89-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000361689.7-MACF1&quot;</span>, <span class="co"># most cell types</span></span>
@@ -514,13 +514,13 @@ div.csl-indent {
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="exploring-isoforms-of-interest.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#extract some isoform expression data to visualize in isoviz </span></span>
 <span id="cb94-2"><a href="exploring-isoforms-of-interest.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="co">#use pseudobulk counts we from above  </span></span>
-<span id="cb94-3"><a href="exploring-isoforms-of-interest.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(df) <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
-<span id="cb94-4"><a href="exploring-isoforms-of-interest.html#cb94-4" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>gene_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb94-3"><a href="exploring-isoforms-of-interest.html#cb94-3" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">-&gt;</span> pseudobulk_data_isoviz_format</span>
+<span id="cb94-4"><a href="exploring-isoforms-of-interest.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(pseudobulk_data_isoviz_format) <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
 <span id="cb94-5"><a href="exploring-isoforms-of-interest.html#cb94-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-6"><a href="exploring-isoforms-of-interest.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(df, <span class="st">&quot;output_files/Pseudobulk_exp.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<span id="cb94-6"><a href="exploring-isoforms-of-interest.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pseudobulk_data_isoviz_format, <span class="st">&quot;output_files/Pseudobulk_exp.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
-<p>To use IsoViz click on the following link <a href="https://isomix.org/isovis/" class="uri">https://isomix.org/isovis/</a> and uplaod the <code>isofrom_annotated.gtf</code> file located in the FLAMES output dir and <code>Pseudobulk_exp.csv</code> generated above. For more detail on how to use Isoviz click the ‘<strong>IsoViz tutorial</strong>’ button or read the publication.</p>
-<p>Embedded bellow is the figure generated by Isoviz<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.</p>
+<p>To use IsoViz click on the following link <a href="https://isomix.org/isovis/" class="uri">https://isomix.org/isovis/</a> and upload the <code>isoform_annotated.gtf</code> file located in the FLAMES output dir and <code>Pseudobulk_exp.csv</code> generated above. For more detail on how to use Isoviz click the ‘<strong>IsoViz tutorial</strong>’ button or read the publication.</p>
+<p>Embedded bellow is the figure generated by Isoviz<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Here we and visualizing our 4 isoforms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="exploring-isoforms-of-interest.html#cb95-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000127603.png&quot;</span>)</span></code></pre></div>
 </details>
@@ -532,7 +532,7 @@ Figure 6.1: IsoViz visualization of 4 MACF1 isoforms.
 </div>
 <p>Our pseudobulk expression data clearly demonstrates that <strong>ENST00000524432.5</strong> is predominantly expressed in radial glia cells. This isoform is particularly interesting, as it is significantly shorter than others and lacks many of the protein domains present in <strong>ENST00000564288.6</strong> (the canonical isoform). Notably, all four isoforms exhibit different transcription start sites (TSS), suggesting that TSS variation may be linked to cell-type-specific expression or distinct proteaforms</p>
 <p>For example, <strong>ENST00000289893.8</strong> shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the <strong>Ensembl</strong> data, accessible via the isoform hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.</p>
-<p>There are lots of additional analysis that could be performed to further explore the function of our <em>MCAF1</em> isofroms, these include domain enrichment analysis and protein folding to name a few.</p>
+<p>There are lots of additional analysis that could be performed to further explore the function of our <em>MCAF1</em> isoforms, these include domain enrichment analysis and protein folding to name a few.</p>
 
 </div>
 </div>
@@ -563,42 +563,42 @@ Figure 6.1: IsoViz visualization of 4 MACF1 isoforms.
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/06_Finding-isoforms-of-interest.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/06_Finding-isoforms-of-interest.Rmd",
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/06_Finding-isoforms-of-interest.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/06_Finding-isoforms-of-interest.Rmd",
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

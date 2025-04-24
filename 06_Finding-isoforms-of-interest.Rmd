@@ -5,7 +5,7 @@ output: html_document
 
 # **Exploring isoforms of interest**
 
-One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isofroms in neuronal differentiation and there are many examples in the literate of isofroms regulating this process. We will cover some very general analysis with this focus in mind.
+One of the most powerful aspects of long-read single-cell sequencing is its ability to profile isoform-specific information at single-cell resolution. This capability opens up numerous avenues for analysis. In our lab we are interested in exploring the role of RNA isoforms in neuronal differentiation and there are many examples in the literate of isoforms regulating this process. We will cover some very general analysis with this focus in mind.
 
 ## Isoforms expressed per gene
 
@@ -62,7 +62,7 @@ ggplot(isoform_count_summary, aes(x = isoform_category, y = percent)) +
 
 ## Top 10 Genes with Most Isoforms
 
-We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have alot of unique isofroms, 97 in fact. The top 10 genes with the most isofroms are listed bellow.
+We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have alot of unique isoforms, 97 in fact. The top 10 genes with the most isoforms are listed bellow.
 
 ```{r make_top10, include=TRUE, echo=TRUE, warning=FALSE}
 # Genes ranked by the number of transcript isoforms detected across all samples 
@@ -77,7 +77,7 @@ top10 <- gene_transcript_counts %>% top_n(10, unique_transcripts)
 top10
 ```
 
-We can also plot unique transcripts per gene on a log scale showing that the number of isofroms per gene varies across out data.
+We can also plot unique transcripts per gene on a log scale showing that the number of isoforms per gene varies across out data.
 
 ```{r plot_unique_isoforms, include=TRUE, echo=TRUE, warning=FALSE}
 # Plot ranked genes by unique "BambuTx" transcript count
@@ -122,7 +122,7 @@ ggplot(gene_transcript_counts, aes(x = rank(desc(unique_transcripts)), y = uniqu
 
 ## Exploring MACF1 isoforms
 
-We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Lets look at gene *MACF1***.** This gene is know to.... [ref]. The gene seems to play some important role in neural migration which is not fully understood yet. First lets try and visualize the expression of these isofroms on a UMAP to see if we can uncover anything interesting. *MACF1* has 35 expressed isofroms so lets only plot the top 12 most highly expressed.
+We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Lets look at gene *MACF1***.** This gene is know to.... [ref]. The gene seems to play some important role in neural migration which is not fully understood yet. First lets try and visualize the expression of these isoforms on a UMAP to see if we can uncover anything interesting. *MACF1* has 35 expressed isoforms so lets only plot the top 12 most highly expressed.
 
 ```{r plotting MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=10, fig.width=10 }
 features <- rownames(filt_seurat_object@assays$iso@features)
@@ -169,7 +169,7 @@ CombinePlots(plots = plots, ncol = 3)
 
 ## Expression of MCAF1 isoforms Across Cell Types
 
-Lets look at isofroms **ENST00000564288.6**, **ENST00000361689.7**, **ENST00000289893.8** and **ENST00000524432.5** in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of **ENST00000524432.5** shows a cell type specific profile.
+Lets look at isoforms **ENST00000564288.6**, **ENST00000361689.7**, **ENST00000289893.8** and **ENST00000524432.5** in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of **ENST00000524432.5** shows a cell type specific profile.
 
 ```{r vln MACF1, include=TRUE, echo=TRUE, warning=FALSE, fig.height=8, fig.width=10}
 features_MACF1 <- c("ENST00000564288.6-MACF1", # cononical
@@ -221,16 +221,16 @@ First lets prepare the count data that we will load into Isoviz[^06_finding-isof
 ```{r pseudo_save, include=TRUE, echo=TRUE, warning=FALSE}
 #extract some isoform expression data to visualize in isoviz 
 #use pseudobulk counts we from above  
-row.names(df) <- NULL 
-df$gene_id <- NULL
+pseudobulk_data -> pseudobulk_data_isoviz_format
+row.names(pseudobulk_data_isoviz_format) <- NULL 
 
-write.csv(df, "output_files/Pseudobulk_exp.csv", row.names = FALSE)
+write.csv(pseudobulk_data_isoviz_format, "output_files/Pseudobulk_exp.csv", row.names = FALSE)
 
 ```
 
-To use IsoViz click on the following link <https://isomix.org/isovis/> and uplaod the `isofrom_annotated.gtf` file located in the FLAMES output dir and `Pseudobulk_exp.csv` generated above. For more detail on how to use Isoviz click the '**IsoViz tutorial**' button or read the publication.
+To use IsoViz click on the following link <https://isomix.org/isovis/> and upload the `isoform_annotated.gtf` file located in the FLAMES output dir and `Pseudobulk_exp.csv` generated above. For more detail on how to use Isoviz click the '**IsoViz tutorial**' button or read the publication.
 
-Embedded bellow is the figure generated by Isoviz[^06_finding-isoforms-of-interest-2]. Here we and visualizing our 4 isofroms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.
+Embedded bellow is the figure generated by Isoviz[^06_finding-isoforms-of-interest-2]. Here we and visualizing our 4 isoforms of interest. We can see MCAF1 is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.
 
 [^06_finding-isoforms-of-interest-2]: When Viewing this data in the web browser users will have more functionality. This includes a zoom function, looking at protein domains and rearranging isoform tracks and known visualizing open reading frames.
 
@@ -242,4 +242,4 @@ Our pseudobulk expression data clearly demonstrates that **ENST00000524432.5** i
 
 For example, **ENST00000289893.8** shows comparably high expression levels across most cell types. However, a deeper exploration of this isoform reveals that it does not produce a functional protein. This is evident from examining the **Ensembl** data, accessible via the isoform hyperlink, where we can see that no open reading frames (ORFs) are associated with this transcript.
 
-There are lots of additional analysis that could be performed to further explore the function of our *MCAF1* isofroms, these include domain enrichment analysis and protein folding to name a few.
+There are lots of additional analysis that could be performed to further explore the function of our *MCAF1* isoforms, these include domain enrichment analysis and protein folding to name a few.

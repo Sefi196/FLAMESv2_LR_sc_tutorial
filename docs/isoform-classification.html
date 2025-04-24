@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-10" />
+<meta name="date" content="2025-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,7 +219,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
@@ -270,10 +270,10 @@ div.csl-indent {
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb96"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb96-1"><a href="isoform-classification.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="va">GTF</span><span class="op">=</span><span class="st">&quot;gencode.v47.annotation.gtf&quot;</span> </span>
 <span id="cb96-2"><a href="isoform-classification.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="va">genome</span><span class="op">=</span><span class="st">&quot;genome.fa&quot;</span></span>
-<span id="cb96-3"><a href="isoform-classification.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter gtf file to remove annoatiuon of unknown strands</span></span>
+<span id="cb96-3"><a href="isoform-classification.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter gtf file to remove annotation of unknown strands</span></span>
 <span id="cb96-4"><a href="isoform-classification.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="st">&#39;$7 == &quot;+&quot; || $7 == &quot;-&quot;&#39;</span> isoform_annotated.gtf <span class="op">&gt;</span> remove_unknownstrand.gtf</span>
 <span id="cb96-5"><a href="isoform-classification.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="co">#run SQANTIpython3 </span></span>
-<span id="cb96-6"><a href="isoform-classification.html#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="co">#you may need need to activate a conda enviroment </span></span>
+<span id="cb96-6"><a href="isoform-classification.html#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="co">#you may need need to activate a conda environment </span></span>
 <span id="cb96-7"><a href="isoform-classification.html#cb96-7" aria-hidden="true" tabindex="-1"></a><span class="ex">SQANTI3-5.2.1/sqanti3_qc.py</span> remove_unknownstrand.gtf <span class="va">${GTF}</span> <span class="va">${genome}</span></span></code></pre></div>
 </details>
 <p>If we examine the classifications file, we can see that each isoform in our <code>GTF</code> file has been categorized based on its structural characteristics, coding potential, and additional attributes.</p>
@@ -283,26 +283,22 @@ div.csl-indent {
 <span id="cb97-3"><a href="isoform-classification.html#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb97-4"><a href="isoform-classification.html#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(SQANTI, <span class="dv">3</span>)</span></code></pre></div>
 </details>
-<pre><code>##              isoform chrom strand length exons structural_category                associated_gene associated_transcript ref_length ref_exons
-## 1           BambuTx1  chr1      +   2381     3    novel_in_catalog              ENSG00000294260.1                 novel       1694         2
-## 2           BambuTx2  chr1      -    595     2           antisense novelGene_ENSG00000302070.1_AS                 novel         NA        NA
-## 3 ENST00000003583.12  chr1      -   2544     8   full-splice_match             ENSG00000001460.18    ENST00000003583.12       2544         8
-##   diff_to_TSS diff_to_TTS diff_to_gene_TSS diff_to_gene_TTS                      subcategory RTS_stage all_canonical min_sample_cov min_cov
-## 1          NA          NA            -2481              -17 combination_of_known_splicesites     FALSE     canonical             NA      NA
-## 2          NA          NA               NA               NA                       multi-exon     FALSE     canonical             NA      NA
-## 3           0           0                0                0                  reference_match     FALSE     canonical             NA      NA
-##   min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end
-## 1          NA     NA NA       NA            NA FALSE      NA       NA        NA         C non_coding         NA         NA        NA      NA
-## 2          NA     NA NA       NA            NA FALSE      NA       NA        NA         A non_coding         NA         NA        NA      NA
-## 3          NA     NA NA       NA            NA FALSE      NA       NA        NA         C     coding        122        369      1009    1377
-##   CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site
-## 1                NA              NA            NA                    75 TAAAAAAAAAAAATAAGTGA                NA               NA                 NA
-## 2                NA              NA            NA                    95 AAAAAAAAAAAAAAGAAAAA                NA               NA                 NA
-## 3          24358540        24358172         FALSE                    15 TATTGAGCTTTTGGGTACCC                NA               NA                 NA
-##   within_polyA_site polyA_motif polyA_dist polyA_motif_found
-## 1                NA          NA         NA                NA
-## 2                NA          NA         NA                NA
-## 3                NA          NA         NA                NA
+<pre><code>##              isoform chrom strand length exons structural_category                associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS
+## 1           BambuTx1  chr1      +   2381     3    novel_in_catalog              ENSG00000294260.1                 novel       1694         2          NA          NA
+## 2           BambuTx2  chr1      -    595     2           antisense novelGene_ENSG00000302070.1_AS                 novel         NA        NA          NA          NA
+## 3 ENST00000003583.12  chr1      -   2544     8   full-splice_match             ENSG00000001460.18    ENST00000003583.12       2544         8           0           0
+##   diff_to_gene_TSS diff_to_gene_TTS                      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite
+## 1            -2481              -17 combination_of_known_splicesites     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE
+## 2               NA               NA                       multi-exon     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE
+## 3                0                0                  reference_match     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE
+##   iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS
+## 1      NA       NA        NA         C non_coding         NA         NA        NA      NA                NA              NA            NA                    75
+## 2      NA       NA        NA         A non_coding         NA         NA        NA      NA                NA              NA            NA                    95
+## 3      NA       NA        NA         C     coding        122        369      1009    1377          24358540        24358172         FALSE                    15
+##   seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found
+## 1 TAAAAAAAAAAAATAAGTGA                NA               NA                 NA                NA          NA         NA                NA
+## 2 AAAAAAAAAAAAAAGAAAAA                NA               NA                 NA                NA          NA         NA                NA
+## 3 TATTGAGCTTTTGGGTACCC                NA               NA                 NA                NA          NA         NA                NA
 ##                                                                                                                      ORF_seq ratio_TSS
 ## 1                                                                                                                       &lt;NA&gt;        NA
 ## 2                                                                                                                       &lt;NA&gt;        NA
@@ -449,7 +445,7 @@ div.csl-indent {
 </div>
 <div id="cell-type-specific-isoforms" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Cell type specific isoforms<a href="isoform-classification.html#cell-type-specific-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
+<p>We can also look at isoforms that are unique to each Cell type. We define unique as an isoforms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="isoform-classification.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the data based on the expression cutoff</span></span>
 <span id="cb100-2"><a href="isoform-classification.html#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Set expression cutoff threshold</span></span>
@@ -494,9 +490,9 @@ div.csl-indent {
 <span id="cb100-41"><a href="isoform-classification.html#cb100-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb100-42"><a href="isoform-classification.html#cb100-42" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/uniq_isofrom-1.png" width="576" /></p>
+<p><img src="bookdownproj_files/figure-html/uniq_isoform-1.png" width="576" /></p>
 <p>These cell type specific isoforms may be particularly interesting to study further, as they likely play important roles in differentiation and cell function. We could extract these isoforms for further analysis.<br />
-Lets use another helpful resource to explore these cell type specific isofroms.</p>
+Lets use another helpful resource to explore these cell type specific isoforms.</p>
 <p>We can use the BioMart <span class="citation">(<a href="references.html#ref-smedley2009" role="doc-biblioref">Smedley et al., 2009</a>)</span> package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="isoform-classification.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;biomaRt&quot;</span>)</span>
@@ -516,7 +512,7 @@ Lets use another helpful resource to explore these cell type specific isofroms.<
 <span id="cb101-15"><a href="isoform-classification.html#cb101-15" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">values =</span> exclusive_isoforms_uniq<span class="sc">$</span>transcript_id,</span>
 <span id="cb101-16"><a href="isoform-classification.html#cb101-16" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">mart =</span> mart)</span>
 <span id="cb101-17"><a href="isoform-classification.html#cb101-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb101-18"><a href="isoform-classification.html#cb101-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#merge excluive isofroms and biomart data togehter </span></span>
+<span id="cb101-18"><a href="isoform-classification.html#cb101-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#merge excluive isoforms and biomart data togehter </span></span>
 <span id="cb101-19"><a href="isoform-classification.html#cb101-19" aria-hidden="true" tabindex="-1"></a>  merged_biomart_data <span class="ot">&lt;-</span> <span class="fu">merge</span>(exclusive_isoforms_uniq, biotype_info_transcript, </span>
 <span id="cb101-20"><a href="isoform-classification.html#cb101-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.x =</span> <span class="st">&quot;transcript_id&quot;</span>, </span>
 <span id="cb101-21"><a href="isoform-classification.html#cb101-21" aria-hidden="true" tabindex="-1"></a>                     <span class="at">by.y =</span> <span class="st">&quot;ensembl_transcript_id&quot;</span>, </span>
@@ -623,42 +619,42 @@ Lets use another helpful resource to explore these cell type specific isofroms.<
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/07-Isofrom-Classification.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/07-Isofrom-Classification.Rmd",
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/07-Isofrom-Classification.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/07-Isofrom-Classification.Rmd",
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

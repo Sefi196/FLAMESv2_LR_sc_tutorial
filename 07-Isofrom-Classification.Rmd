@@ -17,10 +17,10 @@ If you install SQANTI3 and run the following command in your FLAMES output folde
 ```{bash, eval=FALSE, include=TRUE, echo=TRUE}
 GTF="gencode.v47.annotation.gtf" 
 genome="genome.fa"
-#filter gtf file to remove annoatiuon of unknown strands
+#filter gtf file to remove annotation of unknown strands
 awk '$7 == "+" || $7 == "-"' isoform_annotated.gtf > remove_unknownstrand.gtf
 #run SQANTIpython3 
-#you may need need to activate a conda enviroment 
+#you may need need to activate a conda environment 
 SQANTI3-5.2.1/sqanti3_qc.py remove_unknownstrand.gtf ${GTF} ${genome}
 ```
 
@@ -178,11 +178,11 @@ cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
 
 ## Cell type specific isoforms
 
-We can also look at isoforms that are unique to each Cell type. We define unique as an isofroms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow[^07-isofrom-classification-2].
+We can also look at isoforms that are unique to each Cell type. We define unique as an isoforms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow[^07-isofrom-classification-2].
 
 [^07-isofrom-classification-2]: It is essential to keep in mind that cell type classification, sequencing depth, and the number of cells in each cluster can significantly impact the results, especially in cases where isoforms are expressed at very low levels.
 
-```{r uniq_isofrom, include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=6}
+```{r uniq_isoform, include=TRUE, echo=TRUE, warning=FALSE, fig.height=6, fig.width=6}
 # Filter the data based on the expression cutoff
 # Set expression cutoff threshold
 expression_cutoff <- 5
@@ -231,7 +231,7 @@ ggplot(exclusive_isoforms_count, aes(x = cell_type, y = unique_isoforms, fill = 
 ```
 
 These cell type specific isoforms may be particularly interesting to study further, as they likely play important roles in differentiation and cell function. We could extract these isoforms for further analysis.\
-Lets use another helpful resource to explore these cell type specific isofroms.
+Lets use another helpful resource to explore these cell type specific isoforms.
 
 We can use the BioMart [@smedley2009] package to get some more metadata about each isoform. There is lots of data that can be extracted from BioMart. This is just a simple example of what can be done with this cell type specif data.
 
@@ -254,7 +254,7 @@ exclusive_isoforms_uniq$transcript_id <- sub("\\..*", "", exclusive_isoforms_uni
                                    values = exclusive_isoforms_uniq$transcript_id,
                                    mart = mart)
   
-  #merge excluive isofroms and biomart data togehter 
+  #merge excluive isoforms and biomart data togehter 
   merged_biomart_data <- merge(exclusive_isoforms_uniq, biotype_info_transcript, 
                      by.x = "transcript_id", 
                      by.y = "ensembl_transcript_id", 
@@ -334,7 +334,7 @@ cowplot::plot_grid(p5, p6, ncol = 1)
 
 # **Novel isoforms**
 
-With long read sequencing its possible to explore both known and novel isofroms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isofroms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
+With long read sequencing its possible to explore both known and novel isoforms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isoforms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
 
 ## Find all the genes that express at least 1 novel isoform
 
@@ -350,7 +350,7 @@ colnames(isoform_ids) <- "IDs"
 isoform_ids$Total_Expression <- rowSums(seu_obj@assays$iso$counts)
 
 # Filter rows where 'IDs' contains the string "Bambu"
-isoform_ids <- as.data.frame(isoform_ids[grepl("Bambu", isoform_ids$IDs), ])  # can comment this out if we want to do this for all isofroms 
+isoform_ids <- as.data.frame(isoform_ids[grepl("Bambu", isoform_ids$IDs), ])  # can comment this out if we want to do this for all isoforms 
 
 # Separate the 'IDs' column into two columns 
 filtered_df <- isoform_ids %>% separate(IDs, into = c("transcript_id", "gene_id"), sep = "-",  extra = "merge")
@@ -368,7 +368,7 @@ isoform_counts <- filtered_df %>%
 print(isoform_counts)
 ```
 
-In this table we can see that we have a total of 31 novel isofroms. This number is smaller than we might expect but this is because Bambu [@chen2023] is quite conservative for single cell data and we haven't sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the `NDR` parameter or using a different discovery method like stringtie2 [@kovaka2019].
+In this table we can see that we have a total of 31 novel isoforms. This number is smaller than we might expect but this is because Bambu [@chen2023] is quite conservative for single cell data and we haven't sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the `NDR` parameter or using a different discovery method like stringtie2 [@kovaka2019].
 
 In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoViz as described in the section \@ref(visualization-of-isoform-structures).
 

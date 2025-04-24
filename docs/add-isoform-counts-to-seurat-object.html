@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-10" />
+<meta name="date" content="2025-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,7 +219,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
@@ -339,7 +339,7 @@ div.csl-indent {
 <p>We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-sources-of-unwanted-noise-from-the-single-cell-dataset">3</a>, which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.</p>
 <p>Since we’ve already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="add-isoform-counts-to-seurat-object.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### isofrom assay </span></span>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="add-isoform-counts-to-seurat-object.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### isoform assay </span></span>
 <span id="cb57-2"><a href="add-isoform-counts-to-seurat-object.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="do">## filter the data so iso and gene cells match</span></span>
 <span id="cb57-3"><a href="add-isoform-counts-to-seurat-object.html#cb57-3" aria-hidden="true" tabindex="-1"></a>oarfish_iso_matched_gene <span class="ot">&lt;-</span> <span class="fu">subset</span>(iso_seurat_obj, <span class="at">cells =</span>filt_seurat_object<span class="sc">@</span>graphs[[<span class="st">&quot;RNA_nn&quot;</span>]]<span class="sc">@</span>Dimnames[[<span class="dv">1</span>]])</span>
 <span id="cb57-4"><a href="add-isoform-counts-to-seurat-object.html#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -408,7 +408,7 @@ div.csl-indent {
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="add-isoform-counts-to-seurat-object.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#lets also plot the isoform data on the gene level clsuters.</span></span>
 <span id="cb63-2"><a href="add-isoform-counts-to-seurat-object.html#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">features =</span> plot_features_list, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span></span>
 <span id="cb63-3"><a href="add-isoform-counts-to-seurat-object.html#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(</span>
-<span id="cb63-4"><a href="add-isoform-counts-to-seurat-object.html#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&#39;VIM isoform expresstion plotted on gene level clusters&#39;</span>,</span>
+<span id="cb63-4"><a href="add-isoform-counts-to-seurat-object.html#cb63-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&#39;VIM isoform expression plotted on gene level clusters&#39;</span>,</span>
 <span id="cb63-5"><a href="add-isoform-counts-to-seurat-object.html#cb63-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#caption = &#39;made with patchwork&#39;,</span></span>
 <span id="cb63-6"><a href="add-isoform-counts-to-seurat-object.html#cb63-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">theme =</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span>
 <span id="cb63-7"><a href="add-isoform-counts-to-seurat-object.html#cb63-7" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
@@ -462,42 +462,42 @@ div.csl-indent {
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/04-Adding-Isoform-Information-to-the-Seurat-object.Rmd",
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>

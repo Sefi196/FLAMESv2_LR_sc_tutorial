@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-02-10" />
+<meta name="date" content="2025-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -219,7 +219,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
@@ -263,7 +263,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="novel-isoforms" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> <strong>Novel isoforms</strong><a href="novel-isoforms.html#novel-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>With long read sequencing its possible to explore both known and novel isofroms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isofroms are full-splice-matches i.e they match the reference <code>GTF</code> there are a few we could extract.</p>
+<p>With long read sequencing its possible to explore both known and novel isoforms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isoforms are full-splice-matches i.e they match the reference <code>GTF</code> there are a few we could extract.</p>
 <div id="find-all-the-genes-that-express-at-least-1-novel-isoform" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Find all the genes that express at least 1 novel isoform<a href="novel-isoforms.html#find-all-the-genes-that-express-at-least-1-novel-isoform" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>First lets get a list of genes with at least one novel isoform</p>
@@ -277,7 +277,7 @@ div.csl-indent {
 <span id="cb102-7"><a href="novel-isoforms.html#cb102-7" aria-hidden="true" tabindex="-1"></a>isoform_ids<span class="sc">$</span>Total_Expression <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(seu_obj<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">$</span>counts)</span>
 <span id="cb102-8"><a href="novel-isoforms.html#cb102-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb102-9"><a href="novel-isoforms.html#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter rows where &#39;IDs&#39; contains the string &quot;Bambu&quot;</span></span>
-<span id="cb102-10"><a href="novel-isoforms.html#cb102-10" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(isoform_ids[<span class="fu">grepl</span>(<span class="st">&quot;Bambu&quot;</span>, isoform_ids<span class="sc">$</span>IDs), ])  <span class="co"># can comment this out if we want to do this for all isofroms </span></span>
+<span id="cb102-10"><a href="novel-isoforms.html#cb102-10" aria-hidden="true" tabindex="-1"></a>isoform_ids <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(isoform_ids[<span class="fu">grepl</span>(<span class="st">&quot;Bambu&quot;</span>, isoform_ids<span class="sc">$</span>IDs), ])  <span class="co"># can comment this out if we want to do this for all isoforms </span></span>
 <span id="cb102-11"><a href="novel-isoforms.html#cb102-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb102-12"><a href="novel-isoforms.html#cb102-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate the &#39;IDs&#39; column into two columns </span></span>
 <span id="cb102-13"><a href="novel-isoforms.html#cb102-13" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="ot">&lt;-</span> isoform_ids <span class="sc">%&gt;%</span> <span class="fu">separate</span>(IDs, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>)</span>
@@ -308,7 +308,7 @@ div.csl-indent {
 ##  9 ENSG00000295459             1             68.7
 ## 10 ENSG00000231748             1             62  
 ## # ℹ 21 more rows</code></pre>
-<p>In this table we can see that we have a total of 31 novel isofroms. This number is smaller than we might expect but this is because Bambu <span class="citation">(<a href="references.html#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> is quite conservative for single cell data and we haven’t sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the <code>NDR</code> parameter or using a different discovery method like stringtie2 <span class="citation">(<a href="references.html#ref-kovaka2019" role="doc-biblioref">Kovaka et al., 2019</a>)</span>.</p>
+<p>In this table we can see that we have a total of 31 novel isoforms. This number is smaller than we might expect but this is because Bambu <span class="citation">(<a href="references.html#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> is quite conservative for single cell data and we haven’t sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the <code>NDR</code> parameter or using a different discovery method like stringtie2 <span class="citation">(<a href="references.html#ref-kovaka2019" role="doc-biblioref">Kovaka et al., 2019</a>)</span>.</p>
 <p>In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoViz as described in the section <a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures">6.5</a>.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="novel-isoforms.html#cb104-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304.png&quot;</span>)</span></code></pre></div>
@@ -327,16 +327,14 @@ Figure 8.1: IsoViz visualization of Novel OAZ2 isoform.
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="novel-isoforms.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
 <span id="cb105-2"><a href="novel-isoforms.html#cb105-2" aria-hidden="true" tabindex="-1"></a>SQANTI[<span class="fu">grep</span>(<span class="st">&#39;BambuTx25&#39;</span>, SQANTI<span class="sc">$</span>isoform), ]</span></code></pre></div>
 </details>
-<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS
-## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA
-##       diff_to_gene_TSS diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc
-## 21835               -2               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA
-##        bite iso_exp gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD
-## 21835 FALSE      NA       NA        NA         C non_coding         NA         NA        NA      NA                NA              NA            NA
-##       perc_A_downstream_TTS seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist
-## 21835                    10 GTGGTTGGTCTATTCTTTAT                NA               NA                 NA                NA          NA         NA
-##       polyA_motif_found ORF_seq ratio_TSS
-## 21835                NA    &lt;NA&gt;        NA</code></pre>
+<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS diff_to_gene_TSS
+## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA               -2
+##       diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp
+## 21835               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
+##       FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS
+## 21835         C non_coding         NA         NA        NA      NA                NA              NA            NA                    10 GTGGTTGGTCTATTCTTTAT
+##       dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found ORF_seq ratio_TSS
+## 21835                NA               NA                 NA                NA          NA         NA                NA    &lt;NA&gt;        NA</code></pre>
 <p>To better understand these SQANTI results lets zoom in on exon 2 of <em>OAZ2</em>. Here, we observe a small break within the exon. The novel <strong>BambuTx25</strong> does not contain this break so perhaps this change affects the resulting amino acid sequence.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="novel-isoforms.html#cb107-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304_zoom.png&quot;</span>)</span></code></pre></div>
@@ -540,42 +538,42 @@ Figure 8.3: IsoViz visualization of Novel ZMAT5 isoform.
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/07-Isofrom-Classification.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/07-Isofrom-Classification.Rmd",
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/07-Isofrom-Classification.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/07-Isofrom-Classification.Rmd",
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
