@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Novel isoforms | FLAMES Single-Cell RNA-seq Tutorial</title>
-  <meta name="description" content="Chapter 8 Novel isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <title>Chapter 8 Novel isoforms | Long-read Single-Cell RNA-seq analysis tutorial</title>
+  <meta name="description" content="Chapter 8 Novel isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Novel isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:title" content="Chapter 8 Novel isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Novel isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="twitter:title" content="Chapter 8 Novel isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-04-24" />
+<meta name="date" content="2025-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,7 +160,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">FLAMES single cell RNA-seq Tutorial</a></li>
+<li><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
@@ -253,7 +253,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a>
           </h1>
         </div>
 
@@ -327,14 +327,14 @@ Figure 8.1: IsoViz visualization of Novel OAZ2 isoform.
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="novel-isoforms.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
 <span id="cb105-2"><a href="novel-isoforms.html#cb105-2" aria-hidden="true" tabindex="-1"></a>SQANTI[<span class="fu">grep</span>(<span class="st">&#39;BambuTx25&#39;</span>, SQANTI<span class="sc">$</span>isoform), ]</span></code></pre></div>
 </details>
-<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS diff_to_gene_TSS
-## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA               -2
-##       diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp gene_exp ratio_exp
-## 21835               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA       NA        NA
-##       FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS seq_A_downstream_TTS
-## 21835         C non_coding         NA         NA        NA      NA                NA              NA            NA                    10 GTGGTTGGTCTATTCTTTAT
-##       dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found ORF_seq ratio_TSS
-## 21835                NA               NA                 NA                NA          NA         NA                NA    &lt;NA&gt;        NA</code></pre>
+<pre><code>##         isoform chrom strand length exons structural_category    associated_gene associated_transcript ref_length ref_exons diff_to_TSS diff_to_TTS
+## 21835 BambuTx25 chr15      -   1870     5    novel_in_catalog ENSG00000180304.14                 novel       1934         6          NA          NA
+##       diff_to_gene_TSS diff_to_gene_TTS      subcategory RTS_stage all_canonical min_sample_cov min_cov min_cov_pos sd_cov FL n_indels n_indels_junc  bite iso_exp
+## 21835               -2               -1 intron_retention     FALSE     canonical             NA      NA          NA     NA NA       NA            NA FALSE      NA
+##       gene_exp ratio_exp FSM_class     coding ORF_length CDS_length CDS_start CDS_end CDS_genomic_start CDS_genomic_end predicted_NMD perc_A_downstream_TTS
+## 21835       NA        NA         C non_coding         NA         NA        NA      NA                NA              NA            NA                    10
+##       seq_A_downstream_TTS dist_to_CAGE_peak within_CAGE_peak dist_to_polyA_site within_polyA_site polyA_motif polyA_dist polyA_motif_found ORF_seq ratio_TSS
+## 21835 GTGGTTGGTCTATTCTTTAT                NA               NA                 NA                NA          NA         NA                NA    &lt;NA&gt;        NA</code></pre>
 <p>To better understand these SQANTI results lets zoom in on exon 2 of <em>OAZ2</em>. Here, we observe a small break within the exon. The novel <strong>BambuTx25</strong> does not contain this break so perhaps this change affects the resulting amino acid sequence.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="novel-isoforms.html#cb107-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000180304_zoom.png&quot;</span>)</span></code></pre></div>

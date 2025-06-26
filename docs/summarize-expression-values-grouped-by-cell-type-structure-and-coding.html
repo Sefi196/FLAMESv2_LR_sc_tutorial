@@ -4,34 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Long-read Single-Cell RNA-seq analysis tutorial</title>
-  <meta name="description" content="References | Long-read Single-Cell RNA-seq analysis tutorial" />
+  <title>Chapter 20 Summarize expression values grouped by cell type, structure, and coding | figure_genration_for_flames_v2</title>
+  <meta name="description" content="Chapter 20 Summarize expression values grouped by cell type, structure, and coding | figure_genration_for_flames_v2" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="References | Long-read Single-Cell RNA-seq analysis tutorial" />
+  <meta property="og:title" content="Chapter 20 Summarize expression values grouped by cell type, structure, and coding | figure_genration_for_flames_v2" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Long-read Single-Cell RNA-seq analysis tutorial" />
+  <meta name="twitter:title" content="Chapter 20 Summarize expression values grouped by cell type, structure, and coding | figure_genration_for_flames_v2" />
   
   
   
 
-<meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
+<meta name="author" content="Sefi" />
 
 
-<meta name="date" content="2025-06-27" />
+<meta name="date" content="2025-03-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="appendix.html"/>
-
+<link rel="prev" href="filter-select-relevant-columns-and-categorize-structural-categories.html"/>
+<link rel="next" href="define-factor-levels-for-plotting.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -160,7 +160,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a></li>
+<li><a href="./">FLAMES single cell RNA-seq Tutorial</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
@@ -219,7 +219,7 @@ div.csl-indent {
 <li class="chapter" data-level="8.2" data-path="novel-isoforms.html"><a href="novel-isoforms.html#visualizing-oaz2-novel-isoform"><i class="fa fa-check"></i><b>8.2</b> Visualizing OAZ2 novel isoform</a></li>
 <li class="chapter" data-level="8.3" data-path="novel-isoforms.html"><a href="novel-isoforms.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>8.3</b> Functional impacts of novel isoforms</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> Multisample analysis</a>
 <ul>
 <li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
 <li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
@@ -242,6 +242,37 @@ div.csl-indent {
 <li class="chapter" data-level="10.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-count-matrix"><i class="fa fa-check"></i><b>10.3</b> Convert Oarfish files to count matrix</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
+<li class="chapter" data-level="11" data-path="compute-total-proportions-across-all-data-no-per-cell-type-grouping.html"><a href="compute-total-proportions-across-all-data-no-per-cell-type-grouping.html"><i class="fa fa-check"></i><b>11</b> Compute total proportions across all data (no per-cell-type grouping)</a></li>
+<li class="chapter" data-level="12" data-path="define-structural-category-order.html"><a href="define-structural-category-order.html"><i class="fa fa-check"></i><b>12</b> Define structural category order</a></li>
+<li class="chapter" data-level="13" data-path="define-a-custom-color-palette.html"><a href="define-a-custom-color-palette.html"><i class="fa fa-check"></i><b>13</b> Define a custom color palette</a></li>
+<li class="chapter" data-level="14" data-path="plot-total-proportion.html"><a href="plot-total-proportion.html"><i class="fa fa-check"></i><b>14</b> Plot total proportion</a></li>
+<li class="chapter" data-level="15" data-path="summarise-expression-by-structural-categories.html"><a href="summarise-expression-by-structural-categories.html"><i class="fa fa-check"></i><b>15</b> Summarise expression by structural categories</a></li>
+<li class="chapter" data-level="16" data-path="set-the-order-of-structural-categories.html"><a href="set-the-order-of-structural-categories.html"><i class="fa fa-check"></i><b>16</b> Set the order of structural categories</a></li>
+<li class="chapter" data-level="17" data-path="reorder-the-factor-levels.html"><a href="reorder-the-factor-levels.html"><i class="fa fa-check"></i><b>17</b> Reorder the factor levels</a></li>
+<li class="chapter" data-level="18" data-path="plot.html"><a href="plot.html"><i class="fa fa-check"></i><b>18</b> Plot</a></li>
+<li class="chapter" data-level="19" data-path="filter-select-relevant-columns-and-categorize-structural-categories.html"><a href="filter-select-relevant-columns-and-categorize-structural-categories.html"><i class="fa fa-check"></i><b>19</b> Filter, select relevant columns, and categorize structural categories</a></li>
+<li class="chapter" data-level="20" data-path="summarize-expression-values-grouped-by-cell-type-structure-and-coding.html"><a href="summarize-expression-values-grouped-by-cell-type-structure-and-coding.html"><i class="fa fa-check"></i><b>20</b> Summarize expression values grouped by cell type, structure, and coding</a></li>
+<li class="chapter" data-level="21" data-path="define-factor-levels-for-plotting.html"><a href="define-factor-levels-for-plotting.html"><i class="fa fa-check"></i><b>21</b> Define factor levels for plotting</a></li>
+<li class="chapter" data-level="22" data-path="plot-with-alpha-for-coding-status.html"><a href="plot-with-alpha-for-coding-status.html"><i class="fa fa-check"></i><b>22</b> Plot with <code>alpha</code> for coding status</a></li>
+<li class="chapter" data-level="23" data-path="filter-and-prepare-data.html"><a href="filter-and-prepare-data.html"><i class="fa fa-check"></i><b>23</b> Filter and prepare data</a></li>
+<li class="chapter" data-level="24" data-path="set-factor-levels.html"><a href="set-factor-levels.html"><i class="fa fa-check"></i><b>24</b> Set factor levels</a></li>
+<li class="chapter" data-level="25" data-path="plot-1.html"><a href="plot-1.html"><i class="fa fa-check"></i><b>25</b> Plot</a></li>
+<li class="chapter" data-level="26" data-path="summarize-data-across-all-cell-types.html"><a href="summarize-data-across-all-cell-types.html"><i class="fa fa-check"></i><b>26</b> Summarize data across all cell types</a></li>
+<li class="chapter" data-level="27" data-path="assuming-your-coding-variable-is-defined-as-follows.html"><a href="assuming-your-coding-variable-is-defined-as-follows.html"><i class="fa fa-check"></i><b>27</b> Assuming your coding variable is defined as follows</a></li>
+<li class="chapter" data-level="28" data-path="example-coding-variable-values-coding-and-non-coding.html"><a href="example-coding-variable-values-coding-and-non-coding.html"><i class="fa fa-check"></i><b>28</b> Example coding variable values: “coding” and “non-coding”</a></li>
+<li class="chapter" data-level="29" data-path="calculate-the-total-and-canonical-isoforms-by-gene-and-cell-type.html"><a href="calculate-the-total-and-canonical-isoforms-by-gene-and-cell-type.html"><i class="fa fa-check"></i><b>29</b> Calculate the total and canonical isoforms by gene and cell type</a></li>
+<li class="chapter" data-level="30" data-path="handle-cases-where-total_isoforms-0-to-avoid-division-by-zero.html"><a href="handle-cases-where-total_isoforms-0-to-avoid-division-by-zero.html"><i class="fa fa-check"></i><b>30</b> Handle cases where total_isoforms == 0 to avoid division by zero</a></li>
+<li class="chapter" data-level="31" data-path="calculate-non-canonical-proportions.html"><a href="calculate-non-canonical-proportions.html"><i class="fa fa-check"></i><b>31</b> Calculate non-canonical proportions</a></li>
+<li class="chapter" data-level="32" data-path="reshape-the-data-for-the-stacked-bar-plot.html"><a href="reshape-the-data-for-the-stacked-bar-plot.html"><i class="fa fa-check"></i><b>32</b> Reshape the data for the stacked bar plot</a></li>
+<li class="chapter" data-level="33" data-path="create-the-stacked-bar-plot-with-canonical-isoforms-at-the-bottom.html"><a href="create-the-stacked-bar-plot-with-canonical-isoforms-at-the-bottom.html"><i class="fa fa-check"></i><b>33</b> Create the stacked bar plot with canonical isoforms at the bottom</a></li>
+<li class="chapter" data-level="34" data-path="now-we-can-do-this-for-a-list-of-genes.html"><a href="now-we-can-do-this-for-a-list-of-genes.html"><i class="fa fa-check"></i><b>34</b> Now we can do this for a list of genes</a></li>
+<li class="chapter" data-level="35" data-path="reshape-the-data-for-the-stacked-bar-plot-1.html"><a href="reshape-the-data-for-the-stacked-bar-plot-1.html"><i class="fa fa-check"></i><b>35</b> Reshape the data for the stacked bar plot</a></li>
+<li class="chapter" data-level="36" data-path="plot-2.html"><a href="plot-2.html"><i class="fa fa-check"></i><b>36</b> Plot</a></li>
+<li class="chapter" data-level="37" data-path="filter-the-data-for-the-selected-genes-and-summarize-by-isoform-and-cell-type.html"><a href="filter-the-data-for-the-selected-genes-and-summarize-by-isoform-and-cell-type.html"><i class="fa fa-check"></i><b>37</b> Filter the data for the selected genes and summarize by isoform and cell type</a></li>
+<li class="chapter" data-level="38" data-path="now-for-each-gene-and-cell-type-calculate-the-total-expression-for-that-gene.html"><a href="now-for-each-gene-and-cell-type-calculate-the-total-expression-for-that-gene.html"><i class="fa fa-check"></i><b>38</b> Now, for each gene and cell type, calculate the total expression for that gene</a></li>
+<li class="chapter" data-level="39" data-path="calculate-the-proportion-of-each-isoforms-expression-relative-to-the-total-gene-expression-in-each-cell-type.html"><a href="calculate-the-proportion-of-each-isoforms-expression-relative-to-the-total-gene-expression-in-each-cell-type.html"><i class="fa fa-check"></i><b>39</b> Calculate the proportion of each isoform’s expression relative to the total gene expression in each cell type</a></li>
+<li class="chapter" data-level="40" data-path="reshape-the-data-for-the-stacked-bar-plot-2.html"><a href="reshape-the-data-for-the-stacked-bar-plot-2.html"><i class="fa fa-check"></i><b>40</b> Reshape the data for the stacked bar plot</a></li>
+<li class="chapter" data-level="41" data-path="plot-3.html"><a href="plot-3.html"><i class="fa fa-check"></i><b>41</b> Plot</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -253,7 +284,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">figure_genration_for_flames_v2</a>
           </h1>
         </div>
 
@@ -261,66 +292,22 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1><strong>References</strong><a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-chen2023" class="csl-entry">
-Chen, Y., Sim, A., Wan, Y. K., Yeo, K., Lee, J. J. X., Ling, M. H., Love, M. I., &amp; Göke, J. (2023). Context-aware transcript quantification from long-read RNA-seq data with Bambu. <em>Nature Methods</em>, <em>20</em>(8), 1187–1195. <a href="https://doi.org/10.1038/s41592-023-01908-w">https://doi.org/10.1038/s41592-023-01908-w</a>
+<div id="summarize-expression-values-grouped-by-cell-type-structure-and-coding" class="section level1 hasAnchor" number="20">
+<h1><span class="header-section-number">Chapter 20</span> Summarize expression values grouped by cell type, structure, and coding<a href="summarize-expression-values-grouped-by-cell-type-structure-and-coding.html#summarize-expression-values-grouped-by-cell-type-structure-and-coding" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>proportion_data &lt;- long_data_filt %&gt;%
+group_by(cell_type, structural_category, coding) %&gt;%
+summarise(total_expression = sum(expression, na.rm = TRUE), .groups = “drop”) %&gt;%
+group_by(cell_type) %&gt;%
+mutate(proportion = total_expression / sum(total_expression)) %&gt;%
+ungroup()</p>
 </div>
-<div id="ref-hahne2016" class="csl-entry">
-Hahne, F., &amp; Ivanek, R. (2016). <em>Visualizing genomic data using gviz and bioconductor</em> (pp. 335–351). Springer New York. <a href="https://doi.org/10.1007/978-1-4939-3578-9_16">https://doi.org/10.1007/978-1-4939-3578-9_16</a>
-</div>
-<div id="ref-jousheghani2024" class="csl-entry">
-Jousheghani, Z. Z., &amp; Patro, R. (2024). <em>Oarfish: Enhanced probabilistic modeling leads to improved accuracy in long read transcriptome quantification</em>. <a href="http://dx.doi.org/10.1101/2024.02.28.582591">http://dx.doi.org/10.1101/2024.02.28.582591</a>
-</div>
-<div id="ref-korsunsky2019" class="csl-entry">
-Korsunsky, I., Millard, N., Fan, J., Slowikowski, K., Zhang, F., Wei, K., Baglaenko, Y., Brenner, M., Loh, P., &amp; Raychaudhuri, S. (2019). Fast, sensitive and accurate integration of single-cell data with Harmony. <em>Nature Methods</em>, <em>16</em>(12), 1289–1296. <a href="https://doi.org/10.1038/s41592-019-0619-0">https://doi.org/10.1038/s41592-019-0619-0</a>
-</div>
-<div id="ref-kovaka2019" class="csl-entry">
-Kovaka, S., Zimin, A. V., Pertea, G. M., Razaghi, R., Salzberg, S. L., &amp; Pertea, M. (2019). Transcriptome assembly from long-read RNA-seq alignments with StringTie2. <em>Genome Biology</em>, <em>20</em>(1). <a href="https://doi.org/10.1186/s13059-019-1910-1">https://doi.org/10.1186/s13059-019-1910-1</a>
-</div>
-<div id="ref-pardo-palacios2024" class="csl-entry">
-Pardo-Palacios, F. J., Arzalluz-Luque, A., Kondratova, L., Salguero, P., Mestre-Tomás, J., Amorín, R., Estevan-Morió, E., Liu, T., Nanni, A., McIntyre, L., Tseng, E., &amp; Conesa, A. (2024). SQANTI3: curation of long-read transcriptomes for accurate identification of known and novel isoforms. <em>Nature Methods</em>, <em>21</em>(5), 793–797. <a href="https://doi.org/10.1038/s41592-024-02229-2">https://doi.org/10.1038/s41592-024-02229-2</a>
-</div>
-<div id="ref-smedley2009" class="csl-entry">
-Smedley, D., Haider, S., Ballester, B., Holland, R., London, D., Thorisson, G., &amp; Kasprzyk, A. (2009). BioMart <span></span> biological queries made easy. <em>BMC Genomics</em>, <em>10</em>(1). <a href="https://doi.org/10.1186/1471-2164-10-22">https://doi.org/10.1186/1471-2164-10-22</a>
-</div>
-<div id="ref-tian2021" class="csl-entry">
-Tian, L., Jabbari, J. S., Thijssen, R., Gouil, Q., Amarasinghe, S. L., Voogd, O., Kariyawasam, H., Du, M. R. M., Schuster, J., Wang, C., Su, S., Dong, X., Law, C. W., Lucattini, A., Prawer, Y. D. J., Collar-Fernández, C., Chung, J. D., Naim, T., Chan, A., … Ritchie, M. E. (2021). Comprehensive characterization of single-cell full-length isoforms in human and mouse with long-read sequencing. <em>Genome Biology</em>, <em>22</em>(1). <a href="https://doi.org/10.1186/s13059-021-02525-6">https://doi.org/10.1186/s13059-021-02525-6</a>
-</div>
-<div id="ref-tjeldnes2021" class="csl-entry">
-Tjeldnes, H., Labun, K., Torres Cleuren, Y., Chyżyńska, K., Świrski, M., &amp; Valen, E. (2021). ORFik: a comprehensive R toolkit for the analysis of translation. <em>BMC Bioinformatics</em>, <em>22</em>(1). <a href="https://doi.org/10.1186/s12859-021-04254-w">https://doi.org/10.1186/s12859-021-04254-w</a>
-</div>
-<div id="ref-trapnell2014" class="csl-entry">
-Trapnell, C., Cacchiarelli, D., Grimsby, J., Pokharel, P., Li, S., Morse, M., Lennon, N. J., Livak, K. J., Mikkelsen, T. S., &amp; Rinn, J. L. (2014). The dynamics and regulators of cell fate decisions are revealed by pseudotemporal ordering of single cells. <em>Nature Biotechnology</em>, <em>32</em>(4), 381–386. <a href="https://doi.org/10.1038/nbt.2859">https://doi.org/10.1038/nbt.2859</a>
-</div>
-<div id="ref-wan2024" class="csl-entry">
-Wan, C. Y., Davis, J., Chauhan, M., Gleeson, J., Prawer, Y. J., De Paoli-Iseppi, R., Wells, C., Choi, J., &amp; Clark, M. (2024). IsoVis <span></span> a webserver for visualization and annotation of alternative RNA isoforms. <em>Nucleic Acids Research</em>, <em>52</em>(W1), W341–W347. <a href="https://doi.org/10.1093/nar/gkae343">https://doi.org/10.1093/nar/gkae343</a>
-</div>
-<div id="ref-you2023a" class="csl-entry">
-You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., Shim, H., &amp; Clark, M. B. (2023). Identification of cell barcodes from long-read single-cell RNA-seq with BLAZE. <em>Genome Biology</em>, <em>24</em>(1). <a href="https://doi.org/10.1186/s13059-023-02907-y">https://doi.org/10.1186/s13059-023-02907-y</a>
-</div>
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="appendix.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="filter-select-relevant-columns-and-categorize-structural-categories.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="define-factor-levels-for-plotting.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -334,46 +321,60 @@ You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., S
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-  "sharing": {
-    "github": false,
-    "facebook": true,
-    "twitter": true,
-    "linkedin": false,
-    "weibo": false,
-    "instapaper": false,
-    "vk": false,
-    "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-  },
-  "fontsettings": {
-    "theme": "white",
-    "family": "sans",
-    "size": 2
-  },
-  "edit": {
-    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/15_refs.Rmd",
-    "text": "Edit"
-  },
-  "history": {
-    "link": null,
-    "text": null
-  },
-  "view": {
-    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/15_refs.Rmd",
-    "text": null
-  },
-  "download": null,
-  "search": {
-    "engine": "fuse",
-    "options": null
-  },
-  "toc": {
-    "collapse": "subsection"
-  }
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/plots_for_flames_v2_paper.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/plots_for_flames_v2_paper.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

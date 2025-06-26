@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Finding marker genes and isoforms | FLAMES Single-Cell RNA-seq Tutorial</title>
-  <meta name="description" content="Chapter 5 Finding marker genes and isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <title>Chapter 5 Finding marker genes and isoforms | Long-read Single-Cell RNA-seq analysis tutorial</title>
+  <meta name="description" content="Chapter 5 Finding marker genes and isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Finding marker genes and isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta property="og:title" content="Chapter 5 Finding marker genes and isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Finding marker genes and isoforms | FLAMES Single-Cell RNA-seq Tutorial" />
+  <meta name="twitter:title" content="Chapter 5 Finding marker genes and isoforms | Long-read Single-Cell RNA-seq analysis tutorial" />
   
   
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-04-24" />
+<meta name="date" content="2025-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,7 +160,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">FLAMES single cell RNA-seq Tutorial</a></li>
+<li><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
@@ -253,7 +253,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">FLAMES Single-Cell RNA-seq Tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a>
           </h1>
         </div>
 
@@ -536,7 +536,7 @@ div.csl-indent {
 <span id="cb79-4"><a href="finding-marker-genes-and-isoforms.html#cb79-4" aria-hidden="true" tabindex="-1"></a>glut_DE_iso <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_iso_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>)</span>
 <span id="cb79-5"><a href="finding-marker-genes-and-isoforms.html#cb79-5" aria-hidden="true" tabindex="-1"></a>glut_DE_gene <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_gene_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>) </span>
 <span id="cb79-6"><a href="finding-marker-genes-and-isoforms.html#cb79-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-7"><a href="finding-marker-genes-and-isoforms.html#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our colcano plot </span></span>
+<span id="cb79-7"><a href="finding-marker-genes-and-isoforms.html#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our volcano plot </span></span>
 <span id="cb79-8"><a href="finding-marker-genes-and-isoforms.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
 <span id="cb79-9"><a href="finding-marker-genes-and-isoforms.html#cb79-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
 <span id="cb79-10"><a href="finding-marker-genes-and-isoforms.html#cb79-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
@@ -546,7 +546,7 @@ div.csl-indent {
 <span id="cb79-14"><a href="finding-marker-genes-and-isoforms.html#cb79-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Genes </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="768" /></p>
-<p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow users to plot all the isoforms from a given gene on the Volaco plot making interpretation of the data a bit cleaner. Here just like in <a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets">3.1</a> <strong>(this is wrong just cheeking the citation works)</strong> we can see two different isoforms of the TBR1 gene showing regulation this cell type</p>
+<p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow users to plot all the isoforms from a given gene on the Volcano plot making interpretation of the data a bit cleaner. Here we can see two different isoforms of the TBR1 gene showing enrichment in this cell type</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="finding-marker-genes-and-isoforms.html#cb80-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
 <span id="cb80-2"><a href="finding-marker-genes-and-isoforms.html#cb80-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>

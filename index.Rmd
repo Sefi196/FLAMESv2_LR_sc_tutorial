@@ -1,5 +1,5 @@
 ---
-title: "FLAMES Single-Cell RNA-seq Tutorial"
+title: "Long-read Single-Cell RNA-seq analysis tutorial"
 author: "<strong>Sefi Prawer</strong><br>Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics<br>University of Melbourne"
 date: "`r Sys.Date()`"
 output:
