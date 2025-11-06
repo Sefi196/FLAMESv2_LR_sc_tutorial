@@ -14,16 +14,6 @@ While this tutorial covers the core aspects of single-cell long-read data analys
 
 Ultimately, this tutorial, in combination with long-read tools such as FLAMES, offers a powerful toolkit for exploring and analyzing isoform-level dynamics in single cells. This workflow can be applied to other experimental contexts to identify candidate isoforms involved in development or disease pathogenesis.
 
-**Notes**
-
-**need to add in multiple mode. not sure if this goes in in a separate tutorial or chapter. This would include.**
-
-1.  **Data integration**
-
-2.  **Trajectory analysis and isoforms that change with pseudotime**
-
-3.  **DTU using isoform switch analyser**
-
 ## Acknowledgements {.unnumbered}
 
 Thank you to Manveer and Michaela for reviewing this book and providing valuable suggestions to improve its clarity and content. Your feedback has contributed to making this a more useful resource for researchers working with long-read single-cell RNA sequencing data.

@@ -8,9 +8,9 @@ bibliography: references.bib
 
 ## Classification with SQANTI
 
-In the previous Chapter we looked at some genes of interst like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription strat sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 [@pardo-palacios2024] which will categorize our isoforms[^07-isofrom-classification-1] and determine whether they are coding or non-coding.
+In the previous Chapter we looked at some genes of interest like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription start sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 [@pardo-palacios2024] which will categorize our isoforms[^07-isoform-classification-1] and determine whether they are coding or non-coding.
 
-[^07-isofrom-classification-1]: For more detail about the classification system see the SQANTI publication.
+[^07-isoform-classification-1]: For more detail about the classification system see the SQANTI publication.
 
 If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a `classifications.txt` file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.
 
@@ -370,9 +370,9 @@ print(isoform_counts)
 
 In this table we can see that we have a total of 31 novel isoforms. This number is smaller than we might expect but this is because Bambu [@chen2023] is quite conservative for single cell data and we haven't sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the `NDR` parameter or using a different discovery method like stringtie2 [@kovaka2019].
 
-In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoViz as described in the section \@ref(visualization-of-isoform-structures).
+In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoVis as described in the section \@ref(visualization-of-isoform-structures).
 
-```{r isoviz-plot2, fig.cap="IsoViz visualization of Novel OAZ2 isoform.", out.width="1000px"}
+```{r IsoVis-plot2, fig.cap="IsoVis visualization of Novel OAZ2 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
 ```
 
@@ -387,7 +387,7 @@ SQANTI[grep('BambuTx25', SQANTI$isoform), ]
 
 To better understand these SQANTI results lets zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. The novel **BambuTx25** does not contain this break so perhaps this change affects the resulting amino acid sequence.
 
-```{r isoviz-plot-zoom, fig.cap="IsoViz visualization of exon 2 of OAZ2.", out.width="1000px"}
+```{r IsoVis-plot-zoom, fig.cap="IsoVis visualization of exon 2 of OAZ2.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 ```
 
@@ -543,7 +543,7 @@ Visualizing ORFs using the above code chunck shows that the **BambuTx25_1\_ORF**
 
 We can examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some import regulatory role in the 5' UTR yet the protein remains unchanged.
 
-```{r isoviz-plot3, fig.cap="IsoViz visualization of Novel ZMAT5 isoform.", out.width="1000px"}
+```{r IsoVis-plot3, fig.cap="IsoVis visualization of Novel ZMAT5 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
 
 ```

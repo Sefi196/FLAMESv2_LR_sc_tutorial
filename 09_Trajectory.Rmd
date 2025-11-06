@@ -122,13 +122,6 @@ From this analysis, we observe a well-defined trajectory that transitions from s
 
 Given this biologically meaningful trajectory, we examined genes that exhibit expression changes along pseudotime. Below are 12 top hits, identified based on the number of features tested, showing significant correlations between expression and trajectory progression. These genes may serve as markers for specific cell clusters or be differentially expressed based on other testing methods. We have visualized these results using both a feature plot and a Monocle3 dot plot.
 
-Notes:
-
-1.  Add labelles for figures
-2.  correct figure size.
-3.  Add reduction param
-4.  work out the empty space
-
 ```{r traj_genes, echo=TRUE, fig.height=6, fig.width=12, message=FALSE, warning=FALSE, cache=TRUE}
 perform_trajectory_analysis(seurat_obj = obj, "RNA", prefix = "Multi-sample_tutorial",
                             cluster_name="sctype_db",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 500)

@@ -24,10 +24,12 @@ To incorporate the background barcode list, users should run FLAMES as they did 
 ```{R, eval=FALSE, include=TRUE, echo=TRUE}
 # Run FLAMES using background barcode list genrated in the first run. 
 
-sce <- sc_long_pipeline(fastq=fastq, outdir=output, annot=GTF, genome_bookdfa=genome, 
+ppl <- SingleCellPipeline(fastq=fastq, outdir=output, annot=GTF, genome=genome, 
                          #minimap=minimap_dir, k8=k8,
                          config_file=config_file,
                          expect_cell_number=1000,  barcodes_file='path/to/emtpy_bc_list.csv')
+ppl <- run_FLAMES(ppl)
+sce <- experiment(ppl)
 
 ```
 

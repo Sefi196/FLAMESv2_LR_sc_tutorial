@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-10-22" />
+<meta name="date" content="2025-11-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -264,13 +264,13 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Long-read Single-Cell RNA-seq analysis tutorial</h1>
 <p class="author"><em><strong>Sefi Prawer</strong><br>Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics<br>University of Melbourne</em></p>
-<p class="date"><em>2025-10-22</em></p>
+<p class="date"><em>2025-11-06</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> <strong>Introduction</strong><a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <hr />
 <p><strong>Welcome to the FLAMESv2 analysis tutorial!</strong></p>
-<p>In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package <span class="citation">(<a href="references.html#ref-tian2021" role="doc-biblioref">Tian et al., 2021</a>)</span>. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.</p>
+<p>In this tutorial, we demonstrate how to process and analyze long-read single-cell RNA sequencing data using outputs from the FLAMES package <span class="citation">(<a href="references.html#ref-tian2021" role="doc-biblioref">Tian et al., 2021</a>; <a href="references.html#ref-wang2025" role="doc-biblioref">Wang et al., 2025</a>)</span>. FLAMES enables the identification and quantification of isoform-level expression in single cells, providing a unique opportunity to uncover transcriptomic complexity that is often undetectable in short-read data.</p>
 <p>We will demonstrate how to load and explore FLAMES outputs in Seurat and other popular single-cell analysis tools. By following this workflow, you’ll learn how to:</p>
 <ul>
 <li><p><strong>Preprocess long-read single-cell data</strong></p></li>
@@ -278,10 +278,10 @@ div.csl-indent {
 <li><p><strong>Identify differentially expressed isoforms across cell types</strong></p></li>
 <li><p><strong>Detect novel isoforms with potential functional impact</strong></p></li>
 </ul>
-<p>If you’re familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read single cell sequencing provides isoform-level information which enables you to explore isoform dynamics in single cells. This can be useful for exploring complex developmental systems or disease parthenogenesis.</p>
+<p>If you’re familiar with short-read data processing, much of the pre-processing workflow will feel intuitive. However, long-read single cell sequencing provides isoform-level information which enables you to explore isoform dynamics in single cells. This can be useful for exploring complex developmental systems or disease pathogenesis.</p>
 <div id="prerequisites" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>sc_long_pipeline</code> or <code>sc_long_multisample_pipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="references.html#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish <span class="citation">(<a href="references.html#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
+<p>This tutorial assumes you have already processed your long-read single-cell data using FLAMES, either through the <code>SingleCellPipeline</code> or <code>MultiSampleSCPipeline</code>. Please ensure that the following parameters in your configuration file are set to <code>TRUE</code> to enable isoform identification and quantification with Bambu <span class="citation">(<a href="references.html#ref-chen2023" role="doc-biblioref">Chen et al., 2023</a>)</span> and Oarfish <span class="citation">(<a href="references.html#ref-jousheghani2024" role="doc-biblioref">Jousheghani &amp; Patro, 2024</a>)</span>:</p>
 <ul>
 <li><p><code>"bambu_isoform_identification": [true]</code></p></li>
 <li><p><code>"oarfish_quantification": [true]</code></p></li>
@@ -291,7 +291,8 @@ div.csl-indent {
 </div>
 <div id="getting-started-with-the-data" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Getting Started with the Data<a href="index.html#getting-started-with-the-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To follow along with this tutorial, you can use the data provided in the ‘data’ folder from the github page. download it using the following command:</p>
+<p>To follow along with this tutorial, you can download the data from the GitHub.<br />
+Download it using the following command:</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-o</span> data.zip https://github.com/Sefi196/FLAMESv2_LR_sc_tutorial/releases/latest/download/data.zip <span class="dt">\</span></span>
 <span id="cb1-2"><a href="index.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&amp;&amp;</span> <span class="fu">unzip</span> data.zip </span></code></pre></div>
@@ -303,11 +304,14 @@ div.csl-indent {
 </div>
 <div id="dataset-information" class="section level2 hasAnchor" number="1.3">
 <h2><span class="header-section-number">1.3</span> Dataset Information<a href="index.html#dataset-information" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This tutorial uses data generated by the Clark Lab at the University of Melbourne, consisting of a small dataset of approximately 400 cells. The cells were collected at Day 55 of an excitatory neural differentiation protocol. More details on the dataset, sequencing methodology, and the differentiation protocol can be found in the following publications: <span class="citation">(<a href="references.html#ref-wang2025" role="doc-biblioref">Wang et al., 2025</a>; <a href="references.html#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span></p>
+<p>This tutorial uses data generated by the Clark Lab at the University of Melbourne. It consists of two datasets designed to demonstrate different aspects of analysis in the FLAMESv2 workflow.</p>
+<p>The single-sample dataset is a small, self-contained collection of approximately <strong>400 cells</strong>, obtained at <strong>Day 55</strong> of an <strong>excitatory neural differentiation protocol</strong>. It provides a lightweight example that users can run quickly to gain an understanding of the major analysis steps, including removing sources of variation, building a Seurat object with gene and isoform counts, and exploring interesting isoform structures and their expression profiles. The dataset is also compact enough for users to run entirely through <strong>FLAMESv2</strong>, allowing them to experience the complete analysis workflow—from raw FASTQ data to informative isoform-level outcomes. The raw data are available for download at <strong>ENA: PRJEB100552</strong>.</p>
+<p>The <strong>multi-sample dataset</strong> extends the workflow to a comparative setting and demonstrates how FLAMESv2 can be used to explore isoform-level changes across samples and developmental stages in a <strong>neuronal differentiation</strong> context. It forms part of the <strong>neuronal differentiation dataset</strong> described in the manuscript <span class="citation">Wang et al. (<a href="references.html#ref-wang2025" role="doc-biblioref">2025</a>)</span>, and for the purposes of the tutorial, it has been simplified to include only a subset of Stem Cell and Day 25 samples, each with approximately 500 cells. This version allows users to perform sample integration, comparative isoform analysis, and trajectory-based exploration of isoform expression across neural developmental time points, all within a manageable runtime.</p>
+<p>More details on the dataset, sequencing methodology, and the differentiation protocol can be found in the following publications: <span class="citation">(<a href="references.html#ref-wang2025" role="doc-biblioref">Wang et al., 2025</a>; <a href="references.html#ref-you2023a" role="doc-biblioref">You et al., 2023</a>)</span></p>
 </div>
 <div id="citation" class="section level2 hasAnchor" number="1.4">
 <h2><span class="header-section-number">1.4</span> Citation<a href="index.html#citation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>If you find this tutorial useful please cite our works <span class="citation">Wang et al. (<a href="references.html#ref-wang2025" role="doc-biblioref">2025</a>)</span> and <span class="citation">Tian et al. (<a href="references.html#ref-tian2021" role="doc-biblioref">2021</a>)</span></p>
+<p>If you find this tutorial useful please cite our works <span class="citation">Wang et al. (<a href="references.html#ref-wang2025" role="doc-biblioref">2025</a>)</span>; and <span class="citation">Tian et al. (<a href="references.html#ref-tian2021" role="doc-biblioref">2021</a>)</span>;</p>
 </div>
 <div id="contact" class="section level2 hasAnchor" number="1.5">
 <h2><span class="header-section-number">1.5</span> Contact<a href="index.html#contact" class="anchor-section" aria-label="Anchor link to header"></a></h2>

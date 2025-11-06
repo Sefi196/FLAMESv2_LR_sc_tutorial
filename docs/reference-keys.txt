@@ -1,8 +1,8 @@
 fig:barcode-rank-plot
-fig:isoviz-plot
-fig:isoviz-plot2
-fig:isoviz-plot-zoom
-fig:isoviz-plot3
+fig:IsoVis-plot
+fig:IsoVis-plot2
+fig:IsoVis-plot-zoom
+fig:IsoVis-plot3
 introduction
 prerequisites
 getting-started-with-the-data
