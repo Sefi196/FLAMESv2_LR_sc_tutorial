@@ -338,7 +338,7 @@ With long read sequencing it's possible to explore both known and novel isoforms
 
 ## Find all the genes that express at least 1 novel isoform
 
-First lets get a list of genes with at least one novel isoform
+First let's get a list of genes with at least one novel isoform
 
 ```{r atleast_1_novel_isoform, include=TRUE, echo=TRUE, warning=FALSE}
 # Find the genes that express at least one novel isoform and save them to a list
@@ -372,13 +372,13 @@ In this table we can see that we have a total of 31 novel isoforms. This number 
 
 In the above table we have ordered the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoVis as described in the section \@ref(visualization-of-isoform-structures).
 
-```{r IsoVis-plot2, fig.cap="IsoVis visualization of Novel OAZ2 isoform.", out.width="1000px"}
+```{r IsoVis-plot2, fig.cap="IsoVis visualisation of Novel OAZ2 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
 ```
 
-## Visualizing OAZ2 novel isoform
+## Visualising OAZ2 novel isoform
 
-Visualizing **OAZ2** reveals that the primary distinction between the novel isoform and the canonical isoform, **OAZ2-201** seems to be a shorter 5' UTR. This minor alteration at face value should not affect the canonical open reading frame (ORF). However, according to SQANTI, **BambuTx25** is classified as a ***novel_in_catalog*** isoform, meaning it is an isoform not present in the reference GTF and SQANTI suggests that **BambuTx25** is non-coding, which is quite surprising! Interestingly, SQANTI also indicates that the primary difference between **BambuTx25** and the canonical isoforms lies in intron retention (Specified in the *subcategory* column).
+visualising **OAZ2** reveals that the primary distinction between the novel isoform and the canonical isoform, **OAZ2-201** seems to be a shorter 5' UTR. This minor alteration at face value should not affect the canonical open reading frame (ORF). However, according to SQANTI, **BambuTx25** is classified as a ***novel_in_catalog*** isoform, meaning it is an isoform not present in the reference GTF and SQANTI suggests that **BambuTx25** is non-coding, which is quite surprising! Interestingly, SQANTI also indicates that the primary difference between **BambuTx25** and the canonical isoforms lies in intron retention (Specified in the *subcategory* column).
 
 ```{r , include=TRUE}
 # Load necessary libraries
@@ -387,7 +387,7 @@ SQANTI[grep('BambuTx25', SQANTI$isoform), ]
 
 To better understand these SQANTI results let's zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. The novel **BambuTx25** does not contain this break so perhaps this change affects the resulting amino acid sequence.
 
-```{r IsoVis-plot-zoom, fig.cap="IsoVis visualization of exon 2 of OAZ2.", out.width="1000px"}
+```{r IsoVis-plot-zoom, fig.cap="IsoVis visualisation of exon 2 of OAZ2.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 ```
 
@@ -395,7 +395,7 @@ knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 
 There are many ways to investigate the translated sequence and compare the protein generated from canonical isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in an online tool like 'expasy translate' which can be found here <https://web.expasy.org/translate/>.
 
-Below we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik[^07-isofrom-classification-3] [@tjeldnes2021]. We will visualize these ORFS in Gviz [@hahne2016] an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequence.
+Below we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik[^07-isofrom-classification-3] [@tjeldnes2021]. We will visualise these ORFs in Gviz [@hahne2016] an R package for visualising genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequence.
 
 [^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysing different genes or isoforms.
 
@@ -453,7 +453,7 @@ plot_isoform_ORFs <- function(reference_gtf, target_gtf, isoforms_of_interest,
   starts <- startCodons(ORFs, is.sorted = TRUE)
   stops <- stopCodons(ORFs, is.sorted = TRUE)
   
-  # Visualization Tracks
+  # Visualisation Tracks
   gtrack <- GenomeAxisTrack()
   itrack <- IdeogramTrack(genome = "hg38", chromosome = chromosome)
   
@@ -539,11 +539,11 @@ plot_isoform_ORFs(
 
 ```
 
-Visualizing ORFs using the above code chunk shows that the **BambuTx25_1\_ORF** is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3\_ORF is complete.
+visualising ORFs using the above code chunk shows that the **BambuTx25_1\_ORF** is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3\_ORF is complete.
 
 We can examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some important regulatory role in the 5' UTR yet the protein remains unchanged.
 
-```{r IsoVis-plot3, fig.cap="IsoVis visualization of Novel ZMAT5 isoform.", out.width="1000px"}
+```{r IsoVis-plot3, fig.cap="IsoVis visualisation of Novel ZMAT5 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000100319.png")
 
 ```

@@ -78,7 +78,7 @@ More details on the dataset, sequencing methodology, and the differentiation pro
 
 ## Citation
 
-If you find this tutorial useful please cite @wang2025; and @tian2021;
+If you find this tutorial useful, please cite @wang2025 and @tian2021.
 
 ## Contact
 

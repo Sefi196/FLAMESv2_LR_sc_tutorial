@@ -9,7 +9,7 @@ The FLAMES pipeline supports the analysis of multiple samples simultaneously, al
 
 To take full advantage of these features we need to perform sample integration to generate a single object that we can use to integrate isoform expression across our conditions. First standard preprocessing as described in Chapters 3 and 4 is required. After integration we can perform the following key analysis:
 
-1.  **Sample Integration:** Combine multiple sample together and add isoform counts.
+1.  **Sample Integration:** Combine multiple samples together and add isoform counts.
 
 2.  **Trajectory Analysis:** Explore genes that change along pseudotime trajectories.
 

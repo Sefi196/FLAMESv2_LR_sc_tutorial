@@ -39,7 +39,7 @@ classification-with-sqanti
 cell-type-specific-isoforms
 novel-isoforms
 find-all-the-genes-that-express-at-least-1-novel-isoform
-visualizing-oaz2-novel-isoform
+visualising-oaz2-novel-isoform
 functional-impacts-of-novel-isoforms
 multisample-analysis
 dataset-information-1

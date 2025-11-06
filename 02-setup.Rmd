@@ -13,8 +13,8 @@ editor_options:
 ## Load in required packages
 
 ```{r load_libs, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-# Install packages if required. Note some packages require installation via Bioconductor. 
-# See installation instruction for each package to ensure installation is successful. 
+# Install packages if required. Note some packages require installation via Bioconductor. See installation instructions for each package to ensure installation is successful.
+
 library(rtracklayer)
 library(Seurat)
 library(DropletUtils)
