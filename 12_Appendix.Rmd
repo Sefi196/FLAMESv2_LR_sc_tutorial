@@ -22,7 +22,7 @@ To incorporate the background barcode list, users should run FLAMES as they did 
 | 
 
 ```{R, eval=FALSE, include=TRUE, echo=TRUE}
-# Run FLAMES using background barcode list genrated in the first run. 
+# Run FLAMES using background barcode list generated in the first run. 
 
 ppl <- SingleCellPipeline(fastq=fastq, outdir=output, annot=GTF, genome=genome, 
                          #minimap=minimap_dir, k8=k8,
@@ -174,7 +174,7 @@ perform_qc_filtering <- function(count.matrix=C1_STC, min.features = 5000 ,
                       reduction = 'umap',
                       group.by = "DF.classifications")
   
-  ### i want to save the seurat object with doublets listed 
+  ### Save the seurat object with doublets listed 
   filt_seurat_object_doublets <- filt_seurat_object
   
   filt_seurat_object <- subset(filt_seurat_object, subset = DF.classifications == 'Singlet')
@@ -217,7 +217,7 @@ perform_qc_filtering <- function(count.matrix=C1_STC, min.features = 5000 ,
   
 # summary stats  
    
- stats_sumary <- rbind("Sample ID" = project,
+ stats_summary <- rbind("Sample ID" = project,
                         "Cells_before_filter" = dim(seurat_object)[2],
                         "Cells_after_filter" = dim(filt_seurat_object)[2],
                         "Median Feature per Cell before filter" = median(seurat_object$nFeature_RNA),
@@ -234,24 +234,24 @@ perform_qc_filtering <- function(count.matrix=C1_STC, min.features = 5000 ,
                         "Median Percent MT after Filter" = median(filt_seurat_object@meta.data[["percent.mt"]])
                         )
   
-  tbl_sts2 <- tableGrob(stats_sumary)
+  tbl_sts2 <- tableGrob(stats_summary)
   grid.newpage()
   grid.draw(tbl_sts2)
 
        list(filt_seurat_object, 
             statsDoublets, 
-            stats_sumary, 
+            stats_summary, 
             filt_seurat_object_doublets)
 }
 
 ```
 
-## Convert Oarfish files to count matrix
+## Convert Oarfish files to a count matrix
 
-This is a function to take all oarfish files from FLAMES multisample output folder and convert the files into a gene count matrix that contains gene symbol ids instead of ENSGIDs. To use this fucntion ensure that the `isoform_gene_dict.csv` file has been genrated as decibed in \@ref(creating-resource-files)
+This is a function to take all Oarfish files from FLAMES multisample output folder and convert the files into a gene count matrix that contains gene symbol ids instead of ENSGIDs. To use this function ensure that the `isoform_gene_dict.csv` file has been generated as described in \@ref(creating-resource-files.).
 
 ```{r, multisample_create_csv, cache=TRUE, echo=TRUE, eval=FALSE}
-### readSeurat### read in oarfish count files and add them to seurat objects ###
+### readSeurat### read in Oarfish count files and add them to seurat objects ###
 process_oarfish_files_to_counts_matrix <- function(sample_name, resource_table_path, output_dir, input_dir) {
   
   # Load required libraries

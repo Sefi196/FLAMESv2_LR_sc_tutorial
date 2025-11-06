@@ -5,9 +5,9 @@ output: html_document
 
 # **Trajectory analysis**
 
-Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or (in the case of long read data) isoforms whose expression patterns are correlated with pseudotime
+Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or (in the case of long read data) isoforms whose expression patterns are correlated with pseudotime.
 
-In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight impor features that control stem cell to neuronal differentiation. In the bellow code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to to identify gene or isoforms that change with pseudotime. [^09_trajectory-1]
+In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight important features that control stem cell to neuronal differentiation. In the below code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to identify gene or isoforms that change with pseudotime[^09_trajectory-1].
 
 [^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive. The parameter `number_of_features` can be used to specify the number of highly variable features to test. Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible.
 
@@ -98,7 +98,7 @@ In our example dataset we are interested in looking at genes or isoforms that ch
       #print plot
       print(FeaturePlot(seurat_obj, features = top_genes$gene_short_name, reduction ="umap.harm"))
 
-      # Another plot for top 16 fetautes DE acrose pseudotime 
+      # Another plot for top 16 features DE across pseudotime 
       my_genes <- row.names(subset(fData(cds_subset), gene_short_name %in% top_genes$gene_short_name)) 
       #my_genes <- row.names(subset(fData(cds), gene_short_name %in% c("DLK1","GRIA2","GRIN2B", "VIM", "PKM", "GAD1", "DCX", "POU5F1", "HOPX"))) 
       

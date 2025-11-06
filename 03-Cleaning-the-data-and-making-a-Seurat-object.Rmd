@@ -7,13 +7,13 @@ output: html_document
 
 ------------------------------------------------------------------------
 
-Now we will do some initial prepossessing of single cell data to ensure we have some high quality data. This will involve 3 main steps
+Now we will do some initial preprocessing of single cell data to ensure we have some high quality data. This will involve 3 main steps
 
 1.  Removing empty droplets - droplets that do not contain true cells.
 
 2.  Removing ambient RNA contamination - optional
 
-3.  Removing low quality cells that
+3.  Removing low quality cells
 
 ## Empty droplets
 
@@ -21,7 +21,7 @@ This function removes empty droplets, a critical step to ensure that only true c
 
 ```{r perform_empty_drops_analysis, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE,  fig.height=12, fig.width=6}
 
-### notes: This fucnion should be refactored and cleaed up. Its very long and complex. 
+### notes: This function should be refactored and cleaned up. It's very long and complex. 
 perform_empty_drops_analysis <- function(output_path, gene_count_file, empty_drops_file, output_seurat_file, fdr_threshold = 0.001, lower = 100) {
   # Load required libraries
   # Read in data

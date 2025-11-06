@@ -10,10 +10,11 @@ editor_options:
 
 ------------------------------------------------------------------------
 
-## load in required packages
+## Load in required packages
 
 ```{r load_libs, echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
-#install packages if required. Note some packages require installation via bioconductor. See installation instruction for each package to ensure installation is successful. 
+# Install packages if required. Note some packages require installation via Bioconductor. 
+# See installation instruction for each package to ensure installation is successful. 
 library(rtracklayer)
 library(Seurat)
 library(DropletUtils)
@@ -42,7 +43,7 @@ dir.create("./output_files/empty_drops", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/decontx", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/QC", recursive = TRUE, showWarnings = FALSE)
 dir.create("./output_files/DE", recursive = TRUE, showWarnings = FALSE)
-dir.create("./output_files/mutli_sample", recursive = TRUE, showWarnings = FALSE)
+dir.create("./output_files/multi_sample", recursive = TRUE, showWarnings = FALSE)
 ```
 
 ## Creating resource files.
@@ -52,7 +53,7 @@ The first step is to generate a CSV file containing three key columns: ENSTID, E
 This file will be used as a dictionary to rename entries in both the isoform and gene count matrices, replacing ENSGID with the corresponding gene symbol.
 By adopting this naming convention for ENSTID, we can easily identify the gene origin of each isoform, streamlining the interpretation and analysis of gene and isoform-level data.
 
-First lets define a helper function for this step:
+First let's define a helper function for this step:
 
 ```{r create_gene_symbol_resource, echo = TRUE, cache=TRUE}
 # Function to make csv naming resource 
@@ -120,7 +121,7 @@ isoform_gene_dict <- make_isoform_gene_symbol_dict(FLAMES_gtf_file,
 With the reference dictionary in place, we can now rename both our count matrix and background count matrix by converting ENSGIDs to geneSymbols.
 This conversion not only simplifies the interpretation of gene expression in single cells but is also necessary for some downstream tools that require gene symbols instead of ENSGIDs, such as automated cell annotation tools.
 
-Like before, lets define a generic helper function first to do this:
+Like before, let's define a generic helper function first to do this:
 
 ```{r convert_ENSGID_to_geneSymbol, echo = TRUE, cache=TRUE}
 convert_ENSGID_to_geneSymbol <- function(gene_count_matrix_path, 

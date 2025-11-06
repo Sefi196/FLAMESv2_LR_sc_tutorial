@@ -8,9 +8,9 @@ bibliography: references.bib
 
 ## Classification with SQANTI
 
-In the previous Chapter we looked at some genes of interest like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription start sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 [@pardo-palacios2024] which will categorize our isoforms[^07-isoform-classification-1] and determine whether they are coding or non-coding.
+In the previous Chapter we looked at some genes of interest like MCAF1 and some of the isoforms related to this gene. As you can see MCAF1 is a highly complex gene with many exons, varied Transcription start sites and many splice junctions. Evaluating this information manually for each isoform is complex and time consuming. A tool that that is very useful here is SQANTI3 [@pardo-palacios2024] which will categorize our isoforms[^07-isofrom-classification-1] and determine whether they are coding or non-coding.
 
-[^07-isoform-classification-1]: For more detail about the classification system see the SQANTI publication.
+[^07-isofrom-classification-1]: For more detail about the classification system see the SQANTI publication.
 
 If you install SQANTI3 and run the following command in your FLAMES output folder you will generate a `classifications.txt` file. This output file is located in the data folder on the github page. SQANTI can also generate an HTML report with lots of figures summarizing your isoforms which can be very helpful. We will do something similar but instead plot this information stratified by cell type.
 
@@ -178,7 +178,7 @@ cowplot::plot_grid(p1, p2, p3, p4, ncol = 2)
 
 ## Cell type specific isoforms
 
-We can also look at isoforms that are unique to each Cell type. We define unique as an isoforms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned bellow[^07-isofrom-classification-2].
+We can also look at isoforms that are unique to each Cell type. We define unique as an isoforms that has 5 or more counts in one cell type and ≤ 1 count in all other cell types. Users can adjust the thresholds mentioned below[^07-isofrom-classification-2].
 
 [^07-isofrom-classification-2]: It is essential to keep in mind that cell type classification, sequencing depth, and the number of cells in each cluster can significantly impact the results, especially in cases where isoforms are expressed at very low levels.
 
@@ -334,7 +334,7 @@ cowplot::plot_grid(p5, p6, ncol = 1)
 
 # **Novel isoforms**
 
-With long read sequencing its possible to explore both known and novel isoforms. Novel isoform can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isoforms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
+With long read sequencing it's possible to explore both known and novel isoforms. Novel isoforms can be interesting feature to explore and here we will provide some simple analysis that one can use to extract novel isoforms and explore them in some more detail. Although the bar plots above show that the vast majority of isoforms are full-splice-matches i.e they match the reference `GTF` there are a few we could extract.
 
 ## Find all the genes that express at least 1 novel isoform
 
@@ -370,7 +370,7 @@ print(isoform_counts)
 
 In this table we can see that we have a total of 31 novel isoforms. This number is smaller than we might expect but this is because Bambu [@chen2023] is quite conservative for single cell data and we haven't sequenced these data very deeply. Users can change the sensitivity of Bambu when running FLAMES by setting the `NDR` parameter or using a different discovery method like stringtie2 [@kovaka2019].
 
-In the above table we have ordered the the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoVis as described in the section \@ref(visualization-of-isoform-structures).
+In the above table we have ordered the genes that contain a novel isoform by total expression. OAZ2 is our top hit. We can look at the isoform structure using IsoVis as described in the section \@ref(visualization-of-isoform-structures).
 
 ```{r IsoVis-plot2, fig.cap="IsoVis visualization of Novel OAZ2 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304.png")
@@ -385,7 +385,7 @@ Visualizing **OAZ2** reveals that the primary distinction between the novel isof
 SQANTI[grep('BambuTx25', SQANTI$isoform), ]
 ```
 
-To better understand these SQANTI results lets zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. The novel **BambuTx25** does not contain this break so perhaps this change affects the resulting amino acid sequence.
+To better understand these SQANTI results let's zoom in on exon 2 of *OAZ2*. Here, we observe a small break within the exon. The novel **BambuTx25** does not contain this break so perhaps this change affects the resulting amino acid sequence.
 
 ```{r IsoVis-plot-zoom, fig.cap="IsoVis visualization of exon 2 of OAZ2.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
@@ -393,11 +393,11 @@ knitr::include_graphics("images/IsoVis_ENSG00000180304_zoom.png")
 
 ## Functional impacts of novel isoforms
 
-There are many ways to investigate the translated sequence and compare the protein generated from conanocial isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in a online tool like 'expasy translate' which can be found here <https://web.expasy.org/translate/>.
+There are many ways to investigate the translated sequence and compare the protein generated from canonical isoform and the novel one. Simple approaches may involve extracting the fasta sequence and looking for the open reading frames (ORFs) in an online tool like 'expasy translate' which can be found here <https://web.expasy.org/translate/>.
 
-Bellow we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik[^07-isofrom-classification-3] [@tjeldnes2021]. We will visualize these ORFS in Gviz [@hahne2016] an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequence.
+Below we have written a function that will take a list of isoforms from a gene and plot the ORFs as defined by the package ORFik[^07-isofrom-classification-3] [@tjeldnes2021]. We will visualize these ORFS in Gviz [@hahne2016] an R package for visualizing genomic features. This analysis will help us determine if the ORF in the transcript **BambuTx25** has been impacted by the change in nucleotide sequence.
 
-[^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysising differnt genes or isoforms.
+[^07-isofrom-classification-3]: ORFs found by the package ORFik may need to be filtered based on length or position when analysing different genes or isoforms.
 
 ```{r ORFS-plot3, include=TRUE, echo=TRUE, warning=FALSE, message=FALSE,fig.height=6, fig.width=12, cache=TRUE}
 # Global cache for TxDb
@@ -539,9 +539,9 @@ plot_isoform_ORFs(
 
 ```
 
-Visualizing ORFs using the above code chunck shows that the **BambuTx25_1\_ORF** is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3\_ORF is complete.
+Visualizing ORFs using the above code chunk shows that the **BambuTx25_1\_ORF** is incomplete. The additional sequence (retained intron as specified by SQANTI) results in a premature stop codon shown in red which likely triggers nonsense-mediated decay (NMD). The canonical ENST00000326005.10_3\_ORF is complete.
 
-We can examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some import regulatory role in the 5' UTR yet the protein remains unchanged.
+We can examine additional genes from our list. For instance, **ZMAT5** has a novel isoform that utilizes a different, known splice junction in the 5' UTR. Using the function above to examine ORFs, we can see that the ORF is unchanged compared to the canonical isoform. This may suggest some important regulatory role in the 5' UTR yet the protein remains unchanged.
 
 ```{r IsoVis-plot3, fig.cap="IsoVis visualization of Novel ZMAT5 isoform.", out.width="1000px"}
 knitr::include_graphics("images/IsoVis_ENSG00000100319.png")

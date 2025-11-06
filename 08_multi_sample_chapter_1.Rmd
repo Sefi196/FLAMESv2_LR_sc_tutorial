@@ -31,20 +31,20 @@ For this analysis, we are using a dataset comprising eight samples spanning four
 
 -   **Day 55**
 
-    **Day 80**
+-   **Day 80**
 
 This comprehensive dataset will allow us to explore temporal changes in gene and isoform expression throughout neuronal differentiation.
 
 ## Standard pre-processing and quality control
 
-As before we will modify the count matrix for each sample so we use gene_symbol instead of ENSG id. The Data generated from this multi-sample experiment is quite large. This is especially the case with Oarfish isoform quantification as there are many more features to consider. This means much of the workflow bellow is time consuming and computationally intensive. Please keep this in mind when processing your samples. In the tutorial we provide code for the required steps but do not evaluate many of the sections bellow due to these computations constraints. The raw counts are available in the multisample data folder if users wish to run through the analysis.
+As before we will modify the count matrix for each sample so we use gene_symbol instead of ENSG id. The data generated from this multisample experiment is quite large. This is especially the case with Oarfish isoform quantification as there are many more features to consider. This means much of the workflow below is time consuming and computationally intensive. Please keep this in mind when processing your samples. In the tutorial we provide code for the required steps but do not evaluate many of the sections below due to these computational constraints. The raw counts are available in the multisample data folder if users wish to run through the analysis.
 
 ```{r, multisample_genesymbol, cache=FALSE, echo=TRUE, eval=FALSE}
 # convert Gene_id to gene symbol for all counts
-#run aloop to run this function on all count files.
+#run a loop to run this function on all count files.
 # Directory with input files
-input_dir <- "./data/muti_sample/"
-output_dir <- "./data/muti_sample/"
+input_dir <- "./data/multi_sample/"
+output_dir <- "./data/multi_sample/"
 
 # List all CSV files in the input directory
 input_files <- list.files(input_dir, pattern = "\\count.csv$", full.names = TRUE)
@@ -82,7 +82,7 @@ for (i in seq_along(input_files)) {
 
 We have developed a multisample QC function \@ref(Multisample QC function) for processing count matrices and constructing filtered Seurat objects, following best practices outlined in the Seurat tutorial. This function includes steps to identify and remove doublets, as well as generate key diagnostic plots for data inspection. We encourage users to customize this function to fit their specific needs, such as applying additional filtering criteria.
 
-For the purposes of presenting concise and readable code we will apply the default filtering parameters to all 8 objects. If users wish to be more specific about filtering each sample independent this is possible and can be done by running the `perform_qc_filtering` function on each sample with desired parameters.
+For the purposes of presenting concise and readable code we will apply the default filtering parameters to all 8 objects. If users wish to be more specific about filtering each sample independently this is possible and can be done by running the `perform_qc_filtering` function on each sample with desired parameters.
 
 ```{r, multi_sample_qc, fig.height=6, fig.width=12, cache=TRUE, include=TRUE, eval=FALSE}
 
@@ -93,7 +93,7 @@ sample_names <- c("C1_STC", "C4_STC", "C2_Day25", "C5_Day25", "C2_Day55", "C3_Da
 umap_objects <- list()
 
 # Start the PDF for output
-pdf(file = "./output_files/mutli_sample/QC/multisample_QC.pdf", width = 10, height = 6)
+pdf(file = "./output_files/multi_sample/QC/multisample_QC.pdf", width = 10, height = 6)
 
 # Loop through each sample and apply the QC filtering function
 for (i in seq_along(sample_names)) {
@@ -117,16 +117,16 @@ for (i in seq_along(sample_names)) {
 dev.off()
 
 #save the object
-#saveRDS(umap_objects, file = "./output_files/mutli_sample/umap_objects.rds")
+#saveRDS(umap_objects, file = "./output_files/multi_sample/umap_objects.rds")
 ```
 
-## Multi-Sample integration
+## Multisample integration
 
-First we will merge the seurat objects together and then perform integration. There are many options for sample integration and Seurat provides many wrappers for these functions. Here we will Harmony [@korsunsky2019] for fast and effective integration. As these processes are time consuming we will load our saved objects.
+First we will merge the Seurat objects together and then perform integration. There are many options for sample integration and Seurat provides many wrappers for these functions. Here we will use Harmony [@korsunsky2019] for fast and effective integration. As these processes are time consuming we will load our saved objects.
 
 ```{r, multisample_integration, cache=FALSE, include=TRUE, eval=FALSE}
 # integrate samples  
-#from the fucntion above pull the filtered seurat object 
+#from the function above pull the filtered seurat object 
 
 merged_seurat <- merge(
   umap_objects[["C1_STC"]],
@@ -149,7 +149,7 @@ merged_seurat <- merge(
 # create a sample column
 merged_seurat$sample <- rownames(merged_seurat@meta.data)
 
-## split sample column to makw a batch col
+## split sample column to make a batch col
 merged_seurat@meta.data <- separate(merged_seurat@meta.data, col = 'sample', into = c('batch', 'Day', 'Barcode'), 
                                     sep = '_')
 #check some QC metrics 
@@ -175,16 +175,16 @@ merged_seurat <- FindClusters(object = merged_seurat, resolution = 0.6)
 merged_seurat <- RunUMAP(object = merged_seurat, dims = 1:30)
 
 ##save merged object
-#saveRDS(merged_seurat, file = "./output_files/mutli_sample/merged_seurat.rds")
+#saveRDS(merged_seurat, file = "./output_files/multi_sample/merged_seurat.rds")
 
 ```
 
 ```{r, multisample_integration_2, include=TRUE, fig.height=6, fig.width=10, message=FALSE}
 set.seed(00003)
-merged_seurat <- readRDS("./output_files/mutli_sample/merged_seurat.rds")
+merged_seurat <- readRDS("./output_files/multi_sample/merged_seurat.rds")
 
 
-#Lets plot the merged file. 
+#Let's plot the merged file. 
 p1 <- FeaturePlot(merged_seurat, reduction = 'umap', features = 'nCount_RNA')
 p2 <- FeaturePlot(merged_seurat, reduction = "umap", features = 'nFeature_RNA')
 p3 <- DimPlot(merged_seurat, reduction = 'umap', group.by = 'Day')
@@ -196,7 +196,7 @@ grid.arrange(p1, p2, p3, p4, ncol = 2)
 merged_seurat <- JoinLayers(object = merged_seurat)
 merged_seurat[["RNA"]] <- split(merged_seurat[["RNA"]], f = merged_seurat$orig.ident)
 
-#perform intergation with Harmony
+#perform integration with Harmony
 obj <- IntegrateLayers(object = merged_seurat,
                        method = HarmonyIntegration,
                        orig.reduction = "pca",
@@ -212,7 +212,7 @@ obj <- RunUMAP(obj, reduction="integrated.harm", dims=1:20, reduction.name = "um
 DimPlot(obj, reduction = "umap.harm", group.by = c("Day", "orig.ident", "harm_cluster"), label = T)  
 
 ### save object 
-#saveRDS(obj, file = "./output_files/mutli_sample/integrated_harm_seurat.rds")
+#saveRDS(obj, file = "./output_files/multi_sample/integrated_harm_seurat.rds")
 ```
 
 ## Add isoform counts
@@ -252,7 +252,7 @@ create_seurat_object <- function(sample_name, input_dir, project_name) {
 }
 
 # Directory where the CSV files are stored
-input_directory <- "./output_files/mutli_sample/oarfish_counts/"
+input_directory <- "./output_files/multi_sample/oarfish_counts/"
 
 # Create an empty list to store Seurat objects
 iso_seurat_objects <- list()
@@ -312,11 +312,11 @@ merged_seurat_isoform_filtered <- FindClusters(object = merged_seurat_isoform_fi
 merged_seurat_isoform_filtered <- RunUMAP(object = merged_seurat_isoform_filtered, dims = 1:10)
 
 #Save file
-#saveRDS(merged_seurat_isoform_filtered, file = "./output_files/mutli_sample/merged_seurat_isoform_filtered.rds")
+#saveRDS(merged_seurat_isoform_filtered, file = "./output_files/multi_sample/merged_seurat_isoform_filtered.rds")
 ```
 
 ```{r, multisample_add_iso_counts_2, echo=TRUE, cache=FALSE, message=FALSE}
-merged_seurat_isoform_filtered <- readRDS(file = "./output_files/mutli_sample/merged_seurat_isoform_filtered.rds")
+merged_seurat_isoform_filtered <- readRDS(file = "./output_files/multi_sample/merged_seurat_isoform_filtered.rds")
 
 #plots
 p5 <- DimPlot(merged_seurat_isoform_filtered, reduction = 'umap', group.by = 'orig.ident')
@@ -362,6 +362,6 @@ obj@meta.data$sctype_db <- gsub("Cancer stem cells", "Stem cells", obj@meta.data
 
 DimPlot(obj, reduction="umap.harm", group.by = "sctype_db", label = T)
 
-#saveRDS(obj, file = "./output_files/mutli_sample/multisample_seurat.intergrated_harm.isoform.rds")
+#saveRDS(obj, file = "./output_files/multi_sample/multisample_seurat.intergrated_harm.isoform.rds")
 
 ```

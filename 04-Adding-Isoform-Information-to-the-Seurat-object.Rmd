@@ -77,7 +77,7 @@ VlnPlot(iso_seurat_obj, features = c("nFeature_RNA", "nCount_RNA"), ncol = 2) + 
 
 ## Filter the new Seurat object based on gene level information
 
-We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level \@ref(removing-sources-of-unwanted-noise-from-the-single-cell-dataset), which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DeconX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.
+We have now created a Seurat object with isoform-level count data. Users can take this object and follow similar processing steps as at the gene level \@ref(removing-sources-of-unwanted-noise-from-the-single-cell-dataset), which might include filtering out low-quality cells and removing ambient RNA counts. In our case, we evaluated these steps and found they don’t add much value as low quality cells are already removed at the gene level and we can leverage this information rather than processing the isoform counts in the same way. Additionally, tools like DecontX and SoupX haven’t been tested on isoform count data, so we decided to exclude this analysis. Instead, we believe the most valuable approach is to append the isoform data to our gene-level Seurat object, resulting in two assays: one for gene-level and one for isoform-level data. If users have short-read data, they could similarly add it as a third assay.
 
 Since we've already filtered out low-quality cells based on our gene-level data, we’ll use these high-quality cells to filter our isoform data.
 
@@ -138,7 +138,7 @@ plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value
 FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap_iso") 
 FeaturePlot(filt_seurat_object, features = gene, reduction = "umap")
 
-#lets also plot the isoform data on the gene level clsuters.
+#let's also plot the isoform data on the gene level clusters.
 FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap") +
   plot_annotation(
     title = 'VIM isoform expression plotted on gene level clusters',
@@ -154,16 +154,16 @@ plot_features_list <- grep(paste0("(^|-|\\b)", gene, "($|\\b)"), features, value
 FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap_iso") 
 FeaturePlot(filt_seurat_object, features = gene, reduction = "umap")
 
-#lets also plot the isoform data on the gene level clsuters.
+#let's also plot the isoform data on the gene level clusters.
 FeaturePlot(filt_seurat_object, features = plot_features_list, reduction = "umap") +
   plot_annotation(
-    title = 'TBR1 isoform expresstion plotted on gene level clusters',
+    title = 'TBR1 isoform expression plotted on gene level clusters',
     #caption = 'made with patchwork',
     theme = theme(plot.title = element_text(size = 20))
   )
 
 ```
 
-We observe that the expression of VIM and TBR1 are is localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the 'gene' value to your favorite gene and run the code chunk above.
+We observe that the expression of VIM and TBR1 are localized to two distinct clusters, which aligns with our expectations. This suggests that some cells remain in the progenitor/radial glial stage, while others have already begun differentiating into neurons. Furthermore, our data reveals isoform-level expression for each of our genes, including TBR1, which shows distinct isoform expression patterns across different cell populations. To plot genes and expressed isoforms from that gene simply change the 'gene' value to your favorite gene and run the code chunk above.
 
 Now we have a count matrix with two assays, gene and isoform. There are many avenues for analysis. We will begin with finding DE genes and isoforms. Then we identify cell types and perform trajectory analysis. finally we look into interesting isoforms unique to each cluster

@@ -16,7 +16,7 @@ Ultimately, this tutorial, in combination with long-read tools such as FLAMES, o
 
 ## Acknowledgements {.unnumbered}
 
-Thank you to Manveer and Michaela for reviewing this book and providing valuable suggestions to improve its clarity and content. Your feedback has contributed to making this a more useful resource for researchers working with long-read single-cell RNA sequencing data.
+Thank you to Manveer Chauhanand Michaela Sacco for reviewing this book and providing valuable suggestions to improve its clarity and content. Your feedback has contributed to making this a more useful resource for researchers working with long-read single-cell RNA sequencing data.
 
 ## Session info {.unnumbered}
 

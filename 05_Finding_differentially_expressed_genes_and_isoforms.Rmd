@@ -27,7 +27,7 @@ write.csv(all_markers_iso_cluster, "./output_files/DE/all_markers_one_iso.csv")
 
 ## Identifying cell types
 
-Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use **scType** [ref]. However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.
+Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use **ScType** @ianevski2022 . However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.
 
 ```{r sctype, echo=TRUE, message=FALSE, warning=FALSE}
 # load libraries from sctype
@@ -99,7 +99,7 @@ perform_sctype_analysis <- function(seurat_obj, db_, tissue, gs_removal_list = c
 
 
 # Define variables
-db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx"; # this is a defualt databse from sctype 
+db_ = "https://raw.githubusercontent.com/IanevskiAleksandr/sc-type/master/ScTypeDB_full.xlsx"; # this is a default database from sctype 
 tissue <- "Brain"
 gs_removal_list <- c("Tanycytes") # list of cell types from the db to remove
 
@@ -109,7 +109,7 @@ seu_obj <- perform_sctype_analysis(seu_obj, db_, tissue, gs_removal_list,
 
 ```
 
-Sctype gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutamatergic neuronal markers "SLC17A7","SLC17A6","GRIN1","GRIN2B" are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are likely glutamatergic neurons.
+ScType gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutamatergic neuronal markers "SLC17A7","SLC17A6","GRIN1","GRIN2B" are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are likely glutamatergic neurons.
 
 ```{r plot marker genes, echo=TRUE, message=FALSE, warning=FALSE}
 # markers for 
@@ -166,7 +166,7 @@ Based on the enriched terms, we can confidently conclude that the cell type is n
 We can now change the Mature neurons label to Glutamatergic neurons and plot the updated UMAP.
 
 ```{r plot marker genes iso,  fig.height=5, fig.width=10}
-## Change the names of ScType DF to Glutatertergic neurons in metadat
+## Change the names of ScType DF to Glutamatergic neurons in metadata
 seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", seu_obj@meta.data$sctype_db)
 
 
@@ -187,7 +187,7 @@ Cell type identification is an iterative process and often one of the most chall
 
 5.  Myelinating Schwann cells
 
-We can use a very nice package called dittoSeq (<https://bioconductor.org/packages/devel/bioc/vignettes/dittoSeq/inst/doc/dittoSeq.html>) to Visualise scRNA seq data directly from a seurat object.
+We can use a very nice package called dittoSeq (<https://bioconductor.org/packages/devel/bioc/vignettes/dittoSeq/inst/doc/dittoSeq.html>) to Visualise scRNA seq data directly from a Seurat object.
 
 We can plot the distribution of the 5 cell types in a few different ways using `dittoBarPlot`
 
@@ -197,7 +197,7 @@ dittoBarPlot(seu_obj, "orig.ident", group.by = "sctype_db", scale = "count") | d
 
 ```
 
-## DE genes and isoforms based on annotaed cell types.
+## DE genes and isoforms based on annotated cell types.
 
 With this foundation, we can refine our DE analysis by focusing on cell types rather than clusters. This step is critical in nearly all transcriptomic analyses, offering a wide range of possibilities for downstream investigations.
 
@@ -233,7 +233,7 @@ write.csv(all_markers_gene_celltype, "./output_files/DE/all_markers_one_gene_cel
 write.csv(all_markers_iso_celltype, "./output_files/DE/all_markers_one_iso_celltype.csv")
 ```
 
-A basic way of exploring this data is to plot these markers on a heatmap. Seurat has a nice function to do so. Let us plot the top 5 marker gene and isoforms in each cell type
+A basic way of exploring this data is to plot these markers on a heatmap. Seurat has a nice function to do so. Let us plot the top 5 marker genes and isoforms in each cell type
 
 ```{r heatmap, echo=TRUE, message=FALSE, warning=FALSE, fig.height=8, fig.width=10}
 all_markers_gene_celltype %>%
@@ -254,7 +254,7 @@ DoHeatmap(seu_obj, features = I_top5$gene, assay = "iso", size = 3) +
   NoLegend() 
 ```
 
-Personally i find the same plots generated by `dittoHeatmap` much nicer. The function can also take a list of genes or isoforms of interest. Just remember to set the default assay accordingly.
+Personally I find the same plots generated by `dittoHeatmap` much nicer. The function can also take a list of genes or isoforms of interest. Just remember to set the default assay accordingly.
 
 ```{r heatma pdito, echo=TRUE, message=FALSE, warning=FALSE}
 #list_of_genes <- c("VIM", "MAPT", "KLC1", "RBFOX1", "RBFOX3")
@@ -277,9 +277,9 @@ dittoHeatmap(seu_obj, head(I_top5$gene, 25),
 
 ## Volcano plots
 
-### FIndAllMarkers DE
+### FindAllMarkers DE
 
-Next we can explore this data by generating some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look a the glutamatergic neurons.
+Next we can explore this data by generating some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look at the glutamatergic neurons.
 
 When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p \< 0.05) and log2 fold changes -2\< or \>2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and progenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.
 
@@ -300,7 +300,7 @@ EnhancedVolcano(glut_DE_gene,
                 title = "Volcano Plot of Differentially Expressed Genes \n in the Glutamatergic Neurons")
 ```
 
-Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake a clarity we have just labelled TBR1 isoforms. This code bellow will allow users to plot all the isoforms from a given gene on the Volcano plot making interpretation of the data a bit cleaner. Here we can see two different isoforms of the TBR1 gene showing enrichment in this cell type
+Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake of clarity we have just labelled TBR1 isoforms. This code below will allow users to plot all the isoforms from a given gene on the Volcano plot making interpretation of the data a bit cleaner. Here we can see two different isoforms of the TBR1 gene showing enrichment in this cell type.
 
 ```{r valocano2, echo=TRUE, fig.height=8, fig.width=8, message=FALSE, warning=FALSE}
 gene <- "TBR1"

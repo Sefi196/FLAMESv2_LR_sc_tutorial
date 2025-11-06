@@ -24,7 +24,7 @@ add-the-isoform-assay-to-the-seurat-object
 finding-marker-genes-and-isoforms
 differentially-expressed-genes-by-cluster-identity
 identifying-cell-types
-de-genes-and-isoforms-based-on-annotaed-cell-types.
+de-genes-and-isoforms-based-on-annotated-cell-types.
 volcano-plots
 findallmarkers-de
 findmarkers-de
@@ -32,7 +32,7 @@ exploring-isoforms-of-interest
 isoforms-expressed-per-gene
 top-10-genes-with-most-isoforms
 exploring-macf1-isoforms
-expression-of-mcaf1-isoforms-across-cell-types
+expression-of-macf1-isoforms-across-cell-types
 visualization-of-isoform-structures
 isoform-classification
 classification-with-sqanti
@@ -45,9 +45,9 @@ multisample-analysis
 dataset-information-1
 standard-pre-processing-and-quality-control
 define-qc-function
-multi-sample-integration
+multisample-integration
 add-isoform-counts
 trajectory-analysis
 calculating-the-ambient-rna-profile
 multisample-qc-function
-convert-oarfish-files-to-count-matrix
+convert-oarfish-files-to-a-count-matrix

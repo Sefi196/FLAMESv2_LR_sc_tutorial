@@ -167,9 +167,6 @@ switchPlotTopSwitches(
 )
 ```
 
-
-
-
 ```{r DTU_plots, setup, echo=TRUE, message=FALSE, warning=FALSE}
 
 # plotting the swich genes expression on UMAP
