@@ -3,6 +3,8 @@ fig:IsoVis-plot
 fig:IsoVis-plot2
 fig:IsoVis-plot-zoom
 fig:IsoVis-plot3
+fig:unnamed-chunk-10
+fig:unnamed-chunk-19
 introduction
 prerequisites
 getting-started-with-the-data
@@ -41,6 +43,11 @@ novel-isoforms
 find-all-the-genes-that-express-at-least-1-novel-isoform
 visualising-oaz2-novel-isoform
 functional-impacts-of-novel-isoforms
+profiling-isoform-diversity
+measuring-entropy-with-find_diversity-function
+example-of-a-low-entropy-gene
+example-of-a-high-entropy-gene
+broadening-entropy-analysis
 multisample-analysis
 dataset-information-1
 standard-pre-processing-and-quality-control

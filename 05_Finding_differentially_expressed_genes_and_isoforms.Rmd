@@ -27,7 +27,7 @@ write.csv(all_markers_iso_cluster, "./output_files/DE/all_markers_one_iso.csv")
 
 ## Identifying cell types
 
-Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use **ScType** @ianevski2022 . However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.
+Based on these differentially expressed (DE) genes, we can identify the cell types present in our sample. This process is often complex and requires prior knowledge of cell markers as well as an understanding of the cell types expected in the sample. An alternative approach is to use automated cell type identification tools. In this tutorial, we will use ScType @ianevski2022 . However, it is important to note that the accuracy of automated tools varies and depends heavily on the reference database they utilize. Therefore, it is recommended to use a combination of methods to cross-validate cell type identification and ensure robust results.
 
 ```{r sctype, echo=TRUE, message=FALSE, warning=FALSE}
 # load libraries from sctype
@@ -169,27 +169,61 @@ We can now change the Mature neurons label to Glutamatergic neurons and plot the
 ## Change the names of ScType DF to Glutamatergic neurons in metadata
 seu_obj@meta.data$sctype_db <- gsub("Mature neurons", "Glutamatergic neurons", seu_obj@meta.data$sctype_db)
 
+DimPlot(seu_obj, group.by = "sctype_db", reduction = "umap") | DimPlot(seu_obj, reduction ="umap_iso", group.by = "sctype_db")
+```
 
-DimPlot(seu_obj, group.by = "sctype_db") | DimPlot(seu_obj, reduction ="umap_iso", group.by = "sctype_db")
+Let's take a closer look at the *Myelinating Schwann cells*.\
 
+This cell type is somewhat unexpected given the cortical differentiation context.\
+
+To better understand their identity, we’ll examine their marker expression, counts, and key features.
+
+```{r}
+VlnPlot(seu_obj, features = c("nCount_RNA", "nFeature_RNA", "percent.mt"),
+        group.by = "sctype_db", pt.size = 0.1) 
+```
+
+Let's look at some Radial glial Markers.
+
+```{r}
+FeaturePlot(seu_obj, features = c("VIM", "SOX2", "PAX6", "NES"), reduction = "umap", ncol = 2)
+```
+
+let's look at the top marker genes in this cluster.
+
+```{r}
+# Filter top markers for cluster 7
+top_cluster7 <- all_markers_gene_cluster %>%
+  filter(cluster == 7) %>%
+  arrange(p_val_adj, desc(avg_log2FC)) %>%
+  slice_head(n = 20)   # top 10 markers, adjust as needed
+
+# View the top genes
+print(top_cluster7$gene)
 
 ```
 
-Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated cell type identification, differential expression (DE) analysis based on clusters and Gene set enrichment, provides a good indication of the cell types present in our data. It is possible to explore the radial glial cells in more detail as there are likely many subtypes. For the purposes of the tutorial we will leave this annotation as is. Based on this we have 5 main cell types.
+Based on the plots above, *Myelinating Schwann cells* show markedly fewer detected features and lower total counts compared to other populations. Additionally, the expression profiles indicate that this cluster lacks canonical radial glial markers such as **VIM**, **SOX2**, and **PAX6** (shown above). Differential expression analysis using the `FindAllMarkers` function also revealed a high proportion of **ribosomal genes** among the top markers for this cluster.
+
+Taken together, these findings suggest that this cluster does not represent a bona fide neural lineage. Instead, these cells are likely **low-complexity or low-quality cells** that have passed the initial QC filters. Therefore, we will remove this cluster from downstream analyses. It would also be sensible to label these cells as "Unknown' but for simplicity we will remove them \
+
+```{r}
+## Remove Myelinating Schwann cells
+seu_obj <- subset(seu_obj, subset = sctype_db != "Myelinating Schwann cells")
+DimPlot(seu_obj, group.by = "sctype_db", reduction = "umap") 
+```
+
+Cell type identification is an iterative process and often one of the most challenging aspects of single-cell analysis. For this example, we will assume that our combined approach, using automated cell type identification, differential expression (DE) analysis based on clusters and Gene set enrichment, provides a good indication of the cell types present in our data. It is possible to explore the these cell types in more detail as there are likely many subtypes. For the purposes of the tutorial we will leave this annotation as is. Based on this we have 3 main cell types.
 
 1.  Radial glial cells (RG)
 
-2.  Immature neurons
+2.  Excitatory neurons (Glutamatergic neurons and Immature neurons)
 
-3.  Glutamatergic neurons
-
-4.  GABAergic neurons
-
-5.  Myelinating Schwann cells
+3.  GABAergic neurons
 
 We can use a very nice package called dittoSeq (<https://bioconductor.org/packages/devel/bioc/vignettes/dittoSeq/inst/doc/dittoSeq.html>) to Visualise scRNA seq data directly from a Seurat object.
 
-We can plot the distribution of the 5 cell types in a few different ways using `dittoBarPlot`
+We can plot the distribution of the 3 cell types in a few different ways using `dittoBarPlot`
 
 ```{r dito, echo=TRUE, message=FALSE, warning=FALSE}
 library(dittoSeq)

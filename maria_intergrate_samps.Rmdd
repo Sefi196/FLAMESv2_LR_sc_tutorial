@@ -1,0 +1,313 @@
+---
+title: "maria_int"
+author: "Sefi"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(Seurat)
+library(dplyr)
+library(harmony)
+library(gridExtra)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+readRDS("/data/scratch/users/yairp/Project_maria_de_organoid/merged_FINAL_FINAL_FINAL.rds") -> marcus_so
+
+marcus_so
+```
+
+## Including Plots
+
+remove bad sample
+
+```{r}
+
+marcus_so <- subset(marcus_so, subset = orig.ident != "D120_2202")
+
+```
+
+```{r pressure, echo=FALSE}
+
+#check some QC metrics 
+VlnPlot(marcus_so, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), group.by = "well")
+
+#check some QC metrics 
+VlnPlot(marcus_so, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), group.by = "orig.ident")
+
+
+
+```
+
+```{r}
+merged_seurat <- marcus_so
+
+merged_seurat <- NormalizeData(object = merged_seurat)
+merged_seurat <- FindVariableFeatures(object = merged_seurat)
+merged_seurat <- ScaleData(object = merged_seurat) 
+merged_seurat <- RunPCA(object = merged_seurat)
+ElbowPlot(merged_seurat)
+merged_seurat <- FindNeighbors(object = merged_seurat, dims = 1:10)
+merged_seurat <- FindClusters(object = merged_seurat, resolution = 0.6)
+merged_seurat <- RunUMAP(object = merged_seurat, dims = 1:10)
+```
+
+```{r}
+#Let's plot the merged file. 
+p1 <- FeaturePlot(merged_seurat, reduction = 'umap', features = 'nCount_RNA')
+p2 <- FeaturePlot(merged_seurat, reduction = "umap", features = 'nFeature_RNA')
+p3 <- DimPlot(merged_seurat, reduction = 'umap', group.by = 'well')
+p4 <- DimPlot(merged_seurat, reduction = 'umap', group.by = 'orig.ident')
+
+grid.arrange(p1, p2, p3, p4, ncol = 2)
+```
+
+```{r}
+merged_seurat <- JoinLayers(object = merged_seurat)
+merged_seurat[["RNA"]] <- split(merged_seurat[["RNA"]], f = merged_seurat$well)
+
+#perform integration with Harmony
+obj <- IntegrateLayers(object = merged_seurat,
+                       method = HarmonyIntegration,
+                       orig.reduction = "pca",
+                       new.reduction = 'integrated.harm',
+                       verbose = FALSE,
+)
+```
+
+```{r}
+obj <- FindNeighbors(obj, reduction="integrated.harm")
+obj <- FindClusters(obj, resolution=0.4, cluster.name="harm_cluster")
+```
+
+```{r}
+obj <- RunUMAP(obj, reduction="integrated.harm", dims=1:20, reduction.name = "umap.harm")
+
+
+DimPlot(obj, reduction = "umap.harm", group.by = c("well", "orig.ident", "harm_cluster"), label = T)  
+```
+
+```{r}
+FeaturePlot(obj, features = "EXO1", reduction = "umap.harm")
+```
+
+```{r}
+
+Idents(obj) <- obj$orig.ident
+obj <- JoinLayers(object = obj)
+FindAllMarkers(obj) -> marks
+```
+
+```{r}
+FeaturePlot(obj, features = c("ECHDC3","UNC80"), reduction = "umap.harm")
+```
+
+```{r}
+
+# Start from count data 
+library(Seurat)
+
+# ---- paths ----
+base_dir <- "/data/gpfs/projects/punim2510/Maria_organoid_work/matricies"
+
+# list only the *first-level* sample directories
+sample_dirs <- list.dirs(base_dir, full.names = TRUE, recursive = FALSE)
+
+# keep only those that actually contain a DGE_filtered folder
+sample_dirs <- sample_dirs[dir.exists(file.path(sample_dirs, "DGE_filtered"))]
+
+# name them by sample (folder name)
+names(sample_dirs) <- basename(sample_dirs)
+
+#hold one Seurat object per sample
+seurat_list <- list()
+
+for (sample in names(sample_dirs)) {
+  dge_dir <- file.path(sample_dirs[[sample]], "DGE_filtered")
+  message("Reading sample: ", sample, " from ", dge_dir)
+
+  # Read 10X-style matrix from DGE_filtered
+  counts <- Seurat::ReadParseBio(dge_dir)
+  # Create Seurat object
+  obj <- CreateSeuratObject(
+    counts  = counts,
+    project = sample
+  )
+
+  # store sample name in metadata
+  obj$Sample <- sample
+
+  # add to list
+  seurat_list[[sample]] <- obj
+}
+
+
+# lets remove the poor ones
+
+seurat_list$poor_D120_2202_5114 <- NULL
+seurat_list$poor_D120_2202 <- NULL
+
+# merge the files together
+# vector of sample ids (names of the list)
+sample_ids <- names(seurat_list)
+
+merged_seurat <- merge(
+  x  = seurat_list[[1]],     # first sample
+  y  = seurat_list[-1],      # all the others
+  add.cell.ids = sample_ids, # prefix cells by sample
+  project = "Maria_organoid_multi"
+)
+
+#looks good 
+merged_seurat
+
+
+# check MT 
+library(Seurat)
+library(dplyr)
+
+merged_seurat[["percent.mt"]] <- PercentageFeatureSet(
+  merged_seurat,
+  pattern = "^MT-"
+)
+
+# 2. Quick visual check: violin plot per sample
+VlnPlot(
+  merged_seurat,
+  features = "percent.mt",
+  group.by = "Sample",  # uses the Sample column you added earlier
+  pt.size = 0.1
+) + NoLegend()
+
+
+
+## 2. Filter cells based on your QC criteria
+merged_seurat_filt <- subset(
+  merged_seurat,
+  subset =
+    percent.mt < 2 &
+    nCount_RNA > 500  & nCount_RNA < 100000 &
+    nFeature_RNA > 300 & nFeature_RNA < 100000
+)
+
+merged_seurat_filt
+
+table_before <- table(merged_seurat$Sample)
+table_after  <- table(merged_seurat_filt$Sample)
+
+
+table_before
+table_after
+
+#check some QC metrics 
+VlnPlot(merged_seurat_filt, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), group.by = "orig.ident")
+
+```
+
+norm and plot umap of merged counts
+
+```{r}
+merged_seurat_filt <- NormalizeData(object = merged_seurat_filt)
+merged_seurat_filt <- FindVariableFeatures(object = merged_seurat_filt)
+merged_seurat_filt <- ScaleData(object = merged_seurat_filt) 
+merged_seurat_filt <- RunPCA(object = merged_seurat_filt)
+ElbowPlot(merged_seurat_filt, ndims = 50)
+merged_seurat_filt <- FindNeighbors(object = merged_seurat_filt, dims = 1:18)
+merged_seurat_filt <- FindClusters(object = merged_seurat_filt, resolution = 0.6)
+merged_seurat_filt <- RunUMAP(object = merged_seurat_filt, dims = 1:20)
+  
+```
+
+\
+
+```{r}
+#Let's plot the merged file. 
+p1 <- FeaturePlot(merged_seurat_filt, reduction = 'umap', features = 'nCount_RNA')
+p2 <- FeaturePlot(merged_seurat_filt, reduction = "umap", features = 'nFeature_RNA')
+p4 <- DimPlot(merged_seurat_filt, reduction = 'umap', group.by = 'orig.ident')
+
+grid.arrange(p1, p2, p4, ncol = 2)
+```
+
+# Integrate based on well 
+
+```{r}
+merged_seurat_filt <- JoinLayers(object = merged_seurat_filt)
+merged_seurat_filt[["RNA"]] <- split(merged_seurat_filt[["RNA"]], f = merged_seurat_filt$orig.ident)
+
+#perform integration with Harmony
+obj <- IntegrateLayers(object = merged_seurat_filt,
+                       method = HarmonyIntegration,
+                       orig.reduction = "pca",
+                       new.reduction = 'integrated.harm',
+                       verbose = FALSE,
+)
+```
+
+```{r}
+obj <- FindNeighbors(obj, reduction="integrated.harm")
+obj <- FindClusters(obj, resolution=0.5, cluster.name="harm_cluster")
+ElbowPlot(obj, ndims = 50)
+obj <- RunUMAP(obj, reduction="integrated.harm", dims=1:18, reduction.name = "umap.harm")
+
+
+DimPlot(obj, reduction = "umap.harm", group.by = c("orig.ident", "harm_cluster"), label = T)  
+```
+
+```{r}
+DimPlot(obj, split.by = "orig.ident", reduction = "umap.harm")
+```
+
+```{r}
+# which cells belong to those samples?
+cells_use <- WhichCells(
+  obj,
+  expression = orig.ident %in% c("01", "02",
+                             "03", "04")
+)
+
+length(cells_use)  # just to see how many you got
+
+# UMAP showing only those cells
+DimPlot(
+  obj,
+  reduction = "umap.harm",
+  cells    = cells_use,
+  group.by = "orig.ident"
+)
+```
+
+```{r}
+# which cells belong to those samples?
+cells_use <- WhichCells(
+  obj,
+  expression = orig.ident %in% c("05", "06",
+                             "07", "08", "09", "10", "11", "12")
+)
+
+length(cells_use)  # just to see how many you got
+
+# UMAP showing only those cells
+DimPlot(
+  obj,
+  reduction = "umap.harm",
+  cells    = cells_use,
+  group.by = "orig.ident"
+)
+```
+
+```{r}
+
+FeaturePlot(obj, features = c("VIM","HOPX","ECHDC3","UNC80"),  , reduction = "umap.harm")
+
+
+```

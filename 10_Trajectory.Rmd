@@ -7,9 +7,9 @@ output: html_document
 
 Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or (in the case of long read data) isoforms whose expression patterns are correlated with pseudotime.
 
-In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight important features that control stem cell to neuronal differentiation. In the below code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to identify gene or isoforms that change with pseudotime[^09_trajectory-1].
+In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight important features that control stem cell to neuronal differentiation. In the below code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to identify gene or isoforms that change with pseudotime[^10_trajectory-1].
 
-[^09_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive. The parameter `number_of_features` can be used to specify the number of highly variable features to test. Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible.
+[^10_trajectory-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive. The parameter `number_of_features` can be used to specify the number of highly variable features to test. Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible.
 
 ```{r traj_fucntion, echo=TRUE, include=TRUE}
 

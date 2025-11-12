@@ -15,7 +15,7 @@ To take full advantage of these features we need to perform sample integration t
 
 3.  **Differential Expression Analysis:** Identify differentially expressed isoforms across time points or sample conditions.
 
-4.  **Differential Transcript Usage (DTU) Analysis:** Investigate changes in isoform proportions between conditions.
+4.  **Differential Transcript Usage (DTU) Analysis:** Investigate changes in isoform proportions between conditions. (coming soon!!)
 
 Most preprocessing and QC steps remain the same. However, we will also demonstrate how to proceed directly from FLAMES output to initial QC without performing empty droplet removal or ambient RNA normalization. Although these steps are recommended, they may not always be necessary depending on the data.
 
