@@ -4,7 +4,7 @@ fig:IsoVis-plot2
 fig:IsoVis-plot-zoom
 fig:IsoVis-plot3
 fig:unnamed-chunk-10
-fig:unnamed-chunk-19
+fig:unnamed-chunk-21
 introduction
 prerequisites
 getting-started-with-the-data

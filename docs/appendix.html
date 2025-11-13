@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-11-12" />
+<meta name="date" content="2025-11-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -281,321 +281,321 @@ div.csl-indent {
 <code>"do_transcript_quantification": false</code><br />
 </div>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="appendix.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run FLAMES using background barcode list generated in the first run. </span></span>
-<span id="cb157-2"><a href="appendix.html#cb157-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb157-3"><a href="appendix.html#cb157-3" aria-hidden="true" tabindex="-1"></a>ppl <span class="ot">&lt;-</span> <span class="fu">SingleCellPipeline</span>(<span class="at">fastq=</span>fastq, <span class="at">outdir=</span>output, <span class="at">annot=</span>GTF, <span class="at">genome=</span>genome, </span>
-<span id="cb157-4"><a href="appendix.html#cb157-4" aria-hidden="true" tabindex="-1"></a>                         <span class="co">#minimap=minimap_dir, k8=k8,</span></span>
-<span id="cb157-5"><a href="appendix.html#cb157-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">config_file=</span>config_file,</span>
-<span id="cb157-6"><a href="appendix.html#cb157-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">expect_cell_number=</span><span class="dv">1000</span>,  <span class="at">barcodes_file=</span><span class="st">&#39;path/to/emtpy_bc_list.csv&#39;</span>)</span>
-<span id="cb157-7"><a href="appendix.html#cb157-7" aria-hidden="true" tabindex="-1"></a>ppl <span class="ot">&lt;-</span> <span class="fu">run_FLAMES</span>(ppl)</span>
-<span id="cb157-8"><a href="appendix.html#cb157-8" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">experiment</span>(ppl)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="appendix.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run FLAMES using background barcode list generated in the first run. </span></span>
+<span id="cb144-2"><a href="appendix.html#cb144-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb144-3"><a href="appendix.html#cb144-3" aria-hidden="true" tabindex="-1"></a>ppl <span class="ot">&lt;-</span> <span class="fu">SingleCellPipeline</span>(<span class="at">fastq=</span>fastq, <span class="at">outdir=</span>output, <span class="at">annot=</span>GTF, <span class="at">genome=</span>genome, </span>
+<span id="cb144-4"><a href="appendix.html#cb144-4" aria-hidden="true" tabindex="-1"></a>                         <span class="co">#minimap=minimap_dir, k8=k8,</span></span>
+<span id="cb144-5"><a href="appendix.html#cb144-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">config_file=</span>config_file,</span>
+<span id="cb144-6"><a href="appendix.html#cb144-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">expect_cell_number=</span><span class="dv">1000</span>,  <span class="at">barcodes_file=</span><span class="st">&#39;path/to/emtpy_bc_list.csv&#39;</span>)</span>
+<span id="cb144-7"><a href="appendix.html#cb144-7" aria-hidden="true" tabindex="-1"></a>ppl <span class="ot">&lt;-</span> <span class="fu">run_FLAMES</span>(ppl)</span>
+<span id="cb144-8"><a href="appendix.html#cb144-8" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">experiment</span>(ppl)</span></code></pre></div>
 </details>
 </div>
 <div id="multisample-qc-function" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> Multisample QC function<a href="appendix.html#multisample-qc-function" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="appendix.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform QC for each sample </span></span>
-<span id="cb158-2"><a href="appendix.html#cb158-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-3"><a href="appendix.html#cb158-3" aria-hidden="true" tabindex="-1"></a>perform_qc_filtering <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">count.matrix=</span>C1_STC, <span class="at">min.features =</span> <span class="dv">5000</span> ,</span>
-<span id="cb158-4"><a href="appendix.html#cb158-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">max.features =</span> <span class="dv">10000</span>, <span class="at">max.counts =</span> <span class="dv">100000</span>,</span>
-<span id="cb158-5"><a href="appendix.html#cb158-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">min.counts =</span> <span class="dv">3000</span>, <span class="at">npc =</span> <span class="dv">15</span>, <span class="at">cluster_res =</span> <span class="fl">0.9</span>,</span>
-<span id="cb158-6"><a href="appendix.html#cb158-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">fig_name =</span> <span class="st">&#39;1&#39;</span>, <span class="at">project =</span> <span class="st">&quot;2&quot;</span>,</span>
-<span id="cb158-7"><a href="appendix.html#cb158-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">MT =</span> <span class="dv">10</span>, <span class="at">doublet_rate =</span> <span class="fl">0.039</span>) {</span>
-<span id="cb158-8"><a href="appendix.html#cb158-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-9"><a href="appendix.html#cb158-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Function to calculate min.features and max.features if not provided</span></span>
-<span id="cb158-10"><a href="appendix.html#cb158-10" aria-hidden="true" tabindex="-1"></a>  calculate_feature_range <span class="ot">&lt;-</span> <span class="cf">function</span>(nFeature_RNA) {</span>
-<span id="cb158-11"><a href="appendix.html#cb158-11" aria-hidden="true" tabindex="-1"></a>    min_feature <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(nFeature_RNA) <span class="sc">-</span> (<span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(nFeature_RNA)))</span>
-<span id="cb158-12"><a href="appendix.html#cb158-12" aria-hidden="true" tabindex="-1"></a>    max_feature <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(nFeature_RNA) <span class="sc">+</span> (<span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(nFeature_RNA)))</span>
-<span id="cb158-13"><a href="appendix.html#cb158-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">min_feature =</span> min_feature, <span class="at">max_feature =</span> max_feature))</span>
-<span id="cb158-14"><a href="appendix.html#cb158-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb158-15"><a href="appendix.html#cb158-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-16"><a href="appendix.html#cb158-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If min.features and max.features not provided, calculate them</span></span>
-<span id="cb158-17"><a href="appendix.html#cb158-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(min.features) <span class="sc">||</span> <span class="fu">is.null</span>(max.features)) {</span>
-<span id="cb158-18"><a href="appendix.html#cb158-18" aria-hidden="true" tabindex="-1"></a>    seurat_obj_org <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> count.matrix, <span class="at">project =</span> project)</span>
-<span id="cb158-19"><a href="appendix.html#cb158-19" aria-hidden="true" tabindex="-1"></a>    feature_range <span class="ot">&lt;-</span> <span class="fu">calculate_feature_range</span>(seurat_obj_org<span class="sc">$</span>nFeature_RNA)</span>
-<span id="cb158-20"><a href="appendix.html#cb158-20" aria-hidden="true" tabindex="-1"></a>    min.features <span class="ot">&lt;-</span> feature_range<span class="sc">$</span>min_feature</span>
-<span id="cb158-21"><a href="appendix.html#cb158-21" aria-hidden="true" tabindex="-1"></a>    max.features <span class="ot">&lt;-</span> feature_range<span class="sc">$</span>max_feature</span>
-<span id="cb158-22"><a href="appendix.html#cb158-22" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb158-23"><a href="appendix.html#cb158-23" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-24"><a href="appendix.html#cb158-24" aria-hidden="true" tabindex="-1"></a>  rst_figures <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb158-25"><a href="appendix.html#cb158-25" aria-hidden="true" tabindex="-1"></a>  rst_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb158-26"><a href="appendix.html#cb158-26" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb158-27"><a href="appendix.html#cb158-27" aria-hidden="true" tabindex="-1"></a>  <span class="do">##### remove features expressed in less than 1% of cells ##### </span></span>
-<span id="cb158-28"><a href="appendix.html#cb158-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the percentage of cells expressing each gene</span></span>
-<span id="cb158-29"><a href="appendix.html#cb158-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#gene_percent_expression &lt;- base::rowMeans(count.matrix &gt; 0) * 100</span></span>
-<span id="cb158-30"><a href="appendix.html#cb158-30" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-31"><a href="appendix.html#cb158-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select genes expressed in at least 1% of cells</span></span>
-<span id="cb158-32"><a href="appendix.html#cb158-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#genes_filter &lt;- names(gene_percent_expression[gene_percent_expression &gt; 1])</span></span>
-<span id="cb158-33"><a href="appendix.html#cb158-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-34"><a href="appendix.html#cb158-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter counts</span></span>
-<span id="cb158-35"><a href="appendix.html#cb158-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">#counts_sub &lt;- count.matrix[genes_filter, ]</span></span>
-<span id="cb158-36"><a href="appendix.html#cb158-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-37"><a href="appendix.html#cb158-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Record the number of features removed</span></span>
-<span id="cb158-38"><a href="appendix.html#cb158-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#removed_features &lt;- dim(count.matrix)[1] - length(genes_filter)</span></span>
-<span id="cb158-39"><a href="appendix.html#cb158-39" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-40"><a href="appendix.html#cb158-40" aria-hidden="true" tabindex="-1"></a>  <span class="do">#######</span></span>
-<span id="cb158-41"><a href="appendix.html#cb158-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize Seurat object</span></span>
-<span id="cb158-42"><a href="appendix.html#cb158-42" aria-hidden="true" tabindex="-1"></a>  seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> count.matrix, </span>
-<span id="cb158-43"><a href="appendix.html#cb158-43" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">project =</span> project)</span>
-<span id="cb158-44"><a href="appendix.html#cb158-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-45"><a href="appendix.html#cb158-45" aria-hidden="true" tabindex="-1"></a>  plot_scatter1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(seurat_object,</span>
-<span id="cb158-46"><a href="appendix.html#cb158-46" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
-<span id="cb158-47"><a href="appendix.html#cb158-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb158-48"><a href="appendix.html#cb158-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">NoLegend</span>() <span class="sc">+</span> </span>
-<span id="cb158-49"><a href="appendix.html#cb158-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Association between reads and </span><span class="sc">\n</span><span class="st">unique genes per cell BEFORE filtering&quot;</span>)</span>
-<span id="cb158-50"><a href="appendix.html#cb158-50" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-51"><a href="appendix.html#cb158-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(plot_scatter1)</span>
-<span id="cb158-52"><a href="appendix.html#cb158-52" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-53"><a href="appendix.html#cb158-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add mitochondrial percentage</span></span>
-<span id="cb158-54"><a href="appendix.html#cb158-54" aria-hidden="true" tabindex="-1"></a>  seurat_object[[<span class="st">&quot;joined&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]])</span>
-<span id="cb158-55"><a href="appendix.html#cb158-55" aria-hidden="true" tabindex="-1"></a>  seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
-<span id="cb158-56"><a href="appendix.html#cb158-56" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-57"><a href="appendix.html#cb158-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot violin plots</span></span>
-<span id="cb158-58"><a href="appendix.html#cb158-58" aria-hidden="true" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span>
-<span id="cb158-59"><a href="appendix.html#cb158-59" aria-hidden="true" tabindex="-1"></a>  p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span>
-<span id="cb158-60"><a href="appendix.html#cb158-60" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-61"><a href="appendix.html#cb158-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(p1)</span>
-<span id="cb158-62"><a href="appendix.html#cb158-62" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-63"><a href="appendix.html#cb158-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove low quality cells</span></span>
-<span id="cb158-64"><a href="appendix.html#cb158-64" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">subset</span>(seurat_object,</span>
-<span id="cb158-65"><a href="appendix.html#cb158-65" aria-hidden="true" tabindex="-1"></a>                              <span class="at">subset =</span> nFeature_RNA <span class="sc">&gt;</span> min.features <span class="sc">&amp;</span> nFeature_RNA <span class="sc">&lt;</span> max.features <span class="sc">&amp;</span> percent.mt <span class="sc">&lt;</span> MT <span class="sc">&amp;</span> nCount_RNA <span class="sc">&lt;</span> max.counts <span class="sc">&amp;</span> nCount_RNA <span class="sc">&gt;</span> min.counts) </span>
-<span id="cb158-66"><a href="appendix.html#cb158-66" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-67"><a href="appendix.html#cb158-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot quality metrics after filtering</span></span>
-<span id="cb158-68"><a href="appendix.html#cb158-68" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(filt_seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span>
-<span id="cb158-69"><a href="appendix.html#cb158-69" aria-hidden="true" tabindex="-1"></a>  p2 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC metrics gene level AFTER Filtering&quot;</span>)</span>
-<span id="cb158-70"><a href="appendix.html#cb158-70" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-71"><a href="appendix.html#cb158-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(p2)</span>
-<span id="cb158-72"><a href="appendix.html#cb158-72" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-73"><a href="appendix.html#cb158-73" aria-hidden="true" tabindex="-1"></a>  <span class="do">#######</span></span>
-<span id="cb158-74"><a href="appendix.html#cb158-74" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalize data</span></span>
-<span id="cb158-75"><a href="appendix.html#cb158-75" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(filt_seurat_object,</span>
-<span id="cb158-76"><a href="appendix.html#cb158-76" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>,</span>
-<span id="cb158-77"><a href="appendix.html#cb158-77" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">scale.factor =</span> <span class="dv">10000</span>)</span>
-<span id="cb158-78"><a href="appendix.html#cb158-78" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-79"><a href="appendix.html#cb158-79" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Identify highly variable features</span></span>
-<span id="cb158-80"><a href="appendix.html#cb158-80" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(filt_seurat_object,</span>
-<span id="cb158-81"><a href="appendix.html#cb158-81" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>,</span>
-<span id="cb158-82"><a href="appendix.html#cb158-82" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
-<span id="cb158-83"><a href="appendix.html#cb158-83" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-84"><a href="appendix.html#cb158-84" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Apply linear transformation</span></span>
-<span id="cb158-85"><a href="appendix.html#cb158-85" aria-hidden="true" tabindex="-1"></a>  all_genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object)</span>
-<span id="cb158-86"><a href="appendix.html#cb158-86" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(filt_seurat_object, <span class="at">features =</span> all_genes)</span>
-<span id="cb158-87"><a href="appendix.html#cb158-87" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-88"><a href="appendix.html#cb158-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform PCA</span></span>
-<span id="cb158-89"><a href="appendix.html#cb158-89" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(filt_seurat_object,</span>
-<span id="cb158-90"><a href="appendix.html#cb158-90" aria-hidden="true" tabindex="-1"></a>                              <span class="at">features =</span> <span class="fu">VariableFeatures</span>(<span class="at">object =</span> filt_seurat_object))</span>
-<span id="cb158-91"><a href="appendix.html#cb158-91" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-92"><a href="appendix.html#cb158-92" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualize PCA</span></span>
-<span id="cb158-93"><a href="appendix.html#cb158-93" aria-hidden="true" tabindex="-1"></a>  rst_figures <span class="ot">&lt;-</span> <span class="fu">append</span>(rst_figures, <span class="fu">ElbowPlot</span>(filt_seurat_object))</span>
-<span id="cb158-94"><a href="appendix.html#cb158-94" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-95"><a href="appendix.html#cb158-95" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Cluster cells</span></span>
-<span id="cb158-96"><a href="appendix.html#cb158-96" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
-<span id="cb158-97"><a href="appendix.html#cb158-97" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(filt_seurat_object, <span class="at">resolution =</span> cluster_res)</span>
-<span id="cb158-98"><a href="appendix.html#cb158-98" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-99"><a href="appendix.html#cb158-99" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform UMAP</span></span>
-<span id="cb158-100"><a href="appendix.html#cb158-100" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
-<span id="cb158-101"><a href="appendix.html#cb158-101" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-102"><a href="appendix.html#cb158-102" aria-hidden="true" tabindex="-1"></a>  <span class="do">### Filter out doublets (remember to modify doublet rate if samples have variable target cells)</span></span>
-<span id="cb158-103"><a href="appendix.html#cb158-103" aria-hidden="true" tabindex="-1"></a>  <span class="do">## pK Identification (no ground-truth) ---------------------------------------------------------------------------------------</span></span>
-<span id="cb158-104"><a href="appendix.html#cb158-104" aria-hidden="true" tabindex="-1"></a>  sweep.res.list_pbmc <span class="ot">&lt;-</span> <span class="fu">paramSweep</span>(filt_seurat_object, <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">sct =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb158-105"><a href="appendix.html#cb158-105" aria-hidden="true" tabindex="-1"></a>  sweep.stats_pbmc <span class="ot">&lt;-</span> <span class="fu">summarizeSweep</span>(sweep.res.list_pbmc, <span class="at">GT =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb158-106"><a href="appendix.html#cb158-106" aria-hidden="true" tabindex="-1"></a>  bcmvn_pbmc <span class="ot">&lt;-</span> <span class="fu">find.pK</span>(sweep.stats_pbmc)</span>
-<span id="cb158-107"><a href="appendix.html#cb158-107" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-108"><a href="appendix.html#cb158-108" aria-hidden="true" tabindex="-1"></a>  pK <span class="ot">&lt;-</span> bcmvn_pbmc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(BCmetric <span class="sc">==</span> <span class="fu">max</span>(BCmetric)) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(pK) </span>
-<span id="cb158-109"><a href="appendix.html#cb158-109" aria-hidden="true" tabindex="-1"></a>  pK <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(pK[[<span class="dv">1</span>]]))</span>
-<span id="cb158-110"><a href="appendix.html#cb158-110" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-111"><a href="appendix.html#cb158-111" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Homotypic Doublet Proportion Estimate -------------------------------------------------------------------------------------</span></span>
-<span id="cb158-112"><a href="appendix.html#cb158-112" aria-hidden="true" tabindex="-1"></a>  annotations <span class="ot">&lt;-</span> filt_seurat_object<span class="sc">@</span>meta.data<span class="sc">$</span>seurat_clusters</span>
-<span id="cb158-113"><a href="appendix.html#cb158-113" aria-hidden="true" tabindex="-1"></a>  homotypic.prop <span class="ot">&lt;-</span> <span class="fu">modelHomotypic</span>(annotations)</span>
-<span id="cb158-114"><a href="appendix.html#cb158-114" aria-hidden="true" tabindex="-1"></a>  nExp_poi <span class="ot">&lt;-</span> <span class="fu">round</span>(doublet_rate <span class="sc">*</span> <span class="fu">nrow</span>(filt_seurat_object<span class="sc">@</span>meta.data))</span>
-<span id="cb158-115"><a href="appendix.html#cb158-115" aria-hidden="true" tabindex="-1"></a>  nExp_poi.adj <span class="ot">&lt;-</span> <span class="fu">round</span>(nExp_poi <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> homotypic.prop))</span>
-<span id="cb158-116"><a href="appendix.html#cb158-116" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-117"><a href="appendix.html#cb158-117" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run doubletFinder </span></span>
-<span id="cb158-118"><a href="appendix.html#cb158-118" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">doubletFinder</span>(filt_seurat_object,</span>
-<span id="cb158-119"><a href="appendix.html#cb158-119" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
-<span id="cb158-120"><a href="appendix.html#cb158-120" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">pN =</span> <span class="fl">0.25</span>,</span>
-<span id="cb158-121"><a href="appendix.html#cb158-121" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">pK =</span> pK,</span>
-<span id="cb158-122"><a href="appendix.html#cb158-122" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">nExp =</span> nExp_poi.adj,</span>
-<span id="cb158-123"><a href="appendix.html#cb158-123" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">reuse.pANN =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb158-124"><a href="appendix.html#cb158-124" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">sct =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb158-125"><a href="appendix.html#cb158-125" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-126"><a href="appendix.html#cb158-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;DF.classifications_.*$&quot;</span>, <span class="st">&quot;DF.classifications&quot;</span>, <span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data))</span>
-<span id="cb158-127"><a href="appendix.html#cb158-127" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-128"><a href="appendix.html#cb158-128" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summary doublets</span></span>
-<span id="cb158-129"><a href="appendix.html#cb158-129" aria-hidden="true" tabindex="-1"></a>  statsDoublets <span class="ot">&lt;-</span> filt_seurat_object<span class="sc">@</span>meta.data <span class="sc">%&gt;%</span></span>
-<span id="cb158-130"><a href="appendix.html#cb158-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(DF.classifications) <span class="sc">%&gt;%</span></span>
-<span id="cb158-131"><a href="appendix.html#cb158-131" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Median_nCount_RNA =</span> <span class="fu">median</span>(nCount_RNA),</span>
-<span id="cb158-132"><a href="appendix.html#cb158-132" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Median_nFeature_RNA =</span> <span class="fu">median</span>(nFeature_RNA), <span class="at">Count =</span> <span class="fu">n</span>())</span>
-<span id="cb158-133"><a href="appendix.html#cb158-133" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-134"><a href="appendix.html#cb158-134" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualize doublets</span></span>
-<span id="cb158-135"><a href="appendix.html#cb158-135" aria-hidden="true" tabindex="-1"></a>  doublets <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(filt_seurat_object,</span>
-<span id="cb158-136"><a href="appendix.html#cb158-136" aria-hidden="true" tabindex="-1"></a>                      <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>,</span>
-<span id="cb158-137"><a href="appendix.html#cb158-137" aria-hidden="true" tabindex="-1"></a>                      <span class="at">group.by =</span> <span class="st">&quot;DF.classifications&quot;</span>)</span>
-<span id="cb158-138"><a href="appendix.html#cb158-138" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-139"><a href="appendix.html#cb158-139" aria-hidden="true" tabindex="-1"></a>  <span class="do">### Save the seurat object with doublets listed </span></span>
-<span id="cb158-140"><a href="appendix.html#cb158-140" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object_doublets <span class="ot">&lt;-</span> filt_seurat_object</span>
-<span id="cb158-141"><a href="appendix.html#cb158-141" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-142"><a href="appendix.html#cb158-142" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">subset</span>(filt_seurat_object, <span class="at">subset =</span> DF.classifications <span class="sc">==</span> <span class="st">&#39;Singlet&#39;</span>)</span>
-<span id="cb158-143"><a href="appendix.html#cb158-143" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-144"><a href="appendix.html#cb158-144" aria-hidden="true" tabindex="-1"></a><span class="co"># figures</span></span>
-<span id="cb158-145"><a href="appendix.html#cb158-145" aria-hidden="true" tabindex="-1"></a>  ggplot_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb158-146"><a href="appendix.html#cb158-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ElbowPlot</span>(filt_seurat_object) <span class="sc">+</span></span>
-<span id="cb158-147"><a href="appendix.html#cb158-147" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;SD explained by each PC&#39;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
-<span id="cb158-148"><a href="appendix.html#cb158-148" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-149"><a href="appendix.html#cb158-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeatureScatter</span>(filt_seurat_object, <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
-<span id="cb158-150"><a href="appendix.html#cb158-150" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> </span>
-<span id="cb158-151"><a href="appendix.html#cb158-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Association between reads and </span><span class="sc">\n</span><span class="st">unique genes per cell AFTER filtering&quot;</span>),</span>
-<span id="cb158-152"><a href="appendix.html#cb158-152" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-153"><a href="appendix.html#cb158-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DimPlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb158-154"><a href="appendix.html#cb158-154" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Cluster </span><span class="sc">\n</span><span class="st">(from PCA)&quot;</span>, <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb158-155"><a href="appendix.html#cb158-155" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
-<span id="cb158-156"><a href="appendix.html#cb158-156" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-157"><a href="appendix.html#cb158-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb158-158"><a href="appendix.html#cb158-158" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;UMI count&quot;</span>, <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb158-159"><a href="appendix.html#cb158-159" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
-<span id="cb158-160"><a href="appendix.html#cb158-160" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-161"><a href="appendix.html#cb158-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb158-162"><a href="appendix.html#cb158-162" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="fu">str_wrap</span>(<span class="st">&quot;Feature count (gene)&quot;</span>, <span class="dv">15</span>), <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
-<span id="cb158-163"><a href="appendix.html#cb158-163" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
-<span id="cb158-164"><a href="appendix.html#cb158-164" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-165"><a href="appendix.html#cb158-165" aria-hidden="true" tabindex="-1"></a>  p2</span>
-<span id="cb158-166"><a href="appendix.html#cb158-166" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb158-167"><a href="appendix.html#cb158-167" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-168"><a href="appendix.html#cb158-168" aria-hidden="true" tabindex="-1"></a>   combined_plots <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(<span class="at">plotlist =</span> ggplot_list, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb158-169"><a href="appendix.html#cb158-169" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-170"><a href="appendix.html#cb158-170" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plot</span>(combined_plots)</span>
-<span id="cb158-171"><a href="appendix.html#cb158-171" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb158-172"><a href="appendix.html#cb158-172" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plot</span>(<span class="fu">DimPlot</span>(filt_seurat_object_doublets, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>,</span>
-<span id="cb158-173"><a href="appendix.html#cb158-173" aria-hidden="true" tabindex="-1"></a>                 <span class="at">group.by =</span> <span class="st">&quot;DF.classifications&quot;</span>))</span>
-<span id="cb158-174"><a href="appendix.html#cb158-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-175"><a href="appendix.html#cb158-175" aria-hidden="true" tabindex="-1"></a>     tbl_sts1 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(statsDoublets)</span>
-<span id="cb158-176"><a href="appendix.html#cb158-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
-<span id="cb158-177"><a href="appendix.html#cb158-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts1)</span>
-<span id="cb158-178"><a href="appendix.html#cb158-178" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-179"><a href="appendix.html#cb158-179" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-180"><a href="appendix.html#cb158-180" aria-hidden="true" tabindex="-1"></a><span class="co"># summary stats  </span></span>
-<span id="cb158-181"><a href="appendix.html#cb158-181" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb158-182"><a href="appendix.html#cb158-182" aria-hidden="true" tabindex="-1"></a> stats_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="st">&quot;Sample ID&quot;</span> <span class="ot">=</span> project,</span>
-<span id="cb158-183"><a href="appendix.html#cb158-183" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_before_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(seurat_object)[<span class="dv">2</span>],</span>
-<span id="cb158-184"><a href="appendix.html#cb158-184" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_after_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(filt_seurat_object)[<span class="dv">2</span>],</span>
-<span id="cb158-185"><a href="appendix.html#cb158-185" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Feature per Cell before filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">$</span>nFeature_RNA),</span>
-<span id="cb158-186"><a href="appendix.html#cb158-186" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Reads per Gene before filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">$</span>nCount_RNA),</span>
-<span id="cb158-187"><a href="appendix.html#cb158-187" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Feature per Cell&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">$</span>nFeature_RNA),</span>
-<span id="cb158-188"><a href="appendix.html#cb158-188" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Reads per Gene&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">$</span>nCount_RNA),</span>
-<span id="cb158-189"><a href="appendix.html#cb158-189" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Max Features&quot;</span> <span class="ot">=</span> max.features,</span>
-<span id="cb158-190"><a href="appendix.html#cb158-190" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Min Features&quot;</span> <span class="ot">=</span> min.features,</span>
-<span id="cb158-191"><a href="appendix.html#cb158-191" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Min Counts&quot;</span> <span class="ot">=</span> min.counts,</span>
-<span id="cb158-192"><a href="appendix.html#cb158-192" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Max Counts&quot;</span> <span class="ot">=</span> max.counts,</span>
-<span id="cb158-193"><a href="appendix.html#cb158-193" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;MT Percentage&quot;</span> <span class="ot">=</span> MT,</span>
-<span id="cb158-194"><a href="appendix.html#cb158-194" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;NPCs&quot;</span> <span class="ot">=</span> npc,</span>
-<span id="cb158-195"><a href="appendix.html#cb158-195" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Percent MT before Filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">@</span>meta.data[[<span class="st">&quot;percent.mt&quot;</span>]]),</span>
-<span id="cb158-196"><a href="appendix.html#cb158-196" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Percent MT after Filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">@</span>meta.data[[<span class="st">&quot;percent.mt&quot;</span>]])</span>
-<span id="cb158-197"><a href="appendix.html#cb158-197" aria-hidden="true" tabindex="-1"></a>                        )</span>
-<span id="cb158-198"><a href="appendix.html#cb158-198" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb158-199"><a href="appendix.html#cb158-199" aria-hidden="true" tabindex="-1"></a>  tbl_sts2 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(stats_summary)</span>
-<span id="cb158-200"><a href="appendix.html#cb158-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
-<span id="cb158-201"><a href="appendix.html#cb158-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts2)</span>
-<span id="cb158-202"><a href="appendix.html#cb158-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb158-203"><a href="appendix.html#cb158-203" aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(filt_seurat_object, </span>
-<span id="cb158-204"><a href="appendix.html#cb158-204" aria-hidden="true" tabindex="-1"></a>            statsDoublets, </span>
-<span id="cb158-205"><a href="appendix.html#cb158-205" aria-hidden="true" tabindex="-1"></a>            stats_summary, </span>
-<span id="cb158-206"><a href="appendix.html#cb158-206" aria-hidden="true" tabindex="-1"></a>            filt_seurat_object_doublets)</span>
-<span id="cb158-207"><a href="appendix.html#cb158-207" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="appendix.html#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform QC for each sample </span></span>
+<span id="cb145-2"><a href="appendix.html#cb145-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-3"><a href="appendix.html#cb145-3" aria-hidden="true" tabindex="-1"></a>perform_qc_filtering <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">count.matrix=</span>C1_STC, <span class="at">min.features =</span> <span class="dv">5000</span> ,</span>
+<span id="cb145-4"><a href="appendix.html#cb145-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">max.features =</span> <span class="dv">10000</span>, <span class="at">max.counts =</span> <span class="dv">100000</span>,</span>
+<span id="cb145-5"><a href="appendix.html#cb145-5" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">min.counts =</span> <span class="dv">3000</span>, <span class="at">npc =</span> <span class="dv">15</span>, <span class="at">cluster_res =</span> <span class="fl">0.9</span>,</span>
+<span id="cb145-6"><a href="appendix.html#cb145-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">fig_name =</span> <span class="st">&#39;1&#39;</span>, <span class="at">project =</span> <span class="st">&quot;2&quot;</span>,</span>
+<span id="cb145-7"><a href="appendix.html#cb145-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">MT =</span> <span class="dv">10</span>, <span class="at">doublet_rate =</span> <span class="fl">0.039</span>) {</span>
+<span id="cb145-8"><a href="appendix.html#cb145-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-9"><a href="appendix.html#cb145-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Function to calculate min.features and max.features if not provided</span></span>
+<span id="cb145-10"><a href="appendix.html#cb145-10" aria-hidden="true" tabindex="-1"></a>  calculate_feature_range <span class="ot">&lt;-</span> <span class="cf">function</span>(nFeature_RNA) {</span>
+<span id="cb145-11"><a href="appendix.html#cb145-11" aria-hidden="true" tabindex="-1"></a>    min_feature <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(nFeature_RNA) <span class="sc">-</span> (<span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(nFeature_RNA)))</span>
+<span id="cb145-12"><a href="appendix.html#cb145-12" aria-hidden="true" tabindex="-1"></a>    max_feature <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(nFeature_RNA) <span class="sc">+</span> (<span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">sd</span>(nFeature_RNA)))</span>
+<span id="cb145-13"><a href="appendix.html#cb145-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">min_feature =</span> min_feature, <span class="at">max_feature =</span> max_feature))</span>
+<span id="cb145-14"><a href="appendix.html#cb145-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb145-15"><a href="appendix.html#cb145-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-16"><a href="appendix.html#cb145-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># If min.features and max.features not provided, calculate them</span></span>
+<span id="cb145-17"><a href="appendix.html#cb145-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.null</span>(min.features) <span class="sc">||</span> <span class="fu">is.null</span>(max.features)) {</span>
+<span id="cb145-18"><a href="appendix.html#cb145-18" aria-hidden="true" tabindex="-1"></a>    seurat_obj_org <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> count.matrix, <span class="at">project =</span> project)</span>
+<span id="cb145-19"><a href="appendix.html#cb145-19" aria-hidden="true" tabindex="-1"></a>    feature_range <span class="ot">&lt;-</span> <span class="fu">calculate_feature_range</span>(seurat_obj_org<span class="sc">$</span>nFeature_RNA)</span>
+<span id="cb145-20"><a href="appendix.html#cb145-20" aria-hidden="true" tabindex="-1"></a>    min.features <span class="ot">&lt;-</span> feature_range<span class="sc">$</span>min_feature</span>
+<span id="cb145-21"><a href="appendix.html#cb145-21" aria-hidden="true" tabindex="-1"></a>    max.features <span class="ot">&lt;-</span> feature_range<span class="sc">$</span>max_feature</span>
+<span id="cb145-22"><a href="appendix.html#cb145-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb145-23"><a href="appendix.html#cb145-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-24"><a href="appendix.html#cb145-24" aria-hidden="true" tabindex="-1"></a>  rst_figures <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb145-25"><a href="appendix.html#cb145-25" aria-hidden="true" tabindex="-1"></a>  rst_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb145-26"><a href="appendix.html#cb145-26" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb145-27"><a href="appendix.html#cb145-27" aria-hidden="true" tabindex="-1"></a>  <span class="do">##### remove features expressed in less than 1% of cells ##### </span></span>
+<span id="cb145-28"><a href="appendix.html#cb145-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the percentage of cells expressing each gene</span></span>
+<span id="cb145-29"><a href="appendix.html#cb145-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#gene_percent_expression &lt;- base::rowMeans(count.matrix &gt; 0) * 100</span></span>
+<span id="cb145-30"><a href="appendix.html#cb145-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-31"><a href="appendix.html#cb145-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select genes expressed in at least 1% of cells</span></span>
+<span id="cb145-32"><a href="appendix.html#cb145-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#genes_filter &lt;- names(gene_percent_expression[gene_percent_expression &gt; 1])</span></span>
+<span id="cb145-33"><a href="appendix.html#cb145-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-34"><a href="appendix.html#cb145-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filter counts</span></span>
+<span id="cb145-35"><a href="appendix.html#cb145-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">#counts_sub &lt;- count.matrix[genes_filter, ]</span></span>
+<span id="cb145-36"><a href="appendix.html#cb145-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-37"><a href="appendix.html#cb145-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Record the number of features removed</span></span>
+<span id="cb145-38"><a href="appendix.html#cb145-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#removed_features &lt;- dim(count.matrix)[1] - length(genes_filter)</span></span>
+<span id="cb145-39"><a href="appendix.html#cb145-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-40"><a href="appendix.html#cb145-40" aria-hidden="true" tabindex="-1"></a>  <span class="do">#######</span></span>
+<span id="cb145-41"><a href="appendix.html#cb145-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Initialize Seurat object</span></span>
+<span id="cb145-42"><a href="appendix.html#cb145-42" aria-hidden="true" tabindex="-1"></a>  seurat_object <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> count.matrix, </span>
+<span id="cb145-43"><a href="appendix.html#cb145-43" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">project =</span> project)</span>
+<span id="cb145-44"><a href="appendix.html#cb145-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-45"><a href="appendix.html#cb145-45" aria-hidden="true" tabindex="-1"></a>  plot_scatter1 <span class="ot">&lt;-</span> <span class="fu">FeatureScatter</span>(seurat_object,</span>
+<span id="cb145-46"><a href="appendix.html#cb145-46" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
+<span id="cb145-47"><a href="appendix.html#cb145-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb145-48"><a href="appendix.html#cb145-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">NoLegend</span>() <span class="sc">+</span> </span>
+<span id="cb145-49"><a href="appendix.html#cb145-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Association between reads and </span><span class="sc">\n</span><span class="st">unique genes per cell BEFORE filtering&quot;</span>)</span>
+<span id="cb145-50"><a href="appendix.html#cb145-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-51"><a href="appendix.html#cb145-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(plot_scatter1)</span>
+<span id="cb145-52"><a href="appendix.html#cb145-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-53"><a href="appendix.html#cb145-53" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add mitochondrial percentage</span></span>
+<span id="cb145-54"><a href="appendix.html#cb145-54" aria-hidden="true" tabindex="-1"></a>  seurat_object[[<span class="st">&quot;joined&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(seurat_object[[<span class="st">&quot;RNA&quot;</span>]])</span>
+<span id="cb145-55"><a href="appendix.html#cb145-55" aria-hidden="true" tabindex="-1"></a>  seurat_object[[<span class="st">&quot;percent.mt&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">PercentageFeatureSet</span>(seurat_object, <span class="at">pattern =</span> <span class="st">&quot;^MT-&quot;</span>)</span>
+<span id="cb145-56"><a href="appendix.html#cb145-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-57"><a href="appendix.html#cb145-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot violin plots</span></span>
+<span id="cb145-58"><a href="appendix.html#cb145-58" aria-hidden="true" tabindex="-1"></a>  p1 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span>
+<span id="cb145-59"><a href="appendix.html#cb145-59" aria-hidden="true" tabindex="-1"></a>  p1 <span class="sc">+</span>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC plots (gene level) BEFORE Filtering&quot;</span>)</span>
+<span id="cb145-60"><a href="appendix.html#cb145-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-61"><a href="appendix.html#cb145-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(p1)</span>
+<span id="cb145-62"><a href="appendix.html#cb145-62" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-63"><a href="appendix.html#cb145-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove low quality cells</span></span>
+<span id="cb145-64"><a href="appendix.html#cb145-64" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">subset</span>(seurat_object,</span>
+<span id="cb145-65"><a href="appendix.html#cb145-65" aria-hidden="true" tabindex="-1"></a>                              <span class="at">subset =</span> nFeature_RNA <span class="sc">&gt;</span> min.features <span class="sc">&amp;</span> nFeature_RNA <span class="sc">&lt;</span> max.features <span class="sc">&amp;</span> percent.mt <span class="sc">&lt;</span> MT <span class="sc">&amp;</span> nCount_RNA <span class="sc">&lt;</span> max.counts <span class="sc">&amp;</span> nCount_RNA <span class="sc">&gt;</span> min.counts) </span>
+<span id="cb145-66"><a href="appendix.html#cb145-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-67"><a href="appendix.html#cb145-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot quality metrics after filtering</span></span>
+<span id="cb145-68"><a href="appendix.html#cb145-68" aria-hidden="true" tabindex="-1"></a>  p2 <span class="ot">&lt;-</span> <span class="fu">VlnPlot</span>(filt_seurat_object, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>))</span>
+<span id="cb145-69"><a href="appendix.html#cb145-69" aria-hidden="true" tabindex="-1"></a>  p2 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;QC metrics gene level AFTER Filtering&quot;</span>)</span>
+<span id="cb145-70"><a href="appendix.html#cb145-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-71"><a href="appendix.html#cb145-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(p2)</span>
+<span id="cb145-72"><a href="appendix.html#cb145-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-73"><a href="appendix.html#cb145-73" aria-hidden="true" tabindex="-1"></a>  <span class="do">#######</span></span>
+<span id="cb145-74"><a href="appendix.html#cb145-74" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalize data</span></span>
+<span id="cb145-75"><a href="appendix.html#cb145-75" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(filt_seurat_object,</span>
+<span id="cb145-76"><a href="appendix.html#cb145-76" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>,</span>
+<span id="cb145-77"><a href="appendix.html#cb145-77" aria-hidden="true" tabindex="-1"></a>                                     <span class="at">scale.factor =</span> <span class="dv">10000</span>)</span>
+<span id="cb145-78"><a href="appendix.html#cb145-78" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-79"><a href="appendix.html#cb145-79" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Identify highly variable features</span></span>
+<span id="cb145-80"><a href="appendix.html#cb145-80" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(filt_seurat_object,</span>
+<span id="cb145-81"><a href="appendix.html#cb145-81" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>,</span>
+<span id="cb145-82"><a href="appendix.html#cb145-82" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb145-83"><a href="appendix.html#cb145-83" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-84"><a href="appendix.html#cb145-84" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Apply linear transformation</span></span>
+<span id="cb145-85"><a href="appendix.html#cb145-85" aria-hidden="true" tabindex="-1"></a>  all_genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object)</span>
+<span id="cb145-86"><a href="appendix.html#cb145-86" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(filt_seurat_object, <span class="at">features =</span> all_genes)</span>
+<span id="cb145-87"><a href="appendix.html#cb145-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-88"><a href="appendix.html#cb145-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform PCA</span></span>
+<span id="cb145-89"><a href="appendix.html#cb145-89" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(filt_seurat_object,</span>
+<span id="cb145-90"><a href="appendix.html#cb145-90" aria-hidden="true" tabindex="-1"></a>                              <span class="at">features =</span> <span class="fu">VariableFeatures</span>(<span class="at">object =</span> filt_seurat_object))</span>
+<span id="cb145-91"><a href="appendix.html#cb145-91" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-92"><a href="appendix.html#cb145-92" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualize PCA</span></span>
+<span id="cb145-93"><a href="appendix.html#cb145-93" aria-hidden="true" tabindex="-1"></a>  rst_figures <span class="ot">&lt;-</span> <span class="fu">append</span>(rst_figures, <span class="fu">ElbowPlot</span>(filt_seurat_object))</span>
+<span id="cb145-94"><a href="appendix.html#cb145-94" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-95"><a href="appendix.html#cb145-95" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Cluster cells</span></span>
+<span id="cb145-96"><a href="appendix.html#cb145-96" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
+<span id="cb145-97"><a href="appendix.html#cb145-97" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(filt_seurat_object, <span class="at">resolution =</span> cluster_res)</span>
+<span id="cb145-98"><a href="appendix.html#cb145-98" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-99"><a href="appendix.html#cb145-99" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Perform UMAP</span></span>
+<span id="cb145-100"><a href="appendix.html#cb145-100" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(filt_seurat_object, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span>npc)</span>
+<span id="cb145-101"><a href="appendix.html#cb145-101" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-102"><a href="appendix.html#cb145-102" aria-hidden="true" tabindex="-1"></a>  <span class="do">### Filter out doublets (remember to modify doublet rate if samples have variable target cells)</span></span>
+<span id="cb145-103"><a href="appendix.html#cb145-103" aria-hidden="true" tabindex="-1"></a>  <span class="do">## pK Identification (no ground-truth) ---------------------------------------------------------------------------------------</span></span>
+<span id="cb145-104"><a href="appendix.html#cb145-104" aria-hidden="true" tabindex="-1"></a>  sweep.res.list_pbmc <span class="ot">&lt;-</span> <span class="fu">paramSweep</span>(filt_seurat_object, <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>, <span class="at">sct =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb145-105"><a href="appendix.html#cb145-105" aria-hidden="true" tabindex="-1"></a>  sweep.stats_pbmc <span class="ot">&lt;-</span> <span class="fu">summarizeSweep</span>(sweep.res.list_pbmc, <span class="at">GT =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb145-106"><a href="appendix.html#cb145-106" aria-hidden="true" tabindex="-1"></a>  bcmvn_pbmc <span class="ot">&lt;-</span> <span class="fu">find.pK</span>(sweep.stats_pbmc)</span>
+<span id="cb145-107"><a href="appendix.html#cb145-107" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-108"><a href="appendix.html#cb145-108" aria-hidden="true" tabindex="-1"></a>  pK <span class="ot">&lt;-</span> bcmvn_pbmc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(BCmetric <span class="sc">==</span> <span class="fu">max</span>(BCmetric)) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(pK) </span>
+<span id="cb145-109"><a href="appendix.html#cb145-109" aria-hidden="true" tabindex="-1"></a>  pK <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(pK[[<span class="dv">1</span>]]))</span>
+<span id="cb145-110"><a href="appendix.html#cb145-110" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-111"><a href="appendix.html#cb145-111" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Homotypic Doublet Proportion Estimate -------------------------------------------------------------------------------------</span></span>
+<span id="cb145-112"><a href="appendix.html#cb145-112" aria-hidden="true" tabindex="-1"></a>  annotations <span class="ot">&lt;-</span> filt_seurat_object<span class="sc">@</span>meta.data<span class="sc">$</span>seurat_clusters</span>
+<span id="cb145-113"><a href="appendix.html#cb145-113" aria-hidden="true" tabindex="-1"></a>  homotypic.prop <span class="ot">&lt;-</span> <span class="fu">modelHomotypic</span>(annotations)</span>
+<span id="cb145-114"><a href="appendix.html#cb145-114" aria-hidden="true" tabindex="-1"></a>  nExp_poi <span class="ot">&lt;-</span> <span class="fu">round</span>(doublet_rate <span class="sc">*</span> <span class="fu">nrow</span>(filt_seurat_object<span class="sc">@</span>meta.data))</span>
+<span id="cb145-115"><a href="appendix.html#cb145-115" aria-hidden="true" tabindex="-1"></a>  nExp_poi.adj <span class="ot">&lt;-</span> <span class="fu">round</span>(nExp_poi <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> homotypic.prop))</span>
+<span id="cb145-116"><a href="appendix.html#cb145-116" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-117"><a href="appendix.html#cb145-117" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Run doubletFinder </span></span>
+<span id="cb145-118"><a href="appendix.html#cb145-118" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">doubletFinder</span>(filt_seurat_object,</span>
+<span id="cb145-119"><a href="appendix.html#cb145-119" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">PCs =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>,</span>
+<span id="cb145-120"><a href="appendix.html#cb145-120" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">pN =</span> <span class="fl">0.25</span>,</span>
+<span id="cb145-121"><a href="appendix.html#cb145-121" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">pK =</span> pK,</span>
+<span id="cb145-122"><a href="appendix.html#cb145-122" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">nExp =</span> nExp_poi.adj,</span>
+<span id="cb145-123"><a href="appendix.html#cb145-123" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">reuse.pANN =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb145-124"><a href="appendix.html#cb145-124" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">sct =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb145-125"><a href="appendix.html#cb145-125" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-126"><a href="appendix.html#cb145-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;DF.classifications_.*$&quot;</span>, <span class="st">&quot;DF.classifications&quot;</span>, <span class="fu">colnames</span>(filt_seurat_object<span class="sc">@</span>meta.data))</span>
+<span id="cb145-127"><a href="appendix.html#cb145-127" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-128"><a href="appendix.html#cb145-128" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Summary doublets</span></span>
+<span id="cb145-129"><a href="appendix.html#cb145-129" aria-hidden="true" tabindex="-1"></a>  statsDoublets <span class="ot">&lt;-</span> filt_seurat_object<span class="sc">@</span>meta.data <span class="sc">%&gt;%</span></span>
+<span id="cb145-130"><a href="appendix.html#cb145-130" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(DF.classifications) <span class="sc">%&gt;%</span></span>
+<span id="cb145-131"><a href="appendix.html#cb145-131" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">summarize</span>(<span class="at">Median_nCount_RNA =</span> <span class="fu">median</span>(nCount_RNA),</span>
+<span id="cb145-132"><a href="appendix.html#cb145-132" aria-hidden="true" tabindex="-1"></a>                     <span class="at">Median_nFeature_RNA =</span> <span class="fu">median</span>(nFeature_RNA), <span class="at">Count =</span> <span class="fu">n</span>())</span>
+<span id="cb145-133"><a href="appendix.html#cb145-133" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-134"><a href="appendix.html#cb145-134" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualize doublets</span></span>
+<span id="cb145-135"><a href="appendix.html#cb145-135" aria-hidden="true" tabindex="-1"></a>  doublets <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(filt_seurat_object,</span>
+<span id="cb145-136"><a href="appendix.html#cb145-136" aria-hidden="true" tabindex="-1"></a>                      <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>,</span>
+<span id="cb145-137"><a href="appendix.html#cb145-137" aria-hidden="true" tabindex="-1"></a>                      <span class="at">group.by =</span> <span class="st">&quot;DF.classifications&quot;</span>)</span>
+<span id="cb145-138"><a href="appendix.html#cb145-138" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-139"><a href="appendix.html#cb145-139" aria-hidden="true" tabindex="-1"></a>  <span class="do">### Save the seurat object with doublets listed </span></span>
+<span id="cb145-140"><a href="appendix.html#cb145-140" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object_doublets <span class="ot">&lt;-</span> filt_seurat_object</span>
+<span id="cb145-141"><a href="appendix.html#cb145-141" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-142"><a href="appendix.html#cb145-142" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object <span class="ot">&lt;-</span> <span class="fu">subset</span>(filt_seurat_object, <span class="at">subset =</span> DF.classifications <span class="sc">==</span> <span class="st">&#39;Singlet&#39;</span>)</span>
+<span id="cb145-143"><a href="appendix.html#cb145-143" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-144"><a href="appendix.html#cb145-144" aria-hidden="true" tabindex="-1"></a><span class="co"># figures</span></span>
+<span id="cb145-145"><a href="appendix.html#cb145-145" aria-hidden="true" tabindex="-1"></a>  ggplot_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb145-146"><a href="appendix.html#cb145-146" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ElbowPlot</span>(filt_seurat_object) <span class="sc">+</span></span>
+<span id="cb145-147"><a href="appendix.html#cb145-147" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&#39;SD explained by each PC&#39;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
+<span id="cb145-148"><a href="appendix.html#cb145-148" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-149"><a href="appendix.html#cb145-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeatureScatter</span>(filt_seurat_object, <span class="at">feature1 =</span> <span class="st">&quot;nCount_RNA&quot;</span>, <span class="at">feature2 =</span> <span class="st">&quot;nFeature_RNA&quot;</span>) <span class="sc">+</span></span>
+<span id="cb145-150"><a href="appendix.html#cb145-150" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> </span>
+<span id="cb145-151"><a href="appendix.html#cb145-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Association between reads and </span><span class="sc">\n</span><span class="st">unique genes per cell AFTER filtering&quot;</span>),</span>
+<span id="cb145-152"><a href="appendix.html#cb145-152" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-153"><a href="appendix.html#cb145-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DimPlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb145-154"><a href="appendix.html#cb145-154" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Cluster </span><span class="sc">\n</span><span class="st">(from PCA)&quot;</span>, <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb145-155"><a href="appendix.html#cb145-155" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
+<span id="cb145-156"><a href="appendix.html#cb145-156" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-157"><a href="appendix.html#cb145-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb145-158"><a href="appendix.html#cb145-158" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;UMI count&quot;</span>, <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb145-159"><a href="appendix.html#cb145-159" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
+<span id="cb145-160"><a href="appendix.html#cb145-160" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-161"><a href="appendix.html#cb145-161" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FeaturePlot</span>(filt_seurat_object, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb145-162"><a href="appendix.html#cb145-162" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="fu">str_wrap</span>(<span class="st">&quot;Feature count (gene)&quot;</span>, <span class="dv">15</span>), <span class="at">title =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span> </span>
+<span id="cb145-163"><a href="appendix.html#cb145-163" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>)),</span>
+<span id="cb145-164"><a href="appendix.html#cb145-164" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-165"><a href="appendix.html#cb145-165" aria-hidden="true" tabindex="-1"></a>  p2</span>
+<span id="cb145-166"><a href="appendix.html#cb145-166" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb145-167"><a href="appendix.html#cb145-167" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-168"><a href="appendix.html#cb145-168" aria-hidden="true" tabindex="-1"></a>   combined_plots <span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(<span class="at">plotlist =</span> ggplot_list, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb145-169"><a href="appendix.html#cb145-169" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-170"><a href="appendix.html#cb145-170" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plot</span>(combined_plots)</span>
+<span id="cb145-171"><a href="appendix.html#cb145-171" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb145-172"><a href="appendix.html#cb145-172" aria-hidden="true" tabindex="-1"></a>   <span class="fu">plot</span>(<span class="fu">DimPlot</span>(filt_seurat_object_doublets, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>,</span>
+<span id="cb145-173"><a href="appendix.html#cb145-173" aria-hidden="true" tabindex="-1"></a>                 <span class="at">group.by =</span> <span class="st">&quot;DF.classifications&quot;</span>))</span>
+<span id="cb145-174"><a href="appendix.html#cb145-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-175"><a href="appendix.html#cb145-175" aria-hidden="true" tabindex="-1"></a>     tbl_sts1 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(statsDoublets)</span>
+<span id="cb145-176"><a href="appendix.html#cb145-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
+<span id="cb145-177"><a href="appendix.html#cb145-177" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts1)</span>
+<span id="cb145-178"><a href="appendix.html#cb145-178" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-179"><a href="appendix.html#cb145-179" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-180"><a href="appendix.html#cb145-180" aria-hidden="true" tabindex="-1"></a><span class="co"># summary stats  </span></span>
+<span id="cb145-181"><a href="appendix.html#cb145-181" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb145-182"><a href="appendix.html#cb145-182" aria-hidden="true" tabindex="-1"></a> stats_summary <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="st">&quot;Sample ID&quot;</span> <span class="ot">=</span> project,</span>
+<span id="cb145-183"><a href="appendix.html#cb145-183" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_before_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(seurat_object)[<span class="dv">2</span>],</span>
+<span id="cb145-184"><a href="appendix.html#cb145-184" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Cells_after_filter&quot;</span> <span class="ot">=</span> <span class="fu">dim</span>(filt_seurat_object)[<span class="dv">2</span>],</span>
+<span id="cb145-185"><a href="appendix.html#cb145-185" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Feature per Cell before filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">$</span>nFeature_RNA),</span>
+<span id="cb145-186"><a href="appendix.html#cb145-186" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Reads per Gene before filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">$</span>nCount_RNA),</span>
+<span id="cb145-187"><a href="appendix.html#cb145-187" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Feature per Cell&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">$</span>nFeature_RNA),</span>
+<span id="cb145-188"><a href="appendix.html#cb145-188" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Reads per Gene&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">$</span>nCount_RNA),</span>
+<span id="cb145-189"><a href="appendix.html#cb145-189" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Max Features&quot;</span> <span class="ot">=</span> max.features,</span>
+<span id="cb145-190"><a href="appendix.html#cb145-190" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Min Features&quot;</span> <span class="ot">=</span> min.features,</span>
+<span id="cb145-191"><a href="appendix.html#cb145-191" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Min Counts&quot;</span> <span class="ot">=</span> min.counts,</span>
+<span id="cb145-192"><a href="appendix.html#cb145-192" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Max Counts&quot;</span> <span class="ot">=</span> max.counts,</span>
+<span id="cb145-193"><a href="appendix.html#cb145-193" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;MT Percentage&quot;</span> <span class="ot">=</span> MT,</span>
+<span id="cb145-194"><a href="appendix.html#cb145-194" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;NPCs&quot;</span> <span class="ot">=</span> npc,</span>
+<span id="cb145-195"><a href="appendix.html#cb145-195" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Percent MT before Filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(seurat_object<span class="sc">@</span>meta.data[[<span class="st">&quot;percent.mt&quot;</span>]]),</span>
+<span id="cb145-196"><a href="appendix.html#cb145-196" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Median Percent MT after Filter&quot;</span> <span class="ot">=</span> <span class="fu">median</span>(filt_seurat_object<span class="sc">@</span>meta.data[[<span class="st">&quot;percent.mt&quot;</span>]])</span>
+<span id="cb145-197"><a href="appendix.html#cb145-197" aria-hidden="true" tabindex="-1"></a>                        )</span>
+<span id="cb145-198"><a href="appendix.html#cb145-198" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb145-199"><a href="appendix.html#cb145-199" aria-hidden="true" tabindex="-1"></a>  tbl_sts2 <span class="ot">&lt;-</span> <span class="fu">tableGrob</span>(stats_summary)</span>
+<span id="cb145-200"><a href="appendix.html#cb145-200" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.newpage</span>()</span>
+<span id="cb145-201"><a href="appendix.html#cb145-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid.draw</span>(tbl_sts2)</span>
+<span id="cb145-202"><a href="appendix.html#cb145-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb145-203"><a href="appendix.html#cb145-203" aria-hidden="true" tabindex="-1"></a>       <span class="fu">list</span>(filt_seurat_object, </span>
+<span id="cb145-204"><a href="appendix.html#cb145-204" aria-hidden="true" tabindex="-1"></a>            statsDoublets, </span>
+<span id="cb145-205"><a href="appendix.html#cb145-205" aria-hidden="true" tabindex="-1"></a>            stats_summary, </span>
+<span id="cb145-206"><a href="appendix.html#cb145-206" aria-hidden="true" tabindex="-1"></a>            filt_seurat_object_doublets)</span>
+<span id="cb145-207"><a href="appendix.html#cb145-207" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 <div id="convert-oarfish-files-to-a-count-matrix" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Convert Oarfish files to a count matrix<a href="appendix.html#convert-oarfish-files-to-a-count-matrix" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This is a function to take all Oarfish files from FLAMES multisample output folder and convert the files into a gene count matrix that contains gene symbol ids instead of ENSGIDs. To use this function ensure that the <code>isoform_gene_dict.csv</code> file has been generated as described in @ref(creating-resource-files.).</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="appendix.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="do">### readSeurat### read in Oarfish count files and add them to seurat objects </span><span class="al">###</span></span>
-<span id="cb159-2"><a href="appendix.html#cb159-2" aria-hidden="true" tabindex="-1"></a>process_oarfish_files_to_counts_matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_name, resource_table_path, output_dir, input_dir) {</span>
-<span id="cb159-3"><a href="appendix.html#cb159-3" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-4"><a href="appendix.html#cb159-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load required libraries</span></span>
-<span id="cb159-5"><a href="appendix.html#cb159-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(Matrix)</span>
-<span id="cb159-6"><a href="appendix.html#cb159-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span>
-<span id="cb159-7"><a href="appendix.html#cb159-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-8"><a href="appendix.html#cb159-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read in the resource table (transcript_id, gene_id, gene_symbol)</span></span>
-<span id="cb159-9"><a href="appendix.html#cb159-9" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(resource_table_path)</span>
-<span id="cb159-10"><a href="appendix.html#cb159-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-11"><a href="appendix.html#cb159-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the file paths based on the sample name</span></span>
-<span id="cb159-12"><a href="appendix.html#cb159-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct file paths</span></span>
-<span id="cb159-13"><a href="appendix.html#cb159-13" aria-hidden="true" tabindex="-1"></a>  count_matrix_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.count.mtx&quot;</span>))</span>
-<span id="cb159-14"><a href="appendix.html#cb159-14" aria-hidden="true" tabindex="-1"></a>  barcodes_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.barcodes.txt&quot;</span>))</span>
-<span id="cb159-15"><a href="appendix.html#cb159-15" aria-hidden="true" tabindex="-1"></a>  features_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.features.txt&quot;</span>))</span>
-<span id="cb159-16"><a href="appendix.html#cb159-16" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-17"><a href="appendix.html#cb159-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the data</span></span>
-<span id="cb159-18"><a href="appendix.html#cb159-18" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">readMM</span>(count_matrix_path)</span>
-<span id="cb159-19"><a href="appendix.html#cb159-19" aria-hidden="true" tabindex="-1"></a>  barcodes <span class="ot">&lt;-</span> <span class="fu">readLines</span>(barcodes_path)</span>
-<span id="cb159-20"><a href="appendix.html#cb159-20" aria-hidden="true" tabindex="-1"></a>  features <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(features_path, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb159-21"><a href="appendix.html#cb159-21" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-22"><a href="appendix.html#cb159-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Transpose the matrix if needed (for Seurat compatibility)</span></span>
-<span id="cb159-23"><a href="appendix.html#cb159-23" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">t</span>(counts)</span>
-<span id="cb159-24"><a href="appendix.html#cb159-24" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-25"><a href="appendix.html#cb159-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set row and column names</span></span>
-<span id="cb159-26"><a href="appendix.html#cb159-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> features<span class="sc">$</span>V1</span>
-<span id="cb159-27"><a href="appendix.html#cb159-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(counts) <span class="ot">&lt;-</span> barcodes</span>
-<span id="cb159-28"><a href="appendix.html#cb159-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-29"><a href="appendix.html#cb159-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
-<span id="cb159-30"><a href="appendix.html#cb159-30" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts)</span>
-<span id="cb159-31"><a href="appendix.html#cb159-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-32"><a href="appendix.html#cb159-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add transcript_id as the first column</span></span>
-<span id="cb159-33"><a href="appendix.html#cb159-33" aria-hidden="true" tabindex="-1"></a>  counts_df<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="fu">rownames</span>(counts_df)</span>
-<span id="cb159-34"><a href="appendix.html#cb159-34" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> counts_df[, <span class="fu">c</span>(<span class="fu">ncol</span>(counts_df), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(counts_df)<span class="sc">-</span><span class="dv">1</span>))]</span>
-<span id="cb159-35"><a href="appendix.html#cb159-35" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-36"><a href="appendix.html#cb159-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Merge with the resource table to add gene symbols</span></span>
-<span id="cb159-37"><a href="appendix.html#cb159-37" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> counts_df <span class="sc">%&gt;%</span></span>
-<span id="cb159-38"><a href="appendix.html#cb159-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(combined_data, <span class="at">by =</span> <span class="st">&quot;transcript_id&quot;</span>)</span>
-<span id="cb159-39"><a href="appendix.html#cb159-39" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-40"><a href="appendix.html#cb159-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the gene_id column and reorder the columns</span></span>
-<span id="cb159-41"><a href="appendix.html#cb159-41" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb159-42"><a href="appendix.html#cb159-42" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> df_genesymbol[, <span class="fu">c</span>(<span class="fu">ncol</span>(df_genesymbol), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(df_genesymbol)<span class="sc">-</span><span class="dv">1</span>))]</span>
-<span id="cb159-43"><a href="appendix.html#cb159-43" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-44"><a href="appendix.html#cb159-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update row names to include gene symbol instead of transcript_id</span></span>
-<span id="cb159-45"><a href="appendix.html#cb159-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(df_genesymbol) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(df_genesymbol<span class="sc">$</span>transcript_id, <span class="st">&quot;_&quot;</span>, df_genesymbol<span class="sc">$</span>gene_symbol)</span>
-<span id="cb159-46"><a href="appendix.html#cb159-46" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb159-47"><a href="appendix.html#cb159-47" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_symbol <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb159-48"><a href="appendix.html#cb159-48" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-49"><a href="appendix.html#cb159-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write the output to a CSV file</span></span>
-<span id="cb159-50"><a href="appendix.html#cb159-50" aria-hidden="true" tabindex="-1"></a>  output_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_oarfish_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
-<span id="cb159-51"><a href="appendix.html#cb159-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(df_genesymbol, output_path, <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb159-52"><a href="appendix.html#cb159-52" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb159-53"><a href="appendix.html#cb159-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Processed sample:&quot;</span>, sample_name, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Output saved to:&quot;</span>, output_path, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb159-54"><a href="appendix.html#cb159-54" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb159-55"><a href="appendix.html#cb159-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-56"><a href="appendix.html#cb159-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage:</span></span>
-<span id="cb159-57"><a href="appendix.html#cb159-57" aria-hidden="true" tabindex="-1"></a><span class="co"># List of sample names</span></span>
-<span id="cb159-58"><a href="appendix.html#cb159-58" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C1_STC&quot;</span>)</span>
-<span id="cb159-59"><a href="appendix.html#cb159-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-60"><a href="appendix.html#cb159-60" aria-hidden="true" tabindex="-1"></a><span class="co">#create a resource </span></span>
-<span id="cb159-61"><a href="appendix.html#cb159-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the helper function defined in code block above to create a dictionary containing corresponding gene information for each isoform</span></span>
-<span id="cb159-62"><a href="appendix.html#cb159-62" aria-hidden="true" tabindex="-1"></a><span class="co"># This may take a few minutes </span></span>
-<span id="cb159-63"><a href="appendix.html#cb159-63" aria-hidden="true" tabindex="-1"></a><span class="co"># The FLAMES ref can be found in your selected output folder after running the Flames pipeline. </span></span>
-<span id="cb159-64"><a href="appendix.html#cb159-64" aria-hidden="true" tabindex="-1"></a>FLAMES_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/isoform_annotated.gtf&quot;</span> <span class="co">#ensure file is unzipped</span></span>
-<span id="cb159-65"><a href="appendix.html#cb159-65" aria-hidden="true" tabindex="-1"></a>reference_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/gencode.v47.annotation.gtf&quot;</span> <span class="co"># ensure file is unzipped</span></span>
-<span id="cb159-66"><a href="appendix.html#cb159-66" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="st">&quot;multi_isoform_gene_dict.csv&quot;</span></span>
-<span id="cb159-67"><a href="appendix.html#cb159-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-68"><a href="appendix.html#cb159-68" aria-hidden="true" tabindex="-1"></a>isoform_gene_dict <span class="ot">&lt;-</span> <span class="fu">make_isoform_gene_symbol_dict</span>(FLAMES_gtf_file,</span>
-<span id="cb159-69"><a href="appendix.html#cb159-69" aria-hidden="true" tabindex="-1"></a>                                                   reference_gtf_file,</span>
-<span id="cb159-70"><a href="appendix.html#cb159-70" aria-hidden="true" tabindex="-1"></a>                                                   output_file)</span>
-<span id="cb159-71"><a href="appendix.html#cb159-71" aria-hidden="true" tabindex="-1"></a><span class="co"># run this in the output FLAMES dir</span></span>
-<span id="cb159-72"><a href="appendix.html#cb159-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb159-73"><a href="appendix.html#cb159-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each sample and process the count files</span></span>
-<span id="cb159-74"><a href="appendix.html#cb159-74" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sample <span class="cf">in</span> sample_names) {</span>
-<span id="cb159-75"><a href="appendix.html#cb159-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use tryCatch to handle errors</span></span>
-<span id="cb159-76"><a href="appendix.html#cb159-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb159-77"><a href="appendix.html#cb159-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Call the function to process the sample</span></span>
-<span id="cb159-78"><a href="appendix.html#cb159-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">process_oarfish_files_to_counts_matrix</span>(</span>
-<span id="cb159-79"><a href="appendix.html#cb159-79" aria-hidden="true" tabindex="-1"></a>      <span class="at">sample_name =</span> sample,</span>
-<span id="cb159-80"><a href="appendix.html#cb159-80" aria-hidden="true" tabindex="-1"></a>      <span class="at">resource_table_path =</span> <span class="st">&quot;./output_files/ref_files/multi_isoform_gene_dict.csv&quot;</span>,</span>
-<span id="cb159-81"><a href="appendix.html#cb159-81" aria-hidden="true" tabindex="-1"></a>      <span class="at">output_dir =</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts&quot;</span>,</span>
-<span id="cb159-82"><a href="appendix.html#cb159-82" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_dir =</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts&quot;</span></span>
-<span id="cb159-83"><a href="appendix.html#cb159-83" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb159-84"><a href="appendix.html#cb159-84" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb159-85"><a href="appendix.html#cb159-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the error message and exit the loop</span></span>
-<span id="cb159-86"><a href="appendix.html#cb159-86" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;Error processing sample:&quot;</span>, sample, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Error message:&quot;</span>, e<span class="sc">$</span>message, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Exiting loop.</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb159-87"><a href="appendix.html#cb159-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(e)</span>
-<span id="cb159-88"><a href="appendix.html#cb159-88" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb159-89"><a href="appendix.html#cb159-89" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="appendix.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="do">### readSeurat### read in Oarfish count files and add them to seurat objects </span><span class="al">###</span></span>
+<span id="cb146-2"><a href="appendix.html#cb146-2" aria-hidden="true" tabindex="-1"></a>process_oarfish_files_to_counts_matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_name, resource_table_path, output_dir, input_dir) {</span>
+<span id="cb146-3"><a href="appendix.html#cb146-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-4"><a href="appendix.html#cb146-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Load required libraries</span></span>
+<span id="cb146-5"><a href="appendix.html#cb146-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(Matrix)</span>
+<span id="cb146-6"><a href="appendix.html#cb146-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(dplyr)</span>
+<span id="cb146-7"><a href="appendix.html#cb146-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-8"><a href="appendix.html#cb146-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read in the resource table (transcript_id, gene_id, gene_symbol)</span></span>
+<span id="cb146-9"><a href="appendix.html#cb146-9" aria-hidden="true" tabindex="-1"></a>  combined_data <span class="ot">&lt;-</span> <span class="fu">fread</span>(resource_table_path)</span>
+<span id="cb146-10"><a href="appendix.html#cb146-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-11"><a href="appendix.html#cb146-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the file paths based on the sample name</span></span>
+<span id="cb146-12"><a href="appendix.html#cb146-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct file paths</span></span>
+<span id="cb146-13"><a href="appendix.html#cb146-13" aria-hidden="true" tabindex="-1"></a>  count_matrix_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.count.mtx&quot;</span>))</span>
+<span id="cb146-14"><a href="appendix.html#cb146-14" aria-hidden="true" tabindex="-1"></a>  barcodes_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.barcodes.txt&quot;</span>))</span>
+<span id="cb146-15"><a href="appendix.html#cb146-15" aria-hidden="true" tabindex="-1"></a>  features_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(sample_name, <span class="st">&quot;.features.txt&quot;</span>))</span>
+<span id="cb146-16"><a href="appendix.html#cb146-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-17"><a href="appendix.html#cb146-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the data</span></span>
+<span id="cb146-18"><a href="appendix.html#cb146-18" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">readMM</span>(count_matrix_path)</span>
+<span id="cb146-19"><a href="appendix.html#cb146-19" aria-hidden="true" tabindex="-1"></a>  barcodes <span class="ot">&lt;-</span> <span class="fu">readLines</span>(barcodes_path)</span>
+<span id="cb146-20"><a href="appendix.html#cb146-20" aria-hidden="true" tabindex="-1"></a>  features <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(features_path, <span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb146-21"><a href="appendix.html#cb146-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-22"><a href="appendix.html#cb146-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Transpose the matrix if needed (for Seurat compatibility)</span></span>
+<span id="cb146-23"><a href="appendix.html#cb146-23" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">t</span>(counts)</span>
+<span id="cb146-24"><a href="appendix.html#cb146-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-25"><a href="appendix.html#cb146-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set row and column names</span></span>
+<span id="cb146-26"><a href="appendix.html#cb146-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> features<span class="sc">$</span>V1</span>
+<span id="cb146-27"><a href="appendix.html#cb146-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(counts) <span class="ot">&lt;-</span> barcodes</span>
+<span id="cb146-28"><a href="appendix.html#cb146-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-29"><a href="appendix.html#cb146-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
+<span id="cb146-30"><a href="appendix.html#cb146-30" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts)</span>
+<span id="cb146-31"><a href="appendix.html#cb146-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-32"><a href="appendix.html#cb146-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add transcript_id as the first column</span></span>
+<span id="cb146-33"><a href="appendix.html#cb146-33" aria-hidden="true" tabindex="-1"></a>  counts_df<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="fu">rownames</span>(counts_df)</span>
+<span id="cb146-34"><a href="appendix.html#cb146-34" aria-hidden="true" tabindex="-1"></a>  counts_df <span class="ot">&lt;-</span> counts_df[, <span class="fu">c</span>(<span class="fu">ncol</span>(counts_df), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(counts_df)<span class="sc">-</span><span class="dv">1</span>))]</span>
+<span id="cb146-35"><a href="appendix.html#cb146-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-36"><a href="appendix.html#cb146-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Merge with the resource table to add gene symbols</span></span>
+<span id="cb146-37"><a href="appendix.html#cb146-37" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> counts_df <span class="sc">%&gt;%</span></span>
+<span id="cb146-38"><a href="appendix.html#cb146-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(combined_data, <span class="at">by =</span> <span class="st">&quot;transcript_id&quot;</span>)</span>
+<span id="cb146-39"><a href="appendix.html#cb146-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-40"><a href="appendix.html#cb146-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove the gene_id column and reorder the columns</span></span>
+<span id="cb146-41"><a href="appendix.html#cb146-41" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb146-42"><a href="appendix.html#cb146-42" aria-hidden="true" tabindex="-1"></a>  df_genesymbol <span class="ot">&lt;-</span> df_genesymbol[, <span class="fu">c</span>(<span class="fu">ncol</span>(df_genesymbol), <span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(df_genesymbol)<span class="sc">-</span><span class="dv">1</span>))]</span>
+<span id="cb146-43"><a href="appendix.html#cb146-43" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-44"><a href="appendix.html#cb146-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Update row names to include gene symbol instead of transcript_id</span></span>
+<span id="cb146-45"><a href="appendix.html#cb146-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(df_genesymbol) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(df_genesymbol<span class="sc">$</span>transcript_id, <span class="st">&quot;_&quot;</span>, df_genesymbol<span class="sc">$</span>gene_symbol)</span>
+<span id="cb146-46"><a href="appendix.html#cb146-46" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>transcript_id <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb146-47"><a href="appendix.html#cb146-47" aria-hidden="true" tabindex="-1"></a>  df_genesymbol<span class="sc">$</span>gene_symbol <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb146-48"><a href="appendix.html#cb146-48" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-49"><a href="appendix.html#cb146-49" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Write the output to a CSV file</span></span>
+<span id="cb146-50"><a href="appendix.html#cb146-50" aria-hidden="true" tabindex="-1"></a>  output_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_oarfish_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
+<span id="cb146-51"><a href="appendix.html#cb146-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(df_genesymbol, output_path, <span class="at">row.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb146-52"><a href="appendix.html#cb146-52" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb146-53"><a href="appendix.html#cb146-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Processed sample:&quot;</span>, sample_name, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Output saved to:&quot;</span>, output_path, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb146-54"><a href="appendix.html#cb146-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb146-55"><a href="appendix.html#cb146-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-56"><a href="appendix.html#cb146-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Example usage:</span></span>
+<span id="cb146-57"><a href="appendix.html#cb146-57" aria-hidden="true" tabindex="-1"></a><span class="co"># List of sample names</span></span>
+<span id="cb146-58"><a href="appendix.html#cb146-58" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C1_STC&quot;</span>)</span>
+<span id="cb146-59"><a href="appendix.html#cb146-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-60"><a href="appendix.html#cb146-60" aria-hidden="true" tabindex="-1"></a><span class="co">#create a resource </span></span>
+<span id="cb146-61"><a href="appendix.html#cb146-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the helper function defined in code block above to create a dictionary containing corresponding gene information for each isoform</span></span>
+<span id="cb146-62"><a href="appendix.html#cb146-62" aria-hidden="true" tabindex="-1"></a><span class="co"># This may take a few minutes </span></span>
+<span id="cb146-63"><a href="appendix.html#cb146-63" aria-hidden="true" tabindex="-1"></a><span class="co"># The FLAMES ref can be found in your selected output folder after running the Flames pipeline. </span></span>
+<span id="cb146-64"><a href="appendix.html#cb146-64" aria-hidden="true" tabindex="-1"></a>FLAMES_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/muti_sample/isoform_annotated.gtf&quot;</span> <span class="co">#ensure file is unzipped</span></span>
+<span id="cb146-65"><a href="appendix.html#cb146-65" aria-hidden="true" tabindex="-1"></a>reference_gtf_file <span class="ot">&lt;-</span> <span class="st">&quot;./data/gencode.v47.annotation.gtf&quot;</span> <span class="co"># ensure file is unzipped</span></span>
+<span id="cb146-66"><a href="appendix.html#cb146-66" aria-hidden="true" tabindex="-1"></a>output_file <span class="ot">&lt;-</span> <span class="st">&quot;multi_isoform_gene_dict.csv&quot;</span></span>
+<span id="cb146-67"><a href="appendix.html#cb146-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-68"><a href="appendix.html#cb146-68" aria-hidden="true" tabindex="-1"></a>isoform_gene_dict <span class="ot">&lt;-</span> <span class="fu">make_isoform_gene_symbol_dict</span>(FLAMES_gtf_file,</span>
+<span id="cb146-69"><a href="appendix.html#cb146-69" aria-hidden="true" tabindex="-1"></a>                                                   reference_gtf_file,</span>
+<span id="cb146-70"><a href="appendix.html#cb146-70" aria-hidden="true" tabindex="-1"></a>                                                   output_file)</span>
+<span id="cb146-71"><a href="appendix.html#cb146-71" aria-hidden="true" tabindex="-1"></a><span class="co"># run this in the output FLAMES dir</span></span>
+<span id="cb146-72"><a href="appendix.html#cb146-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb146-73"><a href="appendix.html#cb146-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each sample and process the count files</span></span>
+<span id="cb146-74"><a href="appendix.html#cb146-74" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sample <span class="cf">in</span> sample_names) {</span>
+<span id="cb146-75"><a href="appendix.html#cb146-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use tryCatch to handle errors</span></span>
+<span id="cb146-76"><a href="appendix.html#cb146-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb146-77"><a href="appendix.html#cb146-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Call the function to process the sample</span></span>
+<span id="cb146-78"><a href="appendix.html#cb146-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">process_oarfish_files_to_counts_matrix</span>(</span>
+<span id="cb146-79"><a href="appendix.html#cb146-79" aria-hidden="true" tabindex="-1"></a>      <span class="at">sample_name =</span> sample,</span>
+<span id="cb146-80"><a href="appendix.html#cb146-80" aria-hidden="true" tabindex="-1"></a>      <span class="at">resource_table_path =</span> <span class="st">&quot;./output_files/ref_files/multi_isoform_gene_dict.csv&quot;</span>,</span>
+<span id="cb146-81"><a href="appendix.html#cb146-81" aria-hidden="true" tabindex="-1"></a>      <span class="at">output_dir =</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts&quot;</span>,</span>
+<span id="cb146-82"><a href="appendix.html#cb146-82" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_dir =</span> <span class="st">&quot;./output_files/mutli_sample/oarfish_counts&quot;</span></span>
+<span id="cb146-83"><a href="appendix.html#cb146-83" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb146-84"><a href="appendix.html#cb146-84" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb146-85"><a href="appendix.html#cb146-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the error message and exit the loop</span></span>
+<span id="cb146-86"><a href="appendix.html#cb146-86" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;Error processing sample:&quot;</span>, sample, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Error message:&quot;</span>, e<span class="sc">$</span>message, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Exiting loop.</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb146-87"><a href="appendix.html#cb146-87" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(e)</span>
+<span id="cb146-88"><a href="appendix.html#cb146-88" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb146-89"><a href="appendix.html#cb146-89" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 
 </div>

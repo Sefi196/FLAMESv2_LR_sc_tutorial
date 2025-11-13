@@ -44,7 +44,7 @@ We can load and run the function. It may take a while if you are processing many
 
 We will subset the object and run the diversity function
 
-```{r, cache=TRUE, eval=FALSE}
+```{r, cache=TRUE, echo=TRUE}
 
 #load diversity 
 
@@ -53,9 +53,10 @@ source("code/find_diversity.R")
 # Subset to RG
 RG_seu_obj <- subset(seu_obj , subset = sctype_db == "Radial glial cells")
 DimPlot(RG_seu_obj, reduction = "umap")
-
 DefaultAssay(RG_seu_obj) <- "RNA"
+```
 
+```{r, cache=TRUE, eval=FALSE, echo=TRUE}
 #select genes we want to test. 
 #In this case all genes
 genes <- rownames(RG_seu_obj)
@@ -75,7 +76,7 @@ res <- find_diversity(
 #saveRDS(res, "output_files/res.rds")
 ```
 
-```{r}
+```{r, echo=TRUE}
 # load res files 
 res <- readRDS(file = "./output_files/res.rds")
 
@@ -86,7 +87,7 @@ After running the diversity function, we identified 269 genes for which we could
 
 We can summarise these results in a heatmap. In this plot, each column is a single cell and each row is a gene that passed filtering. Grey regions indicate cell–gene combinations where there were not enough counts to calculate entropy for that gene in that cell.
 
-```{r}
+```{r, echo=TRUE}
 library(pheatmap)
 pheatmap(res$normalized_entropy,
          show_rownames = FALSE,
@@ -99,7 +100,7 @@ pheatmap(res$normalized_entropy,
 
 We can summarise these data by examining the top and bottom entropy genes—those showing the highest and lowest levels of isoform diversity across Radial Glial cells.
 
-```{r}
+```{r, echo=TRUE}
 
 library(ggplot2)
 # Median entropy per gene
@@ -148,17 +149,68 @@ p_high | p_low
 
 ```
 
+Lets choose two genes to have a closer look at. We will choose one with low entropy - VIM, and one with high entropy NFIA. We can use some plotting functions to explore entropy in each cell and the expression of these isofroms for each gene. As you can see most cells for VIM show low entropy while cells expressing NFIA show comparatively high entropy.
+
+```{r, echo=TRUE}
+# Choose the genes we want to plot
+genes <- c("VIM", "NFIA")
+
+# Pull norm entropy and filter for genes we want
+df_entropy <- res$normalized_entropy[genes, , drop = FALSE]
+
+# Restructure the df  
+df_long <- df_entropy %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("gene") %>%
+  pivot_longer(
+    cols = -gene,
+    names_to = "cell",
+    values_to = "entropy"
+  )
+
+# Add the cluster Identity 
+df_long$sctype_db <- RG_seu_obj$sctype_db[df_long$cell]
+
+library(ggplot2)
+library(ggbeeswarm)
+
+plot_entropy <- function(df, gene_name) {
+  df_gene <- df %>% filter(gene == gene_name)
+
+  med_val <- median(df_gene$entropy, na.rm = TRUE)
+
+  ggplot(df_gene, aes(x = sctype_db, y = entropy)) +
+    geom_quasirandom(alpha = 0.4, varwidth = TRUE) +
+    stat_summary(fun = median, geom = "crossbar",
+                 width = 0.6, fatten = 2, color = "red") +
+    labs(
+      title = paste0("Isoform entropy: ", gene_name),
+      subtitle = paste0("Median = ", round(med_val, 3)),
+      x = "Cell type",
+      y = "Normalised Shannon entropy"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      plot.subtitle = element_text(color = "grey40")
+    )
+}
+
+# Plot
+p_VIM  <- plot_entropy(df_long, "VIM")
+p_NFIA <- plot_entropy(df_long, "NFIA")
+
+p_VIM | p_NFIA   
+```
+
 ## Example of a low entropy gene
 
-Lets choose two genes to have a closer look at. One with low entropy - VIM and one with high entropy NFIA. We can use some plotting functions to explore the expression of these isofroms for each gene.
+Let's look at VIM in a bit more detail. VIM is a simple in the sense that nearly all counts for these gene belong to the canonical isoform. We can plot this on a UMAP as shown bellow.
 
-First let's look at VIM.
-
-Vim is a simple in the sense that nearly all counts for these gene belong to the canonical isoform. We can plot this on a UMAP as shown bellow.
-
-```{r}
+```{r, echo=TRUE}
 
 # load Visualize fucntions 
+# You can find the code on the github page or from the release which you can download - instructions on the first page 
 source("code/plot_isoforms_exp_umap.R")
 source("code/plot_isoform_entropy.R") 
 source("code/plotIsoformPieCells.R") 
@@ -178,13 +230,13 @@ plot_isoforms_exp_umap(
 
 We can also look at the proportion of isoform expression for VIM in each cell. As clearly shown bellow nearly all cells use a single isofroms.
 
-```{r}
+```{r, echo=TRUE}
 plotIsoformPieCells(seurat_obj = RG_seu_obj,
                     gene = "VIM",
                     assay = "iso",
                     slot = "counts",
                     top_n = 3,
-                    n_cells = 12, # change this to mplot more cells 
+                    n_cells = 12, # change this to plot more cells 
                     plot_col=4)
 
 
@@ -192,9 +244,9 @@ plotIsoformPieCells(seurat_obj = RG_seu_obj,
 
 ## Example of a high entropy gene
 
-Let's contrast this to a gene with high entropy. In this case we will look at NFIA.
+Let's contrast this to a gene with high entropy, NFIA. In this case NFIA is far more complex. Many cells show expression of multiple isofroms.
 
-```{r}
+```{r, echo=TRUE}
 plot_isoforms_exp_umap(
   obj       = RG_seu_obj,
   gene      = "NFIA",
@@ -207,7 +259,11 @@ plot_isoforms_exp_umap(
 )
 ```
 
-```{r}
+The pie charts bellow show that, in contrast to VIM, cells expressing NFIA utilize at least two isoforms, often in nearly equal proportions. This pattern explains the high entropy observed for NFIA and suggests a more complex expression profile compared to a simpler, single-isoform gene like VIM.
+
+Interestingly, there are numerous NFIA isoforms. The two most highly expressed isoforms shown here are quite distinct, as illustrated in the IsoVis plot below — one is protein-coding, containing critical functional domains, while the other represents a non-coding RNA variant.
+
+```{r, echo=TRUE}
 
 plotIsoformPieCells(seurat_obj = RG_seu_obj,
                     gene = "NFIA",
@@ -217,10 +273,6 @@ plotIsoformPieCells(seurat_obj = RG_seu_obj,
                     n_cells = 12,
                     plot_col=4)
 ```
-
-These pie charts clearly show that, in contrast to VIM, cells expressing NFIA utilize at least two isoforms, often in nearly equal proportions. This pattern explains the high entropy observed for NFIA and suggests a more complex expression profile compared to a simpler, single-isoform gene like VIM.
-
-Interestingly, there are numerous NFIA isoforms. The two most highly expressed isoforms shown here are quite distinct, as illustrated in the IsoVis plot below — one is protein-coding, containing critical functional domains, while the other represents a non-coding RNA variant.
 
 Using IsoVis, we can further explore the structural differences between these isoforms and visualize how they contribute to transcriptomic complexity within individual cells.
 
@@ -235,4 +287,4 @@ In the case of Radial Glial cells, this approach reveals a mixture of both expre
 
 ## Broadening Entropy Analysis
 
-For simplicity, in this example we explored isoform entropy in only a small subset of cells. However, this analysis can easily be expanded to include broader cell populations or even the entire dataset. Doing so enables more comprehensive, cell type–specific investigations for example, assessing whether certain genes show different entropy levels across cell types Such comparisons can reveal important biological insights: some cell types may display low entropy, consistent with a simple and stable transcriptional program, while others—particularly more mature or specialized lineages may exhibit higher entropy, reflecting more complex isoform regulation and splicing diversity.
+For simplicity, in this example we explored isoform entropy in only a small subset of cells. However, this analysis can easily be expanded to include broader cell populations or even the entire dataset. Doing so enables more comprehensive, cell type–specific investigations, for example, assessing whether certain genes show different entropy levels across different cell types. Such comparisons can reveal important biological insights: some cell types may display low entropy, consistent with a simple and stable transcriptional program, while others—particularly more mature or specialized lineages may exhibit higher entropy, reflecting more complex isoform regulation and splicing diversity.
