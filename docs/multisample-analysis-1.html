@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 11 Multisample analysis | Long-read Single-Cell RNA-seq analysis tutorial</title>
+  <meta name="description" content="Chapter 11 Multisample analysis | Long-read Single-Cell RNA-seq analysis tutorial" />
+  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 11 Multisample analysis | Long-read Single-Cell RNA-seq analysis tutorial" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 11 Multisample analysis | Long-read Single-Cell RNA-seq analysis tutorial" />
+  
+  
+  
+
+<meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
+
+
+<meta name="date" content="2025-11-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="references.html"/>
+<link rel="next" href="trajectory-analysis-1.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> <strong>Introduction</strong></a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#getting-started-with-the-data"><i class="fa fa-check"></i><b>1.2</b> Getting Started with the Data</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#dataset-information"><i class="fa fa-check"></i><b>1.3</b> Dataset Information</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#citation"><i class="fa fa-check"></i><b>1.4</b> Citation</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.5</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="setup.html"><a href="setup.html"><i class="fa fa-check"></i><b>2</b> <strong>Setup</strong></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="setup.html"><a href="setup.html#load-in-required-packages"><i class="fa fa-check"></i><b>2.1</b> Load in required packages</a></li>
+<li class="chapter" data-level="2.2" data-path="setup.html"><a href="setup.html#creating-resource-files."><i class="fa fa-check"></i><b>2.2</b> Creating resource files.</a></li>
+<li class="chapter" data-level="2.3" data-path="setup.html"><a href="setup.html#convert-count-matrices-from-gene-id-to-gene-symbol"><i class="fa fa-check"></i><b>2.3</b> Convert count matrices from Gene ID to gene Symbol</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><i class="fa fa-check"></i><b>3</b> <strong>Removing sources of unwanted noise from the single cell dataset</strong></a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#empty-droplets"><i class="fa fa-check"></i><b>3.1</b> Empty droplets</a></li>
+<li class="chapter" data-level="3.2" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#removing-ambient-rna-contamination"><i class="fa fa-check"></i><b>3.2</b> Removing ambient RNA contamination</a></li>
+<li class="chapter" data-level="3.3" data-path="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html"><a href="removing-sources-of-unwanted-noise-from-the-single-cell-dataset.html#standard-gene-qc-to-remove-low-quality-cells"><i class="fa fa-check"></i><b>3.3</b> Standard gene QC to remove low quality cells</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html"><i class="fa fa-check"></i><b>4</b> <strong>Add isoform counts to Seurat object</strong></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#create-a-seurat-object-with-isoform-expression-data"><i class="fa fa-check"></i><b>4.1</b> Create a Seurat object with isoform expression data</a></li>
+<li class="chapter" data-level="4.2" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#filter-the-new-seurat-object-based-on-gene-level-information"><i class="fa fa-check"></i><b>4.2</b> Filter the new Seurat object based on gene level information</a></li>
+<li class="chapter" data-level="4.3" data-path="add-isoform-counts-to-seurat-object.html"><a href="add-isoform-counts-to-seurat-object.html#add-the-isoform-assay-to-the-seurat-object"><i class="fa fa-check"></i><b>4.3</b> Add the isoform assay to the Seurat object</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html"><i class="fa fa-check"></i><b>5</b> <strong>Finding marker genes and isoforms</strong></a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#differentially-expressed-genes-by-cluster-identity"><i class="fa fa-check"></i><b>5.1</b> Differentially expressed genes by cluster identity</a></li>
+<li class="chapter" data-level="5.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#identifying-cell-types"><i class="fa fa-check"></i><b>5.2</b> Identifying cell types</a></li>
+<li class="chapter" data-level="5.3" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#de-genes-and-isoforms-based-on-annotated-cell-types."><i class="fa fa-check"></i><b>5.3</b> DE genes and isoforms based on annotated cell types.</a></li>
+<li class="chapter" data-level="5.4" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#volcano-plots"><i class="fa fa-check"></i><b>5.4</b> Volcano plots</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findallmarkers-de"><i class="fa fa-check"></i><b>5.4.1</b> FindAllMarkers DE</a></li>
+<li class="chapter" data-level="5.4.2" data-path="finding-marker-genes-and-isoforms.html"><a href="finding-marker-genes-and-isoforms.html#findmarkers-de"><i class="fa fa-check"></i><b>5.4.2</b> FindMarkers DE</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html"><i class="fa fa-check"></i><b>6</b> <strong>Exploring isoforms of interest</strong></a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene"><i class="fa fa-check"></i><b>6.1</b> Isoforms expressed per gene</a></li>
+<li class="chapter" data-level="6.2" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms"><i class="fa fa-check"></i><b>6.2</b> Top 10 Genes with Most Isoforms</a></li>
+<li class="chapter" data-level="6.3" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms"><i class="fa fa-check"></i><b>6.3</b> Exploring <em>MACF1</em> isoforms</a></li>
+<li class="chapter" data-level="6.4" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#expression-of-macf1-isoforms-across-cell-types"><i class="fa fa-check"></i><b>6.4</b> Expression of <em>MACF1</em> isoforms Across Cell Types</a></li>
+<li class="chapter" data-level="6.5" data-path="exploring-isoforms-of-interest.html"><a href="exploring-isoforms-of-interest.html#visualization-of-isoform-structures"><i class="fa fa-check"></i><b>6.5</b> Visualization of Isoform Structures</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="isoform-classification.html"><a href="isoform-classification.html"><i class="fa fa-check"></i><b>7</b> <strong>Isoform Classification</strong></a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="isoform-classification.html"><a href="isoform-classification.html#classification-with-sqanti"><i class="fa fa-check"></i><b>7.1</b> Classification with SQANTI</a></li>
+<li class="chapter" data-level="7.2" data-path="isoform-classification.html"><a href="isoform-classification.html#cell-type-specific-isoforms"><i class="fa fa-check"></i><b>7.2</b> Cell type specific isoforms</a></li>
+<li class="chapter" data-level="7.3" data-path="isoform-classification.html"><a href="isoform-classification.html#find-all-the-genes-that-express-at-least-1-novel-isoform"><i class="fa fa-check"></i><b>7.3</b> Find all the genes that express at least 1 novel isoform</a></li>
+<li class="chapter" data-level="7.4" data-path="isoform-classification.html"><a href="isoform-classification.html#visualising-oaz2-novel-isoform"><i class="fa fa-check"></i><b>7.4</b> Visualising OAZ2 novel isoform</a></li>
+<li class="chapter" data-level="7.5" data-path="isoform-classification.html"><a href="isoform-classification.html#functional-impacts-of-novel-isoforms"><i class="fa fa-check"></i><b>7.5</b> Functional impacts of novel isoforms</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="profiling-isoform-diversity.html"><a href="profiling-isoform-diversity.html"><i class="fa fa-check"></i><b>8</b> <strong>Profiling Isoform Diversity</strong></a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="profiling-isoform-diversity.html"><a href="profiling-isoform-diversity.html#measuring-entropy-with-find_diversity-function"><i class="fa fa-check"></i><b>8.1</b> Measuring entropy with <code>find_diversity()</code> function</a></li>
+<li class="chapter" data-level="8.2" data-path="profiling-isoform-diversity.html"><a href="profiling-isoform-diversity.html#example-of-a-low-entropy-gene"><i class="fa fa-check"></i><b>8.2</b> Example of a low entropy gene</a></li>
+<li class="chapter" data-level="8.3" data-path="profiling-isoform-diversity.html"><a href="profiling-isoform-diversity.html#example-of-a-high-entropy-gene"><i class="fa fa-check"></i><b>8.3</b> Example of a high entropy gene</a></li>
+<li class="chapter" data-level="8.4" data-path="profiling-isoform-diversity.html"><a href="profiling-isoform-diversity.html#broadening-entropy-analysis"><i class="fa fa-check"></i><b>8.4</b> Broadening Entropy Analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="multisample-analysis.html"><a href="multisample-analysis.html"><i class="fa fa-check"></i><b>9</b> <strong>Multisample analysis</strong></a>
+<ul>
+<li class="chapter" data-level="9.0.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#dataset-information-1"><i class="fa fa-check"></i><b>9.0.1</b> Dataset Information</a></li>
+<li class="chapter" data-level="9.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#standard-pre-processing-and-quality-control"><i class="fa fa-check"></i><b>9.1</b> Standard pre-processing and quality control</a>
+<ul>
+<li class="chapter" data-level="9.1.1" data-path="multisample-analysis.html"><a href="multisample-analysis.html#define-qc-function"><i class="fa fa-check"></i><b>9.1.1</b> Define QC function</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multisample-integration"><i class="fa fa-check"></i><b>9.2</b> Multisample integration</a></li>
+<li class="chapter" data-level="9.3" data-path="multisample-analysis.html"><a href="multisample-analysis.html#add-isoform-counts"><i class="fa fa-check"></i><b>9.3</b> Add isoform counts</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>10</b> <strong>Trajectory analysis</strong></a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>10.1</b> Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="10.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>10.2</b> Multisample QC function</a></li>
+<li class="chapter" data-level="10.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-a-count-matrix"><i class="fa fa-check"></i><b>10.3</b> Convert Oarfish files to a count matrix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
+<li class="chapter" data-level="11" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html"><i class="fa fa-check"></i><b>11</b> <strong>Multisample analysis</strong></a>
+<ul>
+<li class="chapter" data-level="11.0.1" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#dataset-information-2"><i class="fa fa-check"></i><b>11.0.1</b> Dataset Information</a></li>
+<li class="chapter" data-level="11.1" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#standard-pre-processing-and-quality-control-1"><i class="fa fa-check"></i><b>11.1</b> Standard pre-processing and quality control</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#define-qc-function-1"><i class="fa fa-check"></i><b>11.1.1</b> Define QC function</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#multisample-integration-1"><i class="fa fa-check"></i><b>11.2</b> Multisample integration</a></li>
+<li class="chapter" data-level="11.3" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#add-isoform-counts-1"><i class="fa fa-check"></i><b>11.3</b> Add isoform counts</a></li>
+<li class="chapter" data-level="11.4" data-path="multisample-analysis-1.html"><a href="multisample-analysis-1.html#identify-cell-types"><i class="fa fa-check"></i><b>11.4</b> Identify cell types</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="trajectory-analysis-1.html"><a href="trajectory-analysis-1.html"><i class="fa fa-check"></i><b>12</b> <strong>Trajectory analysis</strong></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Long-read Single-Cell RNA-seq analysis tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="multisample-analysis-1" class="section level1 hasAnchor" number="11">
+<h1><span class="header-section-number">Chapter 11</span> <strong>Multisample analysis</strong><a href="multisample-analysis-1.html#multisample-analysis-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>The FLAMES pipeline supports the analysis of multiple samples simultaneously, allowing users to efficiently process complex experimental datasets. This is achieved using the <code>MultiSampleSCPipeline</code> function. The output generated by this function is similar to the single-sample analysis outlined in previous chapters but offers additional capabilities when the experimental design includes sample replicates.</p>
+<p>To take full advantage of these features we need to perform sample integration to generate a single object that we can use to integrate isoform expression across our conditions. First standard preprocessing as described in Chapters 3 and 4 is required. After integration we can perform the following key analysis:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Sample Integration:</strong> Combine multiple samples together and add isoform counts.</p></li>
+<li><p><strong>Trajectory Analysis:</strong> Explore genes that change along pseudotime trajectories.</p></li>
+<li><p><strong>Differential Expression Analysis:</strong> Identify differentially expressed isoforms across time points or sample conditions.</p></li>
+<li><p><strong>Differential Transcript Usage (DTU) Analysis:</strong> Investigate changes in isoform proportions between conditions. (Coming soon!!)</p></li>
+</ol>
+<p>Most preprocessing and QC steps remain the same. However, we will also demonstrate how to proceed directly from FLAMES output to initial QC without performing empty droplet removal or ambient RNA normalization. Although these steps are recommended, they may not always be necessary depending on the data.</p>
+<hr />
+<div id="dataset-information-2" class="section level3 hasAnchor" number="11.0.1">
+<h3><span class="header-section-number">11.0.1</span> Dataset Information<a href="multisample-analysis-1.html#dataset-information-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For this analysis, we are using a dataset comprising eight samples spanning four time points from an excitatory neuronal differentiation protocol. The protocol is the same as the one used for the D55 sample in previous chapters but utilizes a different cell line. Two samples were collected from each of the following time points:</p>
+<ul>
+<li><p><strong>Stem cells</strong> (STC)</p></li>
+<li><p><strong>Day 25</strong></p></li>
+</ul>
+<p>This dataset will allow us to explore temporal changes in gene and isoform expression throughout neuronal differentiation.</p>
+</div>
+<div id="standard-pre-processing-and-quality-control-1" class="section level2 hasAnchor" number="11.1">
+<h2><span class="header-section-number">11.1</span> Standard pre-processing and quality control<a href="multisample-analysis-1.html#standard-pre-processing-and-quality-control-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As before we will modify the count matrix for each sample so we use gene_symbol instead of ENSG id. The data generated from this multisample experiment is quite large. This is especially the case with Oarfish isoform quantification as there are many more features to consider. This means much of the workflow below is time consuming and computationally intensive. Please keep this in mind when processing your samples. In the tutorial we provide code for the required steps but do not evaluate many of the sections below due to these computational constraints. The raw counts are available in the multisample data folder if users wish to run through the analysis.</p>
+<p>make isoform gene dictionary for the mutisample mode</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="multisample-analysis-1.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert Gene_id to gene symbol for all counts</span></span>
+<span id="cb2-2"><a href="multisample-analysis-1.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#run a loop to run this function on all count files.</span></span>
+<span id="cb2-3"><a href="multisample-analysis-1.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Directory with input files</span></span>
+<span id="cb2-4"><a href="multisample-analysis-1.html#cb2-4" aria-hidden="true" tabindex="-1"></a>input_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/multi_sample_subset/&quot;</span></span>
+<span id="cb2-5"><a href="multisample-analysis-1.html#cb2-5" aria-hidden="true" tabindex="-1"></a>output_dir <span class="ot">&lt;-</span> <span class="st">&quot;./data/multi_sample_subset/&quot;</span></span>
+<span id="cb2-6"><a href="multisample-analysis-1.html#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="multisample-analysis-1.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># List all CSV files in the input directory</span></span>
+<span id="cb2-8"><a href="multisample-analysis-1.html#cb2-8" aria-hidden="true" tabindex="-1"></a>input_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(input_dir, <span class="at">pattern =</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">count_subset.csv$&quot;</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-9"><a href="multisample-analysis-1.html#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="multisample-analysis-1.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store data frames</span></span>
+<span id="cb2-11"><a href="multisample-analysis-1.html#cb2-11" aria-hidden="true" tabindex="-1"></a>result_list <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb2-12"><a href="multisample-analysis-1.html#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="multisample-analysis-1.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Process each file in the directory</span></span>
+<span id="cb2-14"><a href="multisample-analysis-1.html#cb2-14" aria-hidden="true" tabindex="-1"></a>total_files <span class="ot">&lt;-</span> <span class="fu">length</span>(input_files)  <span class="co"># Total number of files</span></span>
+<span id="cb2-15"><a href="multisample-analysis-1.html#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="multisample-analysis-1.html#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(input_files)) {</span>
+<span id="cb2-17"><a href="multisample-analysis-1.html#cb2-17" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> input_files[i]</span>
+<span id="cb2-18"><a href="multisample-analysis-1.html#cb2-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-19"><a href="multisample-analysis-1.html#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract file name without extension</span></span>
+<span id="cb2-20"><a href="multisample-analysis-1.html#cb2-20" aria-hidden="true" tabindex="-1"></a>  file_name <span class="ot">&lt;-</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(file_path))</span>
+<span id="cb2-21"><a href="multisample-analysis-1.html#cb2-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-22"><a href="multisample-analysis-1.html#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct the output file name</span></span>
+<span id="cb2-23"><a href="multisample-analysis-1.html#cb2-23" aria-hidden="true" tabindex="-1"></a>  output_file <span class="ot">&lt;-</span> <span class="fu">file.path</span>(output_dir, <span class="fu">paste0</span>(file_name, <span class="st">&quot;_gene_symbol.csv&quot;</span>))</span>
+<span id="cb2-24"><a href="multisample-analysis-1.html#cb2-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-25"><a href="multisample-analysis-1.html#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Show progress to the user</span></span>
+<span id="cb2-26"><a href="multisample-analysis-1.html#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing file %d of %d: %s&quot;</span>, i, total_files, file_name))</span>
+<span id="cb2-27"><a href="multisample-analysis-1.html#cb2-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-28"><a href="multisample-analysis-1.html#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Call the function with return_df = TRUE to store the result</span></span>
+<span id="cb2-29"><a href="multisample-analysis-1.html#cb2-29" aria-hidden="true" tabindex="-1"></a>    result_list[[file_name]] <span class="ot">&lt;-</span> <span class="fu">convert_ENSGID_to_geneSymbol</span>(</span>
+<span id="cb2-30"><a href="multisample-analysis-1.html#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">id_symbol_df =</span> isoform_gene_dict_mutlisample,</span>
+<span id="cb2-31"><a href="multisample-analysis-1.html#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">gene_count_matrix_path =</span> file_path,</span>
+<span id="cb2-32"><a href="multisample-analysis-1.html#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">output_file =</span> output_file,</span>
+<span id="cb2-33"><a href="multisample-analysis-1.html#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">return_df =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-34"><a href="multisample-analysis-1.html#cb2-34" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-35"><a href="multisample-analysis-1.html#cb2-35" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<pre><code>## Processing file 1 of 4: C1_STC_matched_reads_gene_count_subset</code></pre>
+<pre><code>## Processing file 2 of 4: C2_Day25_matched_reads_gene_count_subset</code></pre>
+<pre><code>## Processing file 3 of 4: C4_STC_matched_reads_gene_count_subset</code></pre>
+<pre><code>## Processing file 4 of 4: C5_Day25_matched_reads_gene_count_subset</code></pre>
+<div id="define-qc-function-1" class="section level3 hasAnchor" number="11.1.1">
+<h3><span class="header-section-number">11.1.1</span> Define QC function<a href="multisample-analysis-1.html#define-qc-function-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have developed a multisample QC function @ref(Multisample QC function) for processing count matrices and constructing filtered Seurat objects, following best practices outlined in the Seurat tutorial. This function includes steps to identify and remove doublets, as well as generate key diagnostic plots for data inspection. We encourage users to customize this function to fit their specific needs, such as applying additional filtering criteria.</p>
+<p>For the purposes of presenting concise and readable code we will apply the default filtering parameters to all objects. If users wish to be more specific about filtering each sample independently this is possible and can be done by running the <code>perform_qc_filtering</code> function on each sample with desired parameters.</p>
+<pre><code>## Processing sample 1 of 4: C1_STC</code></pre>
+<pre><code>## Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</code></pre>
+<pre><code>## Warning: Data is of class data.frame. Coercing to dgCMatrix.</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.
+## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -2.0645</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 5.1271e-16</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## PC_ 1 
+## Positive:  DYNLL1, UBE2S, RPL22L1, CDC20, ID3, MT1X, FABP5, ENSG00000296692, CBR1, CCND1 
+##     USP2-AS1, MT1G, MT2A, TUBB3, MT1H, PSAT1, ILF2, IFITM2, ODC1, UBE2C 
+##     MT1E, HSPA8, MVD, GAL, FLYWCH2, TUBB2A, SOCS1, RPS15A, S100A10, SOX4 
+## Negative:  DLGAP1, FRAS1, RIMS2, DOCK3, JAKMIP2, PRKG1, GRID2, CADM2, TAS2R14, PTPRG 
+##     NBEA, ENSG00000203279, SNTG2, NRXN1, ARL15, DST, ROR1, ADGRV1, HS3ST5, LRRTM4 
+##     ZC3H12B, MAGI2, FTX, PCCA, SUMF1, FOXN3, PBX1, NRG3, TENM3, SYN3 
+## PC_ 2 
+## Positive:  VSNL1, ENSG00000228592, RPL22L1, FABP5, USP2-AS1, ADCY2, MT1X, SPATS2L, POLR3G, HSPD1 
+##     CBR1, ENSG00000248605, ENSG00000308267, PSAT1, ITGB5, AK4, ENSG00000228714, SLC7A5, ITPR2, GRIA4 
+##     DUSP6, SOX4, LINC02211, UNC5D, ADARB2, ENSG00000289533, PCNX2, PIEZO2, RBM47, ANOS1 
+## Negative:  ENSG00000284294, IRX2, ENSG00000237087, SOX21-AS1, ID2, PLAAT3, CLU, USP9X, PRODH, OLFML3 
+##     LUZP2, COL1A1, PLCL2, BNIP3, H1-0, PCDH7, MIAT, TXNIP, LITAF, TMEM64 
+##     ESRG, IRX2-DT, NRP2, CACNA2D3, MALAT1, IGFBP2, GREB1L, PLPP1, ACOXL, PAPLN 
+## PC_ 3 
+## Positive:  CACNA2D3, ESRG, GRID2, H4C3, LINC00428, ENSG00000289195, CDK1, LINC00678, PLAAT3, FHIT 
+##     NRXN1, ENSG00000293610, PGK1, SYN3, TERF1, ENSG00000289533, PRELID2, UBE2C, FAM162A, ENSG00000289953 
+##     RBFOX1, DLGAP1-AS4, ENSG00000197462, FAM66A, CLU, H3C14, SCGB3A2, S100A10, RANBP17, ENSG00000294474 
+## Negative:  ADAMTS9, MECOM, ENSG00000265751, SIX3, LINC01833, GFRA1, ZFHX4, UNC5C, PRTG, SMOC1 
+##     LRP2, MEIS2, LHX2, GREB1L, RAX, SIX3-AS1, PAX6, ZEB1, FRZB, WNT5B 
+##     ZNF516, SOX5, ASXL3, COL2A1, LIX1, GLIS3, ZEB2, PWRN4, ENSG00000300778, ENSG00000249678 
+## PC_ 4 
+## Positive:  ENSG00000246090, DTL, ALCAM, TBC1D22A-DT, ZSWIM6, NCL, HSP90AB1, UHRF1, NASP, CECR2 
+##     JUN, KCNG3, HNRNPU, TOX, MCM6, FBXL20, NFIB, SIK3, HSPH1, ATAD2 
+##     ENSG00000228222, BRIP1, PARAIL, ENSG00000289358, INTS6, IFITM2, LINC03051, MIR222HG, NEDD4L, USP25 
+## Negative:  TOP2A, CDK1, UBE2C, AURKA, MKI67, PWRN4, WWOX, UNC5C, KIF23, ADAMTS9 
+##     PRTG, RPS15A, FHIT, MECOM, ST6GALNAC5, ENSG00000302819, ENSG00000259336, RPL34, KPNA2, SIX3 
+##     RBFOX1, SRGAP2, CDCA2, SGO1-AS1, SIX3-AS1, RPL26, MT-ND5, ENSG00000289953, DLGAP5, MT-CO2 
+## PC_ 5 
+## Positive:  MT-CO2, RPL26, RPS24, RPS3A, MT-CYB, RPL34, MT-CO1, MT-ND4, RPL7, RPS27A 
+##     MT-ATP6, RPL21P16, RPL39, ENSG00000293320, MT-ND5, MT-ND3, RPS15A, MT-ND2, MT-CO3, LDHB 
+##     COX7B, HSPA8, MT-ND1, MT-RNR2, MT-ND6, MT-RNR1, MT-TN, TERF1, NPM1, RPL22L1 
+## Negative:  H2AC14, H4C3, H2AC17, H2AC16, H2AC20, H3C15, H1-4, H1-5, NCL, H1-3 
+##     H3C14, ENSG00000280614, ENSG00000281181, NASP, ENSG00000281383, ENSG00000280441, TSPO, ENSG00000280800, IGFBP2, ENSG00000296692 
+##     SLC16A3, MIR34AHG, H2BC12, H2AC6, IFITM2, SYNE1, ENSG00000286155, LINC01975, SIX3, MAPK10</code></pre>
+<pre><code>## Computing nearest neighbor graph</code></pre>
+<pre><code>## Computing SNN</code></pre>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 232
+## Number of edges: 8748
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.4399
+## Number of communities: 5
+## Elapsed time: 0 seconds</code></pre>
+<pre><code>## 14:38:21 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 14:38:21 Read 232 rows and found 15 numeric columns</code></pre>
+<pre><code>## 14:38:21 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 14:38:21 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
+<pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
+<pre><code>## **************************************************|
+## 14:38:21 Writing NN index file to temp file /tmp/RtmpbhDoJ4/file261526ad38256
+## 14:38:21 Searching Annoy index using 1 thread, search_k = 3000
+## 14:38:21 Annoy recall = 100%
+## 14:38:22 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 14:38:24 Initializing from normalized Laplacian + noise (using RSpectra)
+## 14:38:24 Commencing optimization for 500 epochs, with 8168 positive edges
+## 14:38:26 Optimization finished
+## Loading required package: parallel</code></pre>
+<pre><code>## [1] &quot;Creating artificial doublets for pN = 5%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 10%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 15%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 20%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 25%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 30%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;</code></pre>
+<pre><code>## NULL
+## [1] &quot;Creating 77 artificial doublets...&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Computing pANN...&quot;
+## [1] &quot;Classifying doublets..&quot;</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## Processing sample 2 of 4: C4_STC</code></pre>
+<pre><code>## Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</code></pre>
+<pre><code>## Warning: Data is of class data.frame. Coercing to dgCMatrix.</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.
+## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Normalizing layer: counts
+## Finding variable features for layer counts</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -2.2279</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 6.5024e-16</code></pre>
+<pre><code>## Centering and scaling data matrix
+## PC_ 1 
+## Positive:  GRID2, DLGAP1, RIMS2, B3GALT1, ADGRV1, PTPRG, LINC03077, UNC5D, LARGE1, CADM2 
+##     SNTG2, KCNT2, GRIP1, FRAS1, FBXL7, NALF1, PCNX2, SLC25A21, NRXN1, NBEA 
+##     MIR924HG, SPIDR, KCND2, ENSG00000203279, DAB1, RANBP17, EXOC4, LRBA, ENSG00000288895, TMEM132B 
+## Negative:  PRDX1, CKS2, ACTG1, TMSB4X, CHCHD2, UBE2S, HSPA8, BTF3, TPM1, S100A10 
+##     ID3, VIM, S100A11, GAL, MT1X, DRAIC, UBE2C, LNCPRESS1, RHOC, CCNB1 
+##     TFIP11-DT, ENSG00000299390, LGALS14, ENSG00000275964, RPS4Y1, PEBP4, TAGLN2, CSRP1, ANXA2, BCDIN3D-AS1 
+## PC_ 2 
+## Positive:  ENSG00000244757, ZFPM2-AS1, ACTC1, TGM2, PAPPA, MSRB3, MICAL2, IGFBP5, ENSG00000260832, ARID5B 
+##     ENSG00000294133, AMIGO2, PHLDA2, SERPINE1, CYTOR, KCNH1, MYOCD-AS1, MIR137HG, ENSG00000259976, PRSS23 
+##     FLNC, BHLHE40, MIR181A1HG, CDH13-AS2, RNU6-319P, ENSG00000308721, SERTAD4-AS1, TGFB2, ITGA11, RP9P 
+## Negative:  ENSG00000281181, ENSG00000288895, ENSG00000280614, ENSG00000280800, ENSG00000281383, KCND2, LINC01090, LINC03077, RBFOX1, RUNX1T1 
+##     PREX2, ENSG00000308976, LSAMP, LRRTM4, PLEKHA5, NFIB, ADAM22, ENSG00000290960, DLGAP1, ENSG00000274090 
+##     ANK3, CALN1, PCDH11X, ENSG00000278996, RFX3, PELI2, NLGN4Y, MKI67, LRBA, FRAS1 
+## PC_ 3 
+## Positive:  FBXL20, ENSG00000246090, DTL, NECTIN3-AS1, NFIB, ENSG00000248605, CDH9, ENSG00000308976, RUNX1T1, RFX3-DT 
+##     TBC1D22A-DT, RORB, ADGRL2, NR3C2, GRIA4, MAP2, ALCAM, ENSG00000228222, NEMP2-DT, KCNG3 
+##     NXPH2, TOX, LINC02516, CAMK2D, ENSG00000286595, TLE4, PRKD1, ENSG00000281383, PDE3A, LNCPRESS2 
+## Negative:  UBE2C, CDK1, SMYD3, RBFOX1, H4C3, GRID2, ROBO2, AURKA, KAZN, CDKAL1 
+##     B3GALT1-AS1, WWOX, KPNA2, ENSG00000297659, RAD51B, THSD4, CTNNA2, PLK1, ANK2-AS1, CKS2 
+##     STK33, CENPF, ENSG00000250761, H1-5, CSMD2, INSIG1, DLGAP2, H1-3, ENSG00000262801, KIF23 
+## PC_ 4 
+## Positive:  CENPE, TPX2, AURKA, CKS2, KPNA2, CENPF, CCNB1, MKI67, HSPA8, RBFOX1 
+##     UBE2C, PLK1, UBE2S, KIF23, LINC01619, TRIM24, MALAT1, PTCHD1-AS, ADGRL2, WWOX 
+##     ENSG00000284906, PRKG1, CDK1, NR3C2, MMP16, NLGN4X, DACH1, SHISA9, LNCRNA-IUR, PHEX 
+## Negative:  H4C3, H1-3, H1-5, H2AC6, LINC02980, ENSG00000228944, ZNF704, ENSG00000284294, NRG3, H2BC11 
+##     H2AC20, GRM8, NTM, CADM2, H4C15, NCAM2, LINC02211, PCNX2, GPC3, FBN2 
+##     TMSB4X, KCND2, ENSG00000234261, FBXL7, PXDNL, BMPR1B, SPIDR, ENSG00000297122, KHDRBS2, KCNQ3 
+## PC_ 5 
+## Positive:  NR3C1, NBEA, ENSG00000227743, KLHL4, KCTD8, USP3, LSAMP, NOS1AP, TMEFF2, ST6GALNAC3 
+##     ZIC2, ZBTB20, HS3ST4, ANO4, MAP2, ID3, GRM5, ENSG00000285882, AFAP1, PRTG 
+##     ENSG00000293389, KIAA1217, ACAT2, ENSG00000225313, FRAS1, ENSG00000296233, ENSG00000228835, AGBL4, KHDRBS2, DLGAP1 
+## Negative:  SCGB3A2, ENSG00000289195, ENSG00000228714, LINP1, ENSG00000197462, ADCY2, NR5A2, ENSG00000305907, ENSG00000306915, ENSG00000254339 
+##     ENSG00000258751, GUCY2C-AS1, ENSG00000303317, ENSG00000305946, ENSG00000260834, ENSG00000228944, KIAA0825, ENSG00000235152, H2AC6, LRFN5 
+##     ENSG00000274090, JAZF1, ENSG00000271860, ENSG00000260364, ENSG00000234261, GAL, ENSG00000297836, ENSG00000286577, ENSG00000310010, KAZN 
+## Computing nearest neighbor graph
+## Computing SNN</code></pre>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 338
+## Number of edges: 14555
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.4966
+## Number of communities: 5
+## Elapsed time: 0 seconds</code></pre>
+<pre><code>## 14:39:21 UMAP embedding parameters a = 0.9922 b = 1.112
+## 14:39:21 Read 338 rows and found 15 numeric columns
+## 14:39:21 Using Annoy for neighbor search, n_neighbors = 30
+## 14:39:21 Building Annoy index with metric = cosine, n_trees = 50
+## 0%   10   20   30   40   50   60   70   80   90   100%
+## [----|----|----|----|----|----|----|----|----|----|
+## **************************************************|
+## 14:39:21 Writing NN index file to temp file /tmp/RtmpbhDoJ4/file261521b59d7ff
+## 14:39:21 Searching Annoy index using 1 thread, search_k = 3000
+## 14:39:21 Annoy recall = 100%
+## 14:39:22 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 14:39:25 Initializing from normalized Laplacian + noise (using RSpectra)
+## 14:39:25 Commencing optimization for 500 epochs, with 12938 positive edges
+## 14:39:26 Optimization finished</code></pre>
+<pre><code>## [1] &quot;Creating artificial doublets for pN = 5%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 10%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 15%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 20%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 25%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 30%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;</code></pre>
+<pre><code>## NULL
+## [1] &quot;Creating 113 artificial doublets...&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Computing pANN...&quot;
+## [1] &quot;Classifying doublets..&quot;</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## Processing sample 3 of 4: C2_Day25</code></pre>
+<pre><code>## Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</code></pre>
+<pre><code>## Warning: Data is of class data.frame. Coercing to dgCMatrix.</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.
+## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Normalizing layer: counts
+## Finding variable features for layer counts
+## Centering and scaling data matrix
+## PC_ 1 
+## Positive:  HMGN2, DHDDS-AS1, SMC4, TRIM59-IFT80, HMGB2, TOP2A, CKS1B, CENPF, DEK, CKS2 
+##     UBE2C, ECT2, NUSAP1, MAD2L1, MIS18BP1, ENSG00000285920, BIRC5, TPX2, KIF11, ASPM 
+##     PTTG1, PBK, MKI67, ESCO2, HSP90B1, CKAP2, AURKB, NUF2, NUCKS1, BUB1B 
+## Negative:  STMN2, DCX, GAP43, DCC, KIF5C, INA, AKAP6, MAP1B, NEFM, NFASC 
+##     LINC01917, STMN4, CCSER1, ELAVL4, XKR4, CELF3, TUBB3, CACNA1B, PCSK2, MAPT 
+##     RIMS2, NMNAT2, ATP1A3, IGFBPL1, MLLT11, CADPS, KALRN, NRXN1, SCG3, NSG2 
+## PC_ 2 
+## Positive:  ENSG00000257060, LINC01414, NPAS3, ENSG00000271860, CREB5, MIR99AHG, LINC01579, HDAC9, LINC01830, B3GALT1 
+##     PRKG1, ENSG00000280614, ADAMTS6, ENSG00000280800, ENSG00000281181, NKAIN3, HTR2C, ENSG00000281383, GPC6, BMPR1B 
+##     ENSG00000228222, ADGRB3, ENSG00000227486, CLVS1, QKI, MT-CO3, ENSG00000287844, ENSG00000239920, PARD3B, PWRN4 
+## Negative:  TUBB4B, TUBB, PRC1, KPNA2, STMN1, JPT1, ARL6IP1, ENSG00000260342, KIF2C, TPX2 
+##     GTSE1, NUSAP1, UBE2T, UBE2S, UBE2C, PLK1, NUF2, ENSG00000258232, CCNA2, KIF14 
+##     CDCA3, TACC3, CDK1, PBK, ASPM, CDKN2D, TOP2A, INCENP, ENSG00000285920, CENPA 
+## PC_ 3 
+## Positive:  DLX2, ASCL1, GADD45G, DLX1, RASD1, MEST, DLX6-AS1, DLX5, DLX6, RGS16 
+##     NXPH1, GAD2, CKB, ENSG00000258416, NRXN3, GNG8, DLK1, SOX4, DLL1, ENSG00000288958 
+##     COPG2IT1, LINC01305, ID2, COPG2, ENSG00000301653, FAM222A, HES6, MYT1, SLCO5A1, NOL4 
+## Negative:  DAB1, ROBO1, TRPM3, PCDH9, NRG3, CREB5, LINGO2, PCDH11X, EPB41L3, CDH18 
+##     DLG2, NLGN1, EPHA3, PARD3B, ADCY2, LINC02609, SLC4A10, DMD, EBF1, LRRC4C 
+##     LHX5-AS1, RORB, PAM, FSTL5, PCDH7, ENSG00000296399, GRM7, PCDH11Y, ENSG00000286446, GPR149 
+## PC_ 4 
+## Positive:  ENSG00000280206, NDE1, SPA17, TNFAIP8L1, TROAP, CCNB2, KIF20A, NEK2, CDC20, PLK1 
+##     FAM72D, MYH11, CCNB1, TRIM59, ENSG00000260342, ARL6IP1, FAM72C, CDKN3, NUDCD2, TUBA1C 
+##     MZT1, APOLD1, CDC25B, GAS2L3, CEP55, PIF1, RANGAP1, AURKA, KNSTRN, PTTG1 
+## Negative:  MYBL2, DTL, PCNA, CHEK1, H2AC20, H2AC17, H2AC14, ATAD2, H3C4, CLSPN 
+##     H1-5, WDHD1, CHAF1A, PCLAF, LINC02980, ENSG00000259316, HELLS, KNTC1, H2BC18, CENPK 
+##     H1-2, POLQ, RFC3, H2AC16, H4C3, MCM4, H2AC11, H2AC13, RAD51AP1, RRM2 
+## PC_ 5 
+## Positive:  ENSG00000258637, MAGI2, NRXN3, CREB5, SCLT1, ADAMTS12, SOX6, DMD, HDAC9, ENSG00000289202 
+##     ARHGAP22, DLG2, MYO1E, COPG2, ENSG00000225761, PWRN4, TLE4, ADAMTS6, PPP2R2B, CLVS1 
+##     PDE4B, SYT1, ENSG00000293653, STARD13, DOK6, TENM2, PWRN1, ATXN1, TEAD1, KIAA1328 
+## Negative:  EOMES, NHLH1, NEUROD1, CKB, SPRY1, ACTA1, LHX5, RSPO3, BAALC-AS2, S100A10 
+##     NTNG2, LINC02084, NNAT, ENSG00000306225, CNTN2, BNIP3, PARM1, PCLAF, LDHA, HMGB1 
+##     EBF2, TMSB10, ENSG00000259316, ENSG00000310246, H2AZ1, CHST8, HMGN2, TUBA1B, PTH2, NDST3 
+## Computing nearest neighbor graph
+## Computing SNN</code></pre>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 340
+## Number of edges: 9870
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.6882
+## Number of communities: 7
+## Elapsed time: 0 seconds</code></pre>
+<pre><code>## 14:40:26 UMAP embedding parameters a = 0.9922 b = 1.112
+## 14:40:26 Read 340 rows and found 15 numeric columns
+## 14:40:26 Using Annoy for neighbor search, n_neighbors = 30
+## 14:40:26 Building Annoy index with metric = cosine, n_trees = 50
+## 0%   10   20   30   40   50   60   70   80   90   100%
+## [----|----|----|----|----|----|----|----|----|----|
+## **************************************************|
+## 14:40:26 Writing NN index file to temp file /tmp/RtmpbhDoJ4/file261522fddc8f0
+## 14:40:26 Searching Annoy index using 1 thread, search_k = 3000
+## 14:40:26 Annoy recall = 100%
+## 14:40:27 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 14:40:30 Initializing from normalized Laplacian + noise (using RSpectra)
+## 14:40:30 Commencing optimization for 500 epochs, with 11742 positive edges
+## 14:40:31 Optimization finished</code></pre>
+<pre><code>## [1] &quot;Creating artificial doublets for pN = 5%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 10%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 15%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 20%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 25%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 30%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.03...&quot;
+## [1] &quot;pK = 0.04...&quot;
+## [1] &quot;pK = 0.05...&quot;
+## [1] &quot;pK = 0.06...&quot;
+## [1] &quot;pK = 0.07...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;</code></pre>
+<pre><code>## NULL
+## [1] &quot;Creating 113 artificial doublets...&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Computing pANN...&quot;
+## [1] &quot;Classifying doublets..&quot;</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;
+## Processing sample 4 of 4: C5_Day25</code></pre>
+<pre><code>## Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</code></pre>
+<pre><code>## Warning: Data is of class data.frame. Coercing to dgCMatrix.</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Key &#39;rna_&#39; taken, using &#39;joined_&#39; instead</code></pre>
+<pre><code>## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.
+## Warning: Default search for &quot;data&quot; layer in &quot;RNA&quot; assay yielded no results; utilizing &quot;counts&quot; layer instead.</code></pre>
+<pre><code>## Normalizing layer: counts
+## Finding variable features for layer counts</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -1.8513</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 2.3133e-16</code></pre>
+<pre><code>## Centering and scaling data matrix
+## PC_ 1 
+## Positive:  HMGN2, DEK, CENPH, HMGB2, ENSG00000259316, PCLAF, SIVA1, HELLS, NUSAP1, PTN 
+##     HMGB1, MAD2L1, GPC6, SMC4, CENPK, CKS2, TYMSOS, RRM2, CENPU, RFC3 
+##     NUCKS1, CKS1B, CENPM, NASP, DHFR, DIAPH3, LINC02980, ZWINT, RPA3, ENSG00000285920 
+## Negative:  STMN2, MAP1B, LINC01917, DCX, DCC, ELAVL3, RBP1, KALRN, AKAP6, KIF5C 
+##     MLLT11, TAGLN3, IGFBPL1, CELF3, CHN2, ST18, CCSER1, INA, GNG8, NNAT 
+##     CADPS, FAM241B, ISLR2, GAP43, NFASC, ENSG00000283982, BASP1, INSM1, MYT1L, GDAP1L1 
+## PC_ 2 
+## Positive:  CREB5, LINC01414, KCNQ3, SOX5, NKAIN3, ENSG00000272449, GLI3, SOX6, ENSG00000257060, QKI 
+##     LINC01830, MIR99AHG, MEIS2, GPC6, ABCC4, ENSG00000271860, XYLT1, B3GALT1, SLC44A5, ZFP36L1 
+##     PIP5K1B, LIX1, NDST4, IL1RAPL1, MIR9-1HG, ENSG00000273118, MECOM, ENSG00000239920, LINC01965, PWRN4 
+## Negative:  UBE2T, TUBB4B, ENSG00000285920, UBE2S, INCENP, NUSAP1, TOP2A, KIF11, PRC1, TPX2 
+##     ESCO2, KIFC1, RRM2, ASPM, C21orf58, ENSG00000258232, SPC25, TUBA1B-AS1, AURKB, H2AC14 
+##     TUBA1B, CIT, H2AZ1, H2AX, LINC02980, NDC80, HMGB2, NUCKS1, KIF18B, KIF14 
+## PC_ 3 
+## Positive:  NRG3, PAM, NLGN1, SORBS2, CDH18, NAV3, LINGO2, SMYD3, TRPM3, EPB41L3 
+##     PTPRG, IL1RAPL1, MIR99AHG, ZFPM2, NPAS3, ADCY2, ROBO1, LINC02609, EBF1, GPC6 
+##     EPHA3, ENSG00000250761, WWOX, AFF3, TBR1, GPR149, CLVS1, ANKFN1, DACH1, TMTC1 
+## Negative:  DLX2, DLX1, CKB, RGS16, RASD1, GADD45G, ID2, DLX5, ATP2B4, ISL1 
+##     SLCO5A1, GAD2, ASCL1, DLK1, MEST, SOX4, H3-3B, DLL1, HES6, SRRM4 
+##     PLS3, DLX6-AS1, HES5, LINC02106, SMOC1, JPT1, DLX6, DCLK2, MYT1, MFNG 
+## PC_ 4 
+## Positive:  PCNA, DUT, MCM10, CDC6, FEN1, MCM4, HELLS, RMI2, UNG, MCM6 
+##     MCM3, FAM111B, TK1, ENSG00000259316, CHAF1A, CHEK1, DTL, LRRC26, PCLAF, RRM1 
+##     RAD51AP1, DHFR, RPA3, ZWINT, PSMC3IP, NASP, PCDH11X, RFC3, CASP8AP2, CENPK 
+## Negative:  PIF1, APOLD1, FAM72C, CASK, PTTG1, PLK1, ENSG00000294182, GAS2L3, FNDC7, CENPE 
+##     ENSG00000293676, DENND1A, BUB1, KIF20A, ENSG00000290886, CENPA, TENT5C-DT, ENSG00000298831, ENSG00000225680, ENSG00000187951 
+##     MAFB, FAM72B, STPG4, EYA4, CACHD1, FOSB, TCF7L2, ENSG00000299604, ENSG00000272209, ENSG00000302843 
+## PC_ 5 
+## Positive:  SLC17A6, TUBA1C, LINC02609, EBF2, DYNLL1, CDC20, TRH, LHX5-AS1, RSPO3, SAMD5 
+##     ADCY2, ENSG00000227681, LINC02084, LDHA, LHX5, PSRC1, CHST8, ANKFN1, EOMES, AMER3 
+##     SLC4A10, PPP2R2C, PCSK1N, PTTG1, TMSB15A, MIR137HG, SGCZ, VWA3B, EBF1, ENSG00000224658 
+## Negative:  DLX6-AS1, NRXN3, COPG2, ENSG00000241231, HCN1, DLX6, SOX2-OT, MYO3A, ENSG00000239381, ENSG00000258637 
+##     ATRNL1, COPG2IT1, TMEM132B, ENSG00000228793, DLX5, GPHN, ENSG00000294823, ARHGAP10, MEST, UBA6-DT 
+##     SLC8A1, DISC1FP1, KCNH5, PDZD2, DCLK2, ENSG00000309795, GAD2, LINC01252, TBC1D5, RANBP17 
+## Computing nearest neighbor graph
+## Computing SNN</code></pre>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 142
+## Number of edges: 4241
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.4911
+## Number of communities: 4
+## Elapsed time: 0 seconds</code></pre>
+<pre><code>## 14:41:32 UMAP embedding parameters a = 0.9922 b = 1.112
+## 14:41:32 Read 142 rows and found 15 numeric columns
+## 14:41:32 Using Annoy for neighbor search, n_neighbors = 30
+## 14:41:32 Building Annoy index with metric = cosine, n_trees = 50
+## 0%   10   20   30   40   50   60   70   80   90   100%
+## [----|----|----|----|----|----|----|----|----|----|
+## **************************************************|
+## 14:41:32 Writing NN index file to temp file /tmp/RtmpbhDoJ4/file261526a7650e0
+## 14:41:32 Searching Annoy index using 1 thread, search_k = 3000
+## 14:41:32 Annoy recall = 100%
+## 14:41:34 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 14:41:36 Initializing from normalized Laplacian + noise (using RSpectra)
+## 14:41:36 Commencing optimization for 500 epochs, with 4798 positive edges
+## 14:41:37 Optimization finished</code></pre>
+<pre><code>## [1] &quot;Creating artificial doublets for pN = 5%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 10%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 15%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 20%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 25%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;
+## [1] &quot;Creating artificial doublets for pN = 30%&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Defining neighborhoods...&quot;
+## [1] &quot;Computing pANN across all pK...&quot;
+## [1] &quot;pK = 0.08...&quot;
+## [1] &quot;pK = 0.09...&quot;
+## [1] &quot;pK = 0.1...&quot;
+## [1] &quot;pK = 0.11...&quot;
+## [1] &quot;pK = 0.12...&quot;
+## [1] &quot;pK = 0.13...&quot;
+## [1] &quot;pK = 0.14...&quot;
+## [1] &quot;pK = 0.15...&quot;
+## [1] &quot;pK = 0.16...&quot;
+## [1] &quot;pK = 0.17...&quot;
+## [1] &quot;pK = 0.18...&quot;
+## [1] &quot;pK = 0.19...&quot;
+## [1] &quot;pK = 0.2...&quot;
+## [1] &quot;pK = 0.21...&quot;
+## [1] &quot;pK = 0.22...&quot;
+## [1] &quot;pK = 0.23...&quot;
+## [1] &quot;pK = 0.24...&quot;
+## [1] &quot;pK = 0.25...&quot;
+## [1] &quot;pK = 0.26...&quot;
+## [1] &quot;pK = 0.27...&quot;
+## [1] &quot;pK = 0.28...&quot;
+## [1] &quot;pK = 0.29...&quot;
+## [1] &quot;pK = 0.3...&quot;</code></pre>
+<pre><code>## NULL
+## [1] &quot;Creating 47 artificial doublets...&quot;
+## [1] &quot;Creating Seurat object...&quot;
+## [1] &quot;Normalizing Seurat object...&quot;</code></pre>
+<pre><code>## Normalizing layer: counts</code></pre>
+<pre><code>## [1] &quot;Finding variable genes...&quot;</code></pre>
+<pre><code>## Finding variable features for layer counts</code></pre>
+<pre><code>## [1] &quot;Scaling data...&quot;</code></pre>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<pre><code>## [1] &quot;Running PCA...&quot;
+## [1] &quot;Calculating PC distance matrix...&quot;
+## [1] &quot;Computing pANN...&quot;
+## [1] &quot;Classifying doublets..&quot;</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+</div>
+</div>
+<div id="multisample-integration-1" class="section level2 hasAnchor" number="11.2">
+<h2><span class="header-section-number">11.2</span> Multisample integration<a href="multisample-analysis-1.html#multisample-integration-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First we will merge the Seurat objects together and then perform integration. There are many options for sample integration and Seurat provides many wrappers for these functions. Here we will use Harmony <span class="citation">(<a href="references.html#ref-korsunsky2019" role="doc-biblioref">Korsunsky et al., 2019</a>)</span> for fast and effective integration. As these processes are time consuming we will load our saved objects.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="multisample-analysis-1.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="co"># integrate samples  </span></span>
+<span id="cb243-2"><a href="multisample-analysis-1.html#cb243-2" aria-hidden="true" tabindex="-1"></a><span class="co">#from the function above pull the filtered seurat object </span></span>
+<span id="cb243-3"><a href="multisample-analysis-1.html#cb243-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-4"><a href="multisample-analysis-1.html#cb243-4" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb243-5"><a href="multisample-analysis-1.html#cb243-5" aria-hidden="true" tabindex="-1"></a>  umap_objects[[<span class="st">&quot;C1_STC&quot;</span>]],</span>
+<span id="cb243-6"><a href="multisample-analysis-1.html#cb243-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">list</span>(</span>
+<span id="cb243-7"><a href="multisample-analysis-1.html#cb243-7" aria-hidden="true" tabindex="-1"></a>    umap_objects[[<span class="st">&quot;C4_STC&quot;</span>]],</span>
+<span id="cb243-8"><a href="multisample-analysis-1.html#cb243-8" aria-hidden="true" tabindex="-1"></a>    umap_objects[[<span class="st">&quot;C2_Day25&quot;</span>]],</span>
+<span id="cb243-9"><a href="multisample-analysis-1.html#cb243-9" aria-hidden="true" tabindex="-1"></a>    umap_objects[[<span class="st">&quot;C5_Day25&quot;</span>]]</span>
+<span id="cb243-10"><a href="multisample-analysis-1.html#cb243-10" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb243-11"><a href="multisample-analysis-1.html#cb243-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.cell.ids =</span> <span class="fu">c</span>(</span>
+<span id="cb243-12"><a href="multisample-analysis-1.html#cb243-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span></span>
+<span id="cb243-13"><a href="multisample-analysis-1.html#cb243-13" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb243-14"><a href="multisample-analysis-1.html#cb243-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;Multi-sample_tutorial&quot;</span></span>
+<span id="cb243-15"><a href="multisample-analysis-1.html#cb243-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb243-16"><a href="multisample-analysis-1.html#cb243-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-17"><a href="multisample-analysis-1.html#cb243-17" aria-hidden="true" tabindex="-1"></a><span class="co"># create a sample column</span></span>
+<span id="cb243-18"><a href="multisample-analysis-1.html#cb243-18" aria-hidden="true" tabindex="-1"></a>merged_seurat<span class="sc">$</span>sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(merged_seurat<span class="sc">@</span>meta.data)</span>
+<span id="cb243-19"><a href="multisample-analysis-1.html#cb243-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb243-20"><a href="multisample-analysis-1.html#cb243-20" aria-hidden="true" tabindex="-1"></a><span class="do">## split sample column to make a batch col</span></span>
+<span id="cb243-21"><a href="multisample-analysis-1.html#cb243-21" aria-hidden="true" tabindex="-1"></a>merged_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> <span class="fu">separate</span>(merged_seurat<span class="sc">@</span>meta.data, <span class="at">col =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;batch&#39;</span>, <span class="st">&#39;Day&#39;</span>, <span class="st">&#39;Barcode&#39;</span>), </span>
+<span id="cb243-22"><a href="multisample-analysis-1.html#cb243-22" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb243-23"><a href="multisample-analysis-1.html#cb243-23" aria-hidden="true" tabindex="-1"></a><span class="co">#check some QC metrics </span></span>
+<span id="cb243-24"><a href="multisample-analysis-1.html#cb243-24" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(merged_seurat, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">group.by =</span> <span class="st">&quot;Day&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb243-25"><a href="multisample-analysis-1.html#cb243-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">&quot;Vln plots grouped by Day&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_integration-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="multisample-analysis-1.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="co">#can plot based on any metadata col</span></span>
+<span id="cb244-2"><a href="multisample-analysis-1.html#cb244-2" aria-hidden="true" tabindex="-1"></a><span class="co">#VlnPlot(merged_seurat, features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;, &quot;percent.mt&quot;), ncol = 3, group.by = &quot;orig.ident&quot;)</span></span>
+<span id="cb244-3"><a href="multisample-analysis-1.html#cb244-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb244-4"><a href="multisample-analysis-1.html#cb244-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of cells per group</span></span>
+<span id="cb244-5"><a href="multisample-analysis-1.html#cb244-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(merged_seurat<span class="sc">$</span>orig.ident)</span></code></pre></div>
+</details>
+<pre><code>## 
+##   C1_STC C2_Day25   C4_STC C5_Day25 
+##      225      330      328      138</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="multisample-analysis-1.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(merged_seurat<span class="sc">$</span>Day)</span></code></pre></div>
+</details>
+<pre><code>## 
+## Day25   STC 
+##   468   553</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="multisample-analysis-1.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply normal preprocessing steps to merged file </span></span>
+<span id="cb248-2"><a href="multisample-analysis-1.html#cb248-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb248-3"><a href="multisample-analysis-1.html#cb248-3" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(<span class="at">object =</span> merged_seurat)</span></code></pre></div>
+</details>
+<pre><code>## Normalizing layer: counts.C1_STC</code></pre>
+<pre><code>## Normalizing layer: counts.C4_STC</code></pre>
+<pre><code>## Normalizing layer: counts.C2_Day25</code></pre>
+<pre><code>## Normalizing layer: counts.C5_Day25</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="multisample-analysis-1.html#cb253-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(<span class="at">object =</span> merged_seurat)</span></code></pre></div>
+</details>
+<pre><code>## Finding variable features for layer counts.C1_STC</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -2.0512</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 2.3467e-16</code></pre>
+<pre><code>## Finding variable features for layer counts.C4_STC</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -2.2148</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 4.1338e-16</code></pre>
+<pre><code>## Finding variable features for layer counts.C2_Day25</code></pre>
+<pre><code>## Finding variable features for layer counts.C5_Day25</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : pseudoinverse used at -1.8388</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : neighborhood radius 0.30103</code></pre>
+<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric = parametric, : reciprocal condition number 5.5033e-16</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="multisample-analysis-1.html#cb267-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(<span class="at">object =</span> merged_seurat) </span></code></pre></div>
+</details>
+<pre><code>## Centering and scaling data matrix</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="multisample-analysis-1.html#cb269-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(<span class="at">object =</span> merged_seurat)</span></code></pre></div>
+</details>
+<pre><code>## PC_ 1 
+## Positive:  L1TD1, MGST1, GRID2, CACNA2D3, PRDX1, MT-CO3, HSPA8, GALNT17, POLR3G, ADGRV1 
+##     ENSG00000248605, MT-ATP6, RBFOX1, ROR1, SHISA9, GPR176, RBM47, MT-CO2, SNTG2, PTPRG 
+##     BNC2, SPATS2L, ENSG00000274090, HDAC2-AS2, MCM3, MT-CYB, FRAS1, ENSG00000203279, RPL22L1, CALN1 
+## Negative:  MALAT1, ENSG00000280441, ENSG00000278996, DACH1, ENSG00000280614, ENSG00000280800, ZEB1, ENSG00000281181, SOX5, TUBA1A 
+##     DLK1, ENSG00000257060, ENSG00000281383, WNT5B, NNAT, MAP2, ZFHX4, MEIS2, GPM6A, NPAS3 
+##     MAPK10, CKB, FGF13, KCNQ3, ZBTB20, GREB1L, VIM, SSBP2, SOX6, LINC01414 
+## PC_ 2 
+## Positive:  ENSG00000259316, HMGB2, RPS24, SOX2-OT, VIM, DEK, CENPH, HMGN2, PTTG1, TUBA1B 
+##     H2AZ2, CDC20, BIRC5, FRZB, LINC01830, MIR99AHG, LIX1, MXD3, H2AX, SMC4 
+##     RPS3A, TYMS, CCNB2, MT-ND3, UBE2C, PBK, NUSAP1, ENSG00000285920, CCN1, IGFBP2 
+## Negative:  RIMS2, STMN2, AKAP6, NFASC, XKR4, NALF1, CHN2, RMST, GAP43, KIF5C 
+##     PCSK2, NRXN1, ANK3, PTPRD, ERC2, CADPS, NSG2, MYT1L, CACNA2D1, ENSG00000283982 
+##     LINC01917, CTNNA2, ELAVL2, PBX1, CELF3, SLIT1, INA, DST, ELAVL4, CACNA1B 
+## PC_ 3 
+## Positive:  JPT1, TUBB2A, TMSB10, UBE2S, RBP1, S100A11, CRABP1, TUBB, BDNF-AS, NEFM 
+##     PLAAT3, S100A10, TUBB2B, STMN2, ID2, DYNLL1, INA, IGFBPL1, MT1X, GDAP1L1 
+##     GNG8, ST18, GAP43, CELF3, ID3, INSM1, TAGLN, PCSK1N, NSG2, LDHA 
+## Negative:  GPC6, FBXL7, B3GALT1, FAT3, DLG2, ENSG00000228222, QKI, EFNA5, PLEKHA5, PARD3B 
+##     XYLT1, TOX, NRG3, LINC03077, STK3, NLGN1, PTPRK, KCNT2, SDK1, EXT1 
+##     GRIP1, RAD51B, PRKD1, DAB1, LDB2, SUPT3H, CDK14, TTC28, NAV3, KIAA1217 
+## PC_ 4 
+## Positive:  DANT2, RPL22L1, RPS24, BDNF-AS, RPS3A, PCDH11X, ENSG00000271860, MT-RNR2, PLAAT3, PRKG1 
+##     TPM1, MT-CO3, DANT1, S100A11, ADAMTS6, ENSG00000272449, BST2, MT1X, LINC01414, DIAPH2 
+##     MT-RNR1, DGKB, RPL34, ENSG00000289195, MT-CO1, ENSG00000239920, ATP2B4, USP38-DT, ID3, ENSG00000297419 
+## Negative:  PBK, NUSAP1, PRC1, TOP2A, NUF2, ENSG00000285920, MXD3, TPX2, GAS2L3, NEK2 
+##     CENPA, HMGB2, MKI67, KIF18A, CKAP2L, CDCA3, TUBB4B, KIF2C, FAM72C, GTSE1 
+##     SGO2, KIFC1, CENPE, FAM72A, H2AX, FAM72D, ASPM, CDCA8, NDC80, RACGAP1 
+## PC_ 5 
+## Positive:  CDH18, LINC02609, LHX5-AS1, TBR1, EBF1, RSPO3, GPR149, SLC4A10, ENSG00000286446, SLIT1 
+##     ENSG00000296399, SLC17A6, FSTL5, EPB41L3, ANKFN1, ROBO1, PCSK2, LHX1-DT, ENSG00000293110, LHX5 
+##     PCDH9, TRH, EPHA3, ENSG00000227681, SAMD5, PCSK1N, GABBR2, RORB, ENSG00000259316, ENSG00000224658 
+## Negative:  ASCL1, RASD1, DLX6-AS1, GADD45G, RGS16, NRXN3, MEST, NXPH1, GAD2, SMOC1 
+##     COPG2IT1, ENSG00000258416, SOX4, COPG2, DLL1, SLCO5A1, GNG8, LINC02106, ENSG00000258637, MYT1 
+##     ATP2B4, ENSG00000234710, PXDN, RND3, TH, ENSG00000295572, NOL4, ENSG00000270953, ISL1, PCP4</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="multisample-analysis-1.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(merged_seurat)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_integration-2.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="multisample-analysis-1.html#cb272-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(<span class="at">object =</span> merged_seurat, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>)</span></code></pre></div>
+</details>
+<pre><code>## Computing nearest neighbor graph</code></pre>
+<pre><code>## Computing SNN</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="multisample-analysis-1.html#cb275-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(<span class="at">object =</span> merged_seurat, <span class="at">resolution =</span> <span class="fl">0.6</span>)</span></code></pre></div>
+</details>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 1021
+## Number of edges: 29966
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.8700
+## Number of communities: 8
+## Elapsed time: 0 seconds</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="multisample-analysis-1.html#cb277-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(<span class="at">object =</span> merged_seurat, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span></code></pre></div>
+</details>
+<pre><code>## 14:04:46 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
+<pre><code>## 14:04:46 Read 1021 rows and found 30 numeric columns</code></pre>
+<pre><code>## 14:04:46 Using Annoy for neighbor search, n_neighbors = 30</code></pre>
+<pre><code>## 14:04:46 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
+<pre><code>## 0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
+<pre><code>## [----|----|----|----|----|----|----|----|----|----|</code></pre>
+<pre><code>## **************************************************|
+## 14:04:46 Writing NN index file to temp file /tmp/RtmpEy8TTr/file355847d22e30e
+## 14:04:46 Searching Annoy index using 1 thread, search_k = 3000
+## 14:04:46 Annoy recall = 100%
+## 14:04:47 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+## 14:04:50 Found 2 connected components, falling back to &#39;spca&#39; initialization with init_sdev = 1
+## 14:04:50 Using &#39;irlba&#39; for PCA
+## 14:04:50 PCA: 2 components explained 51.16% variance
+## 14:04:50 Scaling init to sdev = 1
+## 14:04:50 Commencing optimization for 500 epochs, with 39318 positive edges
+## 14:04:52 Optimization finished</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="multisample-analysis-1.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="do">##save merged object</span></span>
+<span id="cb285-2"><a href="multisample-analysis-1.html#cb285-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(merged_seurat, <span class="at">file =</span> <span class="st">&quot;./output_files/multi_sample_subset//merged_seurat.rds&quot;</span>)</span></code></pre></div>
+</details>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="multisample-analysis-1.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">00003</span>)</span>
+<span id="cb286-2"><a href="multisample-analysis-1.html#cb286-2" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./output_files/multi_sample_subset/merged_seurat.rds&quot;</span>)</span>
+<span id="cb286-3"><a href="multisample-analysis-1.html#cb286-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb286-4"><a href="multisample-analysis-1.html#cb286-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb286-5"><a href="multisample-analysis-1.html#cb286-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Let&#39;s plot the merged file. </span></span>
+<span id="cb286-6"><a href="multisample-analysis-1.html#cb286-6" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
+<span id="cb286-7"><a href="multisample-analysis-1.html#cb286-7" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
+<span id="cb286-8"><a href="multisample-analysis-1.html#cb286-8" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
+<span id="cb286-9"><a href="multisample-analysis-1.html#cb286-9" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
+<span id="cb286-10"><a href="multisample-analysis-1.html#cb286-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb286-11"><a href="multisample-analysis-1.html#cb286-11" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_integration_2-1.png" width="960" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="multisample-analysis-1.html#cb287-1" aria-hidden="true" tabindex="-1"></a>merged_seurat <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(<span class="at">object =</span> merged_seurat)</span>
+<span id="cb287-2"><a href="multisample-analysis-1.html#cb287-2" aria-hidden="true" tabindex="-1"></a>merged_seurat[[<span class="st">&quot;RNA&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">split</span>(merged_seurat[[<span class="st">&quot;RNA&quot;</span>]], <span class="at">f =</span> merged_seurat<span class="sc">$</span>orig.ident)</span>
+<span id="cb287-3"><a href="multisample-analysis-1.html#cb287-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb287-4"><a href="multisample-analysis-1.html#cb287-4" aria-hidden="true" tabindex="-1"></a><span class="co">#perform integration with Harmony</span></span>
+<span id="cb287-5"><a href="multisample-analysis-1.html#cb287-5" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">IntegrateLayers</span>(<span class="at">object =</span> merged_seurat,</span>
+<span id="cb287-6"><a href="multisample-analysis-1.html#cb287-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">method =</span> HarmonyIntegration,</span>
+<span id="cb287-7"><a href="multisample-analysis-1.html#cb287-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">orig.reduction =</span> <span class="st">&quot;pca&quot;</span>,</span>
+<span id="cb287-8"><a href="multisample-analysis-1.html#cb287-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">new.reduction =</span> <span class="st">&#39;integrated.harm&#39;</span>,</span>
+<span id="cb287-9"><a href="multisample-analysis-1.html#cb287-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb287-10"><a href="multisample-analysis-1.html#cb287-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</details>
+<pre><code>## Warning in harmony::HarmonyMatrix(data_mat = Embeddings(object = orig), : HarmonyMatrix is deprecated and will be removed in the future from the API in the
+## future</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="multisample-analysis-1.html#cb289-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>)</span>
+<span id="cb289-2"><a href="multisample-analysis-1.html#cb289-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(obj, <span class="at">resolution=</span><span class="fl">0.4</span>, <span class="at">cluster.name=</span><span class="st">&quot;harm_cluster&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+## 
+## Number of nodes: 1021
+## Number of edges: 29472
+## 
+## Running Louvain algorithm...
+## Maximum modularity in 10 random starts: 0.8720
+## Number of communities: 7
+## Elapsed time: 0 seconds</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="multisample-analysis-1.html#cb291-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction=</span><span class="st">&quot;integrated.harm&quot;</span>, <span class="at">dims=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap.harm&quot;</span>)</span>
+<span id="cb291-2"><a href="multisample-analysis-1.html#cb291-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb291-3"><a href="multisample-analysis-1.html#cb291-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb291-4"><a href="multisample-analysis-1.html#cb291-4" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">group.by =</span> <span class="fu">c</span>(<span class="st">&quot;Day&quot;</span>, <span class="st">&quot;orig.ident&quot;</span>, <span class="st">&quot;harm_cluster&quot;</span>), <span class="at">label =</span> T)  </span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_integration_2-2.png" width="960" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="multisample-analysis-1.html#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="do">### save object </span></span>
+<span id="cb292-2"><a href="multisample-analysis-1.html#cb292-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(obj, <span class="at">file =</span> <span class="st">&quot;./output_files/multi_sample_subset//integrated_harm_seurat.rds&quot;</span>)</span></code></pre></div>
+</details>
+</div>
+<div id="add-isoform-counts-1" class="section level2 hasAnchor" number="11.3">
+<h2><span class="header-section-number">11.3</span> Add isoform counts<a href="multisample-analysis-1.html#add-isoform-counts-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now we can add isoform level information to the merged Seurat object. When doing this you may need to convert the Oarfish files into a count.csv file with the row names in the ENSTID_gene_symbol ID form. The function to do so can be found here @ref(Convert Oarfish files to count matrix)</p>
+<p>We will convert the Oarfish output to count data. We can also use the bellow fucntion to incldue or exlude Novel bambu genes that poarfish quantifies. for the sake of simplicity we will exclude novel bambu Genes.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="multisample-analysis-1.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define sample names</span></span>
+<span id="cb293-2"><a href="multisample-analysis-1.html#cb293-2" aria-hidden="true" tabindex="-1"></a>sample_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;C1_STC&quot;</span>,</span>
+<span id="cb293-3"><a href="multisample-analysis-1.html#cb293-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;C4_STC&quot;</span>,</span>
+<span id="cb293-4"><a href="multisample-analysis-1.html#cb293-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;C2_Day25&quot;</span>,</span>
+<span id="cb293-5"><a href="multisample-analysis-1.html#cb293-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&quot;C5_Day25&quot;</span>)</span>
+<span id="cb293-6"><a href="multisample-analysis-1.html#cb293-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-7"><a href="multisample-analysis-1.html#cb293-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each sample and process the count files</span></span>
+<span id="cb293-8"><a href="multisample-analysis-1.html#cb293-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (sample <span class="cf">in</span> sample_names) {</span>
+<span id="cb293-9"><a href="multisample-analysis-1.html#cb293-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use tryCatch to handle errors</span></span>
+<span id="cb293-10"><a href="multisample-analysis-1.html#cb293-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb293-11"><a href="multisample-analysis-1.html#cb293-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Call the function to process the sample</span></span>
+<span id="cb293-12"><a href="multisample-analysis-1.html#cb293-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">process_oarfish_files_to_counts_matrix</span>(</span>
+<span id="cb293-13"><a href="multisample-analysis-1.html#cb293-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">sample_name =</span> sample,</span>
+<span id="cb293-14"><a href="multisample-analysis-1.html#cb293-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">resource_table_path =</span> <span class="st">&quot;./output_files/ref_files/isoform_gene_dict_mutlisample_subset.csv&quot;</span>,</span>
+<span id="cb293-15"><a href="multisample-analysis-1.html#cb293-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">output_dir =</span> <span class="st">&quot;./output_files/multi_sample_subset/oarfish_counts/&quot;</span>,</span>
+<span id="cb293-16"><a href="multisample-analysis-1.html#cb293-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_dir =</span> <span class="st">&quot;./data/multi_sample_subset/oarfsih/&quot;</span>,</span>
+<span id="cb293-17"><a href="multisample-analysis-1.html#cb293-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">filter_bambu_Genes =</span> <span class="cn">TRUE</span></span>
+<span id="cb293-18"><a href="multisample-analysis-1.html#cb293-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb293-19"><a href="multisample-analysis-1.html#cb293-19" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb293-20"><a href="multisample-analysis-1.html#cb293-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the error message and exit the loop</span></span>
+<span id="cb293-21"><a href="multisample-analysis-1.html#cb293-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cat</span>(<span class="st">&quot;Error processing sample:&quot;</span>, sample, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Error message:&quot;</span>, e<span class="sc">$</span>message, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">Exiting loop.</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb293-22"><a href="multisample-analysis-1.html#cb293-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(e)</span>
+<span id="cb293-23"><a href="multisample-analysis-1.html#cb293-23" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb293-24"><a href="multisample-analysis-1.html#cb293-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+<p>The workflow follows these steps.</p>
+<ol style="list-style-type: decimal">
+<li>Create a Seurat object per sample</li>
+<li>Merge the objects together</li>
+<li>Filter the isoform merged object based on cell types that are high quality (based on gene level filtering)</li>
+<li>Add the isoform filtered and merged object to the gene level object as a new assay</li>
+<li>Integration on the isoform assay is possible but not shown here.</li>
+</ol>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="multisample-analysis-1.html#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="do">############ read in count matrix and add isoform assay to Seurat object  #########</span></span>
+<span id="cb294-2"><a href="multisample-analysis-1.html#cb294-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Make Seurat objects not filtered</span></span>
+<span id="cb294-3"><a href="multisample-analysis-1.html#cb294-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to read a CSV file and create a Seurat object</span></span>
+<span id="cb294-4"><a href="multisample-analysis-1.html#cb294-4" aria-hidden="true" tabindex="-1"></a>create_seurat_object <span class="ot">&lt;-</span> <span class="cf">function</span>(sample_name, input_dir, project_name) {</span>
+<span id="cb294-5"><a href="multisample-analysis-1.html#cb294-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Construct file path</span></span>
+<span id="cb294-6"><a href="multisample-analysis-1.html#cb294-6" aria-hidden="true" tabindex="-1"></a>  file_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(input_dir, <span class="fu">paste0</span>(<span class="st">&quot;gene_symbol_oarfish_&quot;</span>, sample_name, <span class="st">&quot;_counts.csv&quot;</span>))</span>
+<span id="cb294-7"><a href="multisample-analysis-1.html#cb294-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb294-8"><a href="multisample-analysis-1.html#cb294-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Read the CSV file</span></span>
+<span id="cb294-9"><a href="multisample-analysis-1.html#cb294-9" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">fread</span>(file_path)</span>
+<span id="cb294-10"><a href="multisample-analysis-1.html#cb294-10" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(counts) </span>
+<span id="cb294-11"><a href="multisample-analysis-1.html#cb294-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> counts[[<span class="dv">1</span>]]            <span class="co"># Set row names from the first column</span></span>
+<span id="cb294-12"><a href="multisample-analysis-1.html#cb294-12" aria-hidden="true" tabindex="-1"></a>  counts[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="cn">NULL</span>     </span>
+<span id="cb294-13"><a href="multisample-analysis-1.html#cb294-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb294-14"><a href="multisample-analysis-1.html#cb294-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create the Seurat object</span></span>
+<span id="cb294-15"><a href="multisample-analysis-1.html#cb294-15" aria-hidden="true" tabindex="-1"></a>  seurat_obj <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> counts, <span class="at">project =</span> project_name, <span class="at">min.cells =</span> <span class="dv">5</span>, <span class="at">min.features =</span> <span class="dv">500</span>)</span>
+<span id="cb294-16"><a href="multisample-analysis-1.html#cb294-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb294-17"><a href="multisample-analysis-1.html#cb294-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(seurat_obj)</span>
+<span id="cb294-18"><a href="multisample-analysis-1.html#cb294-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb294-19"><a href="multisample-analysis-1.html#cb294-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-20"><a href="multisample-analysis-1.html#cb294-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Directory where the CSV files are stored</span></span>
+<span id="cb294-21"><a href="multisample-analysis-1.html#cb294-21" aria-hidden="true" tabindex="-1"></a>input_directory <span class="ot">&lt;-</span> <span class="st">&quot;./output_files/multi_sample_subset/oarfish_counts/&quot;</span></span>
+<span id="cb294-22"><a href="multisample-analysis-1.html#cb294-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-23"><a href="multisample-analysis-1.html#cb294-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty list to store Seurat objects</span></span>
+<span id="cb294-24"><a href="multisample-analysis-1.html#cb294-24" aria-hidden="true" tabindex="-1"></a>iso_seurat_objects <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb294-25"><a href="multisample-analysis-1.html#cb294-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-26"><a href="multisample-analysis-1.html#cb294-26" aria-hidden="true" tabindex="-1"></a>total_samples <span class="ot">&lt;-</span> <span class="fu">length</span>(sample_names)</span>
+<span id="cb294-27"><a href="multisample-analysis-1.html#cb294-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(sample_names)) {</span>
+<span id="cb294-28"><a href="multisample-analysis-1.html#cb294-28" aria-hidden="true" tabindex="-1"></a>  sample <span class="ot">&lt;-</span> sample_names[i]</span>
+<span id="cb294-29"><a href="multisample-analysis-1.html#cb294-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb294-30"><a href="multisample-analysis-1.html#cb294-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">&quot;Processing sample %d of %d: %s&quot;</span>, i, total_samples, sample))</span>
+<span id="cb294-31"><a href="multisample-analysis-1.html#cb294-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb294-32"><a href="multisample-analysis-1.html#cb294-32" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[sample]] <span class="ot">&lt;-</span> <span class="fu">create_seurat_object</span>(</span>
+<span id="cb294-33"><a href="multisample-analysis-1.html#cb294-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_name =</span> sample,</span>
+<span id="cb294-34"><a href="multisample-analysis-1.html#cb294-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_dir =</span> input_directory,</span>
+<span id="cb294-35"><a href="multisample-analysis-1.html#cb294-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">project_name =</span> sample</span>
+<span id="cb294-36"><a href="multisample-analysis-1.html#cb294-36" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb294-37"><a href="multisample-analysis-1.html#cb294-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb294-38"><a href="multisample-analysis-1.html#cb294-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-39"><a href="multisample-analysis-1.html#cb294-39" aria-hidden="true" tabindex="-1"></a><span class="do">####### Merge the samples into one object ######</span></span>
+<span id="cb294-40"><a href="multisample-analysis-1.html#cb294-40" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb294-41"><a href="multisample-analysis-1.html#cb294-41" aria-hidden="true" tabindex="-1"></a>  iso_seurat_objects[[<span class="st">&quot;C1_STC&quot;</span>]],</span>
+<span id="cb294-42"><a href="multisample-analysis-1.html#cb294-42" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">list</span>(</span>
+<span id="cb294-43"><a href="multisample-analysis-1.html#cb294-43" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C4_STC&quot;</span>]],</span>
+<span id="cb294-44"><a href="multisample-analysis-1.html#cb294-44" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C2_Day25&quot;</span>]],</span>
+<span id="cb294-45"><a href="multisample-analysis-1.html#cb294-45" aria-hidden="true" tabindex="-1"></a>    iso_seurat_objects[[<span class="st">&quot;C5_Day25&quot;</span>]]</span>
+<span id="cb294-46"><a href="multisample-analysis-1.html#cb294-46" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb294-47"><a href="multisample-analysis-1.html#cb294-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">add.cell.ids =</span> <span class="fu">c</span>(</span>
+<span id="cb294-48"><a href="multisample-analysis-1.html#cb294-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C1_STC&quot;</span>, <span class="st">&quot;C4_STC&quot;</span>, <span class="st">&quot;C2_Day25&quot;</span>, <span class="st">&quot;C5_Day25&quot;</span></span>
+<span id="cb294-49"><a href="multisample-analysis-1.html#cb294-49" aria-hidden="true" tabindex="-1"></a>  ), </span>
+<span id="cb294-50"><a href="multisample-analysis-1.html#cb294-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;iso-Multi-sample_tutorial&quot;</span></span>
+<span id="cb294-51"><a href="multisample-analysis-1.html#cb294-51" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb294-52"><a href="multisample-analysis-1.html#cb294-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-53"><a href="multisample-analysis-1.html#cb294-53" aria-hidden="true" tabindex="-1"></a><span class="co"># create a sample column</span></span>
+<span id="cb294-54"><a href="multisample-analysis-1.html#cb294-54" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">$</span>sample <span class="ot">&lt;-</span> <span class="fu">rownames</span>(iso.merged_seurat<span class="sc">@</span>meta.data)</span>
+<span id="cb294-55"><a href="multisample-analysis-1.html#cb294-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-56"><a href="multisample-analysis-1.html#cb294-56" aria-hidden="true" tabindex="-1"></a><span class="co"># split sample column to makw a batch col</span></span>
+<span id="cb294-57"><a href="multisample-analysis-1.html#cb294-57" aria-hidden="true" tabindex="-1"></a>iso.merged_seurat<span class="sc">@</span>meta.data <span class="ot">&lt;-</span> <span class="fu">separate</span>(iso.merged_seurat<span class="sc">@</span>meta.data, <span class="at">col =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&#39;batch&#39;</span>, <span class="st">&#39;Day&#39;</span>, <span class="st">&#39;Barcode&#39;</span>), </span>
+<span id="cb294-58"><a href="multisample-analysis-1.html#cb294-58" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">sep =</span> <span class="st">&#39;_&#39;</span>)</span>
+<span id="cb294-59"><a href="multisample-analysis-1.html#cb294-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-60"><a href="multisample-analysis-1.html#cb294-60" aria-hidden="true" tabindex="-1"></a><span class="do">## filter the data to iso and gene cells match</span></span>
+<span id="cb294-61"><a href="multisample-analysis-1.html#cb294-61" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">subset</span>(iso.merged_seurat, <span class="at">cells =</span>obj<span class="sc">@</span>graphs[[<span class="st">&quot;RNA_nn&quot;</span>]]<span class="sc">@</span>Dimnames[[<span class="dv">1</span>]])</span>
+<span id="cb294-62"><a href="multisample-analysis-1.html#cb294-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-63"><a href="multisample-analysis-1.html#cb294-63" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(merged_seurat_isoform_filtered, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;nFeature_RNA&quot;</span>, <span class="st">&quot;nCount_RNA&quot;</span>, <span class="st">&quot;percent.mt&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb294-64"><a href="multisample-analysis-1.html#cb294-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-65"><a href="multisample-analysis-1.html#cb294-65" aria-hidden="true" tabindex="-1"></a><span class="co"># perform standard workflow steps</span></span>
+<span id="cb294-66"><a href="multisample-analysis-1.html#cb294-66" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb294-67"><a href="multisample-analysis-1.html#cb294-67" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb294-68"><a href="multisample-analysis-1.html#cb294-68" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(<span class="at">object =</span> merged_seurat_isoform_filtered) <span class="co"># if using SCT dont run this</span></span>
+<span id="cb294-69"><a href="multisample-analysis-1.html#cb294-69" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(<span class="at">object =</span> merged_seurat_isoform_filtered)</span>
+<span id="cb294-70"><a href="multisample-analysis-1.html#cb294-70" aria-hidden="true" tabindex="-1"></a><span class="co">#ElbowPlot(merged_seurat_isoform_filtered)</span></span>
+<span id="cb294-71"><a href="multisample-analysis-1.html#cb294-71" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb294-72"><a href="multisample-analysis-1.html#cb294-72" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">resolution =</span> <span class="fl">0.6</span>)</span>
+<span id="cb294-73"><a href="multisample-analysis-1.html#cb294-73" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(<span class="at">object =</span> merged_seurat_isoform_filtered, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb294-74"><a href="multisample-analysis-1.html#cb294-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-75"><a href="multisample-analysis-1.html#cb294-75" aria-hidden="true" tabindex="-1"></a><span class="co">#Save file</span></span>
+<span id="cb294-76"><a href="multisample-analysis-1.html#cb294-76" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(merged_seurat_isoform_filtered, <span class="at">file =</span> <span class="st">&quot;./output_files/multi_sample_subset//merged_seurat_isoform_filtered.rds&quot;</span>)</span></code></pre></div>
+</details>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="multisample-analysis-1.html#cb295-1" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;./output_files/multi_sample_subset//merged_seurat_isoform_filtered.rds&quot;</span>)</span>
+<span id="cb295-2"><a href="multisample-analysis-1.html#cb295-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb295-3"><a href="multisample-analysis-1.html#cb295-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plots</span></span>
+<span id="cb295-4"><a href="multisample-analysis-1.html#cb295-4" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;orig.ident&#39;</span>)</span>
+<span id="cb295-5"><a href="multisample-analysis-1.html#cb295-5" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">group.by =</span> <span class="st">&#39;Day&#39;</span>)</span>
+<span id="cb295-6"><a href="multisample-analysis-1.html#cb295-6" aria-hidden="true" tabindex="-1"></a>p7 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&#39;umap&#39;</span>, <span class="at">features =</span> <span class="st">&#39;nCount_RNA&#39;</span>)</span>
+<span id="cb295-7"><a href="multisample-analysis-1.html#cb295-7" aria-hidden="true" tabindex="-1"></a>p8 <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(merged_seurat_isoform_filtered, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">features =</span> <span class="st">&#39;nFeature_RNA&#39;</span>)</span>
+<span id="cb295-8"><a href="multisample-analysis-1.html#cb295-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb295-9"><a href="multisample-analysis-1.html#cb295-9" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p5, p6, p7, p8, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_add_iso_counts_2-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="multisample-analysis-1.html#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="do">#####</span></span>
+<span id="cb296-2"><a href="multisample-analysis-1.html#cb296-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb296-3"><a href="multisample-analysis-1.html#cb296-3" aria-hidden="true" tabindex="-1"></a>merged_seurat_isoform_filtered <span class="ot">&lt;-</span> <span class="fu">JoinLayers</span>(merged_seurat_isoform_filtered)</span>
+<span id="cb296-4"><a href="multisample-analysis-1.html#cb296-4" aria-hidden="true" tabindex="-1"></a>counts_table <span class="ot">&lt;-</span> merged_seurat_isoform_filtered[[<span class="st">&quot;RNA&quot;</span>]]<span class="sc">$</span>counts</span>
+<span id="cb296-5"><a href="multisample-analysis-1.html#cb296-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb296-6"><a href="multisample-analysis-1.html#cb296-6" aria-hidden="true" tabindex="-1"></a>obj[[<span class="st">&quot;iso&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">CreateAssay5Object</span>(<span class="at">counts =</span> counts_table)</span>
+<span id="cb296-7"><a href="multisample-analysis-1.html#cb296-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb296-8"><a href="multisample-analysis-1.html#cb296-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Normalize the new assay data</span></span>
+<span id="cb296-9"><a href="multisample-analysis-1.html#cb296-9" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb296-10"><a href="multisample-analysis-1.html#cb296-10" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb296-11"><a href="multisample-analysis-1.html#cb296-11" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>)</span>
+<span id="cb296-12"><a href="multisample-analysis-1.html#cb296-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb296-13"><a href="multisample-analysis-1.html#cb296-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Perform PCA</span></span>
+<span id="cb296-14"><a href="multisample-analysis-1.html#cb296-14" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(obj, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;pca_iso&quot;</span>)</span></code></pre></div>
+</details>
+<pre><code>## Warning: Key &#39;PC_&#39; taken, using &#39;pcaiso_&#39; instead</code></pre>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="multisample-analysis-1.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Run UMAP</span></span>
+<span id="cb298-2"><a href="multisample-analysis-1.html#cb298-2" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;pca_iso&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">reduction.name =</span> <span class="st">&quot;umap_iso&quot;</span>)</span>
+<span id="cb298-3"><a href="multisample-analysis-1.html#cb298-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb298-4"><a href="multisample-analysis-1.html#cb298-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the UMAP</span></span>
+<span id="cb298-5"><a href="multisample-analysis-1.html#cb298-5" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>) <span class="sc">|</span> <span class="fu">DimPlot</span>(obj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">reduction =</span> <span class="st">&quot;umap_iso&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/subset_multisample_add_iso_counts_2-2.png" width="672" /></p>
+</div>
+<div id="identify-cell-types" class="section level2 hasAnchor" number="11.4">
+<h2><span class="header-section-number">11.4</span> Identify cell types<a href="multisample-analysis-1.html#identify-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Here we annotate cell types using some key markers.</p>
+<p>Cluster 1 2 and 3 are stem ells</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="multisample-analysis-1.html#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can annoate Day 0 </span></span>
+<span id="cb299-2"><a href="multisample-analysis-1.html#cb299-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;MKI67&quot;</span>, <span class="st">&quot;NANOG&quot;</span>, <span class="st">&quot;POU5F1&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-26-1.png" width="1152" /></p>
+<p>Cluster 0 and 4 - Radial Glia</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="multisample-analysis-1.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;VIM&quot;</span>, <span class="st">&quot;SOX2&quot;</span>, <span class="st">&quot;PAX6&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="1152" /></p>
+<p>Cluster 5 - Inhibitory neurons</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="multisample-analysis-1.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;GAD1&quot;</span>, <span class="st">&quot;GAD2&quot;</span>, <span class="st">&quot;DLX5&quot;</span>, <span class="st">&quot;DLX6&quot;</span>),<span class="at">ncol =</span> <span class="dv">4</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-28-1.png" width="1152" /></p>
+<p>Cluster 6 - Excitatory neurons (NPC)</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="multisample-analysis-1.html#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Clsuter 6 Excitorty neurons (NPC)</span></span>
+<span id="cb302-2"><a href="multisample-analysis-1.html#cb302-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;EOMES&quot;</span>, <span class="st">&quot;TBR1&quot;</span>))</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-29-1.png" width="768" /></p>
+<p>Now we will assign these labels to each cluster.</p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="multisample-analysis-1.html#cb303-1" aria-hidden="true" tabindex="-1"></a>new_ids <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb303-2"><a href="multisample-analysis-1.html#cb303-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;0&quot;</span> <span class="ot">=</span> <span class="st">&quot;Radial glia&quot;</span>,</span>
+<span id="cb303-3"><a href="multisample-analysis-1.html#cb303-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;1&quot;</span> <span class="ot">=</span> <span class="st">&quot;Stem cells&quot;</span>,</span>
+<span id="cb303-4"><a href="multisample-analysis-1.html#cb303-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;2&quot;</span> <span class="ot">=</span> <span class="st">&quot;Stem cells&quot;</span>,</span>
+<span id="cb303-5"><a href="multisample-analysis-1.html#cb303-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;3&quot;</span> <span class="ot">=</span> <span class="st">&quot;Stem cells&quot;</span>,</span>
+<span id="cb303-6"><a href="multisample-analysis-1.html#cb303-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;4&quot;</span> <span class="ot">=</span> <span class="st">&quot;Radial glia&quot;</span>,</span>
+<span id="cb303-7"><a href="multisample-analysis-1.html#cb303-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;5&quot;</span> <span class="ot">=</span> <span class="st">&quot;Inhibitory neurons&quot;</span>,</span>
+<span id="cb303-8"><a href="multisample-analysis-1.html#cb303-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;6&quot;</span> <span class="ot">=</span> <span class="st">&quot;Excitatory neurons&quot;</span></span>
+<span id="cb303-9"><a href="multisample-analysis-1.html#cb303-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb303-10"><a href="multisample-analysis-1.html#cb303-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb303-11"><a href="multisample-analysis-1.html#cb303-11" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">RenameIdents</span>(obj, new_ids)</span>
+<span id="cb303-12"><a href="multisample-analysis-1.html#cb303-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb303-13"><a href="multisample-analysis-1.html#cb303-13" aria-hidden="true" tabindex="-1"></a><span class="co"># store as a metadata column for later</span></span>
+<span id="cb303-14"><a href="multisample-analysis-1.html#cb303-14" aria-hidden="true" tabindex="-1"></a>obj<span class="sc">$</span>cell_type <span class="ot">&lt;-</span> <span class="fu">Idents</span>(obj)</span>
+<span id="cb303-15"><a href="multisample-analysis-1.html#cb303-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb303-16"><a href="multisample-analysis-1.html#cb303-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot by cell type instead of numeric cluster</span></span>
+<span id="cb303-17"><a href="multisample-analysis-1.html#cb303-17" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">group.by =</span> <span class="st">&quot;cell_type&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-30-1.png" width="576" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="multisample-analysis-1.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/multi_sample/multisample_seurat.intergrated_harm.isoform.rds&quot;)</span></span></code></pre></div>
+</details>
+<p>Now that we have an integrated Seurat object containing both gene- and isoform-level counts, along with curated cell type annotations, we can move beyond static clustering to explore how these transcriptional programs change over time and across lineages. In the next sections, we will use this object as the foundation for <strong>trajectory analysis</strong>, to reconstruct developmental paths and cell state transitions, and for <strong>differential transcript usage (DTU)</strong> analysis, to identify genes whose <strong>isoform composition</strong> shifts between conditions, lineages, or cell types.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="references.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="trajectory-analysis-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/20_multi_sample.rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/20_multi_sample.rmd",
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+</body>
+
+</html>

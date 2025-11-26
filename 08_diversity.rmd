@@ -44,7 +44,7 @@ We can load and run the function. It may take a while if you are processing many
 
 We will subset the object and run the diversity function
 
-```{r, cache=TRUE, echo=TRUE}
+```{r, echo=TRUE}
 
 #load diversity 
 

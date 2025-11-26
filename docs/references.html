@@ -23,15 +23,15 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-11-13" />
+<meta name="date" content="2025-11-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="appendix.html"/>
-
+<link rel="prev" href="conclusion.html"/>
+<link rel="next" href="appendix.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -235,20 +235,26 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="10.2" data-path="multisample-analysis.html"><a href="multisample-analysis.html#multisample-integration"><i class="fa fa-check"></i><b>10.2</b> Multisample integration</a></li>
 <li class="chapter" data-level="10.3" data-path="multisample-analysis.html"><a href="multisample-analysis.html#add-isoform-counts"><i class="fa fa-check"></i><b>10.3</b> Add isoform counts</a></li>
+<li class="chapter" data-level="10.4" data-path="multisample-analysis.html"><a href="multisample-analysis.html#identify-cell-types"><i class="fa fa-check"></i><b>10.4</b> Identify cell types</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> <strong>Trajectory analysis</strong></a></li>
+<li class="chapter" data-level="11" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html"><i class="fa fa-check"></i><b>11</b> <strong>Trajectory analysis</strong></a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#running-pseudotime-analysis-on-genes"><i class="fa fa-check"></i><b>11.1</b> Running pseudotime analysis on genes</a></li>
+<li class="chapter" data-level="11.2" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#running-pseudotime-analysis-on-isoforms"><i class="fa fa-check"></i><b>11.2</b> Running pseudotime analysis on isoforms</a></li>
+<li class="chapter" data-level="11.3" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#summary-and-downstream-applications"><i class="fa fa-check"></i><b>11.3</b> Summary and downstream applications</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
 <ul>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i><b>11.1</b> Calculating the ambient RNA profile</a></li>
-<li class="chapter" data-level="11.2" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i><b>11.2</b> Multisample QC function</a></li>
-<li class="chapter" data-level="11.3" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-a-count-matrix"><i class="fa fa-check"></i><b>11.3</b> Convert Oarfish files to a count matrix</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#calculating-the-ambient-rna-profile"><i class="fa fa-check"></i>Calculating the ambient RNA profile</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#multisample-qc-function"><i class="fa fa-check"></i>Multisample QC function</a></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html#convert-oarfish-files-to-a-count-matrix"><i class="fa fa-check"></i>Convert Oarfish files to a count matrix</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -316,24 +322,13 @@ You, Y., Prawer, Y. D. J., De Paoli-Iseppi, R., Hunt, C. P. J., Parish, C. L., S
 </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="appendix.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="conclusion.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="appendix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -364,7 +359,7 @@ gitbook.start({
     "size": 2
   },
   "edit": {
-    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/15_refs.Rmd",
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/edit/main/refs.Rmd",
     "text": "Edit"
   },
   "history": {
@@ -372,7 +367,7 @@ gitbook.start({
     "text": null
   },
   "view": {
-    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/15_refs.Rmd",
+    "link": "https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/refs.Rmd",
     "text": null
   },
   "download": null,

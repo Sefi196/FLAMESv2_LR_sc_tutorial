@@ -205,7 +205,7 @@ print(top_cluster7$gene)
 
 Based on the plots above, *Myelinating Schwann cells* show markedly fewer detected features and lower total counts compared to other populations. Additionally, the expression profiles indicate that this cluster lacks canonical radial glial markers such as **VIM**, **SOX2**, and **PAX6** (shown above). Differential expression analysis using the `FindAllMarkers` function also revealed a high proportion of **ribosomal genes** among the top markers for this cluster.
 
-Taken together, these findings suggest that this cluster does not represent a bona fide neural lineage. Instead, these cells are likely **low-complexity or low-quality cells** that have passed the initial QC filters. Therefore, we will remove this cluster from downstream analyses. It would also be sensible to label these cells as "Unknown' but for simplicity we will remove them \
+Taken together, these findings suggest that this cluster does not represent a bona fide neural lineage. Instead, these cells are likely **low-complexity or low-quality cells** that have passed the initial QC filters. Therefore, we will remove this cluster from downstream analyses. It would also be sensible to label these cells as "Unknown' but for simplicity we will remove them\
 
 ```{r}
 ## Remove Myelinating Schwann cells

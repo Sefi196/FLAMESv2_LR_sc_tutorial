@@ -1,0 +1,208 @@
+---
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# **Trajectory analysis**
+
+Trajectory analysis is a powerful tool in single-cell RNA-seq allowing us to track how cells transition between different states over time, rather than simply classifying them into discrete clusters. This approach is particularly useful for studying dynamic processes such as cellular differentiation, cell cycle progression, or disease progression. One of the key advantages of trajectory analysis is the ability to identify genes or in the case of long read data, isoforms whose expression patterns are correlated with pseudotime.
+
+In our example dataset we are interested in looking at genes or isoforms that change as a function of pseudotime as this will highlight important features that control stem cell to neuronal differentiation. In the below code block is the `perform_trajectory_analysis` function which uses monocle3 [@trapnell2014] to learn the trajectory and order the cells by pseudotime. We also provide an optional mode to test for gene or isoforms that are correlated with pseudotime[^10_traj_multi_sub-1].
+
+[^10_traj_multi_sub-1]: It’s important to note that analyzing features in relation to pseudotime can be computationally intensive. The parameter `number_of_features` can be used to specify the number of highly variable features to test. Users can choose to plot the trajectory without the added computational load of ordering features by pseudotime, making the analysis more flexible.
+
+```{r traj_fucntion_subset, echo=TRUE, include=TRUE}
+
+perform_trajectory_analysis <- function(
+  seurat_obj,
+  assay,
+  prefix,
+  cluster_name = "harm_cluster",
+  root_cells = NULL,
+  cores = 8,
+  order_features_by_pseudotime = FALSE,
+  number_of_features = 500
+) {
+  library(monocle3)
+  library(SeuratWrappers)
+  library(dplyr)
+
+  # container for plots
+  plot_list <- list()
+
+  # Step 1: Set assay and join layers
+  DefaultAssay(seurat_obj) <- assay
+  seurat_obj <- JoinLayers(seurat_obj)
+
+  # Step 2: Convert to Monocle cell_data_set object
+  cds <- as.cell_data_set(seurat_obj)
+
+  # Add gene_short_name to feature data (gene metadata)
+  fData(cds)$gene_short_name <- rownames(fData(cds))
+
+  # Estimate size factors
+  cds <- estimate_size_factors(cds)
+
+  # Step 3: Assign cluster info and UMAP coordinates
+  recreate_partition <- as.factor(rep(1, length(colnames(seurat_obj))))
+  names(recreate_partition) <- colnames(seurat_obj)
+  cds@clusters$UMAP$partitions <- recreate_partition
+
+  # Clustering information from Seurat (can change to cluster_name if you want)
+  cds@clusters$UMAP$clusters <- seurat_obj@meta.data[["orig.ident"]]
+
+  # UMAP embeddings from Seurat
+  ## change umap.harm here to another dim if you plot traj on a different embeding
+  cds@int_colData@listData$reducedDims$UMAP <- seurat_obj@reductions$umap.harm@cell.embeddings
+
+  # Plot before trajectory
+  cluster_before_trajectory <- plot_cells(cds, color_cells_by = "orig.ident") +
+    theme(legend.position = "right")
+  plot_list$cluster_before_trajectory <- cluster_before_trajectory
+
+  # Step 4: Learn trajectory graph
+  cds <- learn_graph(cds, use_partition = FALSE, close_loop = FALSE)
+
+  # Plot learned trajectory
+  plot_trajectory <- plot_cells(cds, color_cells_by = cluster_name) +
+    theme(legend.position = "right")
+  plot_list$trajectory_clusters <- plot_trajectory
+
+  # Step 5: Order cells in pseudotime
+  cds <- order_cells(cds, reduction_method = "UMAP", root_cells = root_cells)
+
+  # Plot pseudotime
+  p_pseudotime <- plot_cells(cds, color_cells_by = "pseudotime") +
+    theme(legend.position = "right")
+  plot_list$pseudotime <- p_pseudotime
+
+  # Combined trajectory + pseudotime panel (patchwork)
+  plot_list$trajectory_and_pseudotime <- plot_trajectory | p_pseudotime
+
+  # Save pseudotime to Seurat object
+  seurat_obj$pseudotime <- pseudotime(cds)
+
+  MI_sig <- NULL
+  top_genes <- NULL
+
+  if (order_features_by_pseudotime) {
+    # Step 6: genes that change along pseudotime
+    seurat_obj <- FindVariableFeatures(
+      seurat_obj,
+      selection.method = "vst",
+      nfeatures = number_of_features
+    )
+
+    top_variable_genes <- VariableFeatures(seurat_obj)
+    cds_subset <- cds[top_variable_genes, ]
+
+    deg_results <- graph_test(
+      cds_subset,
+      neighbor_graph = "principal_graph",
+      cores = cores
+    )
+
+    MI_sig <- deg_results %>%
+      filter(q_value < 0.01, morans_I > 0.5, status == "OK") %>%
+      arrange(q_value)
+
+    # Save table
+    write.csv(MI_sig, paste0(prefix, "_sig_genes_pseudotime.csv"))
+
+    # Top genes
+    top_genes <- MI_sig %>%
+      arrange(desc(morans_I)) %>%
+      head(12)
+
+    # FeaturePlot of top genes (this is usually a patchwork object)
+    fp <- FeaturePlot(
+      seurat_obj,
+      features = top_genes$gene_short_name,
+      reduction = "umap.harm"
+    )
+    plot_list$top_genes_featureplot <- fp
+
+    # Pseudotime expression plots for top genes
+    my_genes <- rownames(
+      subset(
+        fData(cds_subset),
+        gene_short_name %in% top_genes$gene_short_name
+      )
+    )
+
+    cds_top_genes <- cds_subset[my_genes, ]
+
+    monocle_plot <- monocle3::plot_genes_in_pseudotime(
+      cds = cds_top_genes,
+      min_expr = 0.5,
+      cell_size = 0.5,
+      nrow = NULL,
+      ncol = 4,
+      panel_order = NULL,
+      label_by_short_name = TRUE,
+      color_cells_by = cluster_name
+    )
+    plot_list$top_genes_pseudotime <- monocle_plot
+  }
+
+  # Return everything you might want later
+  return(list(
+    seurat_obj = seurat_obj,
+    cds = cds,
+    plots = plot_list,
+    MI_sig = MI_sig,
+    top_genes = top_genes
+  ))
+}
+
+```
+
+## Running pseudotime analysis on genes
+
+We can use the function above to run a pseudotime analysis on our multi-sample data generated in the previous chapter. All we need to do is run the code chunk bellow. We can also set the `order_features_by_pseudotime = TRUE` and this will test for genes that are correlated with the trajectory. in this case we only test 500 genes as we set `number_of_features = 500`.
+
+```{r traj_genes_subset, echo=TRUE, fig.height=6, fig.width=12, message=FALSE, warning=FALSE, cache=TRUE}
+traj_res <- perform_trajectory_analysis(seurat_obj = obj, assay = "RNA", prefix = "Multi-sample_subsample_tutorial",
+                            cluster_name="cell_type",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 500)
+```
+
+We can plot the trajectory and psedutime plot with the code bellow. From this example data we observe a trajectory that transitions from stem cells to to radial glial cells, and finally toward more mature neuronal sub types. This trajectory aligns with known biological transitions of cells undergoing neuronal differentiation.
+
+```{r, echo=TRUE, fig.height=6, fig.width=12}
+traj_res$plots$trajectory_and_pseudotime
+```
+
+Given this biologically meaningful trajectory, we can examine genes whose expression changes are correlated with pseudotime. The function above returns this information in `traj_res$MI_sig`. Below are 12 top hits, selected from all tested features, that show strong and significant associations between expression and trajectory progression. We visualise these results using both a Seurat feature plot and a Monocle3 pseudotime gene-expression plot.
+
+```{r, echo=TRUE, fig.height=6, fig.width=12}
+traj_res$plots$top_genes_featureplot
+```
+
+```{r, echo=TRUE, fig.height=6, fig.width=14}
+traj_res$plots$top_genes_pseudotime
+```
+
+## Running pseudotime analysis on isoforms
+
+The same analysis can be performed at the isoform level by setting `assay = "iso"`. This allows identification of isoforms whose expression is correlated with the trajectory. Users can also compute trajectories based on isoform-level clustering. We do not show this here, but if this is of interest, ensure that the isoform-level data are properly integrated and modify the function above to use the appropriate dimensional reduction method for trajectory learning.
+
+```{r traj_iso_subset, echo=TRUE, fig.height=6, fig.width=12, message=FALSE, warning=FALSE, cache=TRUE}
+traj_iso_res <- perform_trajectory_analysis(seurat_obj = obj, assay="iso", prefix = "iso_Multi-sample_subsample_tutorial", cluster_name="cell_type",  root_cells = NULL, cores = 8, order_features_by_pseudotime = TRUE, number_of_features = 1000)
+
+```
+
+Now we can look at isofroms that are correlated with the trajectory. Again we visualize these results using both a Seurat feature plot and a Monocle3 pseudotime gene-expression plot.
+
+```{r, echo=TRUE, fig.height=6, fig.width=14}
+traj_iso_res$plots$top_genes_featureplot
+```
+
+```{r, echo=TRUE, fig.height=6, fig.width=16}
+ traj_iso_res$plots$top_genes_pseudotime
+```
+
+## Summary and downstream applications
+
+In this chapter, we used **trajectory analysis with monocle3** to move beyond static clustering and reconstruct a smooth progression of cell states from our long-read single-cell dataset. Using the `perform_trajectory_analysis()` helper function, we learned a trajectory on the Seurat UMAP, ordered cells in pseudotime, and showed that the inferred path follows a biologically intuitive progression from stem cells through radial glia towards more mature neuronal subtypes. We then identified genes (and, by switching to `assay = "iso"`, isoforms) whose expression patterns are significantly correlated with pseudotime, highlighting features that change gradually along the differentiation axis.
+
+All of this information – including the pseudotime values for each cell and the associated plots – is stored in the returned Seurat object (`traj_res$seurat_obj`) and result list. This makes it straightforward to incorporate trajectory information into later analyses. For example, users can (i) define “early”, “mid” and “late” pseudotime windows and perform differential expression between these pseudotime-defined groups, or (ii) compare pseudotime distributions across samples, time points, or conditions to ask whether a perturbation accelerates or delays progression along the trajectory. Together, these analyses provide a flexible scaffold for linking dynamic gene and isoform changes to underlying cell-state transitions in long-read single-cell data.

@@ -54,7 +54,8 @@ standard-pre-processing-and-quality-control
 define-qc-function
 multisample-integration
 add-isoform-counts
+identify-cell-types
 trajectory-analysis
-calculating-the-ambient-rna-profile
-multisample-qc-function
-convert-oarfish-files-to-a-count-matrix
+running-pseudotime-analysis-on-genes
+running-pseudotime-analysis-on-isoforms
+summary-and-downstream-applications

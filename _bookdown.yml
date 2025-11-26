@@ -6,3 +6,18 @@ view: https://github.com/sefi196/FLAMESv2_LR_sc_tutorial/blob/main/%s
 language:
   ui:
     chapter_name: "Chapter "
+
+rmd_files:
+  - index.Rmd
+  - 02-setup.Rmd
+  - 03-Cleaning-the-data-and-making-a-Seurat-object.Rmd
+  - 04-Adding-Isoform-Information-to-the-Seurat-object.Rmd
+  - 05_Finding_differentially_expressed_genes_and_isoforms.Rmd
+  - 06_Finding-isoforms-of-interest.Rmd
+  - 07-Isofrom-Classification.Rmd
+  - 08_diversity.rmd
+  - 09_multi_sample_subset.rmd
+  - 10_traj_multi_sub.rmd
+  - 12_Citations_and_Session_info.Rmd
+  - refs.Rmd
+  - Appendix.Rmd
