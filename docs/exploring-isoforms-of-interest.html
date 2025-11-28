@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-11-26" />
+<meta name="date" content="2025-11-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -248,6 +248,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> Differential Transcript Usage (DTU)</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#preparing-the-data-for-dtu-analysis"><i class="fa fa-check"></i><b>12.1</b> Preparing the data for DTU analysis</a></li>
+<li class="chapter" data-level="12.2" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#generating-a-switchlist"><i class="fa fa-check"></i><b>12.2</b> Generating a SwitchList</a></li>
+<li class="chapter" data-level="12.3" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#visualising-dtu-hits"><i class="fa fa-check"></i><b>12.3</b> Visualising DTU Hits</a></li>
+<li class="chapter" data-level="12.4" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#final-thoughts"><i class="fa fa-check"></i><b>12.4</b> Final thoughts</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
@@ -281,49 +288,49 @@ div.csl-indent {
 <h2><span class="header-section-number">6.1</span> Isoforms expressed per gene<a href="exploring-isoforms-of-interest.html#isoforms-expressed-per-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>With long-read single-cell data, we have the ability to analyze all the isoforms expressed by a given gene. In our data we can see that most genes express more than one isoform.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="exploring-isoforms-of-interest.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s aggregate the expression data by cell type</span></span>
-<span id="cb86-2"><a href="exploring-isoforms-of-interest.html#cb86-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">AggregateExpression</span>(</span>
-<span id="cb86-3"><a href="exploring-isoforms-of-interest.html#cb86-3" aria-hidden="true" tabindex="-1"></a>  seu_obj, </span>
-<span id="cb86-4"><a href="exploring-isoforms-of-interest.html#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">assays =</span> <span class="st">&quot;iso&quot;</span>, </span>
-<span id="cb86-5"><a href="exploring-isoforms-of-interest.html#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">return.seurat =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb86-6"><a href="exploring-isoforms-of-interest.html#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span></span>
-<span id="cb86-7"><a href="exploring-isoforms-of-interest.html#cb86-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb86-8"><a href="exploring-isoforms-of-interest.html#cb86-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-9"><a href="exploring-isoforms-of-interest.html#cb86-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(counts) <span class="ot">-&gt;</span> df</span>
-<span id="cb86-10"><a href="exploring-isoforms-of-interest.html#cb86-10" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(df) <span class="ot">-&gt;</span> df<span class="sc">$</span>gene</span>
-<span id="cb86-11"><a href="exploring-isoforms-of-interest.html#cb86-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-12"><a href="exploring-isoforms-of-interest.html#cb86-12" aria-hidden="true" tabindex="-1"></a><span class="co">#split transcript ids into gene and transcript id</span></span>
-<span id="cb86-13"><a href="exploring-isoforms-of-interest.html#cb86-13" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(gene, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) </span>
-<span id="cb86-14"><a href="exploring-isoforms-of-interest.html#cb86-14" aria-hidden="true" tabindex="-1"></a><span class="co">#df$transcript_id &lt;- sub(&quot;\\..*&quot;, &quot;&quot;, df$transcript_id)</span></span>
-<span id="cb86-15"><a href="exploring-isoforms-of-interest.html#cb86-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-16"><a href="exploring-isoforms-of-interest.html#cb86-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Count the number of isoforms per gene</span></span>
-<span id="cb86-17"><a href="exploring-isoforms-of-interest.html#cb86-17" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
-<span id="cb86-18"><a href="exploring-isoforms-of-interest.html#cb86-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
-<span id="cb86-19"><a href="exploring-isoforms-of-interest.html#cb86-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_isoforms =</span> <span class="fu">n_distinct</span>(transcript_id))</span>
-<span id="cb86-20"><a href="exploring-isoforms-of-interest.html#cb86-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-21"><a href="exploring-isoforms-of-interest.html#cb86-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. count isoforms per category </span></span>
-<span id="cb86-22"><a href="exploring-isoforms-of-interest.html#cb86-22" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> isoform_count_per_gene <span class="sc">%&gt;%</span></span>
-<span id="cb86-23"><a href="exploring-isoforms-of-interest.html#cb86-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">isoform_category =</span> <span class="fu">case_when</span>(</span>
-<span id="cb86-24"><a href="exploring-isoforms-of-interest.html#cb86-24" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;1&quot;</span>,</span>
-<span id="cb86-25"><a href="exploring-isoforms-of-interest.html#cb86-25" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> n_isoforms <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;2-3&quot;</span>,</span>
-<span id="cb86-26"><a href="exploring-isoforms-of-interest.html#cb86-26" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">&amp;</span> n_isoforms <span class="sc">&lt;=</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;4-5&quot;</span>,</span>
-<span id="cb86-27"><a href="exploring-isoforms-of-interest.html#cb86-27" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;6+&quot;</span></span>
-<span id="cb86-28"><a href="exploring-isoforms-of-interest.html#cb86-28" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb86-29"><a href="exploring-isoforms-of-interest.html#cb86-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-30"><a href="exploring-isoforms-of-interest.html#cb86-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-31"><a href="exploring-isoforms-of-interest.html#cb86-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Calculate the percentage of genes in each bin</span></span>
-<span id="cb86-32"><a href="exploring-isoforms-of-interest.html#cb86-32" aria-hidden="true" tabindex="-1"></a>isoform_count_summary <span class="ot">&lt;-</span> isoform_count_per_gene <span class="sc">%&gt;%</span></span>
-<span id="cb86-33"><a href="exploring-isoforms-of-interest.html#cb86-33" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(isoform_category) <span class="sc">%&gt;%</span></span>
-<span id="cb86-34"><a href="exploring-isoforms-of-interest.html#cb86-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb86-35"><a href="exploring-isoforms-of-interest.html#cb86-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-36"><a href="exploring-isoforms-of-interest.html#cb86-36" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(isoform_count_summary, <span class="fu">aes</span>(<span class="at">x =</span> isoform_category, <span class="at">y =</span> percent)) <span class="sc">+</span></span>
-<span id="cb86-37"><a href="exploring-isoforms-of-interest.html#cb86-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span>  </span>
-<span id="cb86-38"><a href="exploring-isoforms-of-interest.html#cb86-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of Isoforms per Gene&quot;</span>, </span>
-<span id="cb86-39"><a href="exploring-isoforms-of-interest.html#cb86-39" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Isoforms per Gene&quot;</span>, </span>
-<span id="cb86-40"><a href="exploring-isoforms-of-interest.html#cb86-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Genes, %&quot;</span>) <span class="sc">+</span></span>
-<span id="cb86-41"><a href="exploring-isoforms-of-interest.html#cb86-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb86-42"><a href="exploring-isoforms-of-interest.html#cb86-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
-<span id="cb86-43"><a href="exploring-isoforms-of-interest.html#cb86-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="exploring-isoforms-of-interest.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># let&#39;s aggregate the expression data by cell type</span></span>
+<span id="cb87-2"><a href="exploring-isoforms-of-interest.html#cb87-2" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">AggregateExpression</span>(</span>
+<span id="cb87-3"><a href="exploring-isoforms-of-interest.html#cb87-3" aria-hidden="true" tabindex="-1"></a>  seu_obj, </span>
+<span id="cb87-4"><a href="exploring-isoforms-of-interest.html#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">assays =</span> <span class="st">&quot;iso&quot;</span>, </span>
+<span id="cb87-5"><a href="exploring-isoforms-of-interest.html#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">return.seurat =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb87-6"><a href="exploring-isoforms-of-interest.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span></span>
+<span id="cb87-7"><a href="exploring-isoforms-of-interest.html#cb87-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-8"><a href="exploring-isoforms-of-interest.html#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-9"><a href="exploring-isoforms-of-interest.html#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(counts) <span class="ot">-&gt;</span> df</span>
+<span id="cb87-10"><a href="exploring-isoforms-of-interest.html#cb87-10" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(df) <span class="ot">-&gt;</span> df<span class="sc">$</span>gene</span>
+<span id="cb87-11"><a href="exploring-isoforms-of-interest.html#cb87-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-12"><a href="exploring-isoforms-of-interest.html#cb87-12" aria-hidden="true" tabindex="-1"></a><span class="co">#split transcript ids into gene and transcript id</span></span>
+<span id="cb87-13"><a href="exploring-isoforms-of-interest.html#cb87-13" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">separate</span>(gene, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;transcript_id&quot;</span>, <span class="st">&quot;gene_id&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;-&quot;</span>,  <span class="at">extra =</span> <span class="st">&quot;merge&quot;</span>) </span>
+<span id="cb87-14"><a href="exploring-isoforms-of-interest.html#cb87-14" aria-hidden="true" tabindex="-1"></a><span class="co">#df$transcript_id &lt;- sub(&quot;\\..*&quot;, &quot;&quot;, df$transcript_id)</span></span>
+<span id="cb87-15"><a href="exploring-isoforms-of-interest.html#cb87-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-16"><a href="exploring-isoforms-of-interest.html#cb87-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Count the number of isoforms per gene</span></span>
+<span id="cb87-17"><a href="exploring-isoforms-of-interest.html#cb87-17" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
+<span id="cb87-18"><a href="exploring-isoforms-of-interest.html#cb87-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
+<span id="cb87-19"><a href="exploring-isoforms-of-interest.html#cb87-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_isoforms =</span> <span class="fu">n_distinct</span>(transcript_id))</span>
+<span id="cb87-20"><a href="exploring-isoforms-of-interest.html#cb87-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-21"><a href="exploring-isoforms-of-interest.html#cb87-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. count isoforms per category </span></span>
+<span id="cb87-22"><a href="exploring-isoforms-of-interest.html#cb87-22" aria-hidden="true" tabindex="-1"></a>isoform_count_per_gene <span class="ot">&lt;-</span> isoform_count_per_gene <span class="sc">%&gt;%</span></span>
+<span id="cb87-23"><a href="exploring-isoforms-of-interest.html#cb87-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">isoform_category =</span> <span class="fu">case_when</span>(</span>
+<span id="cb87-24"><a href="exploring-isoforms-of-interest.html#cb87-24" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;1&quot;</span>,</span>
+<span id="cb87-25"><a href="exploring-isoforms-of-interest.html#cb87-25" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">2</span> <span class="sc">&amp;</span> n_isoforms <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">~</span> <span class="st">&quot;2-3&quot;</span>,</span>
+<span id="cb87-26"><a href="exploring-isoforms-of-interest.html#cb87-26" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">4</span> <span class="sc">&amp;</span> n_isoforms <span class="sc">&lt;=</span> <span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;4-5&quot;</span>,</span>
+<span id="cb87-27"><a href="exploring-isoforms-of-interest.html#cb87-27" aria-hidden="true" tabindex="-1"></a>    n_isoforms <span class="sc">&gt;=</span> <span class="dv">6</span> <span class="sc">~</span> <span class="st">&quot;6+&quot;</span></span>
+<span id="cb87-28"><a href="exploring-isoforms-of-interest.html#cb87-28" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb87-29"><a href="exploring-isoforms-of-interest.html#cb87-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-30"><a href="exploring-isoforms-of-interest.html#cb87-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-31"><a href="exploring-isoforms-of-interest.html#cb87-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Calculate the percentage of genes in each bin</span></span>
+<span id="cb87-32"><a href="exploring-isoforms-of-interest.html#cb87-32" aria-hidden="true" tabindex="-1"></a>isoform_count_summary <span class="ot">&lt;-</span> isoform_count_per_gene <span class="sc">%&gt;%</span></span>
+<span id="cb87-33"><a href="exploring-isoforms-of-interest.html#cb87-33" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">count</span>(isoform_category) <span class="sc">%&gt;%</span></span>
+<span id="cb87-34"><a href="exploring-isoforms-of-interest.html#cb87-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> (n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb87-35"><a href="exploring-isoforms-of-interest.html#cb87-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-36"><a href="exploring-isoforms-of-interest.html#cb87-36" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(isoform_count_summary, <span class="fu">aes</span>(<span class="at">x =</span> isoform_category, <span class="at">y =</span> percent)) <span class="sc">+</span></span>
+<span id="cb87-37"><a href="exploring-isoforms-of-interest.html#cb87-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span>  </span>
+<span id="cb87-38"><a href="exploring-isoforms-of-interest.html#cb87-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Number of Isoforms per Gene&quot;</span>, </span>
+<span id="cb87-39"><a href="exploring-isoforms-of-interest.html#cb87-39" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Isoforms per Gene&quot;</span>, </span>
+<span id="cb87-40"><a href="exploring-isoforms-of-interest.html#cb87-40" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Genes, %&quot;</span>) <span class="sc">+</span></span>
+<span id="cb87-41"><a href="exploring-isoforms-of-interest.html#cb87-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb87-42"><a href="exploring-isoforms-of-interest.html#cb87-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>, </span>
+<span id="cb87-43"><a href="exploring-isoforms-of-interest.html#cb87-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="576" /></p>
 </div>
@@ -331,16 +338,16 @@ div.csl-indent {
 <h2><span class="header-section-number">6.2</span> Top 10 Genes with Most Isoforms<a href="exploring-isoforms-of-interest.html#top-10-genes-with-most-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can see that about 45% of genes express a single isoform, however there are some genes like MIR9-1HG that have a lot of unique isoforms, 97 in fact. The top 10 genes with the most isoforms are listed below.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="exploring-isoforms-of-interest.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes ranked by the number of transcript isoforms detected across all samples </span></span>
-<span id="cb87-2"><a href="exploring-isoforms-of-interest.html#cb87-2" aria-hidden="true" tabindex="-1"></a>gene_transcript_counts <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
-<span id="cb87-3"><a href="exploring-isoforms-of-interest.html#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
-<span id="cb87-4"><a href="exploring-isoforms-of-interest.html#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_transcripts =</span> <span class="fu">n_distinct</span>(transcript_id)) <span class="sc">%&gt;%</span></span>
-<span id="cb87-5"><a href="exploring-isoforms-of-interest.html#cb87-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(unique_transcripts))</span>
-<span id="cb87-6"><a href="exploring-isoforms-of-interest.html#cb87-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-7"><a href="exploring-isoforms-of-interest.html#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the top 10 genes based on unique transcript counts</span></span>
-<span id="cb87-8"><a href="exploring-isoforms-of-interest.html#cb87-8" aria-hidden="true" tabindex="-1"></a>top10 <span class="ot">&lt;-</span> gene_transcript_counts <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">10</span>, unique_transcripts)</span>
-<span id="cb87-9"><a href="exploring-isoforms-of-interest.html#cb87-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-10"><a href="exploring-isoforms-of-interest.html#cb87-10" aria-hidden="true" tabindex="-1"></a>top10</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="exploring-isoforms-of-interest.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes ranked by the number of transcript isoforms detected across all samples </span></span>
+<span id="cb88-2"><a href="exploring-isoforms-of-interest.html#cb88-2" aria-hidden="true" tabindex="-1"></a>gene_transcript_counts <span class="ot">&lt;-</span> pseudobulk_data <span class="sc">%&gt;%</span></span>
+<span id="cb88-3"><a href="exploring-isoforms-of-interest.html#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gene_id) <span class="sc">%&gt;%</span></span>
+<span id="cb88-4"><a href="exploring-isoforms-of-interest.html#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">unique_transcripts =</span> <span class="fu">n_distinct</span>(transcript_id)) <span class="sc">%&gt;%</span></span>
+<span id="cb88-5"><a href="exploring-isoforms-of-interest.html#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(unique_transcripts))</span>
+<span id="cb88-6"><a href="exploring-isoforms-of-interest.html#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-7"><a href="exploring-isoforms-of-interest.html#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the top 10 genes based on unique transcript counts</span></span>
+<span id="cb88-8"><a href="exploring-isoforms-of-interest.html#cb88-8" aria-hidden="true" tabindex="-1"></a>top10 <span class="ot">&lt;-</span> gene_transcript_counts <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">10</span>, unique_transcripts)</span>
+<span id="cb88-9"><a href="exploring-isoforms-of-interest.html#cb88-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-10"><a href="exploring-isoforms-of-interest.html#cb88-10" aria-hidden="true" tabindex="-1"></a>top10</span></code></pre></div>
 </details>
 <pre><code>## # A tibble: 10 × 2
 ##    gene_id         unique_transcripts
@@ -357,43 +364,43 @@ div.csl-indent {
 ## 10 SNHG14                          38</code></pre>
 <p>We can also plot unique transcripts per gene on a log scale showing that the number of isoforms per gene varies across our data.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="exploring-isoforms-of-interest.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ranked genes by unique &quot;BambuTx&quot; transcript count</span></span>
-<span id="cb89-2"><a href="exploring-isoforms-of-interest.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gene_transcript_counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(unique_transcripts)), <span class="at">y =</span> unique_transcripts)) <span class="sc">+</span></span>
-<span id="cb89-3"><a href="exploring-isoforms-of-interest.html#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span>  <span class="co"># Points for each gene</span></span>
-<span id="cb89-4"><a href="exploring-isoforms-of-interest.html#cb89-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-5"><a href="exploring-isoforms-of-interest.html#cb89-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Log scale for both axes</span></span>
-<span id="cb89-6"><a href="exploring-isoforms-of-interest.html#cb89-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
-<span id="cb89-7"><a href="exploring-isoforms-of-interest.html#cb89-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
-<span id="cb89-8"><a href="exploring-isoforms-of-interest.html#cb89-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb89-9"><a href="exploring-isoforms-of-interest.html#cb89-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Title and labels</span></span>
-<span id="cb89-10"><a href="exploring-isoforms-of-interest.html#cb89-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb89-11"><a href="exploring-isoforms-of-interest.html#cb89-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Unique Transcripts per Gene&quot;</span>,</span>
-<span id="cb89-12"><a href="exploring-isoforms-of-interest.html#cb89-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Rank (log scale)&quot;</span>,</span>
-<span id="cb89-13"><a href="exploring-isoforms-of-interest.html#cb89-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;# Transcripts (log scale)&quot;</span></span>
-<span id="cb89-14"><a href="exploring-isoforms-of-interest.html#cb89-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb89-15"><a href="exploring-isoforms-of-interest.html#cb89-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb89-16"><a href="exploring-isoforms-of-interest.html#cb89-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Highlight and label the top 10 genes with gray background and black border around the text</span></span>
-<span id="cb89-17"><a href="exploring-isoforms-of-interest.html#cb89-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(</span>
-<span id="cb89-18"><a href="exploring-isoforms-of-interest.html#cb89-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> gene_transcript_counts <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gene_id <span class="sc">%in%</span> top10<span class="sc">$</span>gene_id),</span>
-<span id="cb89-19"><a href="exploring-isoforms-of-interest.html#cb89-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> gene_id),</span>
-<span id="cb89-20"><a href="exploring-isoforms-of-interest.html#cb89-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;gray&quot;</span>,          <span class="co"># Gray background for the label</span></span>
-<span id="cb89-21"><a href="exploring-isoforms-of-interest.html#cb89-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,         <span class="co"># Black text color</span></span>
-<span id="cb89-22"><a href="exploring-isoforms-of-interest.html#cb89-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.25</span>,       <span class="co"># Border thickness around the label</span></span>
-<span id="cb89-23"><a href="exploring-isoforms-of-interest.html#cb89-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">&quot;lines&quot;</span>),  <span class="co"># Border radius (rounded corners)</span></span>
-<span id="cb89-24"><a href="exploring-isoforms-of-interest.html#cb89-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb89-25"><a href="exploring-isoforms-of-interest.html#cb89-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.2</span>,</span>
-<span id="cb89-26"><a href="exploring-isoforms-of-interest.html#cb89-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">14</span> </span>
-<span id="cb89-27"><a href="exploring-isoforms-of-interest.html#cb89-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb89-28"><a href="exploring-isoforms-of-interest.html#cb89-28" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb89-29"><a href="exploring-isoforms-of-interest.html#cb89-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Minimal theme and additional styling</span></span>
-<span id="cb89-30"><a href="exploring-isoforms-of-interest.html#cb89-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb89-31"><a href="exploring-isoforms-of-interest.html#cb89-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb89-32"><a href="exploring-isoforms-of-interest.html#cb89-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>), <span class="co"># Centered title</span></span>
-<span id="cb89-33"><a href="exploring-isoforms-of-interest.html#cb89-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>),             <span class="co"># Black axis tick labels</span></span>
-<span id="cb89-34"><a href="exploring-isoforms-of-interest.html#cb89-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),                       <span class="co"># Black axis titles</span></span>
-<span id="cb89-35"><a href="exploring-isoforms-of-interest.html#cb89-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb89-36"><a href="exploring-isoforms-of-interest.html#cb89-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)  <span class="co"># Black border around the graph</span></span>
-<span id="cb89-37"><a href="exploring-isoforms-of-interest.html#cb89-37" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="exploring-isoforms-of-interest.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ranked genes by unique &quot;BambuTx&quot; transcript count</span></span>
+<span id="cb90-2"><a href="exploring-isoforms-of-interest.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gene_transcript_counts, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">rank</span>(<span class="fu">desc</span>(unique_transcripts)), <span class="at">y =</span> unique_transcripts)) <span class="sc">+</span></span>
+<span id="cb90-3"><a href="exploring-isoforms-of-interest.html#cb90-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;darkblue&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span>  <span class="co"># Points for each gene</span></span>
+<span id="cb90-4"><a href="exploring-isoforms-of-interest.html#cb90-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-5"><a href="exploring-isoforms-of-interest.html#cb90-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Log scale for both axes</span></span>
+<span id="cb90-6"><a href="exploring-isoforms-of-interest.html#cb90-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb90-7"><a href="exploring-isoforms-of-interest.html#cb90-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb90-8"><a href="exploring-isoforms-of-interest.html#cb90-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb90-9"><a href="exploring-isoforms-of-interest.html#cb90-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Title and labels</span></span>
+<span id="cb90-10"><a href="exploring-isoforms-of-interest.html#cb90-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb90-11"><a href="exploring-isoforms-of-interest.html#cb90-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Unique Transcripts per Gene&quot;</span>,</span>
+<span id="cb90-12"><a href="exploring-isoforms-of-interest.html#cb90-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Rank (log scale)&quot;</span>,</span>
+<span id="cb90-13"><a href="exploring-isoforms-of-interest.html#cb90-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;# Transcripts (log scale)&quot;</span></span>
+<span id="cb90-14"><a href="exploring-isoforms-of-interest.html#cb90-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb90-15"><a href="exploring-isoforms-of-interest.html#cb90-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb90-16"><a href="exploring-isoforms-of-interest.html#cb90-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Highlight and label the top 10 genes with gray background and black border around the text</span></span>
+<span id="cb90-17"><a href="exploring-isoforms-of-interest.html#cb90-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label_repel</span>(</span>
+<span id="cb90-18"><a href="exploring-isoforms-of-interest.html#cb90-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> gene_transcript_counts <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gene_id <span class="sc">%in%</span> top10<span class="sc">$</span>gene_id),</span>
+<span id="cb90-19"><a href="exploring-isoforms-of-interest.html#cb90-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> gene_id),</span>
+<span id="cb90-20"><a href="exploring-isoforms-of-interest.html#cb90-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;gray&quot;</span>,          <span class="co"># Gray background for the label</span></span>
+<span id="cb90-21"><a href="exploring-isoforms-of-interest.html#cb90-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,         <span class="co"># Black text color</span></span>
+<span id="cb90-22"><a href="exploring-isoforms-of-interest.html#cb90-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.25</span>,       <span class="co"># Border thickness around the label</span></span>
+<span id="cb90-23"><a href="exploring-isoforms-of-interest.html#cb90-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.15</span>, <span class="st">&quot;lines&quot;</span>),  <span class="co"># Border radius (rounded corners)</span></span>
+<span id="cb90-24"><a href="exploring-isoforms-of-interest.html#cb90-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb90-25"><a href="exploring-isoforms-of-interest.html#cb90-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">box.padding =</span> <span class="fl">0.2</span>,</span>
+<span id="cb90-26"><a href="exploring-isoforms-of-interest.html#cb90-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">14</span> </span>
+<span id="cb90-27"><a href="exploring-isoforms-of-interest.html#cb90-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb90-28"><a href="exploring-isoforms-of-interest.html#cb90-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb90-29"><a href="exploring-isoforms-of-interest.html#cb90-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Minimal theme and additional styling</span></span>
+<span id="cb90-30"><a href="exploring-isoforms-of-interest.html#cb90-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb90-31"><a href="exploring-isoforms-of-interest.html#cb90-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb90-32"><a href="exploring-isoforms-of-interest.html#cb90-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>), <span class="co"># Centered title</span></span>
+<span id="cb90-33"><a href="exploring-isoforms-of-interest.html#cb90-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>),             <span class="co"># Black axis tick labels</span></span>
+<span id="cb90-34"><a href="exploring-isoforms-of-interest.html#cb90-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),                       <span class="co"># Black axis titles</span></span>
+<span id="cb90-35"><a href="exploring-isoforms-of-interest.html#cb90-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb90-36"><a href="exploring-isoforms-of-interest.html#cb90-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">linewidth =</span> <span class="dv">1</span>)  <span class="co"># Black border around the graph</span></span>
+<span id="cb90-37"><a href="exploring-isoforms-of-interest.html#cb90-37" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/plot_unique_isoforms-1.png" width="672" /></p>
 </div>
@@ -401,28 +408,28 @@ div.csl-indent {
 <h2><span class="header-section-number">6.3</span> Exploring <em>MACF1</em> isoforms<a href="exploring-isoforms-of-interest.html#exploring-macf1-isoforms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We are interested in isoforms that regulate neuronal differentiation, we can look at some genes of interest. Let’s look at gene <em>MACF1</em><strong>.</strong> The gene seems to play some important role in neural migration which is not fully understood yet. First let’s try and visualize the expression of these isoforms on a UMAP to see if we can uncover anything interesting. <em>MACF1</em> has 35 expressed isoforms so let’s only plot the top 12 most highly expressed.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="exploring-isoforms-of-interest.html#cb90-1" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">@</span>features)</span>
-<span id="cb90-2"><a href="exploring-isoforms-of-interest.html#cb90-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-3"><a href="exploring-isoforms-of-interest.html#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the gene of interest</span></span>
-<span id="cb90-4"><a href="exploring-isoforms-of-interest.html#cb90-4" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;MACF1&quot;</span></span>
-<span id="cb90-5"><a href="exploring-isoforms-of-interest.html#cb90-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-6"><a href="exploring-isoforms-of-interest.html#cb90-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the data matrix for the &#39;iso&#39; assay</span></span>
-<span id="cb90-7"><a href="exploring-isoforms-of-interest.html#cb90-7" aria-hidden="true" tabindex="-1"></a>expression_matrix <span class="ot">&lt;-</span> <span class="fu">GetAssayData</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>)</span>
-<span id="cb90-8"><a href="exploring-isoforms-of-interest.html#cb90-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-9"><a href="exploring-isoforms-of-interest.html#cb90-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter features containing the gene name</span></span>
-<span id="cb90-10"><a href="exploring-isoforms-of-interest.html#cb90-10" aria-hidden="true" tabindex="-1"></a>matching_features <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), <span class="fu">rownames</span>(expression_matrix), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb90-11"><a href="exploring-isoforms-of-interest.html#cb90-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-12"><a href="exploring-isoforms-of-interest.html#cb90-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the expression matrix to include only the matching features</span></span>
-<span id="cb90-13"><a href="exploring-isoforms-of-interest.html#cb90-13" aria-hidden="true" tabindex="-1"></a>subset_expression <span class="ot">&lt;-</span> expression_matrix[matching_features, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb90-14"><a href="exploring-isoforms-of-interest.html#cb90-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-15"><a href="exploring-isoforms-of-interest.html#cb90-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the total expression for each matching feature</span></span>
-<span id="cb90-16"><a href="exploring-isoforms-of-interest.html#cb90-16" aria-hidden="true" tabindex="-1"></a>total_expression <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">rowSums</span>(subset_expression)</span>
-<span id="cb90-17"><a href="exploring-isoforms-of-interest.html#cb90-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-18"><a href="exploring-isoforms-of-interest.html#cb90-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rank features by average expression</span></span>
-<span id="cb90-19"><a href="exploring-isoforms-of-interest.html#cb90-19" aria-hidden="true" tabindex="-1"></a>top_features <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(total_expression, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb90-20"><a href="exploring-isoforms-of-interest.html#cb90-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-21"><a href="exploring-isoforms-of-interest.html#cb90-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the ranked features (optional)</span></span>
-<span id="cb90-22"><a href="exploring-isoforms-of-interest.html#cb90-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">data.frame</span>(<span class="at">Feature =</span> top_features, <span class="at">Expression =</span> total_expression[top_features]))</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="exploring-isoforms-of-interest.html#cb91-1" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">rownames</span>(filt_seurat_object<span class="sc">@</span>assays<span class="sc">$</span>iso<span class="sc">@</span>features)</span>
+<span id="cb91-2"><a href="exploring-isoforms-of-interest.html#cb91-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-3"><a href="exploring-isoforms-of-interest.html#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the gene of interest</span></span>
+<span id="cb91-4"><a href="exploring-isoforms-of-interest.html#cb91-4" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;MACF1&quot;</span></span>
+<span id="cb91-5"><a href="exploring-isoforms-of-interest.html#cb91-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-6"><a href="exploring-isoforms-of-interest.html#cb91-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the data matrix for the &#39;iso&#39; assay</span></span>
+<span id="cb91-7"><a href="exploring-isoforms-of-interest.html#cb91-7" aria-hidden="true" tabindex="-1"></a>expression_matrix <span class="ot">&lt;-</span> <span class="fu">GetAssayData</span>(filt_seurat_object, <span class="at">assay =</span> <span class="st">&quot;iso&quot;</span>, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>)</span>
+<span id="cb91-8"><a href="exploring-isoforms-of-interest.html#cb91-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-9"><a href="exploring-isoforms-of-interest.html#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter features containing the gene name</span></span>
+<span id="cb91-10"><a href="exploring-isoforms-of-interest.html#cb91-10" aria-hidden="true" tabindex="-1"></a>matching_features <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), <span class="fu">rownames</span>(expression_matrix), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb91-11"><a href="exploring-isoforms-of-interest.html#cb91-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-12"><a href="exploring-isoforms-of-interest.html#cb91-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the expression matrix to include only the matching features</span></span>
+<span id="cb91-13"><a href="exploring-isoforms-of-interest.html#cb91-13" aria-hidden="true" tabindex="-1"></a>subset_expression <span class="ot">&lt;-</span> expression_matrix[matching_features, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb91-14"><a href="exploring-isoforms-of-interest.html#cb91-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-15"><a href="exploring-isoforms-of-interest.html#cb91-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the total expression for each matching feature</span></span>
+<span id="cb91-16"><a href="exploring-isoforms-of-interest.html#cb91-16" aria-hidden="true" tabindex="-1"></a>total_expression <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">rowSums</span>(subset_expression)</span>
+<span id="cb91-17"><a href="exploring-isoforms-of-interest.html#cb91-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-18"><a href="exploring-isoforms-of-interest.html#cb91-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rank features by average expression</span></span>
+<span id="cb91-19"><a href="exploring-isoforms-of-interest.html#cb91-19" aria-hidden="true" tabindex="-1"></a>top_features <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(total_expression, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb91-20"><a href="exploring-isoforms-of-interest.html#cb91-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-21"><a href="exploring-isoforms-of-interest.html#cb91-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the ranked features (optional)</span></span>
+<span id="cb91-22"><a href="exploring-isoforms-of-interest.html#cb91-22" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">data.frame</span>(<span class="at">Feature =</span> top_features, <span class="at">Expression =</span> total_expression[top_features]))</span></code></pre></div>
 </details>
 <pre><code>##                                         Feature Expression
 ## ENST00000361689.7-MACF1 ENST00000361689.7-MACF1 143.862407
@@ -461,22 +468,22 @@ div.csl-indent {
 ## ENST00000672812.1-MACF1 ENST00000672812.1-MACF1   1.055652
 ## ENST00000528611.1-MACF1 ENST00000528611.1-MACF1   0.401423</code></pre>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="exploring-isoforms-of-interest.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">12</span>, <span class="at">repr.plot.height=</span><span class="dv">12</span>)</span>
-<span id="cb92-2"><a href="exploring-isoforms-of-interest.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the top 16 features in descending order of their average expression</span></span>
-<span id="cb92-3"><a href="exploring-isoforms-of-interest.html#cb92-3" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(</span>
-<span id="cb92-4"><a href="exploring-isoforms-of-interest.html#cb92-4" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object,</span>
-<span id="cb92-5"><a href="exploring-isoforms-of-interest.html#cb92-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">features =</span> <span class="fu">head</span>(top_features, <span class="dv">12</span>),</span>
-<span id="cb92-6"><a href="exploring-isoforms-of-interest.html#cb92-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,</span>
-<span id="cb92-7"><a href="exploring-isoforms-of-interest.html#cb92-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">order =</span> <span class="cn">TRUE</span>, <span class="co"># Ensures higher-expressing cells are plotted on top</span></span>
-<span id="cb92-8"><a href="exploring-isoforms-of-interest.html#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pt.size =</span> <span class="dv">1</span>)</span>
-<span id="cb92-9"><a href="exploring-isoforms-of-interest.html#cb92-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-10"><a href="exploring-isoforms-of-interest.html#cb92-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust title size for each plot</span></span>
-<span id="cb92-11"><a href="exploring-isoforms-of-interest.html#cb92-11" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">lapply</span>(plots, <span class="cf">function</span>(plot) {</span>
-<span id="cb92-12"><a href="exploring-isoforms-of-interest.html#cb92-12" aria-hidden="true" tabindex="-1"></a>  plot <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
-<span id="cb92-13"><a href="exploring-isoforms-of-interest.html#cb92-13" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb92-14"><a href="exploring-isoforms-of-interest.html#cb92-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb92-15"><a href="exploring-isoforms-of-interest.html#cb92-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the adjusted plots</span></span>
-<span id="cb92-16"><a href="exploring-isoforms-of-interest.html#cb92-16" aria-hidden="true" tabindex="-1"></a><span class="fu">CombinePlots</span>(<span class="at">plots =</span> plots, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="exploring-isoforms-of-interest.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">12</span>, <span class="at">repr.plot.height=</span><span class="dv">12</span>)</span>
+<span id="cb93-2"><a href="exploring-isoforms-of-interest.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the top 16 features in descending order of their average expression</span></span>
+<span id="cb93-3"><a href="exploring-isoforms-of-interest.html#cb93-3" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">FeaturePlot</span>(</span>
+<span id="cb93-4"><a href="exploring-isoforms-of-interest.html#cb93-4" aria-hidden="true" tabindex="-1"></a>  filt_seurat_object,</span>
+<span id="cb93-5"><a href="exploring-isoforms-of-interest.html#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">features =</span> <span class="fu">head</span>(top_features, <span class="dv">12</span>),</span>
+<span id="cb93-6"><a href="exploring-isoforms-of-interest.html#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,</span>
+<span id="cb93-7"><a href="exploring-isoforms-of-interest.html#cb93-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">order =</span> <span class="cn">TRUE</span>, <span class="co"># Ensures higher-expressing cells are plotted on top</span></span>
+<span id="cb93-8"><a href="exploring-isoforms-of-interest.html#cb93-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pt.size =</span> <span class="dv">1</span>)</span>
+<span id="cb93-9"><a href="exploring-isoforms-of-interest.html#cb93-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-10"><a href="exploring-isoforms-of-interest.html#cb93-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust title size for each plot</span></span>
+<span id="cb93-11"><a href="exploring-isoforms-of-interest.html#cb93-11" aria-hidden="true" tabindex="-1"></a>plots <span class="ot">&lt;-</span> <span class="fu">lapply</span>(plots, <span class="cf">function</span>(plot) {</span>
+<span id="cb93-12"><a href="exploring-isoforms-of-interest.html#cb93-12" aria-hidden="true" tabindex="-1"></a>  plot <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb93-13"><a href="exploring-isoforms-of-interest.html#cb93-13" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb93-14"><a href="exploring-isoforms-of-interest.html#cb93-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-15"><a href="exploring-isoforms-of-interest.html#cb93-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the adjusted plots</span></span>
+<span id="cb93-16"><a href="exploring-isoforms-of-interest.html#cb93-16" aria-hidden="true" tabindex="-1"></a><span class="fu">CombinePlots</span>(<span class="at">plots =</span> plots, <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/plotting%20MACF1-1.png" width="960" /></p>
 </div>
@@ -484,37 +491,37 @@ div.csl-indent {
 <h2><span class="header-section-number">6.4</span> Expression of <em>MACF1</em> isoforms Across Cell Types<a href="exploring-isoforms-of-interest.html#expression-of-macf1-isoforms-across-cell-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s look at isoforms <strong>ENST00000564288.6</strong>, <strong>ENST00000361689.7</strong>, <strong>ENST00000289893.8</strong> and <strong>ENST00000524432.5</strong> in some more detail and plot the normalized expression of these isoforms across each cell type. We can see that the expression of <strong>ENST00000524432.5</strong> shows a cell type specific profile.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="exploring-isoforms-of-interest.html#cb93-1" aria-hidden="true" tabindex="-1"></a>features_MACF1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000564288.6-MACF1&quot;</span>, <span class="co"># canonical</span></span>
-<span id="cb93-2"><a href="exploring-isoforms-of-interest.html#cb93-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000361689.7-MACF1&quot;</span>, <span class="co"># most cell types</span></span>
-<span id="cb93-3"><a href="exploring-isoforms-of-interest.html#cb93-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000289893.8-MACF1&quot;</span>, <span class="co"># most cell types</span></span>
-<span id="cb93-4"><a href="exploring-isoforms-of-interest.html#cb93-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000524432.5-MACF1&quot;</span>) <span class="co"># radial glia</span></span>
-<span id="cb93-5"><a href="exploring-isoforms-of-interest.html#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-6"><a href="exploring-isoforms-of-interest.html#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(seu_obj, <span class="at">features =</span> features_MACF1, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="exploring-isoforms-of-interest.html#cb94-1" aria-hidden="true" tabindex="-1"></a>features_MACF1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ENST00000564288.6-MACF1&quot;</span>, <span class="co"># canonical</span></span>
+<span id="cb94-2"><a href="exploring-isoforms-of-interest.html#cb94-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000361689.7-MACF1&quot;</span>, <span class="co"># most cell types</span></span>
+<span id="cb94-3"><a href="exploring-isoforms-of-interest.html#cb94-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000289893.8-MACF1&quot;</span>, <span class="co"># most cell types</span></span>
+<span id="cb94-4"><a href="exploring-isoforms-of-interest.html#cb94-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ENST00000524432.5-MACF1&quot;</span>) <span class="co"># radial glia</span></span>
+<span id="cb94-5"><a href="exploring-isoforms-of-interest.html#cb94-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-6"><a href="exploring-isoforms-of-interest.html#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(seu_obj, <span class="at">features =</span> features_MACF1, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/vln%20MACF1-1.png" width="960" /></p>
 <p>We can also show this enrichment with a dotplot.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="exploring-isoforms-of-interest.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDotPlot</span>(seu_obj, <span class="at">vars =</span> features_MACF1, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="exploring-isoforms-of-interest.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDotPlot</span>(seu_obj, <span class="at">vars =</span> features_MACF1, <span class="at">group.by =</span> <span class="st">&quot;sctype_db&quot;</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/dot%20MACF1-1.png" width="672" /></p>
 <p>let’s look at our DE results comparing glutamatergic neurons and Radial glia cells that we calculated in the previous chapter and filter for significant <em>MACF1</em> isoforms. If we plot these features on a Volcano plot we see isoform <strong>ENST00000524432.5</strong> is enriched in radial glia cells. In fact its enrichment compared to glutamatergic neurons is pretty high with a Log2fold change of 4.16.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="exploring-isoforms-of-interest.html#cb95-1" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="sc">%&gt;%</span></span>
-<span id="cb95-2"><a href="exploring-isoforms-of-interest.html#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;isoform&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb95-3"><a href="exploring-isoforms-of-interest.html#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;MACF1&quot;</span>, isoform)) <span class="sc">%&gt;%</span></span>
-<span id="cb95-4"><a href="exploring-isoforms-of-interest.html#cb95-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.5</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="exploring-isoforms-of-interest.html#cb96-1" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="sc">%&gt;%</span></span>
+<span id="cb96-2"><a href="exploring-isoforms-of-interest.html#cb96-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">&quot;isoform&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb96-3"><a href="exploring-isoforms-of-interest.html#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;MACF1&quot;</span>, isoform)) <span class="sc">%&gt;%</span></span>
+<span id="cb96-4"><a href="exploring-isoforms-of-interest.html#cb96-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(p_val_adj <span class="sc">&lt;</span> <span class="fl">0.5</span>) </span></code></pre></div>
 </details>
 <pre><code>##                   isoform        p_val avg_log2FC pct.1 pct.2    p_val_adj
 ## 1 ENST00000524432.5-MACF1 1.025842e-10  -4.163237 0.011 0.384 6.539231e-06</code></pre>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="exploring-isoforms-of-interest.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
-<span id="cb97-2"><a href="exploring-isoforms-of-interest.html#cb97-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
-<span id="cb97-3"><a href="exploring-isoforms-of-interest.html#cb97-3" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
-<span id="cb97-4"><a href="exploring-isoforms-of-interest.html#cb97-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
-<span id="cb97-5"><a href="exploring-isoforms-of-interest.html#cb97-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab =</span> <span class="st">&quot;ENST00000524432.5-MACF1&quot;</span>,</span>
-<span id="cb97-6"><a href="exploring-isoforms-of-interest.html#cb97-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb97-7"><a href="exploring-isoforms-of-interest.html#cb97-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb97-8"><a href="exploring-isoforms-of-interest.html#cb97-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;ENST00000524432.5-MACF1 is upregulated </span><span class="sc">\n</span><span class="st"> in Radial glial Cells compared to Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="exploring-isoforms-of-interest.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
+<span id="cb98-2"><a href="exploring-isoforms-of-interest.html#cb98-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
+<span id="cb98-3"><a href="exploring-isoforms-of-interest.html#cb98-3" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb98-4"><a href="exploring-isoforms-of-interest.html#cb98-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb98-5"><a href="exploring-isoforms-of-interest.html#cb98-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab =</span> <span class="st">&quot;ENST00000524432.5-MACF1&quot;</span>,</span>
+<span id="cb98-6"><a href="exploring-isoforms-of-interest.html#cb98-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb98-7"><a href="exploring-isoforms-of-interest.html#cb98-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb98-8"><a href="exploring-isoforms-of-interest.html#cb98-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;ENST00000524432.5-MACF1 is upregulated </span><span class="sc">\n</span><span class="st"> in Radial glial Cells compared to Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/DE_MACF1-1.png" width="672" /></p>
 </div>
@@ -525,17 +532,17 @@ div.csl-indent {
 <p>We instead recommend using IsoVis <span class="citation">(<a href="references.html#ref-wan2024" role="doc-biblioref">Wan et al., 2024</a>)</span>, which was developed in the Clark Lab. The tool is a web application specifically designed for visualizing isoform structures. This visualization can provide valuable insights into the potential functions of different isoforms.</p>
 <p>First let’s prepare the count data that we will load into Isovis<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="exploring-isoforms-of-interest.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co">#extract some isoform expression data to visualize in IsoVis </span></span>
-<span id="cb98-2"><a href="exploring-isoforms-of-interest.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="co">#use pseudobulk counts we got from above  </span></span>
-<span id="cb98-3"><a href="exploring-isoforms-of-interest.html#cb98-3" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">-&gt;</span> pseudobulk_data_IsoVis_format</span>
-<span id="cb98-4"><a href="exploring-isoforms-of-interest.html#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(pseudobulk_data_IsoVis_format) <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
-<span id="cb98-5"><a href="exploring-isoforms-of-interest.html#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-6"><a href="exploring-isoforms-of-interest.html#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pseudobulk_data_IsoVis_format, <span class="st">&quot;output_files/Pseudobulk_exp.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="exploring-isoforms-of-interest.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#extract some isoform expression data to visualize in IsoVis </span></span>
+<span id="cb99-2"><a href="exploring-isoforms-of-interest.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co">#use pseudobulk counts we got from above  </span></span>
+<span id="cb99-3"><a href="exploring-isoforms-of-interest.html#cb99-3" aria-hidden="true" tabindex="-1"></a>pseudobulk_data <span class="ot">-&gt;</span> pseudobulk_data_IsoVis_format</span>
+<span id="cb99-4"><a href="exploring-isoforms-of-interest.html#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(pseudobulk_data_IsoVis_format) <span class="ot">&lt;-</span> <span class="cn">NULL</span> </span>
+<span id="cb99-5"><a href="exploring-isoforms-of-interest.html#cb99-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-6"><a href="exploring-isoforms-of-interest.html#cb99-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(pseudobulk_data_IsoVis_format, <span class="st">&quot;output_files/Pseudobulk_exp.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </details>
 <p>To use IsoVis click on the following link <a href="https://isomix.org/isovis/" class="uri">https://isomix.org/isovis/</a> and upload the <code>isoform_annotated.gtf</code> file located in the FLAMES output dir and <code>Pseudobulk_exp.csv</code> generated above. For more detail on how to use IsoVis click the ‘<strong>IsoVis tutorial</strong>’ button or read the publication.</p>
 <p>Embedded below is the figure generated by IsoVis<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Here we we will visualise our 4 isoforms of interest. We can see <em>MACF1</em> is a very complex gene with many exons, a variety of alternative transcription start sites. Structural visualization aids in identifying critical variations such as alternative splicing events, unique protein-coding regions, and functional domains.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="exploring-isoforms-of-interest.html#cb99-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000127603.png&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="exploring-isoforms-of-interest.html#cb100-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000127603.png&quot;</span>)</span></code></pre></div>
 </details>
 <div class="figure"><span style="display:block;" id="fig:IsoVis-plot"></span>
 <img src="images/IsoVis_ENSG00000127603.png" alt="IsoVis visualization of 4 MACF1 isoforms." width="1600px" />

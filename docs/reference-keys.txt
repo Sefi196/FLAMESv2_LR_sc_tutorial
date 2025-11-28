@@ -59,3 +59,8 @@ trajectory-analysis
 running-pseudotime-analysis-on-genes
 running-pseudotime-analysis-on-isoforms
 summary-and-downstream-applications
+differential-transcript-usage-dtu
+preparing-the-data-for-dtu-analysis
+generating-a-switchlist
+visualising-dtu-hits
+final-thoughts

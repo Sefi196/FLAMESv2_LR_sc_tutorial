@@ -23,7 +23,7 @@
 <meta name="author" content="Sefi Prawer Postdoctoral Research Fellow in Long Reads and Single-Cell Transcriptomics University of Melbourne" />
 
 
-<meta name="date" content="2025-11-26" />
+<meta name="date" content="2025-11-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -248,6 +248,13 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
 <li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> Differential Transcript Usage (DTU)</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#preparing-the-data-for-dtu-analysis"><i class="fa fa-check"></i><b>12.1</b> Preparing the data for DTU analysis</a></li>
+<li class="chapter" data-level="12.2" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#generating-a-switchlist"><i class="fa fa-check"></i><b>12.2</b> Generating a SwitchList</a></li>
+<li class="chapter" data-level="12.3" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#visualising-dtu-hits"><i class="fa fa-check"></i><b>12.3</b> Visualising DTU Hits</a></li>
+<li class="chapter" data-level="12.4" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#final-thoughts"><i class="fa fa-check"></i><b>12.4</b> Final thoughts</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
 <ul>
@@ -387,6 +394,7 @@ div.csl-indent {
 ## 6 4       GABAergic neurons          82.8 
 ## 7 5       Radial glial cells         92.0 
 ## 8 1       Radial glial cells         94.0</code></pre>
+<p><img src="bookdownproj_files/figure-html/sctype-1.png" width="672" /></p>
 <p>ScType gives us some indication of which cell types we have in our data. We can use the DE genes to get some more specific info. Glutamatergic neuronal markers “SLC17A7”,“SLC17A6”,“GRIN1”,“GRIN2B” are all DE in cluster 0 - the mature neuron cluster. This suggests these cells are likely glutamatergic neurons.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="finding-marker-genes-and-isoforms.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># markers for </span></span>
@@ -471,10 +479,9 @@ div.csl-indent {
 <span id="cb75-7"><a href="finding-marker-genes-and-isoforms.html#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View the top genes</span></span>
 <span id="cb75-8"><a href="finding-marker-genes-and-isoforms.html#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(top_cluster7<span class="sc">$</span>gene)</span></code></pre></div>
 </details>
-<pre><code>##  [1] &quot;RPS16&quot;           &quot;RPL35A&quot;          &quot;RPL24&quot;           &quot;ENSG00000293320&quot; &quot;RPL32&quot;           &quot;IQCG&quot;           
-##  [7] &quot;RPS7&quot;            &quot;RPL37&quot;           &quot;RPL26&quot;           &quot;ENSG00000280441&quot; &quot;RPS3A&quot;           &quot;RPL18&quot;          
-## [13] &quot;RPS19&quot;           &quot;FAU&quot;             &quot;RPL11&quot;           &quot;RPS18&quot;           &quot;RPL5&quot;            &quot;STRAP&quot;          
-## [19] &quot;SUMO2&quot;           &quot;RPL10&quot;</code></pre>
+<pre><code>##  [1] &quot;RPS16&quot;           &quot;RPL35A&quot;          &quot;RPL24&quot;           &quot;ENSG00000293320&quot; &quot;RPL32&quot;           &quot;IQCG&quot;            &quot;RPS7&quot;           
+##  [8] &quot;RPL37&quot;           &quot;RPL26&quot;           &quot;ENSG00000280441&quot; &quot;RPS3A&quot;           &quot;RPL18&quot;           &quot;RPS19&quot;           &quot;FAU&quot;            
+## [15] &quot;RPL11&quot;           &quot;RPS18&quot;           &quot;RPL5&quot;            &quot;STRAP&quot;           &quot;SUMO2&quot;           &quot;RPL10&quot;</code></pre>
 <p>Based on the plots above, <em>Myelinating Schwann cells</em> show markedly fewer detected features and lower total counts compared to other populations. Additionally, the expression profiles indicate that this cluster lacks canonical radial glial markers such as <strong>VIM</strong>, <strong>SOX2</strong>, and <strong>PAX6</strong> (shown above). Differential expression analysis using the <code>FindAllMarkers</code> function also revealed a high proportion of <strong>ribosomal genes</strong> among the top markers for this cluster.</p>
 <p>Taken together, these findings suggest that this cluster does not represent a bona fide neural lineage. Instead, these cells are likely <strong>low-complexity or low-quality cells</strong> that have passed the initial QC filters. Therefore, we will remove this cluster from downstream analyses. It would also be sensible to label these cells as “Unknown’ but for simplicity we will remove them<br />
 </p>
@@ -560,15 +567,18 @@ div.csl-indent {
 <span id="cb82-5"><a href="finding-marker-genes-and-isoforms.html#cb82-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled.to.max =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb82-6"><a href="finding-marker-genes-and-isoforms.html#cb82-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">complex =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb82-7"><a href="finding-marker-genes-and-isoforms.html#cb82-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">heatmap.colors.max.scaled =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb82-8"><a href="finding-marker-genes-and-isoforms.html#cb82-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">annot.by =</span> <span class="fu">c</span>(<span class="st">&quot;sctype_db&quot;</span>))</span>
-<span id="cb82-9"><a href="finding-marker-genes-and-isoforms.html#cb82-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-10"><a href="finding-marker-genes-and-isoforms.html#cb82-10" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&quot;iso&quot;</span></span>
-<span id="cb82-11"><a href="finding-marker-genes-and-isoforms.html#cb82-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoHeatmap</span>(seu_obj, <span class="fu">head</span>(I_top5<span class="sc">$</span>gene, <span class="dv">25</span>),</span>
-<span id="cb82-12"><a href="finding-marker-genes-and-isoforms.html#cb82-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled.to.max =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb82-13"><a href="finding-marker-genes-and-isoforms.html#cb82-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">complex =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb82-14"><a href="finding-marker-genes-and-isoforms.html#cb82-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">heatmap.colors.max.scaled =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb82-15"><a href="finding-marker-genes-and-isoforms.html#cb82-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">annot.by =</span> <span class="fu">c</span>(<span class="st">&quot;sctype_db&quot;</span>))</span></code></pre></div>
+<span id="cb82-8"><a href="finding-marker-genes-and-isoforms.html#cb82-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">annot.by =</span> <span class="fu">c</span>(<span class="st">&quot;sctype_db&quot;</span>))</span></code></pre></div>
 </details>
+<p><img src="bookdownproj_files/figure-html/heatma%20pdito-1.png" width="672" /></p>
+<details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="finding-marker-genes-and-isoforms.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&quot;iso&quot;</span></span>
+<span id="cb83-2"><a href="finding-marker-genes-and-isoforms.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoHeatmap</span>(seu_obj, <span class="fu">head</span>(I_top5<span class="sc">$</span>gene, <span class="dv">25</span>),</span>
+<span id="cb83-3"><a href="finding-marker-genes-and-isoforms.html#cb83-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled.to.max =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb83-4"><a href="finding-marker-genes-and-isoforms.html#cb83-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">complex =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb83-5"><a href="finding-marker-genes-and-isoforms.html#cb83-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">heatmap.colors.max.scaled =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb83-6"><a href="finding-marker-genes-and-isoforms.html#cb83-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">annot.by =</span> <span class="fu">c</span>(<span class="st">&quot;sctype_db&quot;</span>))</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/heatma%20pdito-2.png" width="672" /></p>
 </div>
 <div id="volcano-plots" class="section level2 hasAnchor" number="5.4">
 <h2><span class="header-section-number">5.4</span> Volcano plots<a href="finding-marker-genes-and-isoforms.html#volcano-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -577,34 +587,34 @@ div.csl-indent {
 <p>Next we can explore this data by generating some volcano plots. This analysis can be useful to identify genes and isoforms that are DE and also have large fold changes. Often these types of features are the interesting for further analysis. This can be done for any of the cell types defined in our object. For the sake of brevity we will look at the glutamatergic neurons.</p>
 <p>When plotting the volcano plots, we observe that many genes exhibit both statistically significant p-values (p &lt; 0.05) and log2 fold changes -2&lt; or &gt;2. To highlight key findings, we have labeled some glutamatergic marker genes, demonstrating that the genes we expect to be upregulated in this cell type are indeed showing the expected pattern. Additionally, we have labeled VIM, a marker of radial glial and progenitor cells. As anticipated, VIM expression is downregulated in these neurons, which aligns with our expectations.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="finding-marker-genes-and-isoforms.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
-<span id="cb83-2"><a href="finding-marker-genes-and-isoforms.html#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-3"><a href="finding-marker-genes-and-isoforms.html#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter for the cell type of interest </span></span>
-<span id="cb83-4"><a href="finding-marker-genes-and-isoforms.html#cb83-4" aria-hidden="true" tabindex="-1"></a>glut_DE_iso <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_iso_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>)</span>
-<span id="cb83-5"><a href="finding-marker-genes-and-isoforms.html#cb83-5" aria-hidden="true" tabindex="-1"></a>glut_DE_gene <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_gene_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>) </span>
-<span id="cb83-6"><a href="finding-marker-genes-and-isoforms.html#cb83-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-7"><a href="finding-marker-genes-and-isoforms.html#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our volcano plot </span></span>
-<span id="cb83-8"><a href="finding-marker-genes-and-isoforms.html#cb83-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
-<span id="cb83-9"><a href="finding-marker-genes-and-isoforms.html#cb83-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
-<span id="cb83-10"><a href="finding-marker-genes-and-isoforms.html#cb83-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
-<span id="cb83-11"><a href="finding-marker-genes-and-isoforms.html#cb83-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb83-12"><a href="finding-marker-genes-and-isoforms.html#cb83-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb83-13"><a href="finding-marker-genes-and-isoforms.html#cb83-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>),</span>
-<span id="cb83-14"><a href="finding-marker-genes-and-isoforms.html#cb83-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Genes </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="finding-marker-genes-and-isoforms.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(EnhancedVolcano)</span>
+<span id="cb84-2"><a href="finding-marker-genes-and-isoforms.html#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="finding-marker-genes-and-isoforms.html#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co">#filter for the cell type of interest </span></span>
+<span id="cb84-4"><a href="finding-marker-genes-and-isoforms.html#cb84-4" aria-hidden="true" tabindex="-1"></a>glut_DE_iso <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_iso_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>)</span>
+<span id="cb84-5"><a href="finding-marker-genes-and-isoforms.html#cb84-5" aria-hidden="true" tabindex="-1"></a>glut_DE_gene <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(all_markers_gene_celltype, cluster <span class="sc">==</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>) </span>
+<span id="cb84-6"><a href="finding-marker-genes-and-isoforms.html#cb84-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-7"><a href="finding-marker-genes-and-isoforms.html#cb84-7" aria-hidden="true" tabindex="-1"></a><span class="co">#we can plot our volcano plot </span></span>
+<span id="cb84-8"><a href="finding-marker-genes-and-isoforms.html#cb84-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_gene,</span>
+<span id="cb84-9"><a href="finding-marker-genes-and-isoforms.html#cb84-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_gene<span class="sc">$</span>gene,</span>
+<span id="cb84-10"><a href="finding-marker-genes-and-isoforms.html#cb84-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb84-11"><a href="finding-marker-genes-and-isoforms.html#cb84-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb84-12"><a href="finding-marker-genes-and-isoforms.html#cb84-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb84-13"><a href="finding-marker-genes-and-isoforms.html#cb84-13" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> <span class="fu">c</span>(<span class="st">&quot;SLC17A7&quot;</span>,<span class="st">&quot;SLC17A6&quot;</span>,<span class="st">&#39;GRIN1&#39;</span>,<span class="st">&quot;GRIN2B&quot;</span>,<span class="st">&#39;VIM&#39;</span>),</span>
+<span id="cb84-14"><a href="finding-marker-genes-and-isoforms.html#cb84-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Genes </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/valocano1-1.png" width="768" /></p>
 <p>Interestingly our long read data allows us to perform the same analysis but at the isoform level. This can be hard to interpret as there are many more features to plot on the volcano plot. for the sake of clarity we have just labelled TBR1 isoforms. This code below will allow users to plot all the isoforms from a given gene on the Volcano plot making interpretation of the data a bit cleaner. Here we can see two different isoforms of the TBR1 gene showing enrichment in this cell type.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="finding-marker-genes-and-isoforms.html#cb84-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
-<span id="cb84-2"><a href="finding-marker-genes-and-isoforms.html#cb84-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb84-3"><a href="finding-marker-genes-and-isoforms.html#cb84-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-4"><a href="finding-marker-genes-and-isoforms.html#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_iso,</span>
-<span id="cb84-5"><a href="finding-marker-genes-and-isoforms.html#cb84-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_iso<span class="sc">$</span>gene,</span>
-<span id="cb84-6"><a href="finding-marker-genes-and-isoforms.html#cb84-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
-<span id="cb84-7"><a href="finding-marker-genes-and-isoforms.html#cb84-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb84-8"><a href="finding-marker-genes-and-isoforms.html#cb84-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb84-9"><a href="finding-marker-genes-and-isoforms.html#cb84-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list,</span>
-<span id="cb84-10"><a href="finding-marker-genes-and-isoforms.html#cb84-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="finding-marker-genes-and-isoforms.html#cb85-1" aria-hidden="true" tabindex="-1"></a>gene <span class="ot">&lt;-</span> <span class="st">&quot;TBR1&quot;</span></span>
+<span id="cb85-2"><a href="finding-marker-genes-and-isoforms.html#cb85-2" aria-hidden="true" tabindex="-1"></a>plot_features_list <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;(^|-|</span><span class="sc">\\</span><span class="st">b)&quot;</span>, gene, <span class="st">&quot;($|</span><span class="sc">\\</span><span class="st">b)&quot;</span>), features, <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb85-3"><a href="finding-marker-genes-and-isoforms.html#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="finding-marker-genes-and-isoforms.html#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glut_DE_iso,</span>
+<span id="cb85-5"><a href="finding-marker-genes-and-isoforms.html#cb85-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">lab=</span>glut_DE_iso<span class="sc">$</span>gene,</span>
+<span id="cb85-6"><a href="finding-marker-genes-and-isoforms.html#cb85-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>, <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb85-7"><a href="finding-marker-genes-and-isoforms.html#cb85-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">boxedLabels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb85-8"><a href="finding-marker-genes-and-isoforms.html#cb85-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">drawConnectors =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb85-9"><a href="finding-marker-genes-and-isoforms.html#cb85-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">selectLab=</span> plot_features_list,</span>
+<span id="cb85-10"><a href="finding-marker-genes-and-isoforms.html#cb85-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> in the Glutamatergic Neurons&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/valocano2-1.png" width="768" /></p>
 </div>
@@ -612,31 +622,31 @@ div.csl-indent {
 <h3><span class="header-section-number">5.4.2</span> FindMarkers DE<a href="finding-marker-genes-and-isoforms.html#findmarkers-de" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Finding All Markers is just one type of differential expression (DE) analysis that can be performed. Seurat offers the <code>FindAllMarkers</code> function, which tests the cell type of interest against all other cells. While this approach is often sufficient for identifying marker genes, users may also want to test differences between two specific cell types. For instance, you might want to identify DE genes when comparing glutamatergic neurons to radial glial cells. Below, we demonstrate how to perform this type of analysis with the <code>FindMarkers</code> function.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="finding-marker-genes-and-isoforms.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;RNA&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
-<span id="cb85-2"><a href="finding-marker-genes-and-isoforms.html#cb85-2" aria-hidden="true" tabindex="-1"></a>glu_RG_gene <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj,</span>
-<span id="cb85-3"><a href="finding-marker-genes-and-isoforms.html#cb85-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
-<span id="cb85-4"><a href="finding-marker-genes-and-isoforms.html#cb85-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
-<span id="cb85-5"><a href="finding-marker-genes-and-isoforms.html#cb85-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
-<span id="cb85-6"><a href="finding-marker-genes-and-isoforms.html#cb85-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-7"><a href="finding-marker-genes-and-isoforms.html#cb85-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;iso&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
-<span id="cb85-8"><a href="finding-marker-genes-and-isoforms.html#cb85-8" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj, <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
-<span id="cb85-9"><a href="finding-marker-genes-and-isoforms.html#cb85-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
-<span id="cb85-10"><a href="finding-marker-genes-and-isoforms.html#cb85-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
-<span id="cb85-11"><a href="finding-marker-genes-and-isoforms.html#cb85-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-12"><a href="finding-marker-genes-and-isoforms.html#cb85-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-13"><a href="finding-marker-genes-and-isoforms.html#cb85-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots # to plot at gene level</span></span>
-<span id="cb85-14"><a href="finding-marker-genes-and-isoforms.html#cb85-14" aria-hidden="true" tabindex="-1"></a><span class="co">#EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),</span></span>
-<span id="cb85-15"><a href="finding-marker-genes-and-isoforms.html#cb85-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                x=&#39;avg_log2FC&#39;, y=&#39;p_val_adj&#39;,</span></span>
-<span id="cb85-16"><a href="finding-marker-genes-and-isoforms.html#cb85-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                #selectLab= &quot;VIM&quot;,</span></span>
-<span id="cb85-17"><a href="finding-marker-genes-and-isoforms.html#cb85-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                pCutoff=0.05, FCcutoff=2,</span></span>
-<span id="cb85-18"><a href="finding-marker-genes-and-isoforms.html#cb85-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                title = &quot;Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial #Cells&quot;)</span></span>
-<span id="cb85-19"><a href="finding-marker-genes-and-isoforms.html#cb85-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-20"><a href="finding-marker-genes-and-isoforms.html#cb85-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots</span></span>
-<span id="cb85-21"><a href="finding-marker-genes-and-isoforms.html#cb85-21" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
-<span id="cb85-22"><a href="finding-marker-genes-and-isoforms.html#cb85-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
-<span id="cb85-23"><a href="finding-marker-genes-and-isoforms.html#cb85-23" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
-<span id="cb85-24"><a href="finding-marker-genes-and-isoforms.html#cb85-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
-<span id="cb85-25"><a href="finding-marker-genes-and-isoforms.html#cb85-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> Glutamatergic Neurons vs Radial glial Cells&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="finding-marker-genes-and-isoforms.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;RNA&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb86-2"><a href="finding-marker-genes-and-isoforms.html#cb86-2" aria-hidden="true" tabindex="-1"></a>glu_RG_gene <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj,</span>
+<span id="cb86-3"><a href="finding-marker-genes-and-isoforms.html#cb86-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb86-4"><a href="finding-marker-genes-and-isoforms.html#cb86-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb86-5"><a href="finding-marker-genes-and-isoforms.html#cb86-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb86-6"><a href="finding-marker-genes-and-isoforms.html#cb86-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-7"><a href="finding-marker-genes-and-isoforms.html#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(seu_obj) <span class="ot">&lt;-</span> <span class="st">&#39;iso&#39;</span> <span class="co"># difeine the gne assay as default</span></span>
+<span id="cb86-8"><a href="finding-marker-genes-and-isoforms.html#cb86-8" aria-hidden="true" tabindex="-1"></a>glu_RG_iso <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(seu_obj, <span class="at">ident.1 =</span> <span class="st">&quot;Glutamatergic neurons&quot;</span>,</span>
+<span id="cb86-9"><a href="finding-marker-genes-and-isoforms.html#cb86-9" aria-hidden="true" tabindex="-1"></a>                          <span class="at">ident.2 =</span> <span class="st">&quot;Radial glial cells&quot;</span>,</span>
+<span id="cb86-10"><a href="finding-marker-genes-and-isoforms.html#cb86-10" aria-hidden="true" tabindex="-1"></a>                          <span class="at">logfc.threshold =</span> <span class="fl">0.5</span>, <span class="at">min.pct =</span> <span class="fl">0.02</span>)</span>
+<span id="cb86-11"><a href="finding-marker-genes-and-isoforms.html#cb86-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-12"><a href="finding-marker-genes-and-isoforms.html#cb86-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-13"><a href="finding-marker-genes-and-isoforms.html#cb86-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots # to plot at gene level</span></span>
+<span id="cb86-14"><a href="finding-marker-genes-and-isoforms.html#cb86-14" aria-hidden="true" tabindex="-1"></a><span class="co">#EnhancedVolcano(glu_RG_gene, lab=rownames(glu_RG_gene),</span></span>
+<span id="cb86-15"><a href="finding-marker-genes-and-isoforms.html#cb86-15" aria-hidden="true" tabindex="-1"></a><span class="co">#                x=&#39;avg_log2FC&#39;, y=&#39;p_val_adj&#39;,</span></span>
+<span id="cb86-16"><a href="finding-marker-genes-and-isoforms.html#cb86-16" aria-hidden="true" tabindex="-1"></a><span class="co">#                #selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb86-17"><a href="finding-marker-genes-and-isoforms.html#cb86-17" aria-hidden="true" tabindex="-1"></a><span class="co">#                pCutoff=0.05, FCcutoff=2,</span></span>
+<span id="cb86-18"><a href="finding-marker-genes-and-isoforms.html#cb86-18" aria-hidden="true" tabindex="-1"></a><span class="co">#                title = &quot;Volcano Plot of Differentially Expressed Gene \n Glutamatergic Neurons vs Radial glial #Cells&quot;)</span></span>
+<span id="cb86-19"><a href="finding-marker-genes-and-isoforms.html#cb86-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-20"><a href="finding-marker-genes-and-isoforms.html#cb86-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Volcano plots</span></span>
+<span id="cb86-21"><a href="finding-marker-genes-and-isoforms.html#cb86-21" aria-hidden="true" tabindex="-1"></a><span class="fu">EnhancedVolcano</span>(glu_RG_iso, <span class="at">lab=</span><span class="fu">rownames</span>(glu_RG_iso),</span>
+<span id="cb86-22"><a href="finding-marker-genes-and-isoforms.html#cb86-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="st">&#39;avg_log2FC&#39;</span>, <span class="at">y=</span><span class="st">&#39;p_val_adj&#39;</span>,</span>
+<span id="cb86-23"><a href="finding-marker-genes-and-isoforms.html#cb86-23" aria-hidden="true" tabindex="-1"></a>                <span class="co">#selectLab= &quot;VIM&quot;,</span></span>
+<span id="cb86-24"><a href="finding-marker-genes-and-isoforms.html#cb86-24" aria-hidden="true" tabindex="-1"></a>                <span class="at">pCutoff=</span><span class="fl">0.05</span>, <span class="at">FCcutoff=</span><span class="dv">2</span>,</span>
+<span id="cb86-25"><a href="finding-marker-genes-and-isoforms.html#cb86-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">&quot;Volcano Plot of Differentially Expressed Isoforms </span><span class="sc">\n</span><span class="st"> Glutamatergic Neurons vs Radial glial Cells&quot;</span>)</span></code></pre></div>
 </details>
 <p><img src="bookdownproj_files/figure-html/valocano3-1.png" width="768" /></p>
 <p>The volcano plot above is a useful tool for visualizing DE isoforms between two cell types. In this plot, red-labeled isoforms on the right-hand side indicate those that are unregulated in glutamatergic neurons compared to RG cells, while red dots on the left represent isoforms that are unregulated in radial glial cells compared to glutamatergic neurons. This analysis serves as an initial overview, and users can further explore the DE list (<code>glu_RG_iso</code>) to select specific isoforms of interest for more detailed analysis.</p>

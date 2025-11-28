@@ -1,0 +1,240 @@
+---
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Differential Transcript Usage (DTU)
+
+Differential transcript usage (DTU), or isoform switching, refers to changes in the **relative expression** of different transcript isoforms from the same gene across conditions, cell types, or time points. Unlike traditional gene- or isoform-level differential expression, which focuses on changes in total expression, DTU specifically examines how the *proportions* of isoforms shift between groups. This provides insight into how alternative splicing and isoform regulation contribute to cellular processes and phenotypic differences.
+
+DTU analysis is particularly useful for dissecting complex regulatory mechanisms, such as those underlying neuronal differentiation, disease progression, or cell state transitions, where changes in isoform usage may occur even when total gene expression remains stable. By identifying isoforms that are preferentially expressed under specific conditions, we can begin to link splicing programs to functional outcomes.
+
+This area is still relatively new in the context of single-cell sequencing, and tools developed specifically for single-cell DTU are not yet well established. In this chapter, we therefore use a bulk-oriented tool, **IsoformSwitchAnalyzeR**, and adapt it to our long-read single-cell setting. The full vignette for IsoformSwitchAnalyzeR can be found here: <https://www.bioconductor.org/packages/release/bioc/vignettes/IsoformSwitchAnalyzeR/inst/doc/IsoformSwitchAnalyzeR.html>
+
+We will start by loading the required packages.
+
+```{r DTU setup, echo=TRUE, message=FALSE, warning=FALSE, eval=TRUE}
+library(DRIMSeq)
+library(DEXSeq)
+library(stageR)
+library(IsoformSwitchAnalyzeR)
+library(rtracklayer)
+```
+
+## Preparing the data for DTU analysis 
+
+Next, we will build a **pseudobulk** data set containing isoform expression aggregated across our sample replicates. We will use Seurat’s native `AggregateExpression()` function and group counts by both **cell type** and **sample replicate**. This effectively creates one pseudobulk profile per *cell type × sample* combination, which is more appropriate for DTU methods like IsoformSwitchAnalyzeR which cannot use individual cells.
+
+In an ideal experimental design, you would have more biological replicates per time point (for example, at least three). In this tutorial we only have two replicates per time point, which is sufficient to illustrate the workflow, but additional replicates would provide more power and robustness for this type of analysis.
+
+```{r, echo=TRUE}
+#Get pseudobulk counts split by sample and celll type
+pseudo.seurat.isoforms <- AggregateExpression(
+  obj, 
+  assays = "iso", 
+  return.seurat = FALSE,
+  group.by = c("orig.ident", "cell_type")
+)
+
+
+# Make a dataframe from above data
+pseudo.seurat.isoforms.df <- as.data.frame(pseudo.seurat.isoforms)
+colnames(pseudo.seurat.isoforms.df)
+
+# Define sample condtions
+sample_data <-as.data.frame(colnames(pseudo.seurat.isoforms.df))
+
+# Rename the column for clarity
+colnames(sample_data) <- "colnames"
+
+# Split the column names into sampleID and celltype
+split_sample_data <- strsplit(sample_data$colnames, "_")
+```
+
+Now that we have our pseudobulk sample data, we need to build a **sample table** that describes the experimental design and conditions. We’ll call this table `samps`. We will construct this data frame using the column names of the pseudobulk matrix: for each cell type (four in total), there should be two replicates, which will be reflected as separate rows in `samps`.
+
+```{r, echo=TRUE}
+# Create a new data frame with the original column names and extracted sampleID and celltype
+samps <- data.frame(
+  sampleID = sample_data$colnames,
+  condition = sapply(split_sample_data, `[`, 2)
+)
+
+samps$condition <- as.factor(samps$condition)
+
+samps
+```
+
+Great! Now we can follow the **IsoformSwitchAnalyzeR** documentation to create a `switchAnalyzeRlist` and test for DTU across our cell types.
+
+Before generating this object, we first need to subset both the GTF and the count matrix to ensure a **1:1 match** between them—that is, the reference GTF and the count data should contain exactly the same set of transcript (isoform) entries. This alignment is essential for IsoformSwitchAnalyzeR to correctly map counts to the underlying transcript models.
+
+```{r, echo=TRUE}
+## Before generating a switch list we need to subset both the gtf and counts to ensure we have a 1:1 match 
+#read in gtf This is the GTF output by flames
+tx2gene <- import("./data/muti_sample/isoform_annotated.gtf")
+
+# Set row names of pseudo.seurat.isoforms.df to the transcript_id column
+# Extract the row names
+rownames_split <- strsplit(rownames(pseudo.seurat.isoforms.df), "-")
+# Add new columns 'transcript_id' and 'gene_id' to the data frame
+rownames(pseudo.seurat.isoforms.df) <- sapply(rownames_split, `[`, 1)
+
+#subset to match
+subset_txt2gene <- tx2gene[tx2gene$transcript_id %in% row.names(pseudo.seurat.isoforms.df), ]
+subset_cts <- pseudo.seurat.isoforms.df[row.names(pseudo.seurat.isoforms.df) %in% tx2gene$transcript_id, ]
+
+# write gtf as we need it for the bext step
+export(subset_txt2gene, "./output_files/multi_sample_subset/DTU.gtf", format = "gtf")
+
+```
+
+## Generating a SwitchList
+
+Now lets create the switch list:
+
+```{r, , echo=TRUE}
+#### genrate a switch list
+aSwitchList <- importRdata(
+  isoformCountMatrix   = subset_cts,
+  isoformRepExpression = subset_cts,
+  designMatrix         = samps,
+  isoformExonAnnoation = "./output_files/multi_sample_subset/DTU.gtf",
+  isoformNtFasta       = "/data/scratch/users/yairp/Kolf2.1_FLAMESv2/outs/Bambu_NDR_0.75/transcript_assembly.fa", # provide the FLAMES transcript_output .fasta, it will be found in the flames output fodler
+  showProgress = TRUE,
+  fixStringTieAnnotationProblem = TRUE
+)
+
+#summary of switch lsit
+summary(aSwitchList)
+
+```
+
+Now that we have our switch list, we apply stringent filtering to remove genes and isoforms that are lowly expressed, as well as isoforms that contribute only a small fraction of a gene’s overall expression. We are deliberately strict here for two reasons:
+
+1.  **IsoformSwitchAnalyzeR is designed for bulk data**, so using higher stringency thresholds is generally a safer and more biologically meaningful choice in this context.
+
+2.  **Filtering out isoforms of little consequence** reduces noise, improves the robustness of the DTU testing, and substantially speeds up subsequent analysis steps.
+
+```{r, echo=TRUE}
+aSwitchList_filt <- preFilter(
+  aSwitchList,
+  geneExpressionCutoff       = 30,   # min avg *gene* expression across samples
+  isoformExpressionCutoff    = 20,    # min isoform expression in at least one condition
+  IFcutoff                   = 0.05, # keep isoforms that contribute >=5% to gene
+  removeSingleIsoformGenes   = TRUE, # drop genes with only one isoform
+  acceptedGeneBiotype        = NULL, # or e.g. "protein_coding" if annotated
+  quiet                      = FALSE
+)
+
+summary(aSwitchList_filt)
+
+```
+
+As part of the workflow, we can also add ORF (open reading frame) information to the object. This step can be time-consuming if you have many isoforms, but we recommend running it where possible, as it helps to interpret the potential functional impact of different isoforms in different contexts.
+
+```{r, echo=TRUE}
+#Add ORF info
+aSwitchList_ORF_filt <- analyzeORF(switchAnalyzeRlist = aSwitchList_filt, orfMethod = "longest", showProgress = TRUE)
+
+#saveRDS(
+#  object = aSwitchList_ORF,
+#  file   = "./output_files/multi_sample_subset/DTU_switch_list_ORF.rds"
+#)
+```
+
+Lets add in gene symbols to the object so we can easily read what genes are switching
+
+```{r, echo=TRUE}
+#Add gene symbol to switch lsit 
+resource_table <- read.csv("./output_files/ref_files/isoform_gene_dict_mutlisample_subset.csv", header = T)
+
+# Access the isoform features list
+isoform_features <- aSwitchList_ORF_filt[["isoformFeatures"]]
+
+# Use match to fill in the 'gene_name' based on 'gene_id'
+isoform_features[["gene_name"]] <- resource_table$gene_symbol[match(isoform_features[["gene_id"]], resource_table$gene_id)]
+
+# Save the updated isoformFeatures back into the main list
+aSwitchList_ORF_filt[["isoformFeatures"]] <- isoform_features
+
+```
+
+After all of this, we can finally perform the statistical test for DTU. This step can be time-consuming, especially if there are many comparisons to make or a large number of samples to test.
+
+```{r, echo=TRUE}
+# Execute Switch testing 
+SwitchListAnalyzed <- isoformSwitchTestDEXSeq(
+  switchAnalyzeRlist = aSwitchList_ORF_filt,
+  reduceToSwitchingGenes=FALSE,
+  reduceFurtherToGenesWithConsequencePotential=FALSE,
+  alpha = 0.01,
+  dIFcutoff = 0.25,
+  onlySigIsoforms=FALSE
+)
+
+#saveRDS("./output_files/multi_sample_subset/DTU_SwitchListAnalyzed.rds", object = SwitchListAnalyzed)
+```
+
+## Visualising DTU Hits
+
+Lets Investigate the results. First we can look at the numebr of DTU hits across each condition.
+
+```{r DTU_plots, setup, echo=TRUE, message=FALSE, warning=FALSE}
+extractSwitchSummary(SwitchListAnalyzed)
+```
+
+We can then extract some of the top (most significant) DTU events and visualise them using the built-in plotting functions in the **IsoformSwitchAnalyzeR** package. These functions make it straightforward to inspect individual genes and their switching isoforms in more detail.
+
+If you run this function bellow you will generate the top 5 DTU events for each condition.
+
+```{r, echo=TRUE, eval=FALSE}
+extractTopSwitches(SwitchListAnalyzed, n=20)
+
+# Main results file
+iso_feat <- as.data.frame(SwitchListAnalyzed$isoformFeatures)
+write.csv(SwitchListAnalyzed$isoformFeatures, "stem_gaba_dtu.csv")
+
+#output switch plots for all
+switchPlotTopSwitches(
+  switchAnalyzeRlist = SwitchListAnalyzed, 
+  n = 5,                  
+  splitFunctionalConsequences = F,
+  filterForConsequences = FALSE, #this could be changed to add in consequeces
+  fileType = "pdf",                                 
+  pathToOutput = "./output_files/multi_sample_subset/",
+  alpha = 0.01
+)
+```
+
+Let’s explore one example in more detail. Here, we compare **stem cells** to **radial glia** and focus on one of the most significant DTU hits, **RPS24**. We can visualise this using a switch plot.
+
+The switch plot is composed of several panels. At the top, we see the **isoform structures** for the two RPS24 isoforms tested. Notably, ENST00000613865.5 is missing the penultimate exon, and the two isoforms have different ORFs, yet both are classified as coding. Below, the **bar charts** summarise overall gene expression and isoform-level expression across conditions. The panel on the right shows the key result: **isoform usage** (relative proportion) in each condition. In this example, stem cells use a higher proportion of ENST00000613865.5, whereas radial glia preferentially use ENST00000372360.9, illustrating a clear isoform switch between these two cell types.
+
+```{r, fig.height=8, fig.width=8}
+##### genrate some plots ####
+switchPlot(
+  SwitchListAnalyzed,
+  gene="RPS24",
+  condition1 = 'Radial.glia',
+  condition2 = 'Stem.cells',
+  localTheme = theme_bw(base_size = 12,) # making text sightly larger for vignette
+)
+```
+
+This can be visualised and verified using our Seurat plotting functions. Let’s first look at **gene-level expression** of RPS24. As you can see below, RPS24 is expressed ubiquitously and appears, at first glance, to be a fairly unremarkable gene with expression detected across all cell types.
+
+```{r DTU_plots_2, setup, echo=TRUE, message=FALSE, warning=FALSE, fig.height=4, fig.width=4}
+FeaturePlot(obj, features = "RPS24", reduction = "umap.harm")
+```
+
+Let’s dive in and plot the isoforms from the switch plot to see what is really going on. When we visualise these isoforms, we observe a clear separation in isoform expression between stem cells and radial glia. Stem cells appear to use a mixture of both isoforms, whereas radial glia are much more selective and predominantly express ENST00000372360.9. (It is important to note that additional RPS24 isoforms exist in the data, but they were not included in our DTU test or in the plots shown here.)
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, fig.height=4, fig.width=8}
+
+FeaturePlot(obj, features = c("ENST00000372360.9-RPS24",  "ENST00000613865.5-RPS24"), reduction = "umap.harm") 
+```
+
+## Final thoughts 
+
+DTU analysis is a powerful and exciting way to explore how isoforms are used in different contexts. Once you have the switch list we generated here, you can systematically explore many alternative DTU hits, inspect structural differences between isoforms, and assess whether particular transcripts are likely coding or non-coding. Together, these insights can greatly strengthen our understanding of isoform dynamics across cell types and conditions. Combined with trajectory analysis and standard differential expression, DTU provides yet another complementary lens for exploring the isoform landscape at single-cell resolution.
