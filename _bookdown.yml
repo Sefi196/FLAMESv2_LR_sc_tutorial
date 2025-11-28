@@ -18,7 +18,7 @@ rmd_files:
   - 08_diversity.rmd
   - 09_multi_sample_subset.rmd
   - 10_traj_multi_sub.rmd
-  - 12_Citations_and_Session_info.Rmd
   - 13_Differential_Transcript_Usage.Rmd
+  - 12_Citations_and_Session_info.Rmd
   - refs.Rmd
   - Appendix.Rmd

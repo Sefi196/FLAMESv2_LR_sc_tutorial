@@ -243,17 +243,17 @@ div.csl-indent {
 <li class="chapter" data-level="11.2" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#running-pseudotime-analysis-on-isoforms"><i class="fa fa-check"></i><b>11.2</b> Running pseudotime analysis on isoforms</a></li>
 <li class="chapter" data-level="11.3" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#summary-and-downstream-applications"><i class="fa fa-check"></i><b>11.3</b> Summary and downstream applications</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
-<ul>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> Differential Transcript Usage (DTU)</a>
+<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> <strong>Differential Transcript Usage (DTU)</strong></a>
 <ul>
 <li class="chapter" data-level="12.1" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#preparing-the-data-for-dtu-analysis"><i class="fa fa-check"></i><b>12.1</b> Preparing the data for DTU analysis</a></li>
 <li class="chapter" data-level="12.2" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#generating-a-switchlist"><i class="fa fa-check"></i><b>12.2</b> Generating a SwitchList</a></li>
 <li class="chapter" data-level="12.3" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#visualising-dtu-hits"><i class="fa fa-check"></i><b>12.3</b> Visualising DTU Hits</a></li>
 <li class="chapter" data-level="12.4" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#final-thoughts"><i class="fa fa-check"></i><b>12.4</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
@@ -303,7 +303,7 @@ Rather than simply asking <em>“Is isoform X upregulated in cluster A?”</em>,
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="profiling-isoform-diversity.html#cb119-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/entropy_example.png&quot;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
 <img src="images/entropy_example.png" alt="Isoform diversity schematic. For each gene, we measure how transcript usage is distributed across isoforms within individual cells. Cells dominated by a single isoform show low isoform diversity (low entropy), while cells that express multiple isoforms at similar levels show high isoform diversity (high entropy)." width="1600px" />
 <p class="caption">
 Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcript usage is distributed across isoforms within individual cells. Cells dominated by a single isoform show low isoform diversity (low entropy), while cells that express multiple isoforms at similar levels show high isoform diversity (high entropy).
@@ -326,7 +326,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <span id="cb120-6"><a href="profiling-isoform-diversity.html#cb120-6" aria-hidden="true" tabindex="-1"></a>RG_seu_obj <span class="ot">&lt;-</span> <span class="fu">subset</span>(seu_obj , <span class="at">subset =</span> sctype_db <span class="sc">==</span> <span class="st">&quot;Radial glial cells&quot;</span>)</span>
 <span id="cb120-7"><a href="profiling-isoform-diversity.html#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(RG_seu_obj, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="profiling-isoform-diversity.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(RG_seu_obj) <span class="ot">&lt;-</span> <span class="st">&quot;RNA&quot;</span></span></code></pre></div>
 </details>
@@ -368,7 +368,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <span id="cb125-7"><a href="profiling-isoform-diversity.html#cb125-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">main =</span> <span class="st">&quot;Entropy heatmap&quot;</span>,</span>
 <span id="cb125-8"><a href="profiling-isoform-diversity.html#cb125-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">na_col =</span> <span class="st">&quot;darkgrey&quot;</span>, )</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>We can summarise these data by examining the top and bottom entropy genes—those showing the highest and lowest levels of isoform diversity across Radial Glial cells.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="profiling-isoform-diversity.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -416,7 +416,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <span id="cb126-43"><a href="profiling-isoform-diversity.html#cb126-43" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb126-44"><a href="profiling-isoform-diversity.html#cb126-44" aria-hidden="true" tabindex="-1"></a>p_high <span class="sc">|</span> p_low</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>Lets choose two genes to have a closer look at. We will choose one with low entropy - VIM, and one with high entropy NFIA. We can use some plotting functions to explore entropy in each cell and the expression of these isofroms for each gene. As you can see most cells for VIM show low entropy while cells expressing NFIA show comparatively high entropy.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="profiling-isoform-diversity.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose the genes we want to plot</span></span>
@@ -473,7 +473,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range (`position_quasirandom()`).</code></pre>
 <pre><code>## Warning: Removed 43 rows containing non-finite outside the scale range (`stat_summary()`).</code></pre>
 <pre><code>## Warning: Removed 43 rows containing missing values or values outside the scale range (`position_quasirandom()`).</code></pre>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="example-of-a-low-entropy-gene" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Example of a low entropy gene<a href="profiling-isoform-diversity.html#example-of-a-low-entropy-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -501,7 +501,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 ## ENST00000487938.5-VIM ENST00000487938.5-VIM  11.304910
 ## ENST00000469543.5-VIM ENST00000469543.5-VIM   7.051489
 ## ENST00000485947.1-VIM ENST00000485947.1-VIM   3.992523</code></pre>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>We can also look at the proportion of isoform expression for VIM in each cell. As clearly shown bellow nearly all cells use a single isofroms.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="profiling-isoform-diversity.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotIsoformPieCells</span>(<span class="at">seurat_obj =</span> RG_seu_obj,</span>
@@ -512,7 +512,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <span id="cb134-6"><a href="profiling-isoform-diversity.html#cb134-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n_cells =</span> <span class="dv">12</span>, <span class="co"># change this to plot more cells </span></span>
 <span id="cb134-7"><a href="profiling-isoform-diversity.html#cb134-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot_col=</span><span class="dv">4</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 </div>
 <div id="example-of-a-high-entropy-gene" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Example of a high entropy gene<a href="profiling-isoform-diversity.html#example-of-a-high-entropy-gene" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -534,7 +534,7 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 ## ENST00000603233.2-NFIA ENST00000603233.2-NFIA 157.623083
 ## ENST00000664149.1-NFIA ENST00000664149.1-NFIA   7.102752
 ## ENST00000371187.7-NFIA ENST00000371187.7-NFIA   5.396720</code></pre>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>The pie charts bellow show that, in contrast to VIM, cells expressing NFIA utilize at least two isoforms, often in nearly equal proportions. This pattern explains the high entropy observed for NFIA and suggests a more complex expression profile compared to a simpler, single-isoform gene like VIM.</p>
 <p>Interestingly, there are numerous NFIA isoforms. The two most highly expressed isoforms shown here are quite distinct, as illustrated in the IsoVis plot below — one is protein-coding, containing critical functional domains, while the other represents a non-coding RNA variant.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
@@ -546,12 +546,12 @@ Figure 9.1: Isoform diversity schematic. For each gene, we measure how transcrip
 <span id="cb137-6"><a href="profiling-isoform-diversity.html#cb137-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n_cells =</span> <span class="dv">12</span>,</span>
 <span id="cb137-7"><a href="profiling-isoform-diversity.html#cb137-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">plot_col=</span><span class="dv">4</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Using IsoVis, we can further explore the structural differences between these isoforms and visualize how they contribute to transcriptomic complexity within individual cells.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="profiling-isoform-diversity.html#cb138-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/IsoVis_ENSG00000162599.png&quot;</span>)</span></code></pre></div>
 </details>
-<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-21"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-22"></span>
 <img src="images/IsoVis_ENSG00000162599.png" alt="Isoform diversity in NFIA (ENSG00000162599). Structural comparison of NFIA isoforms highlights the diversity of transcript usage detected in single-cell long-read data. The canonical and user-discovered isoforms differ markedly in exon structure and domain composition. One isoform encodes a full-length protein containing key functional domains (Nuclear factor, MH1, and CTF/NF-I), while another represents a non-coding or truncated transcript lacking these regions." width="1600px" />
 <p class="caption">
 Figure 9.2: Isoform diversity in NFIA (ENSG00000162599). Structural comparison of NFIA isoforms highlights the diversity of transcript usage detected in single-cell long-read data. The canonical and user-discovered isoforms differ markedly in exon structure and domain composition. One isoform encodes a full-length protein containing key functional domains (Nuclear factor, MH1, and CTF/NF-I), while another represents a non-coding or truncated transcript lacking these regions.

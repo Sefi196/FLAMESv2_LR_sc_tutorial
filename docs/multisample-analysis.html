@@ -243,17 +243,17 @@ div.csl-indent {
 <li class="chapter" data-level="11.2" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#running-pseudotime-analysis-on-isoforms"><i class="fa fa-check"></i><b>11.2</b> Running pseudotime analysis on isoforms</a></li>
 <li class="chapter" data-level="11.3" data-path="trajectory-analysis.html"><a href="trajectory-analysis.html#summary-and-downstream-applications"><i class="fa fa-check"></i><b>11.3</b> Summary and downstream applications</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
-<ul>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
-<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> Differential Transcript Usage (DTU)</a>
+<li class="chapter" data-level="12" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html"><i class="fa fa-check"></i><b>12</b> <strong>Differential Transcript Usage (DTU)</strong></a>
 <ul>
 <li class="chapter" data-level="12.1" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#preparing-the-data-for-dtu-analysis"><i class="fa fa-check"></i><b>12.1</b> Preparing the data for DTU analysis</a></li>
 <li class="chapter" data-level="12.2" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#generating-a-switchlist"><i class="fa fa-check"></i><b>12.2</b> Generating a SwitchList</a></li>
 <li class="chapter" data-level="12.3" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#visualising-dtu-hits"><i class="fa fa-check"></i><b>12.3</b> Visualising DTU Hits</a></li>
 <li class="chapter" data-level="12.4" data-path="differential-transcript-usage-dtu.html"><a href="differential-transcript-usage-dtu.html#final-thoughts"><i class="fa fa-check"></i><b>12.4</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><strong>Conclusion</strong></a>
+<ul>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+<li class="chapter" data-level="" data-path="conclusion.html"><a href="conclusion.html#session-info"><i class="fa fa-check"></i>Session info</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><strong>References</strong></a></li>
 <li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i><strong>Appendix</strong></a>
@@ -767,23 +767,23 @@ div.csl-indent {
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="multisample-analysis.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can annoate Day 0 </span></span>
 <span id="cb201-2"><a href="multisample-analysis.html#cb201-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;MKI67&quot;</span>, <span class="st">&quot;NANOG&quot;</span>, <span class="st">&quot;POU5F1&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-24-1.png" width="1152" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-25-1.png" width="1152" /></p>
 <p>Cluster 0 and 4 - Radial Glia</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="multisample-analysis.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;VIM&quot;</span>, <span class="st">&quot;SOX2&quot;</span>, <span class="st">&quot;PAX6&quot;</span>), <span class="at">ncol =</span> <span class="dv">3</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-25-1.png" width="1152" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-26-1.png" width="1152" /></p>
 <p>Cluster 5 - Inhibitory neurons</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="multisample-analysis.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;GAD1&quot;</span>, <span class="st">&quot;GAD2&quot;</span>, <span class="st">&quot;DLX5&quot;</span>, <span class="st">&quot;DLX6&quot;</span>),<span class="at">ncol =</span> <span class="dv">4</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-26-1.png" width="1152" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="1152" /></p>
 <p>Cluster 6 - Excitatory neurons (NPC)</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="multisample-analysis.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Clsuter 6 Excitorty neurons (NPC)</span></span>
 <span id="cb204-2"><a href="multisample-analysis.html#cb204-2" aria-hidden="true" tabindex="-1"></a><span class="fu">FeaturePlot</span>(obj, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;EOMES&quot;</span>, <span class="st">&quot;TBR1&quot;</span>))</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="768" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-28-1.png" width="768" /></p>
 <p>Now we will assign these labels to each cluster.</p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="multisample-analysis.html#cb205-1" aria-hidden="true" tabindex="-1"></a>new_ids <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
@@ -804,7 +804,7 @@ div.csl-indent {
 <span id="cb205-16"><a href="multisample-analysis.html#cb205-16" aria-hidden="true" tabindex="-1"></a><span class="co"># plot by cell type instead of numeric cluster</span></span>
 <span id="cb205-17"><a href="multisample-analysis.html#cb205-17" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(obj, <span class="at">group.by =</span> <span class="st">&quot;cell_type&quot;</span>, <span class="at">reduction =</span> <span class="st">&quot;umap.harm&quot;</span>)</span></code></pre></div>
 </details>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-28-1.png" width="576" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-29-1.png" width="576" /></p>
 <details class=chunk-details open><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
 <div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="multisample-analysis.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(obj, file = &quot;./output_files/multi_sample/multisample_seurat.intergrated_harm.isoform.rds&quot;)</span></span></code></pre></div>
 </details>

@@ -3,7 +3,7 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-# Differential Transcript Usage (DTU)
+# **Differential Transcript Usage (DTU)**
 
 Differential transcript usage (DTU), or isoform switching, refers to changes in the **relative expression** of different transcript isoforms from the same gene across conditions, cell types, or time points. Unlike traditional gene- or isoform-level differential expression, which focuses on changes in total expression, DTU specifically examines how the *proportions* of isoforms shift between groups. This provides insight into how alternative splicing and isoform regulation contribute to cellular processes and phenotypic differences.
 
@@ -211,7 +211,7 @@ Let’s explore one example in more detail. Here, we compare **stem cells** to *
 
 The switch plot is composed of several panels. At the top, we see the **isoform structures** for the two RPS24 isoforms tested. Notably, ENST00000613865.5 is missing the penultimate exon, and the two isoforms have different ORFs, yet both are classified as coding. Below, the **bar charts** summarise overall gene expression and isoform-level expression across conditions. The panel on the right shows the key result: **isoform usage** (relative proportion) in each condition. In this example, stem cells use a higher proportion of ENST00000613865.5, whereas radial glia preferentially use ENST00000372360.9, illustrating a clear isoform switch between these two cell types.
 
-```{r, fig.height=8, fig.width=8}
+```{r, fig.height=8, fig.width=16}
 ##### genrate some plots ####
 switchPlot(
   SwitchListAnalyzed,

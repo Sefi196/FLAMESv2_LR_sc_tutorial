@@ -3,8 +3,8 @@ fig:IsoVis-plot
 fig:IsoVis-plot2
 fig:IsoVis-plot-zoom
 fig:IsoVis-plot3
-fig:unnamed-chunk-10
-fig:unnamed-chunk-21
+fig:unnamed-chunk-11
+fig:unnamed-chunk-22
 introduction
 prerequisites
 getting-started-with-the-data
